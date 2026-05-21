@@ -86,6 +86,8 @@ export default function RegionPage() {
   const [mapMode,         setMapMode]         = useState('countries');
   const [zonesAvailable,  setZonesAvailable]  = useState(false);
   const [corridorsOn,     setCorridorsOn]     = useState(false);
+  const [zoningConfigs,   setZoningConfigs]   = useState([]);
+  const [selectedSlug,    setSelectedSlug]    = useState(null);
 
   // Static data
   useEffect(() => {
@@ -108,8 +110,17 @@ export default function RegionPage() {
     setPlantSource('osm'); setActiveTab('overview');
 
     setMapMode('countries'); setZonesAvailable(false); setCorridorsOn(false);
-    fetch(`/data/zones/${regionId}_preferred_zones.geojson`, { method: 'HEAD' })
-      .then(r => setZonesAvailable(r.ok)).catch(() => {});
+    setZoningConfigs([]); setSelectedSlug(null);
+    fetch(`/data/zones/${regionId}_configs.json`)
+      .then(r => r.ok ? r.json() : null)
+      .then(cfgs => {
+        if (cfgs?.length) {
+          setZoningConfigs(cfgs);
+          setSelectedSlug(cfgs[0].slug);
+          setZonesAvailable(true);
+        }
+      })
+      .catch(() => {});
 
     setGppdAvailable(null);
     fetch(`/data/cache/region_plants_${regionId}_gppd.geojson`, { method: 'HEAD' })
@@ -435,8 +446,9 @@ export default function RegionPage() {
     const showZones = mapMode === 'zones';
 
     if (showZones) {
-      const url = `/data/zones/${regionId}_preferred_zones_hd.geojson`;
-      const corrUrl = `/data/zones/${regionId}_preferred_corridors.geojson`;
+      const slug    = selectedSlug || 'recommended';
+      const url     = `/data/zones/${regionId}_${slug}_zones_hd.geojson`;
+      const corrUrl = `/data/zones/${regionId}_${slug}_corridors.geojson`;
       Promise.all([
         fetch(url).then(r => { if (!r.ok) throw new Error(); return r.json(); }),
         fetch(corrUrl).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -481,7 +493,7 @@ export default function RegionPage() {
       if (map.getSource('region-centroids-src'))
         map.getSource('region-centroids-src').setData({ type: 'FeatureCollection', features: [] });
     }
-  }, [mapMode, regionId, corridorsOn]);
+  }, [mapMode, regionId, corridorsOn, selectedSlug]);
 
   // ── Layer toggle handlers ─────────────────────────────────────────────────
 
@@ -753,7 +765,8 @@ export default function RegionPage() {
         <div ref={containerRef}
           style={{ width: '100%', height: 'calc(100vh - 46px)', backgroundColor: t.bg }} />
         {zonesAvailable && (
-          <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: 6 }}>
+          <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: 6, alignItems: 'center' }}>
+            {/* Potential Zonings toggle */}
             <button
               onClick={() => setMapMode(m => m === 'zones' ? 'countries' : 'zones')}
               style={{
@@ -772,8 +785,30 @@ export default function RegionPage() {
                 backgroundColor: mapMode === 'zones' ? 'rgba(74,143,204,0.8)' : t.panelBorder,
                 display: 'inline-block', transition: 'background 0.15s',
               }} />
-              Recommended Zoning
+              Potential Zonings
             </button>
+
+            {/* Config selector — only when zone mode is active and multiple configs exist */}
+            {mapMode === 'zones' && zoningConfigs.length > 1 && (
+              <select
+                value={selectedSlug || ''}
+                onChange={e => setSelectedSlug(e.target.value)}
+                style={{
+                  fontSize: '0.58rem', fontFamily: 'inherit',
+                  padding: '5px 8px', borderRadius: 6,
+                  border: `1px solid rgba(74,143,204,0.5)`,
+                  backgroundColor: t.panel, color: t.lbl,
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 4px rgba(0,0,0,.18)',
+                  outline: 'none',
+                }}>
+                {zoningConfigs.map(cfg => (
+                  <option key={cfg.slug} value={cfg.slug}>{cfg.name}</option>
+                ))}
+              </select>
+            )}
+
+            {/* Corridors toggle — only in zone mode */}
             {mapMode === 'zones' && (
               <button
                 onClick={toggleCorridors}
