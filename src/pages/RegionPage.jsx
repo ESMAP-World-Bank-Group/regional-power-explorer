@@ -85,7 +85,9 @@ export default function RegionPage() {
   const [satLabels,       setSatLabels]       = useState(false);
   const [mapMode,         setMapMode]         = useState('countries');
   const [zonesAvailable,  setZonesAvailable]  = useState(false);
-  const [corridorsOn,     setCorridorsOn]     = useState(false);
+  const [corrExistOn,     setCorrExistOn]     = useState(false);
+  const [corrCommOn,      setCorrCommOn]      = useState(false);
+  const [corrCandOn,      setCorrCandOn]      = useState(false);
   const [zoningConfigs,   setZoningConfigs]   = useState([]);
   const [selectedSlug,    setSelectedSlug]    = useState(null);
 
@@ -109,7 +111,8 @@ export default function RegionPage() {
     setMinMw(100); setCircleScale(1.0);
     setPlantSource('osm'); setActiveTab('overview');
 
-    setMapMode('countries'); setZonesAvailable(false); setCorridorsOn(false);
+    setMapMode('countries'); setZonesAvailable(false);
+    setCorrExistOn(false); setCorrCommOn(false); setCorrCandOn(false);
     setZoningConfigs([]); setSelectedSlug(null);
     fetch(`/data/zones/${regionId}_configs.json`)
       .then(r => r.ok ? r.json() : null)
@@ -238,16 +241,29 @@ export default function RegionPage() {
         paint: zoneLayerPaint.border });
 
       // Corridor capacity lines for preferred zone view
-      const mwWidthExpr = ['interpolate', ['linear'], ['get', 'mw'], 0, 1.5, 500, 3.0, 2000, 6.0];
+      const mwWidthExpr     = (field) => ['interpolate', ['linear'], ['coalesce', ['get', field], 0], 0, 1.5, 500, 3.0, 2000, 6.0];
+      const hasNtcField     = (field) => ['>', ['coalesce', ['get', field], 0], 0];
       map.addLayer({
         id: 'region-corridors-ex', type: 'line', source: 'region-corridors-src',
-        filter: ['!', ['in', ['get', 'status'], ['literal', ['planned', 'candidate', 'long_term']]]],
+        filter: hasNtcField('mw_existing'),
         layout: { visibility: 'none' },
-        paint: { 'line-color': '#1a5fa8', 'line-width': mwWidthExpr, 'line-opacity': 0.85 },
+        paint: { 'line-color': '#1a5fa8', 'line-width': mwWidthExpr('mw_existing'), 'line-opacity': 0.85 },
+      });
+      map.addLayer({
+        id: 'region-corridors-committed', type: 'line', source: 'region-corridors-src',
+        filter: hasNtcField('mw_committed'),
+        layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#e07b00', 'line-width': mwWidthExpr('mw_committed'), 'line-opacity': 0.85, 'line-dasharray': [6, 3] },
+      });
+      map.addLayer({
+        id: 'region-corridors-candidate', type: 'line', source: 'region-corridors-src',
+        filter: hasNtcField('mw_candidate'),
+        layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#555', 'line-width': mwWidthExpr('mw_candidate'), 'line-opacity': 0.7, 'line-dasharray': [2, 4] },
       });
       map.addLayer({
         id: 'region-corridors-labels', type: 'symbol', source: 'region-corridors-src',
-        filter: ['!', ['in', ['get', 'status'], ['literal', ['planned', 'candidate', 'long_term']]]],
+        filter: ['>', ['coalesce', ['get', 'mw'], 0], 0],
         layout: {
           visibility: 'none',
           'text-field': ['get', 'label'],
@@ -479,10 +495,15 @@ export default function RegionPage() {
           }
           if (m.getSource('region-centroids-src'))
             m.getSource('region-centroids-src').setData({ type: 'FeatureCollection', features: [...centroidMap.values()] });
-          for (const id of ['region-corridors-ex', 'region-corridors-labels', 'region-corridors-dots']) {
-            if (m.getLayer(id))
-              m.setLayoutProperty(id, 'visibility', corridorsOn ? 'visible' : 'none');
-          }
+          const layerVis = {
+            'region-corridors-ex':        corrExistOn ? 'visible' : 'none',
+            'region-corridors-committed':  corrCommOn  ? 'visible' : 'none',
+            'region-corridors-candidate':  corrCandOn  ? 'visible' : 'none',
+            'region-corridors-labels':    corrExistOn ? 'visible' : 'none',
+            'region-corridors-dots':      (corrExistOn || corrCommOn || corrCandOn) ? 'visible' : 'none',
+          };
+          for (const [id, vis] of Object.entries(layerVis))
+            if (m.getLayer(id)) m.setLayoutProperty(id, 'visibility', vis);
         })
         .catch(() => setMapMode('countries'));
     } else {
@@ -493,7 +514,7 @@ export default function RegionPage() {
         map.getSource('region-zones').setData({ type: 'FeatureCollection', features: [] });
       if (map.getSource('region-zones-inner'))
         map.getSource('region-zones-inner').setData({ type: 'FeatureCollection', features: [] });
-      for (const id of ['region-corridors-ex', 'region-corridors-labels', 'region-corridors-dots']) {
+      for (const id of ['region-corridors-ex', 'region-corridors-committed', 'region-corridors-candidate', 'region-corridors-labels', 'region-corridors-dots']) {
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
       }
       if (map.getSource('region-corridors-src'))
@@ -501,7 +522,7 @@ export default function RegionPage() {
       if (map.getSource('region-centroids-src'))
         map.getSource('region-centroids-src').setData({ type: 'FeatureCollection', features: [] });
     }
-  }, [mapMode, regionId, corridorsOn, selectedSlug]);
+  }, [mapMode, regionId, corrExistOn, corrCommOn, corrCandOn, selectedSlug]);
 
   // ── Layer toggle handlers ─────────────────────────────────────────────────
 
@@ -597,17 +618,22 @@ export default function RegionPage() {
         map.setPaintProperty(`plants-${s}`, 'circle-radius', plantRadiusExpr(scale));
   }, []);
 
-  const toggleCorridors = useCallback(() => {
+  const makeCorridorToggle = (layerIds, setter) => () => {
     const map = mapRef.current;
     if (!map) return;
-    setCorridorsOn(prev => {
+    setter(prev => {
       const next = !prev;
-      for (const id of ['region-corridors-ex', 'region-corridors-labels', 'region-corridors-dots']) {
+      for (const id of layerIds)
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', next ? 'visible' : 'none');
-      }
       return next;
     });
-  }, []);
+  };
+  const toggleCorrExist = useCallback(
+    makeCorridorToggle(['region-corridors-ex', 'region-corridors-labels', 'region-corridors-dots'], setCorrExistOn), []);
+  const toggleCorrComm  = useCallback(
+    makeCorridorToggle(['region-corridors-committed', 'region-corridors-dots'], setCorrCommOn), []);
+  const toggleCorrCand  = useCallback(
+    makeCorridorToggle(['region-corridors-candidate', 'region-corridors-dots'], setCorrCandOn), []);
 
   const toggleLoadCenters = useCallback(() => {
     const map = mapRef.current;
@@ -816,29 +842,31 @@ export default function RegionPage() {
               </select>
             )}
 
-            {/* Corridors toggle — only in zone mode */}
-            {mapMode === 'zones' && (
-              <button
-                onClick={toggleCorridors}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  fontSize: '0.58rem', letterSpacing: '0.5px', fontFamily: 'inherit',
-                  padding: '5px 10px', borderRadius: 6, cursor: 'pointer',
-                  border: `1px solid ${corridorsOn ? 'rgba(74,143,204,0.6)' : t.panelBorder}`,
-                  backgroundColor: corridorsOn ? 'rgba(74,143,204,0.14)' : t.panel,
-                  color: corridorsOn ? t.lbl : t.lblMuted,
-                  fontWeight: corridorsOn ? 700 : 400,
-                  boxShadow: '0 1px 4px rgba(0,0,0,.18)',
-                  transition: 'all 0.15s',
-                }}>
-                <span style={{
-                  width: 8, height: 8, borderRadius: 2,
-                  backgroundColor: corridorsOn ? 'rgba(74,143,204,0.8)' : t.panelBorder,
-                  display: 'inline-block', transition: 'background 0.15s',
-                }} />
-                Corridors
+            {/* Corridor type toggles — only in zone mode */}
+            {mapMode === 'zones' && [
+              { label: 'Existing',   on: corrExistOn, toggle: toggleCorrExist, color: '#1a5fa8', dash: null },
+              { label: 'Committed',  on: corrCommOn,  toggle: toggleCorrComm,  color: '#e07b00', dash: '8 3' },
+              { label: 'Candidate',  on: corrCandOn,  toggle: toggleCorrCand,  color: '#666',    dash: '2 4' },
+            ].map(({ label, on, toggle, color, dash }) => (
+              <button key={label} onClick={toggle} style={{
+                display: 'flex', alignItems: 'center', gap: 5,
+                fontSize: '0.58rem', letterSpacing: '0.5px', fontFamily: 'inherit',
+                padding: '5px 9px', borderRadius: 6, cursor: 'pointer',
+                border: `1px solid ${on ? color + '99' : t.panelBorder}`,
+                backgroundColor: on ? color + '22' : t.panel,
+                color: on ? t.lbl : t.lblMuted,
+                fontWeight: on ? 700 : 400,
+                boxShadow: '0 1px 4px rgba(0,0,0,.18)',
+                transition: 'all 0.15s',
+              }}>
+                <svg width="16" height="4" style={{ flexShrink: 0 }}>
+                  <line x1="0" y1="2" x2="16" y2="2"
+                    stroke={on ? color : t.panelBorder} strokeWidth="2.5"
+                    strokeDasharray={dash || ''} strokeLinecap="round" />
+                </svg>
+                {label}
               </button>
-            )}
+            ))}
           </div>
         )}
       </div>
