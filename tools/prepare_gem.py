@@ -1,24 +1,30 @@
 """
-Process GEM (Global Energy Monitor) tracker files for EPM Explorer.
+Process GEM (Global Energy Monitor) tracker data for EPM Explorer.
 
-Download XLSX/CSV files from:
-  https://globalenergymonitor.org/projects/global-coal-plant-tracker/tracker-data/
-  https://globalenergymonitor.org/projects/global-gas-plant-tracker/tracker-data/
-  https://globalenergymonitor.org/projects/global-wind-power-tracker/tracker-data/
-  https://globalenergymonitor.org/projects/global-solar-power-tracker/tracker-data/
-  https://globalenergymonitor.org/projects/global-hydropower-tracker/tracker-data/
+The Global Integrated Power Tracker (GIPT) is downloaded automatically from:
+  https://github.com/GlobalEnergyMonitor/gipt-dashboard
 
-Place downloaded files in: data-source/gem/
+GIPT covers all fuel types in a single file (coal, gas, wind, solar, hydro,
+nuclear, bioenergy, geothermal). The downloaded file is cached in data-source/gem/
+and reused on subsequent runs unless --force is passed.
+
+Manual fallback: place individual tracker XLSX/CSV in data-source/gem/ —
+used only when GIPT download fails and no cached file exists.
 
 Usage:
     python tools/prepare_gem.py
     python tools/prepare_gem.py --regions asean eu
+    python tools/prepare_gem.py --force        # re-download GIPT even if cached
+    python tools/prepare_gem.py --no-download  # manual files only
 """
 import argparse
 import json
 import sys
 import math
 import re
+import urllib.request
+import urllib.error
+import urllib.parse
 from pathlib import Path
 
 import yaml
@@ -31,6 +37,20 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 GEM_DIR.mkdir(exist_ok=True)
 
 COORD_PREC = 3
+
+GIPT_REPO_API = "https://api.github.com/repos/GlobalEnergyMonitor/gipt-dashboard/contents/"
+GIPT_RAW_BASE = "https://raw.githubusercontent.com/GlobalEnergyMonitor/gipt-dashboard/main/"
+
+GIPT_FUEL_MAP = {
+    "coal":       "coal",
+    "oil/gas":    "gas",
+    "solar":      "solar",
+    "wind":       "wind",
+    "hydropower": "hydro",
+    "nuclear":    "nuclear",
+    "bioenergy":  "biomass",
+    "geothermal": "geothermal",
+}
 
 STATUS_MAP = {
     "operating":          "operating",
@@ -293,22 +313,154 @@ def load_regions(only=None):
     return regions
 
 
+def fetch_gipt_file(force=False):
+    """Download the latest GIPT xlsx from GitHub. Returns local Path or None."""
+    print("  Checking GitHub for latest GIPT release...")
+    try:
+        req = urllib.request.Request(GIPT_REPO_API, headers={"User-Agent": "prepare_gem.py"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            files = json.loads(resp.read())
+    except Exception as e:
+        print(f"  ! GitHub API error: {e}")
+        return None
+
+    gipt_files = [
+        f for f in files
+        if f["name"].startswith("Global Integrated Power") and f["name"].endswith(".xlsx")
+    ]
+    if not gipt_files:
+        print("  ! No GIPT xlsx found in GitHub repo root")
+        return None
+
+    latest = sorted(gipt_files, key=lambda f: f["name"])[-1]
+    name = latest["name"]
+    dest = GEM_DIR / f"_gipt_{name}"
+
+    if dest.exists() and not force:
+        print(f"  Using cached: {dest.name}")
+        return dest
+
+    url = GIPT_RAW_BASE + urllib.parse.quote(name)
+    print(f"  Downloading: {name}")
+    try:
+        urllib.request.urlretrieve(url, dest)
+        size_mb = dest.stat().st_size / 1_000_000
+        print(f"  Downloaded {size_mb:.1f} MB -> {dest.name}")
+        return dest
+    except Exception as e:
+        print(f"  ! Download failed: {e}")
+        if dest.exists():
+            dest.unlink()
+        return None
+
+
+def normalize_gipt_status(raw):
+    """Normalize GIPT status variants like 'cancelled - inferred 4 y' → 'cancelled'."""
+    if not raw or str(raw).strip().lower() in ('nan', 'none', ''):
+        return None
+    s = str(raw).strip().lower()
+    s = re.sub(r'\s*-\s*inferred\s+\d+\s*y.*$', '', s).strip()
+    return s
+
+
+def process_gipt(path):
+    """Process GIPT xlsx — all fuel types in one file via the 'Type' column."""
+    import pandas as pd
+
+    print(f"  Reading sheet 'Power facilities'...")
+    df = pd.read_excel(path, sheet_name='Power facilities', engine='openpyxl')
+    df.replace('not found', pd.NA, inplace=True)
+    print(f"  {len(df):,} rows, columns: {list(df.columns[:10])}")
+
+    lat_col  = find_col(df, 'latitude', 'lat')
+    lon_col  = find_col(df, 'longitude', 'lon', 'long')
+    mw_col   = find_col(df, 'capacity (mw)', 'capacity_mw', 'mw', 'capacity')
+    stat_col = find_col(df, 'status')
+    name_col = find_col(df, 'plant / project name', 'plant name', 'project name', 'name')
+    year_col = find_col(df, 'start year', 'commissioning year', 'year')
+    ctry_col = find_col(df, 'country/area', 'country')
+    type_col = find_col(df, 'type')
+
+    if not lat_col or not lon_col:
+        print(f"  ! No lat/lon columns in GIPT file — aborting")
+        return []
+    if not type_col:
+        print(f"  ! No 'Type' column in GIPT file — aborting")
+        return []
+
+    plants = []
+    skipped_types = set()
+
+    for _, row in df.iterrows():
+        try:
+            lat = float(row[lat_col])
+            lon = float(row[lon_col])
+            if math.isnan(lat) or math.isnan(lon):
+                continue
+        except (ValueError, TypeError):
+            continue
+
+        raw_type = str(row[type_col]).strip().lower() if pd.notna(row[type_col]) else ''
+        fuel = GIPT_FUEL_MAP.get(raw_type)
+        if not fuel:
+            skipped_types.add(raw_type)
+            continue
+
+        normalized = normalize_gipt_status(row[stat_col] if stat_col else None)
+        status = map_status(normalized)
+        if status is None:
+            continue
+
+        mw = None
+        if mw_col:
+            try:
+                v = float(row[mw_col])
+                if not math.isnan(v) and not math.isinf(v) and v > 0:
+                    mw = round(v, 1)
+            except (ValueError, TypeError):
+                pass
+
+        name = ''
+        if name_col and pd.notna(row[name_col]):
+            name = str(row[name_col]).strip()
+
+        country_raw = str(row[ctry_col]).strip() if ctry_col and pd.notna(row[ctry_col]) else None
+        iso = name_to_iso(country_raw) if country_raw else None
+
+        year = None
+        if year_col:
+            try:
+                yv = float(row[year_col])
+                if not math.isnan(yv) and 1900 <= yv <= 2040:
+                    year = int(yv)
+            except (ValueError, TypeError):
+                pass
+
+        plants.append({
+            "lat":     round(lat, COORD_PREC),
+            "lon":     round(lon, COORD_PREC),
+            "name":    name,
+            "fuel":    fuel,
+            "mw":      mw,
+            "country": iso,
+            "status":  status,
+            "year":    year,
+        })
+
+    if skipped_types - {'', 'nan'}:
+        print(f"  Skipped unknown fuel types: {skipped_types - {'', 'nan'}}")
+    return plants
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--regions", nargs="+", metavar="ID",
                         help="Only process these region IDs (e.g. --regions asean eu)")
+    parser.add_argument("--force", action="store_true",
+                        help="Re-download GIPT even if a cached file exists")
+    parser.add_argument("--no-download", action="store_true",
+                        help="Skip auto-download and use manual files in data-source/gem/ only")
     args = parser.parse_args()
-
-    gem_files = (
-        list(GEM_DIR.glob("*.xlsx")) +
-        list(GEM_DIR.glob("*.xls")) +
-        list(GEM_DIR.glob("*.csv"))
-    )
-    if not gem_files:
-        print(f"No GEM files found in {GEM_DIR}")
-        print("Download tracker files from https://globalenergymonitor.org/projects/")
-        print(f"and place them in {GEM_DIR}")
-        sys.exit(1)
 
     try:
         import pandas as pd
@@ -318,20 +470,51 @@ if __name__ == "__main__":
         sys.exit(1)
 
     all_plants = []
-    for path in gem_files:
-        fuel = detect_fuel(path.name)
-        if not fuel:
-            print(f"  ? Skipping {path.name} — can't detect fuel type from filename")
-            continue
-        print(f"\n  Processing {path.name}  →  fuel: {fuel}")
-        plants = process_file(path, fuel)
-        op = sum(1 for p in plants if p["status"] == "operating")
-        co = sum(1 for p in plants if p["status"] == "construction")
-        pl = sum(1 for p in plants if p["status"] == "planned")
-        print(f"    {len(plants):,} total  ({op} operating, {co} construction, {pl} planned)")
-        all_plants.extend(plants)
 
-    print(f"\nTotal across all trackers: {len(all_plants):,} plants")
+    # --- Auto-download GIPT (default) ---
+    if not args.no_download:
+        gipt_path = fetch_gipt_file(force=args.force)
+        if gipt_path:
+            print(f"\nProcessing GIPT: {gipt_path.name}")
+            plants = process_gipt(gipt_path)
+            op = sum(1 for p in plants if p["status"] == "operating")
+            co = sum(1 for p in plants if p["status"] == "construction")
+            pl = sum(1 for p in plants if p["status"] == "planned")
+            print(f"  {len(plants):,} total  ({op} operating, {co} construction, {pl} planned)")
+            all_plants.extend(plants)
+        else:
+            print("  GIPT auto-download failed — falling back to manual files")
+
+    # --- Fallback: manual tracker files ---
+    if not all_plants:
+        manual_files = [
+            f for f in (
+                list(GEM_DIR.glob("*.xlsx")) +
+                list(GEM_DIR.glob("*.xls")) +
+                list(GEM_DIR.glob("*.csv"))
+            )
+            if not f.name.startswith("_gipt_")  # exclude cached GIPT downloads
+        ]
+        if not manual_files:
+            print(f"\nNo data available: GIPT download failed and no manual files in {GEM_DIR}")
+            print("Either check your internet connection or download tracker files from:")
+            print("  https://globalenergymonitor.org/projects/")
+            sys.exit(1)
+
+        for path in manual_files:
+            fuel = detect_fuel(path.name)
+            if not fuel:
+                print(f"  ? Skipping {path.name} — can't detect fuel type from filename")
+                continue
+            print(f"\n  Processing {path.name}  →  fuel: {fuel}")
+            plants = process_file(path, fuel)
+            op = sum(1 for p in plants if p["status"] == "operating")
+            co = sum(1 for p in plants if p["status"] == "construction")
+            pl = sum(1 for p in plants if p["status"] == "planned")
+            print(f"    {len(plants):,} total  ({op} operating, {co} construction, {pl} planned)")
+            all_plants.extend(plants)
+
+    print(f"\nTotal: {len(all_plants):,} plants")
 
     regions = load_regions(only=set(args.regions) if args.regions else None)
     for region in regions:

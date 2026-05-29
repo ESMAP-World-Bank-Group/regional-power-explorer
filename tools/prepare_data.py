@@ -135,7 +135,7 @@ if __name__ == "__main__":
     region_ids = load_region_ids(only=set(args.regions) if args.regions else None)
 
     for rid in region_ids:
-        print(f"\n── {rid} ──")
+        print(f"\n-- {rid} --")
         convert_plants(rid)
         convert_plants(rid, "_gppd")
         convert_plants(rid, "_gem")
