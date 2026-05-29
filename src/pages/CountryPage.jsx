@@ -74,6 +74,7 @@ export default function CountryPage() {
   const [circleScale,  setCircleScale]  = useState(1.0);
   const [plantSource,        setPlantSource]        = useState('osm');
   const [gppdAvailable,      setGppdAvailable]      = useState(null);
+  const [gemAvailable,       setGemAvailable]       = useState(null);
   const [capacity,           setCapacity]           = useState(null);
   const [fleetAge,           setFleetAge]           = useState(null);
   const [tariffs,            setTariffs]            = useState(null);
@@ -108,10 +109,13 @@ export default function CountryPage() {
         const country = region.countries.find(c => c.iso === iso);
         if (country) {
           setInfo({ country, region });
-          // Check GPPD availability for this region
+          // Check GPPD and GEM availability for this region
           fetch(`/data/cache/region_plants_${region.id}_gppd.geojson`, { method: 'HEAD' })
             .then(r => setGppdAvailable(r.ok))
             .catch(() => setGppdAvailable(false));
+          fetch(`/data/cache/region_plants_${region.id}_gem.geojson`, { method: 'HEAD' })
+            .then(r => setGemAvailable(r.ok))
+            .catch(() => setGemAvailable(false));
           return;
         }
       }
@@ -119,7 +123,7 @@ export default function CountryPage() {
     setFuelsOff(new Set()); setKvsOff(new Set());
     setLinesOn(true); setPlantsOn(true); setSubsOn(false); setMinMw(100); setCircleScale(1.0);
     setLcCircleScale(1.0);
-    setPlantSource('osm'); setGppdAvailable(null); setCountryCenter(null);
+    setPlantSource('osm'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(true);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
@@ -690,9 +694,8 @@ export default function CountryPage() {
   useEffect(() => {
     const map = mapRef.current;
     if (!map?.getSource('plants') || !info || !countryFeatureRef.current) return;
-    const filename = plantSource === 'gppd'
-      ? `region_plants_${info.region.id}_gppd.geojson`
-      : `region_plants_${info.region.id}.geojson`;
+    const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
+    const filename = `region_plants_${info.region.id}${suffix}.geojson`;
     fetch(`/data/cache/${filename}`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(data => {
@@ -707,7 +710,8 @@ export default function CountryPage() {
         setPresentFuels(fuels);
       })
       .catch(() => {
-        if (plantSource !== 'osm') { setGppdAvailable(false); setPlantSource('osm'); }
+        if (plantSource === 'gppd') { setGppdAvailable(false); setPlantSource('osm'); }
+        if (plantSource === 'gem')  { setGemAvailable(false);  setPlantSource('osm'); }
       });
   }, [plantSource, info]);
 
@@ -715,9 +719,8 @@ export default function CountryPage() {
   useEffect(() => {
     if (!info) return;
     setCapacity(null);
-    const cf = plantSource === 'gppd'
-      ? `/data/cache/region_capacity_${info.region.id}_gppd.json`
-      : `/data/cache/region_capacity_${info.region.id}.json`;
+    const capSuffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
+    const cf = `/data/cache/region_capacity_${info.region.id}${capSuffix}.json`;
     fetch(cf).then(r => r.json()).then(setCapacity).catch(() => {});
   }, [info, plantSource]);
 
@@ -781,7 +784,7 @@ export default function CountryPage() {
         fuelsOff={fuelsOff} kvsOff={kvsOff}
         linesOn={linesOn} plantsOn={plantsOn} subsOn={subsOn}
         minMw={minMw} circleScale={circleScale}
-        plantSource={plantSource} gppdAvailable={gppdAvailable}
+        plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable}
         presentFuels={presentFuels}
         basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
         onToggleFuel={toggleFuel} onToggleKv={toggleKv}
