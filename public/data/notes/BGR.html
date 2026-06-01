@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bulgaria Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Bulgaria</div>
+    <div class="doc-sub">EU member · ENTSO-E synchronous grid · Southeast Europe's largest electricity exporter</div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">~13 GW</div>
+      <div class="kpi-lbl">Installed capacity</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">~42 TWh</div>
+      <div class="kpi-lbl">Annual generation</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">~33%</div>
+      <div class="kpi-lbl">Nuclear share</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">#1 SE Eur.</div>
+      <div class="kpi-lbl">Largest regional exporter</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- GENERATION MIX -->
+    <h2>Generation Mix (2024 estimates)</h2>
+    <p>Bulgaria's generation profile is anchored by two nuclear units at Kozloduy and a large lignite complex in the Maritza East basin, supplemented by hydro and rapidly growing renewables. The country generates far more power than it consumes domestically, exporting 8–12 TWh per year across five border interconnections.</p>
+
+    <div class="chart-grid-2">
+      <!-- Donut: share of generation by TWh -->
+      <div>
+        <div class="chart-title">Generation by source — TWh</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C8A8F0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Gas</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">42 TWh</div>
+            <div class="chart-center-lbl">total</div>
+          </div>
+        </div>
+        <p class="fig-caption">Sources: EWRC, ESO EAD Annual Report 2024 (estimates)</p>
+      </div>
+
+      <!-- Donut: installed capacity GW -->
+      <div>
+        <div class="chart-title">Installed capacity by source — GW</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C8A8F0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Gas</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~13 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Sources: EWRC, Kozloduy NPP EAD, ESO EAD</p>
+      </div>
+    </div>
+
+    <h3>Generation detail</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>TWh (2024 est.)</th>
+          <th>Share</th>
+          <th>Capacity (MW)</th>
+          <th>Key assets</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nuclear</strong></td>
+          <td>~14</td>
+          <td>33%</td>
+          <td>2 000</td>
+          <td>Kozloduy NPP Units 5 &amp; 6 (2× VVER-1000)</td>
+        </tr>
+        <tr>
+          <td><strong>Coal (lignite)</strong></td>
+          <td>~12</td>
+          <td>28%</td>
+          <td>~3 500</td>
+          <td>AES Galabovo, ContourGlobal Maritsa East 3, TPP Maritsa East 2</td>
+        </tr>
+        <tr>
+          <td><strong>Hydro</strong></td>
+          <td>~5</td>
+          <td>12%</td>
+          <td>~3 300</td>
+          <td>NEK / EVN reservoir &amp; run-of-river assets</td>
+        </tr>
+        <tr>
+          <td><strong>Solar PV</strong></td>
+          <td>~4</td>
+          <td>10%</td>
+          <td>~2 500</td>
+          <td>Distributed utility &amp; rooftop; accelerating</td>
+        </tr>
+        <tr>
+          <td><strong>Wind</strong></td>
+          <td>~4</td>
+          <td>10%</td>
+          <td>~1 700</td>
+          <td>North Bulgaria plains; offshore pipeline emerging</td>
+        </tr>
+        <tr>
+          <td><strong>Gas (CCGT/OCGT)</strong></td>
+          <td>~3</td>
+          <td>7%</td>
+          <td>~900</td>
+          <td>Various IPPs; backup/balancing role</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- MARKET STRUCTURE -->
+    <h2>Market Structure &amp; Regulation</h2>
+    <p>Bulgaria joined the EU in 2007 and operates within the ENTSO-E Continental Europe synchronous area. The power sector is partially liberalised: a wholesale day-ahead market via <strong>IBEX</strong> (Independent Bulgarian Energy Exchange, launched 2016) coexists with regulated tariffs for households and certain industrials.</p>
+
+    <ul>
+      <li><strong>Regulator:</strong> EWRC (Energy and Water Regulatory Commission) — sets network tariffs, approves generation licences, oversees retail.</li>
+      <li><strong>TSO:</strong> ESO EAD (Electroenergien Sistemen Operator) — state-owned; operates transmission, manages balancing, interfaces with ENTSO-E.</li>
+      <li><strong>DSOs:</strong> EVN Bulgaria (Austrian), CEZ (Czech, largely acquired by Électricité de France subsidiaries), and Elektrohold (private).</li>
+      <li><strong>Wholesale market:</strong> IBEX day-ahead and intraday; Bulgaria participates in the EU single day-ahead coupling (SDAC).</li>
+      <li><strong>Vertically integrated legacy:</strong> National Electricity Company (NEK EAD) remains dominant in hydro, wholesale import/export, and as single buyer for regulated consumers.</li>
+    </ul>
+
+    <div class="callout">
+      Bulgaria's electricity prices have historically ranked among the lowest in the EU — a consequence of cheap Maritza lignite and fully amortised nuclear assets at Kozloduy. EU carbon pricing (ETS) is now rapidly eroding this advantage and making all coal plant uneconomical.
+    </div>
+
+    <!-- ACTOR MAP -->
+    <h2>Sector Actor Map</h2>
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif" font-size="11">
+
+        <!-- Background lanes -->
+        <rect x="0" y="0" width="760" height="340" fill="#F4F5F7" rx="8"/>
+
+        <!-- Lane labels -->
+        <text x="12" y="22" font-size="9.5" fill="#8A94A6" font-weight="600" letter-spacing="0.07em" text-transform="uppercase">REGULATION</text>
+        <text x="12" y="92" font-size="9.5" fill="#8A94A6" font-weight="600" letter-spacing="0.07em">TRANSMISSION</text>
+        <text x="12" y="162" font-size="9.5" fill="#8A94A6" font-weight="600" letter-spacing="0.07em">DISTRIBUTION</text>
+        <text x="12" y="232" font-size="9.5" fill="#8A94A6" font-weight="600" letter-spacing="0.07em">GENERATION</text>
+        <text x="12" y="302" font-size="9.5" fill="#8A94A6" font-weight="600" letter-spacing="0.07em">MARKET / END USE</text>
+
+        <!-- Lane separators -->
+        <line x1="0" y1="35" x2="760" y2="35" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="105" x2="760" y2="105" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="175" x2="760" y2="175" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="245" x2="760" y2="245" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="315" x2="760" y2="315" stroke="#E2E6EA" stroke-width="1"/>
+
+        <!-- EWRC box -->
+        <rect x="300" y="42" width="160" height="40" rx="5" fill="#1B3A5C"/>
+        <text x="380" y="58" text-anchor="middle" fill="white" font-weight="600" font-size="12">EWRC</text>
+        <text x="380" y="73" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Energy &amp; Water Regulatory Commission</text>
+
+        <!-- ESO EAD box -->
+        <rect x="300" y="113" width="160" height="40" rx="5" fill="#2E75B6"/>
+        <text x="380" y="129" text-anchor="middle" fill="white" font-weight="600" font-size="12">ESO EAD</text>
+        <text x="380" y="144" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">TSO (state-owned)</text>
+
+        <!-- DSO boxes -->
+        <rect x="170" y="183" width="110" height="38" rx="5" fill="#2E75B6" opacity="0.75"/>
+        <text x="225" y="199" text-anchor="middle" fill="white" font-weight="600" font-size="11">EVN Bulgaria</text>
+        <text x="225" y="213" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="9.5">DSO (Austrian)</text>
+
+        <rect x="295" y="183" width="110" height="38" rx="5" fill="#2E75B6" opacity="0.75"/>
+        <text x="350" y="199" text-anchor="middle" fill="white" font-weight="600" font-size="11">CEZ / EDF</text>
+        <text x="350" y="213" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="9.5">DSO (Czech/French)</text>
+
+        <rect x="420" y="183" width="110" height="38" rx="5" fill="#2E75B6" opacity="0.75"/>
+        <text x="475" y="199" text-anchor="middle" fill="white" font-weight="600" font-size="11">Elektrohold</text>
+        <text x="475" y="213" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="9.5">DSO (private)</text>
+
+        <!-- Generation boxes -->
+        <!-- Nuclear -->
+        <rect x="30" y="252" width="115" height="42" rx="5" fill="#C8A8F0" opacity="0.9"/>
+        <text x="87" y="269" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">Kozloduy NPP EAD</text>
+        <text x="87" y="283" text-anchor="middle" fill="#1B3A5C" font-size="9.5">Nuclear · 2 000 MW</text>
+        <text x="87" y="295" text-anchor="middle" fill="#1B3A5C" font-size="9">(state-owned)</text>
+
+        <!-- Hydro -->
+        <rect x="158" y="252" width="105" height="42" rx="5" fill="#1E9AF5" opacity="0.8"/>
+        <text x="210" y="269" text-anchor="middle" fill="white" font-weight="600" font-size="11">NEK EAD</text>
+        <text x="210" y="283" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">Hydro · ~3 300 MW</text>
+        <text x="210" y="295" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">(state-owned)</text>
+
+        <!-- Coal -->
+        <rect x="276" y="252" width="200" height="42" rx="5" fill="#808890" opacity="0.85"/>
+        <text x="376" y="269" text-anchor="middle" fill="white" font-weight="600" font-size="11">Maritza East Complex</text>
+        <text x="376" y="283" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">AES Galabovo · ContourGlobal · TPP ME2</text>
+        <text x="376" y="295" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">Coal lignite · ~3 500 MW</text>
+
+        <!-- RE / Gas -->
+        <rect x="490" y="252" width="120" height="42" rx="5" fill="#44DAEC" opacity="0.8"/>
+        <text x="550" y="269" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">RE / Gas IPPs</text>
+        <text x="550" y="283" text-anchor="middle" fill="#1B3A5C" font-size="9.5">Wind · Solar · CCGT</text>
+        <text x="550" y="295" text-anchor="middle" fill="#1B3A5C" font-size="9">~5 100 MW combined</text>
+
+        <!-- Export / IBEX -->
+        <rect x="630" y="252" width="110" height="42" rx="5" fill="#1B3A5C" opacity="0.15" stroke="#1B3A5C" stroke-width="1"/>
+        <text x="685" y="269" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">Export</text>
+        <text x="685" y="283" text-anchor="middle" fill="#5A6474" font-size="9.5">GR · RO · TR · RS · MK</text>
+        <text x="685" y="295" text-anchor="middle" fill="#5A6474" font-size="9">8–12 TWh/yr</text>
+
+        <!-- Market / consumers -->
+        <rect x="200" y="322" width="110" height="11" rx="3" fill="#B7770D" opacity="0.7"/>
+        <text x="255" y="331" text-anchor="middle" fill="white" font-size="9" font-weight="600">IBEX Wholesale Market</text>
+
+        <rect x="330" y="322" width="110" height="11" rx="3" fill="#5B3FA0" opacity="0.7"/>
+        <text x="385" y="331" text-anchor="middle" fill="white" font-size="9" font-weight="600">Industrial Consumers</text>
+
+        <rect x="460" y="322" width="110" height="11" rx="3" fill="#0F7B72" opacity="0.7"/>
+        <text x="515" y="331" text-anchor="middle" fill="white" font-size="9" font-weight="600">Residential Consumers</text>
+
+        <!-- Arrows: EWRC → ESO -->
+        <line x1="380" y1="82" x2="380" y2="112" stroke="#1B3A5C" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- ESO → DSOs -->
+        <line x1="340" y1="153" x2="260" y2="183" stroke="#2E75B6" stroke-width="1.2" marker-end="url(#arr2)"/>
+        <line x1="380" y1="153" x2="350" y2="183" stroke="#2E75B6" stroke-width="1.2" marker-end="url(#arr2)"/>
+        <line x1="420" y1="153" x2="460" y2="183" stroke="#2E75B6" stroke-width="1.2" marker-end="url(#arr2)"/>
+        <!-- Generation → ESO (upward inject) -->
+        <line x1="87" y1="252" x2="320" y2="153" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="210" y1="252" x2="350" y2="153" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="376" y1="252" x2="380" y2="153" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="550" y1="252" x2="410" y2="153" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+
+        <!-- Arrowhead markers -->
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#1B3A5C"/>
+          </marker>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#2E75B6"/>
+          </marker>
+          <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#808890"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <p class="fig-caption">Simplified actor map. Solid arrows = regulatory/operational authority; dashed arrows = power injection into grid.</p>
+
+    <!-- NUCLEAR -->
+    <h2>Nuclear — Kozloduy &amp; the Belene Question</h2>
+    <h3>Kozloduy NPP</h3>
+    <p>Kozloduy Nuclear Power Plant, located on the Danube in north-western Bulgaria, is the country's single largest source of electricity. Two operational units — Unit 5 and Unit 6 (each ~1 000 MW VVER-1000, Soviet design) — operate under <strong>Kozloduy NPP EAD</strong>, a state-owned company. Four older VVER-440 units (Units 1–4) were closed by 2006 as a condition of EU accession, removing ~1 760 MW from the system.</p>
+    <ul>
+      <li><strong>Unit 5 licence:</strong> expires 2027 — life extension application under review by nuclear regulator BNRA.</li>
+      <li><strong>Unit 6 licence:</strong> expires 2030 — life extension also being pursued.</li>
+      <li><strong>Unit 7 (new build):</strong> 1 000 MW AP1000 reactor with Westinghouse Electric Company. Framework agreement signed; FID expected circa 2026. Would lock in western technology and cement nuclear at &gt;40% of generation.</li>
+    </ul>
+    <div class="callout">
+      The Unit 7 AP1000 decision is the single most consequential energy investment Bulgaria faces. It represents a geopolitical as much as an economic choice — moving firmly from Russian reactor technology toward a US-designed platform, with implications for Bulgaria–Russia relations and long-term fuel supply chains.
+    </div>
+
+    <h3>Belene NPP — the unresolved question</h3>
+    <p>The Belene site, also on the Danube ~100 km east of Kozloduy, has been intermittently developed since 1981. Two VVER-1000 reactors were ordered from Russia's Atomstroyexport; the contract was cancelled in 2012 after political reversals, triggering a €600 million arbitration award paid by Bulgaria to Atomstroyexport. Pre-fabricated reactor vessel components remain on-site.</p>
+    <ul>
+      <li>Revival proposals resurfaced in 2018–2020 but were blocked by parliament.</li>
+      <li>Approximately €2 billion of sunk costs (site, components, legal costs) make the project politically impossible to formally abandon.</li>
+      <li>Post-2022, any Russian involvement is politically toxic; western investor interest (including a brief EDF/Framatome approach) has not materialised into a viable consortium.</li>
+      <li>Status as of 2026: formally suspended, but kept alive by political factions and energy security arguments around growing demand.</li>
+    </ul>
+
+    <!-- COAL -->
+    <h2>Coal &amp; the Just Transition Challenge</h2>
+    <p>The Maritza East lignite complex in the Stara Zagora region is the backbone of Bulgaria's thermal generation but its future is acutely threatened by EU carbon pricing. The three main plants together represent the largest source of CO₂ emissions in Bulgaria.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Plant</th>
+          <th>Capacity (MW)</th>
+          <th>Owner</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AES Galabovo (Maritza East 1)</strong></td>
+          <td>700</td>
+          <td>AES Corporation (USA)</td>
+          <td>Operating; under ETS pressure</td>
+        </tr>
+        <tr>
+          <td><strong>ContourGlobal Maritsa East 3</strong></td>
+          <td>908</td>
+          <td>ContourGlobal / KKR</td>
+          <td>Operating; power purchase agreements under review</td>
+        </tr>
+        <tr>
+          <td><strong>TPP Maritsa East 2</strong></td>
+          <td>~1 600</td>
+          <td>Maritsa Iztok 2 EAD (state)</td>
+          <td>Oldest; highest emissions intensity; partial mothballing ongoing</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>The complex directly employs approximately <strong>15 000 people</strong> and indirectly sustains much of Stara Zagora's regional economy. Bulgaria has submitted a Just Transition Territorial Plan under the EU Just Transition Mechanism (JTM), but critical questions around retraining, alternative economic activity, and a binding coal phase-out date remain unresolved.</p>
+    <div class="callout">
+      Under EU ETS Phase 4, carbon prices above €60–80/t make Bulgarian lignite uncompetitive against gas and increasingly against renewables. All three Maritza plants are economically marginal or loss-making at current carbon prices. The question is no longer <em>whether</em> they close, but <em>when</em> and at what social cost.
+    </div>
+
+    <!-- RENEWABLES -->
+    <h2>Renewables — Accelerating Growth</h2>
+    <p>Solar PV and wind have grown rapidly since 2020, driven by falling technology costs, EU taxonomy alignment, and the push to reduce coal dependence. Bulgaria's renewable potential is significant: the south has high solar irradiance and the northern Danubian plain offers good wind resources.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">RE capacity growth trajectory (schematic)</div>
+        <canvas id="reGrowthChart" height="190"></canvas>
+        <p class="fig-caption">Indicative trajectory based on NECP targets &amp; recent connection data</p>
+      </div>
+      <div class="stat-note" style="padding-left:10px">
+        <div class="stat-item">
+          <strong>~2 500 MW</strong>
+          Solar PV installed (2024); rooftop segment accelerating post-energy crisis
+        </div>
+        <div class="stat-item">
+          <strong>~1 700 MW</strong>
+          Wind installed; concentrated in northern plains; offshore Black Sea pipeline emerging
+        </div>
+        <div class="stat-item">
+          <strong>~3 300 MW</strong>
+          Hydro (large + small); largely NEK-owned; limited new large hydro potential
+        </div>
+        <div class="stat-item">
+          <strong>NECP target</strong>
+          Bulgaria's National Energy and Climate Plan targets ~27% RES share in gross final energy by 2030 — broadly below EU ambition
+        </div>
+        <div class="stat-item">
+          <strong>Grid integration</strong>
+          ESO EAD reports curtailment emerging in high-solar hours; storage and grid reinforcement investment lagging deployment
+        </div>
+      </div>
+    </div>
+
+    <!-- GAS -->
+    <h2>Gas &amp; Energy Security after 2022</h2>
+    <p>Bulgaria was among the EU member states most dependent on Russian natural gas: before 2022, Gazprom supplied over <strong>90%</strong> of Bulgaria's gas via the TurkStream pipeline and the Ukrainian transit route. In April 2022, Gazprom cut supplies to Bulgaria after the government refused to pay in roubles — making Bulgaria one of the first EU states to be cut off.</p>
+    <ul>
+      <li><strong>Immediate response:</strong> Emergency imports via Greece (Alexandroupolis LNG terminal, IGB interconnector) and reverse flow from Romania.</li>
+      <li><strong>TurkStream continuation:</strong> Despite the cutoff, Bulgaria remains a transit corridor for Russian gas to Serbia and Hungary via the TurkStream/BalkanStream pipeline — a politically awkward dependency that has continued under successive governments.</li>
+      <li><strong>IGB interconnector:</strong> The Interconnector Greece–Bulgaria (3 bcm/yr capacity) opened in October 2022, providing diversification via Azerbaijani gas (TAP/TANAP) and LNG regasification in Greece.</li>
+      <li><strong>Alexandroupolis FSRU:</strong> The floating LNG terminal in northern Greece, operational from 2024, provides an additional regional supply source accessible via IGB.</li>
+      <li><strong>Power sector impact:</strong> Gas-fired generation (~900 MW) plays a balancing and backup role. Gas price volatility in 2021–2023 reduced dispatch and highlighted the value of nuclear baseload and storage hydro.</li>
+    </ul>
+
+    <!-- INTERCONNECTIONS -->
+    <h2>Cross-Border Interconnections</h2>
+    <p>Bulgaria's grid position — between the Balkans, Turkey, and the Romanian hub — gives it strategic trading value. All interconnections operate within the ENTSO-E Continental Europe synchronous area. Exports flow primarily to Greece and Turkey; imports are rare except during hydro drought years.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Neighbour</th>
+          <th>NTC Capacity</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Romania</strong></td>
+          <td>~1 400 MW</td>
+          <td>Active</td>
+          <td>Synchronous ENTSO-E; shared Danube corridor; balancing trade</td>
+        </tr>
+        <tr>
+          <td><strong>Greece</strong></td>
+          <td>~1 400 MW</td>
+          <td>Active</td>
+          <td>Synchronous ENTSO-E; primary export route; IGB gas link parallels power corridor</td>
+        </tr>
+        <tr>
+          <td><strong>Turkey</strong></td>
+          <td>~400 MW</td>
+          <td>Active</td>
+          <td>Synchronous ENTSO-E; significant bilateral trade; geopolitically sensitive</td>
+        </tr>
+        <tr>
+          <td><strong>Serbia</strong></td>
+          <td>~400 MW</td>
+          <td>Active</td>
+          <td>Synchronous ENTSO-E; transit flows to Western Balkans</td>
+        </tr>
+        <tr>
+          <td><strong>North Macedonia</strong></td>
+          <td>~200 MW</td>
+          <td>Active</td>
+          <td>Synchronous ENTSO-E; smaller bilateral; North Macedonia net importer</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="chart-grid-2" style="margin-top:10px">
+      <div>
+        <div class="chart-title">Indicative export direction split (TWh/yr)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#2E75B6"></span>Greece</span>
+          <span><span class="lsq" style="background:#0F7B72"></span>Turkey</span>
+          <span><span class="lsq" style="background:#C8A8F0"></span>Romania</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Serbia / MK</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="exportChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~10 TWh</div>
+            <div class="chart-center-lbl">net exports</div>
+          </div>
+        </div>
+        <p class="fig-caption">Approximate distribution; varies year-to-year with hydro and coal output</p>
+      </div>
+      <div class="stat-note" style="padding-left:12px">
+        <div class="stat-item">
+          <strong>Structural exporter</strong>
+          Nuclear baseload + lignite historically produced large surpluses. Even as coal declines, growing RE will sustain export capacity.
+        </div>
+        <div class="stat-item">
+          <strong>Greece — critical route</strong>
+          Bulgaria is Greece's most important electricity import source for system security during peak demand.
+        </div>
+        <div class="stat-item">
+          <strong>Turkey coupling</strong>
+          Turkey is a synchronous ENTSO-E member (since 2015 test phase; full from 2026); growing trade volumes.
+        </div>
+        <div class="stat-item">
+          <strong>Future capacity</strong>
+          Projects to expand Bulgaria–Greece NTC under TYNDP 2024 Projects of Common Interest (PCIs) are under development.
+        </div>
+      </div>
+    </div>
+
+    <!-- FIVE TAKEAWAYS -->
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div><strong>Kozloduy Unit 7 (AP1000/Westinghouse) is Bulgaria's most consequential energy decision.</strong> It would cement nuclear at &gt;40% of generation, lock in western technology, and mark a definitive break from Soviet-era reactor platforms — with major implications for Bulgaria–Russia relations and regional energy security.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div><strong>The Maritza coal complex is Bulgaria's most politically difficult energy problem.</strong> Cheap lignite power for decades, now a stranded asset and Just Transition liability: ~15 000 direct jobs, an entire regional economy, and no credible managed exit plan. EU carbon pricing is already making the economics untenable.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>Bulgaria is Southeast Europe's structural electricity exporter</strong> — its grid position between Romania, Greece, and Turkey gives it durable trading value. Growing renewables will reinforce rather than diminish this role, provided grid integration investment keeps pace.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div><strong>The 2022 gas crisis exposed Bulgaria's acute vulnerability to Gazprom.</strong> The April 2022 supply cut — the first in the EU — revealed how limited Bulgaria's diversification options were. The IGB interconnector and Alexandroupolis FSRU have improved the picture, but TurkStream transit dependency and political ambiguity persist.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div><strong>The Belene question will not go away.</strong> With ~€2 billion in sunk costs, Russian arbitration compensation already paid, pre-fabricated reactor components on-site, and rising power demand projections, Belene remains a live political issue regardless of official suspension — and will resurface with each election cycle.</div>
+      </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EWRC (Energy and Water Regulatory Commission) — annual regulatory reports and tariff decisions ·
+      ESO EAD — Annual Reports and TYNDP submissions ·
+      Kozloduy NPP EAD — operational data and licensing documents ·
+      IEA — Bulgaria Energy Profile 2024 ·
+      European Commission — Bulgaria National Energy and Climate Plan (NECP) 2023 ·
+      ENTSO-E — Winter Outlook, Summer Outlook, Statistical Factsheet ·
+      World Nuclear Association — Bulgaria country profile ·
+      Ember Climate — European Electricity Review 2024 ·
+      European Parliament Research Service — Just Transition in Bulgaria briefing ·
+      Bruegel — Energy security in Southeast Europe post-2022
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>Bulgaria Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ─── Chart defaults ───────────────────────────────────────────────
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.plugins.tooltip.callbacks = {};
+
+const FUEL = {
+  nuclear: '#C8A8F0',
+  coal:    '#808890',
+  hydro:   '#1E9AF5',
+  solar:   '#FFD700',
+  wind:    '#44DAEC',
+  gas:     '#9A7040',
+  biomass: '#52C860'
+};
+
+const doughnutOpts = {
+  type: 'doughnut',
+  options: {
+    cutout: '62%',
+    animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: {
+        label: ctx => ` ${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed / ctx.dataset.data.reduce((a,b)=>a+b,0)*100)}%)`
+      }
+    }},
+    layout: { padding: 4 }
+  }
+};
+
+// 1. Generation mix TWh
+new Chart(document.getElementById('genMixChart'), {
+  ...doughnutOpts,
+  data: {
+    labels: ['Nuclear', 'Coal', 'Hydro', 'Solar', 'Wind', 'Gas'],
+    datasets: [{
+      data: [14, 12, 5, 4, 4, 3],
+      backgroundColor: [FUEL.nuclear, FUEL.coal, FUEL.hydro, FUEL.solar, FUEL.wind, FUEL.gas],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  }
+});
+
+// 2. Installed capacity GW (×100 for display in MW, labels in GW)
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Nuclear', 'Coal', 'Hydro', 'Solar', 'Wind', 'Gas'],
+    datasets: [{
+      data: [2000, 3500, 3300, 2500, 1700, 900],
+      backgroundColor: [FUEL.nuclear, FUEL.coal, FUEL.hydro, FUEL.solar, FUEL.wind, FUEL.gas],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    cutout: '62%',
+    animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: {
+        label: ctx => ` ${ctx.label}: ${(ctx.parsed/1000).toFixed(1)} GW`
+      }
+    }},
+    layout: { padding: 4 }
+  }
+});
+
+// 3. RE growth trajectory (bar chart)
+new Chart(document.getElementById('reGrowthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023','2024','2025e','2026e','2027e'],
+    datasets: [
+      {
+        label: 'Solar PV (MW)',
+        data: [1040, 1060, 1120, 1250, 1600, 2050, 2500, 3100, 3800, 4600],
+        backgroundColor: FUEL.solar,
+        stack: 'a'
+      },
+      {
+        label: 'Wind (MW)',
+        data: [700, 710, 720, 760, 920, 1350, 1700, 2100, 2600, 3100],
+        backgroundColor: FUEL.wind,
+        stack: 'a'
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12 } },
+      tooltip: { mode: 'index', intersect: false }
+    },
+    scales: {
+      x: { stacked: true, ticks: { font: { size: 10 } }, grid: { display: false } },
+      y: { stacked: true, ticks: { font: { size: 10 }, callback: v => v >= 1000 ? (v/1000).toFixed(1)+'GW' : v }, grid: { color: '#E2E6EA' } }
+    },
+    animation: { duration: 800 }
+  }
+});
+
+// 4. Export direction doughnut
+new Chart(document.getElementById('exportChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Greece', 'Turkey', 'Romania', 'Serbia / N. Macedonia'],
+    datasets: [{
+      data: [4.5, 2.5, 1.5, 1.5],
+      backgroundColor: ['#2E75B6', '#0F7B72', '#C8A8F0', '#FFD700'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    cutout: '62%',
+    animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: {
+        label: ctx => ` ${ctx.label}: ~${ctx.parsed} TWh`
+      }
+    }},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Georgia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-flag{font-size:26px;flex-shrink:0;margin-top:2px}
+  .trade-content{flex:1}
+  .trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}
+  .trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="label">Country Briefing Note · South Caucasus</div>
+    <div class="doc-title">Georgia<br>Electricity Sector</div>
+    <div class="doc-sub">Generation mix · Market structure · Trade flows · Strategic projects &nbsp;|&nbsp; June 2026</div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">~4.5 GW</div>
+      <div class="kpi-lbl">Installed capacity</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">~13 TWh</div>
+      <div class="kpi-lbl">Annual generation</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">~85%</div>
+      <div class="kpi-lbl">Hydro share</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">Transit hub</div>
+      <div class="kpi-lbl">Gas &amp; electricity corridor</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- SECTION 1: OVERVIEW -->
+    <h2>Country &amp; Sector Overview</h2>
+    <p>Georgia sits at the crossroads of the South Caucasus, bordered by Russia to the north, Azerbaijan to the east, Armenia and Turkey to the south, and the Black Sea to the west. Its electricity system is among the most hydro-intensive in the world: rivers descending from the Greater and Lesser Caucasus mountains provide an abundance of cheap renewable energy in summer, but a structural winter shortfall forces the country to rely on gas-fired backup or cross-border imports every year.</p>
+    <p>Georgia signed an EU Association Agreement in 2014 and applied for EU candidate status in 2022, giving European energy-market integration a political rationale beyond economics. The sector was liberalised in 2006 when direct Russian gas supplies were cut; since then, the country has built a market framework anchored by the <strong>Georgian National Energy and Water Supply Regulatory Commission (GNERC)</strong>, the <strong>Georgian State Electrosystem (GSE)</strong> as TSO, and the <strong>Electricity System Commercial Operator (ESCO)</strong> as market and balancing operator.</p>
+
+    <div class="callout">Georgia's Enguri HPP (1 300 MW) — the country's single largest power asset — straddles the administrative boundary with Abkhazia. The physical dam is in Georgian-controlled territory, but the reservoir and parts of the infrastructure extend into the breakaway region, making it uniquely vulnerable to geopolitical disruption.</div>
+
+    <h3>Institutional framework</h3>
+    <ul>
+      <li><strong>GNERC</strong> — independent sector regulator: licences, tariffs, network codes</li>
+      <li><strong>GSE</strong> — state-owned TSO; operates and develops the high-voltage grid</li>
+      <li><strong>ESCO</strong> — electricity market and balancing operator; single buyer for regulated PPAs</li>
+      <li><strong>Energo-Pro Georgia</strong> — dominant distribution company (Czech-owned), serving most of the country outside Tbilisi</li>
+      <li><strong>Telasi</strong> — Tbilisi distribution network; historically Russian-owned, now under restructuring</li>
+    </ul>
+
+    <!-- SECTION 2: GENERATION MIX -->
+    <h2>Generation Mix</h2>
+    <p>Approximately 13 TWh was generated in 2024. Large hydro accounts for roughly 77% of output; small run-of-river hydro adds another 12%. Gas-fired thermal covers the remaining 11–12%, operating almost exclusively in winter months when reservoir levels fall. Wind and solar remain negligible despite significant untapped potential.</p>
+
+    <div class="chart-legend">
+      <span><span class="lsq" style="background:#1E9AF5"></span>Large hydro</span>
+      <span><span class="lsq" style="background:#7CC8FA"></span>Small hydro</span>
+      <span><span class="lsq" style="background:#9A7040"></span>Gas</span>
+      <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+      <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+    </div>
+
+    <div class="chart-grid-2">
+      <!-- Generation share (TWh) -->
+      <div>
+        <div class="chart-title">Generation by fuel, 2024 (TWh)</div>
+        <div class="chart-wrap" style="height:210px">
+          <canvas id="chartGenTWh"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~13 TWh</div>
+            <div class="chart-center-lbl">total output</div>
+          </div>
+        </div>
+        <p class="fig-caption">Large hydro dominates; gas operates seasonally as winter backup only.</p>
+      </div>
+      <!-- Installed capacity (MW) -->
+      <div>
+        <div class="chart-title">Installed capacity by fuel, 2024 (MW)</div>
+        <div class="chart-wrap" style="height:210px">
+          <canvas id="chartCapMW"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~4 720 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Thermal capacity far exceeds its actual utilisation — it provides seasonal reserve margin.</p>
+      </div>
+    </div>
+
+    <h3>Key generating assets</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Plant / cascade</th>
+          <th>Type</th>
+          <th>Capacity (MW)</th>
+          <th>Ownership</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Enguri HPP</strong></td>
+          <td>Large hydro</td>
+          <td>1 300</td>
+          <td>State (Engurhesi)</td>
+          <td>Largest plant; geopolitically sensitive — dam in Abkhazia</td>
+        </tr>
+        <tr>
+          <td><strong>Vardnili cascade</strong></td>
+          <td>Large hydro</td>
+          <td>~220</td>
+          <td>State</td>
+          <td>Located downstream of Enguri; linked operational fate</td>
+        </tr>
+        <tr>
+          <td><strong>Rioni cascade</strong></td>
+          <td>Large hydro</td>
+          <td>~420</td>
+          <td>State / private</td>
+          <td>Multiple plants on Rioni River; Namakhvani site contested</td>
+        </tr>
+        <tr>
+          <td><strong>Khrami HPP I &amp; II</strong></td>
+          <td>Large hydro</td>
+          <td>~113</td>
+          <td>State</td>
+          <td>Reservoir plants; important for winter regulation</td>
+        </tr>
+        <tr>
+          <td><strong>Small HPPs (&gt;300)</strong></td>
+          <td>Small / run-of-river</td>
+          <td>~400 total</td>
+          <td>Mostly private</td>
+          <td>Numerous licenced plants; summer-peaking, minimal storage</td>
+        </tr>
+        <tr>
+          <td><strong>Gardabani CCGT</strong></td>
+          <td>Gas (CCGT)</td>
+          <td>~360</td>
+          <td>Private / state</td>
+          <td>Modern combined-cycle; key winter peaker</td>
+        </tr>
+        <tr>
+          <td><strong>Tbilisi TPP</strong></td>
+          <td>Gas (steam)</td>
+          <td>~350</td>
+          <td>State</td>
+          <td>Older plant; primarily reserve / backup role</td>
+        </tr>
+        <tr>
+          <td><strong>Kartli wind farm</strong></td>
+          <td>Wind</td>
+          <td>20</td>
+          <td>Private</td>
+          <td>Georgia's first commercial wind project; operational since 2016</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECTION 3: SEASONALITY -->
+    <h2>Seasonal Imbalance</h2>
+    <p>Georgia's hydro system peaks in May–August when snowmelt and rainfall maximise river flows. During these months, the country produces a surplus and exports primarily to Turkey. From October through March, reservoir drawdown and low river flows reduce hydro output sharply; demand for heating simultaneously surges, creating a structural winter deficit covered by gas-fired generation and electricity imports from Azerbaijan and Armenia.</p>
+
+    <div class="chart-grid-3">
+      <div>
+        <div class="chart-title">Summer profile (May–Aug)</div>
+        <div class="chart-wrap" style="height:160px">
+          <canvas id="chartSummer"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">Surplus</div>
+            <div class="chart-center-lbl">→ exports</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="chart-title">Shoulder (Sep &amp; Apr)</div>
+        <div class="chart-wrap" style="height:160px">
+          <canvas id="chartShoulder"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">Balanced</div>
+            <div class="chart-center-lbl">low trade</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="chart-title">Winter profile (Oct–Mar)</div>
+        <div class="chart-wrap" style="height:160px">
+          <canvas id="chartWinter"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">Deficit</div>
+            <div class="chart-center-lbl">→ imports</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="fig-caption">Illustrative seasonal generation mix; shares approximate based on historical GNERC data.</p>
+
+    <div class="callout">Gas for winter backup is imported exclusively from Azerbaijan via the South Caucasus Pipeline (SCP) corridor — SOCAR is Georgia's primary gas supplier. No Russian gas has been imported since the 2006 supply disruption. The diversification away from Russian energy was completed nearly two decades ago.</div>
+
+    <!-- SECTION 4: INTERCONNECTIONS -->
+    <h2>Cross-Border Interconnections</h2>
+    <p>Georgia's grid connects to four neighbours, making it both a net exporter in summer and a net importer in winter. The Turkish interconnection is the commercially most important: Turkey purchases Georgian summer hydro under seasonal contracts brokered via ESCO and TEIAŞ.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Approx. capacity</th>
+          <th>Status</th>
+          <th>Typical flow direction</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Russia</strong></td>
+          <td>~200 MW</td>
+          <td>Limited / sensitive</td>
+          <td>Historically bidirectional</td>
+          <td>North Caucasus connection; politically constrained; low utilisation</td>
+        </tr>
+        <tr>
+          <td><strong>Armenia</strong></td>
+          <td>~350 MW</td>
+          <td>Active — bidirectional</td>
+          <td>GEO → ARM summer; ARM → GEO winter</td>
+          <td>Important complementarity: Georgia's summer surplus meets Armenia's hydro-dominant calendar</td>
+        </tr>
+        <tr>
+          <td><strong>Azerbaijan</strong></td>
+          <td>~300 MW</td>
+          <td>Active</td>
+          <td>AZE → GEO (winter imports)</td>
+          <td>Main winter electricity import source; SOCAR gas also supplied separately</td>
+        </tr>
+        <tr>
+          <td><strong>Turkey</strong></td>
+          <td>~700 MW</td>
+          <td>Active</td>
+          <td>GEO → TUR (summer exports)</td>
+          <td>Largest bilateral electricity trade partner by volume; ESCO–TEIAŞ seasonal contracts</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SECTION 5: TRADE RELATIONS -->
+    <h2>Key Trade &amp; Energy Relations</h2>
+
+    <div class="trade-box">
+      <div class="trade-item">
+        <div class="trade-flag">🇦🇿</div>
+        <div class="trade-content">
+          <div class="trade-title">
+            Azerbaijan
+            <span class="trade-badge">Winter imports</span>
+            <span class="trade-badge">Gas supply</span>
+            <span class="trade-badge">Transit route</span>
+          </div>
+          <div class="trade-body">Azerbaijan is Georgia's most critical energy partner. SOCAR supplies natural gas to Georgian power plants and consumers under long-term contracts via the South Caucasus Pipeline. In winter months, Georgia also imports electricity directly from the Azerbaijani grid when domestic hydro output falls short of demand.</div>
+          <div class="trade-body">Georgia's strategic importance to Azerbaijan is reciprocal: every molecule of Azerbaijani gas exported to Turkey and beyond via SCP/TANAP — and every barrel of Caspian oil via BTC — transits Georgian territory. This mutual dependency creates a strong bilateral incentive for grid stability and pipeline security.</div>
+        </div>
+      </div>
+      <div class="trade-divider"></div>
+      <div class="trade-item">
+        <div class="trade-flag">🇹🇷</div>
+        <div class="trade-content">
+          <div class="trade-title">
+            Turkey
+            <span class="trade-badge">Summer exports</span>
+            <span class="trade-badge" style="background:var(--teal)">Largest trade partner</span>
+          </div>
+          <div class="trade-body">Turkey is the largest destination for Georgian electricity exports, absorbing the majority of the summer hydro surplus under seasonal contracts coordinated between ESCO and Turkey's transmission operator TEIAŞ. Export volumes have grown as Georgia's small-HPP fleet expanded over the past decade.</div>
+          <div class="trade-body">Turkey's own growing peak demand and the seasonal complementarity between Georgia's summer peak and Turkey's summer air-conditioning load make this a stable trade relationship. The planned Black Sea Energy cable would eventually add a second high-capacity export corridor directly to the EU, reducing Georgia's reliance on Turkey as a single primary buyer.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: STRATEGIC PROJECTS -->
+    <h2>Strategic Projects &amp; Pipeline</h2>
+
+    <h3>Black Sea Energy (BSE) submarine cable</h3>
+    <p>The most transformative project in Georgian energy planning is the proposed <strong>Black Sea Energy (BSE) submarine HVDC cable</strong> connecting Georgia to Romania across approximately 1 170 km of Black Sea seabed. The cable would carry up to 1 GW of renewable electricity (expandable to 1.2 GW), giving Georgia — and potentially Azerbaijan — direct access to EU power markets for the first time.</p>
+    <ul>
+      <li><strong>EU status:</strong> Designated a Project of Common Interest (PCI); included in EU's Indo-Pacific and Southern Corridor energy diversification strategy</li>
+      <li><strong>Financing:</strong> EIB financing discussions ongoing; significant public funding expected given geopolitical rationale post-2022</li>
+      <li><strong>Target commissioning:</strong> ~2029–2030</li>
+      <li><strong>Strategic rationale:</strong> Would allow Georgia to monetise its large untapped hydro and wind potential at EU market prices, and diversify Azerbaijan's gas export revenues with clean electricity</li>
+    </ul>
+
+    <h3>Namakhvani HPP (~433 MW) — suspended</h3>
+    <p>The Namakhvani cascade on the Rioni River was contracted with Norwegian company Aqua Power (later ENKA) and represented one of the largest greenfield hydro investments in Georgia's post-Soviet history. In 2021, sustained mass protests by local communities, environmental groups, and a cross-political coalition forced the government to suspend the project. The contract was ultimately terminated.</p>
+    <div class="callout">Namakhvani revealed a structural shift: large hydro projects in Georgia now face organised and effective civil society opposition. Future large-scale hydro development will require substantially improved community consultation, environmental assessment, and benefit-sharing mechanisms.</div>
+
+    <h3>Nenskra HPP (~280 MW) — slow development</h3>
+    <p>The Nenskra HPP on the Nenskra River (Upper Svaneti) is backed by IFC and EBRD financing and has been in development since the mid-2010s. Progress has been slow due to technical complexity, resettlement challenges, and environmental concerns. As of 2025 it remains in a pre-construction phase.</p>
+
+    <h3>Wind &amp; solar potential</h3>
+    <p>Georgia's wind resources — particularly in the Kartli uplands and along the Lesser Caucasus — are substantial, but development remains nascent. The 20 MW Kartli wind farm (operational 2016) is the only commercial wind installation; a pipeline of larger projects exists but few have reached financial close. Solar development is similarly early-stage despite Georgia's favourable irradiance in eastern lowlands. The BSE cable project creates a new commercial incentive to develop both resources at scale.</p>
+
+    <!-- SECTION 7: SECTOR ACTORS (SVG MAP) -->
+    <h2>Sector Actor Map</h2>
+    <p>The diagram below illustrates the institutional and commercial relationships between key actors in Georgia's electricity sector, from generation through to end consumers.</p>
+
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 400" width="760" height="400" font-family="DM Sans, sans-serif" font-size="11">
+
+        <!-- Background lanes -->
+        <rect x="0" y="0" width="760" height="400" fill="#F4F5F7" rx="8"/>
+
+        <!-- Lane labels -->
+        <rect x="0" y="0" width="760" height="38" fill="#1B3A5C" rx="8"/>
+        <rect x="0" y="30" width="760" height="8" fill="#1B3A5C"/>
+        <text x="380" y="22" fill="rgba(255,255,255,0.7)" font-size="10.5" text-anchor="middle" font-weight="500" letter-spacing="0.08em" text-transform="uppercase">GEORGIA ELECTRICITY SECTOR — ACTOR MAP</text>
+
+        <!-- GENERATION column -->
+        <text x="90" y="62" fill="#5A6474" font-size="10" text-anchor="middle" font-weight="600" letter-spacing="0.07em">GENERATION</text>
+
+        <!-- Enguri HPP -->
+        <rect x="18" y="72" width="144" height="38" fill="#1E9AF5" rx="5" opacity="0.9"/>
+        <text x="90" y="87" fill="white" text-anchor="middle" font-weight="600" font-size="11">Enguri HPP</text>
+        <text x="90" y="100" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-size="9.5">1 300 MW · State (Engurhesi)</text>
+
+        <!-- Other large hydro -->
+        <rect x="18" y="118" width="144" height="38" fill="#1E9AF5" rx="5" opacity="0.75"/>
+        <text x="90" y="133" fill="white" text-anchor="middle" font-weight="600" font-size="11">Other large hydro</text>
+        <text x="90" y="146" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-size="9.5">Rioni, Khrami, Vardnili</text>
+
+        <!-- Small HPPs -->
+        <rect x="18" y="164" width="144" height="38" fill="#7CC8FA" rx="5" opacity="0.9"/>
+        <text x="90" y="179" fill="#1B3A5C" text-anchor="middle" font-weight="600" font-size="11">Small HPPs (&gt;300)</text>
+        <text x="90" y="192" fill="#1B3A5C" text-anchor="middle" font-size="9.5">~400 MW · Private</text>
+
+        <!-- Gas plants -->
+        <rect x="18" y="210" width="144" height="38" fill="#9A7040" rx="5" opacity="0.9"/>
+        <text x="90" y="225" fill="white" text-anchor="middle" font-weight="600" font-size="11">Gardabani CCGT</text>
+        <text x="90" y="238" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-size="9.5">~360 MW + Tbilisi TPP</text>
+
+        <!-- Kartli Wind -->
+        <rect x="18" y="256" width="144" height="38" fill="#44DAEC" rx="5" opacity="0.85"/>
+        <text x="90" y="271" fill="#1B3A5C" text-anchor="middle" font-weight="600" font-size="11">Kartli Wind Farm</text>
+        <text x="90" y="284" fill="#1B3A5C" text-anchor="middle" font-size="9.5">20 MW · Private</text>
+
+        <!-- MARKET / TSO column -->
+        <text x="310" y="62" fill="#5A6474" font-size="10" text-anchor="middle" font-weight="600" letter-spacing="0.07em">SYSTEM OPERATOR / MARKET</text>
+
+        <!-- GSE -->
+        <rect x="222" y="95" width="176" height="46" fill="#1B3A5C" rx="5"/>
+        <text x="310" y="114" fill="white" text-anchor="middle" font-weight="600" font-size="12">GSE</text>
+        <text x="310" y="129" fill="rgba(255,255,255,0.75)" text-anchor="middle" font-size="9.5">Georgian State Electrosystem (TSO)</text>
+
+        <!-- ESCO -->
+        <rect x="222" y="155" width="176" height="46" fill="#2E75B6" rx="5"/>
+        <text x="310" y="174" fill="white" text-anchor="middle" font-weight="600" font-size="12">ESCO</text>
+        <text x="310" y="189" fill="rgba(255,255,255,0.8)" text-anchor="middle" font-size="9.5">Market &amp; Balancing Operator</text>
+
+        <!-- GNERC -->
+        <rect x="222" y="215" width="176" height="46" fill="#5B3FA0" rx="5"/>
+        <text x="310" y="234" fill="white" text-anchor="middle" font-weight="600" font-size="12">GNERC</text>
+        <text x="310" y="249" fill="rgba(255,255,255,0.8)" text-anchor="middle" font-size="9.5">Sector Regulator</text>
+
+        <!-- DISTRIBUTION column -->
+        <text x="545" y="62" fill="#5A6474" font-size="10" text-anchor="middle" font-weight="600" letter-spacing="0.07em">DISTRIBUTION / END USE</text>
+
+        <!-- Energo-Pro -->
+        <rect x="456" y="90" width="178" height="46" fill="#0F7B72" rx="5"/>
+        <text x="545" y="109" fill="white" text-anchor="middle" font-weight="600" font-size="12">Energo-Pro Georgia</text>
+        <text x="545" y="124" fill="rgba(255,255,255,0.8)" text-anchor="middle" font-size="9.5">Main DSO · Czech-owned</text>
+
+        <!-- Telasi -->
+        <rect x="456" y="148" width="178" height="46" fill="#0F7B72" rx="5" opacity="0.8"/>
+        <text x="545" y="167" fill="white" text-anchor="middle" font-weight="600" font-size="12">Telasi</text>
+        <text x="545" y="182" fill="rgba(255,255,255,0.8)" text-anchor="middle" font-size="9.5">Tbilisi DSO · Restructuring</text>
+
+        <!-- Consumers -->
+        <rect x="456" y="206" width="82" height="40" fill="#B7770D" rx="5" opacity="0.85"/>
+        <text x="497" y="221" fill="white" text-anchor="middle" font-weight="600" font-size="11">Industry</text>
+        <text x="497" y="235" fill="rgba(255,255,255,0.8)" text-anchor="middle" font-size="9">Large users</text>
+
+        <rect x="552" y="206" width="82" height="40" fill="#B7770D" rx="5" opacity="0.7"/>
+        <text x="593" y="221" fill="white" text-anchor="middle" font-weight="600" font-size="11">Households</text>
+        <text x="593" y="235" fill="rgba(255,255,255,0.8)" text-anchor="middle" font-size="9">Residential</text>
+
+        <!-- EXPORTS node -->
+        <rect x="670" y="95" width="76" height="100" fill="#1B3A5C" rx="5" opacity="0.15" stroke="#1B3A5C" stroke-width="1.5"/>
+        <text x="708" y="130" fill="#1B3A5C" text-anchor="middle" font-weight="600" font-size="11">Exports</text>
+        <text x="708" y="145" fill="#5A6474" text-anchor="middle" font-size="9.5">Turkey 🇹🇷</text>
+        <text x="708" y="158" fill="#5A6474" text-anchor="middle" font-size="9.5">Armenia 🇦🇲</text>
+        <text x="708" y="171" fill="#5A6474" text-anchor="middle" font-size="9.5">(summer)</text>
+
+        <!-- IMPORTS node -->
+        <rect x="670" y="210" width="76" height="56" fill="#C0392B" rx="5" opacity="0.1" stroke="#C0392B" stroke-width="1.5"/>
+        <text x="708" y="232" fill="#C0392B" text-anchor="middle" font-weight="600" font-size="11">Imports</text>
+        <text x="708" y="247" fill="#5A6474" text-anchor="middle" font-size="9.5">AZE 🇦🇿 / ARM 🇦🇲</text>
+        <text x="708" y="260" fill="#5A6474" text-anchor="middle" font-size="9.5">(winter)</text>
+
+        <!-- Gas import note -->
+        <rect x="18" y="308" width="144" height="38" fill="#9A7040" rx="5" opacity="0.15" stroke="#9A7040" stroke-width="1.5"/>
+        <text x="90" y="323" fill="#9A7040" text-anchor="middle" font-weight="600" font-size="11">Gas: SOCAR / AZE</text>
+        <text x="90" y="337" fill="#5A6474" text-anchor="middle" font-size="9.5">SCP pipeline · winter fuel</text>
+
+        <!-- ARROWS: Generation → GSE/ESCO -->
+        <line x1="162" y1="111" x2="222" y2="118" stroke="#1B3A5C" stroke-width="1.4" stroke-dasharray="4,3" opacity="0.5"/>
+        <line x1="162" y1="137" x2="222" y2="137" stroke="#1B3A5C" stroke-width="1.4" stroke-dasharray="4,3" opacity="0.4"/>
+        <line x1="162" y1="183" x2="222" y2="178" stroke="#2E75B6" stroke-width="1.3" stroke-dasharray="4,3" opacity="0.4"/>
+        <line x1="162" y1="229" x2="222" y2="178" stroke="#9A7040" stroke-width="1.3" stroke-dasharray="4,3" opacity="0.4"/>
+
+        <!-- GSE / ESCO → Distribution -->
+        <line x1="398" y1="118" x2="456" y2="113" stroke="#1B3A5C" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+        <line x1="398" y1="178" x2="456" y2="171" stroke="#2E75B6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+
+        <!-- DSO → Consumers -->
+        <line x1="545" y1="194" x2="497" y2="206" stroke="#0F7B72" stroke-width="1.3" stroke-dasharray="3,3" opacity="0.55"/>
+        <line x1="545" y1="194" x2="593" y2="206" stroke="#0F7B72" stroke-width="1.3" stroke-dasharray="3,3" opacity="0.55"/>
+
+        <!-- GSE → Exports -->
+        <line x1="634" y1="113" x2="670" y2="130" stroke="#1A7A4A" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.6"/>
+        <!-- GSE → Imports -->
+        <line x1="634" y1="155" x2="670" y2="230" stroke="#C0392B" stroke-width="1.3" stroke-dasharray="4,2" opacity="0.5"/>
+
+        <!-- Gas → Thermal -->
+        <line x1="90" y1="308" x2="90" y2="248" stroke="#9A7040" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.6" marker-end="url(#arr)"/>
+
+        <!-- Arrow marker -->
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#9A7040" opacity="0.6"/>
+          </marker>
+        </defs>
+
+        <!-- GNERC regulatory bracket -->
+        <line x1="310" y1="261" x2="310" y2="290" stroke="#5B3FA0" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.5"/>
+        <line x1="310" y1="290" x2="545" y2="290" stroke="#5B3FA0" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.5"/>
+        <text x="428" y="303" fill="#5B3FA0" text-anchor="middle" font-size="9.5" opacity="0.75">GNERC oversight (tariffs, licences, network codes)</text>
+      </svg>
+    </div>
+
+    <!-- SECTION 8: FIVE TAKEAWAYS -->
+    <h2>Five Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div>Georgia's hydro-dominated system is clean but seasonally fragile — summer surplus masks a structural winter deficit that requires gas backup or imports every year. Until significant storage or dispatchable renewables are added, this asymmetry will persist.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div>The <strong>Black Sea Energy cable</strong> to Romania is the decade's most transformative project: if built, it would give Georgia direct access to EU electricity markets and monetise its renewable potential at scale, fundamentally changing the country's energy economics.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>Enguri HPP's</strong> partial location in Abkhazia is a permanent geopolitical risk — any escalation in the breakaway region threatens Georgia's single largest power asset, which accounts for roughly one-quarter of total national generation capacity.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div>The <strong>Namakhvani controversy</strong> revealed a new political reality: large hydro projects in Georgia now face organised civil society opposition that can halt major investments. Future developers must factor in robust community engagement and benefit-sharing from the outset.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div>Georgia's position as an <strong>energy transit corridor</strong> — for Azerbaijani gas and Caspian oil via BTC/SCP — is a strategic asset, but one that depends on continued political stability across the South Caucasus and the continued viability of Azerbaijan as a major producer and exporter.</div>
+      </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="sources">
+      <strong>Sources &amp; References</strong><br>
+      GNERC (Georgian National Energy and Water Supply Regulatory Commission) Annual Reports · GSE (Georgian State Electrosystem) · IEA Georgia Energy Profile · EBRD Georgia Energy Sector · European Commission Georgia Energy Review · USAID Georgia Energy Programme · Georgian National Statistics Office (Geostat) · European Bank for Reconstruction and Development project documentation (Nenskra HPP) · IFC Georgia energy project files · EU PCI list (Black Sea Energy cable)
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>Georgia Electricity Sector — Briefing Note</span>
+    <span>June 2026 · EPM Regional Power Explorer</span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ---- Shared Chart defaults ----
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.plugins.tooltip.callbacks = {};
+
+const COLORS = {
+  largeHydro: '#1E9AF5',
+  smallHydro: '#7CC8FA',
+  gas:        '#9A7040',
+  wind:       '#44DAEC',
+  solar:      '#FFD700',
+};
+
+function doughnut(id, data, labels, colors) {
+  const ctx = document.getElementById(id).getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: colors,
+        borderWidth: 2,
+        borderColor: '#ffffff',
+        hoverOffset: 4,
+      }]
+    },
+    options: {
+      cutout: '64%',
+      animation: { animateRotate: true, duration: 900 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              return ' ' + ctx.label + ': ' + ctx.formattedValue + '%';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Chart 1: Generation TWh (%)
+doughnut('chartGenTWh',
+  [77, 12, 11],
+  ['Large hydro', 'Small hydro', 'Gas'],
+  [COLORS.largeHydro, COLORS.smallHydro, COLORS.gas]
+);
+
+// Chart 2: Installed capacity MW (approximate %)
+// Large hydro ~3200, small ~400, gas ~1100, wind ~20
+const totalMW = 3200 + 400 + 1100 + 20;
+doughnut('chartCapMW',
+  [
+    Math.round(3200/totalMW*100),
+    Math.round(400/totalMW*100),
+    Math.round(1100/totalMW*100),
+    Math.round(20/totalMW*100)
+  ],
+  ['Large hydro', 'Small hydro', 'Gas', 'Wind'],
+  [COLORS.largeHydro, COLORS.smallHydro, COLORS.gas, COLORS.wind]
+);
+
+// Chart 3: Summer profile (hydro dominates, small exports net)
+doughnut('chartSummer',
+  [70, 18, 3, 9],
+  ['Large hydro', 'Small hydro', 'Gas', 'Exports'],
+  [COLORS.largeHydro, COLORS.smallHydro, COLORS.gas, '#1A7A4A']
+);
+
+// Chart 4: Shoulder season
+doughnut('chartShoulder',
+  [62, 15, 18, 5],
+  ['Large hydro', 'Small hydro', 'Gas', 'Imports'],
+  [COLORS.largeHydro, COLORS.smallHydro, COLORS.gas, '#C0392B']
+);
+
+// Chart 5: Winter profile (gas + imports cover gap)
+doughnut('chartWinter',
+  [42, 8, 30, 20],
+  ['Large hydro', 'Small hydro', 'Gas', 'Imports'],
+  [COLORS.largeHydro, COLORS.smallHydro, COLORS.gas, '#C0392B']
+);
+</script>
+</body>
+</html>
