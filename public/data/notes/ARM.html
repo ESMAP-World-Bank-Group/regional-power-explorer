@@ -288,6 +288,32 @@
 
   /* ── Tooltip override ── */
   .chartjs-tooltip { font-family: 'DM Sans', sans-serif !important; }
+
+  /* ── Trade arrangements box ── */
+  .trade-box {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 14px 0 18px;
+    background: var(--white);
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+  }
+  .trade-item { display: flex; gap: 18px; padding: 20px 22px; }
+  .trade-flag { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .trade-content { flex: 1; }
+  .trade-title {
+    font-size: 14px; font-weight: 600; color: var(--navy);
+    margin-bottom: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .trade-badge {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    background: var(--navy); color: var(--white); padding: 2px 8px; border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+  .trade-badge-grey { background: #8A94A6; }
+  .trade-body { font-size: 13.5px; line-height: 1.7; color: var(--text); margin-bottom: 8px; }
+  .trade-body:last-child { margin-bottom: 0; }
+  .trade-divider { height: 1px; background: var(--border); margin: 0 22px; }
 </style>
 </head>
 <body>
@@ -404,8 +430,27 @@
       <tr><td><strong>Azerbaijan</strong></td><td>Physical infra exists</td><td>Inactive – political conflict</td><td>Sep 2022 strike on Armenia–Iran HV line as precedent.</td></tr>
     </table>
 
-    <h3>2.4 The Armenia–Iran gas-for-electricity barter</h3>
-    <p>Iran supplies ~365 Mm³/year of gas; Armenia delivers 3 kWh per m³ received (~1.1 TWh/year, 88% of total exports). Gas fuels the Yerevan CCGT and Hrazdan Unit 5 whose output is re-exported – a closed circuit. Benefits: implicit gas price below the Russian rate + partial Gazprom hedge. The third 400 kV line will double the exchangeable volume.</p>
+    <h3>2.4 Cross-border electricity trade arrangements</h3>
+    <p>Armenia's cross-border electricity flows are governed by two very different arrangements — one structural and strategic, one seasonal and opportunistic.</p>
+
+    <div class="trade-box">
+      <div class="trade-item">
+        <div class="trade-flag">🇮🇷</div>
+        <div class="trade-content">
+          <div class="trade-title">Iran – gas-for-electricity barter <span class="trade-badge">Structural</span></div>
+          <p class="trade-body">The core of Armenia's export strategy. In place since around 2004 and periodically renewed, the agreement is simple in principle: Iran delivers approximately 365 million m³ of natural gas per year to Armenia, and Armenia returns 3 kWh of electricity for every m³ received — around 1.1 TWh per year, representing 88% of total Armenian electricity exports. No cash changes hands; it is a pure in-kind exchange, managed by HVEN on the Armenian side and TAVANIR on the Iranian side.</p>
+          <p class="trade-body">The implicit gas price embedded in this ratio works out to approximately $165–180 per thousand m³ — roughly 10–15% below what Armenia pays Gazprom for Russian gas, though exact figures are not publicly disclosed and vary with the electricity tariff used for valuation. The gas feeds the Yerevan CCGT and Hrazdan Unit 5, whose output is re-exported back to Iran, forming a closed circuit. The arrangement gives Armenia a meaningful hedge against full dependence on the Russian gas corridor. The third 400 kV interconnection line, once completed, will double the volume capacity to around 1,200 MW.</p>
+        </div>
+      </div>
+      <div class="trade-divider"></div>
+      <div class="trade-item">
+        <div class="trade-flag">🇬🇪</div>
+        <div class="trade-content">
+          <div class="trade-title">Georgia – seasonal bilateral trade <span class="trade-badge trade-badge-grey">Opportunistic</span></div>
+          <p class="trade-body">Flows with Georgia are bidirectional and governed by annual contracts between HVEN and ESCO (Georgia's electricity market operator), rather than a long-term structural agreement. Armenia tends to export in winter, when its gas and nuclear capacity runs above domestic demand, and import Georgian hydropower in summer, when Georgian rivers are in high-flow season. Net annual volumes are modest — around 0.15 TWh — and prices are negotiated bilaterally, broadly in the range of $30–45 per MWh depending on season and system conditions. There is no long-term pricing formula.</p>
+        </div>
+      </div>
+    </div>
 
     <!-- S3 -->
     <h2>3. Sector organisation and actors</h2>
