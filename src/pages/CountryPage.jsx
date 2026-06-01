@@ -93,6 +93,8 @@ export default function CountryPage() {
   const [zonesIndex,         setZonesIndex]         = useState(null);
   const [zoneLabelsOn,       setZoneLabelsOn]       = useState(true);
   const [zoneCorridorsOn,    setZoneCorridorsOn]    = useState(false);
+  const [hasNote,    setHasNote]    = useState(null);
+  const [noteOpen,   setNoteOpen]   = useState(false);
   const mapReadyRef        = useRef(false);
   const countryFeatureRef  = useRef(null);
 
@@ -116,6 +118,9 @@ export default function CountryPage() {
           fetch(`/data/cache/region_plants_${region.id}_gem.geojson`, { method: 'HEAD' })
             .then(r => setGemAvailable(r.ok))
             .catch(() => setGemAvailable(false));
+          fetch(`/data/notes/${iso}.html`, { method: 'HEAD' })
+            .then(r => setHasNote(r.ok))
+            .catch(() => setHasNote(false));
           return;
         }
       }
@@ -125,6 +130,7 @@ export default function CountryPage() {
     setLcCircleScale(1.0);
     setPlantSource('osm'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(true);
+    setHasNote(null); setNoteOpen(false);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
   }, [iso]);
@@ -735,6 +741,14 @@ export default function CountryPage() {
   }, [plantSource, info]);
 
 
+  // ── Briefing note: close on Esc ──────────────────────────────────────────
+  useEffect(() => {
+    if (!noteOpen) return;
+    const onKey = e => { if (e.key === 'Escape') setNoteOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [noteOpen]);
+
   // ── Download handlers ────────────────────────────────────────────────────
 
   const handleDownloadPlants = useCallback((format = 'geojson') => {
@@ -886,6 +900,59 @@ export default function CountryPage() {
         )}
       </div>
 
+      {/* ── Briefing note drawer (covers map area only) ── */}
+      {noteOpen && hasNote && (
+        <>
+          <div
+            onClick={() => setNoteOpen(false)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 998,
+              backgroundColor: 'rgba(0,0,0,0.38)',
+            }}
+          />
+          <div style={{
+            position: 'fixed',
+            top: 46,
+            left: 170,
+            right: 268,
+            bottom: 0,
+            zIndex: 999,
+            backgroundColor: '#fff',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '-4px 0 24px rgba(0,0,0,0.18)',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+              padding: '6px 10px',
+              borderBottom: '1px solid #E2E6EA',
+              backgroundColor: '#F8F9FB',
+              flexShrink: 0,
+            }}>
+              <button
+                onClick={() => setNoteOpen(false)}
+                style={{
+                  background: 'none', border: '1px solid #E2E6EA',
+                  borderRadius: 4, padding: '3px 10px', cursor: 'pointer',
+                  fontSize: '0.65rem', color: '#5A6474', fontFamily: 'inherit',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}
+              >
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                Close (Esc)
+              </button>
+            </div>
+            <iframe
+              src={`/data/notes/${iso}.html`}
+              title={`${country.name} – Sector Briefing Note`}
+              style={{ flex: 1, border: 'none', width: '100%' }}
+            />
+          </div>
+        </>
+      )}
+
       {/* Right panel */}
       <div style={{
         width: 268, height: 'calc(100vh - 46px)', overflowY: 'auto',
@@ -944,6 +1011,33 @@ export default function CountryPage() {
                 </button>
               );
             })}
+            {hasNote && (
+              <button
+                onClick={() => setNoteOpen(o => !o)}
+                title="Open sector briefing note"
+                style={{
+                  flex: 1, fontSize: '0.48rem', letterSpacing: '0.5px',
+                  textTransform: 'uppercase', fontFamily: 'inherit',
+                  padding: '4px 0', borderRadius: '3px 3px 0 0',
+                  cursor: 'pointer',
+                  border: `1px solid ${noteOpen ? t.panelBorder : 'rgba(128,160,192,0.18)'}`,
+                  borderBottom: noteOpen ? `1px solid ${t.panel}` : `1px solid ${t.panelBorder}`,
+                  backgroundColor: noteOpen ? t.panel : 'transparent',
+                  color: noteOpen ? '#2E75B6' : t.lblMuted,
+                  fontWeight: noteOpen ? 700 : 400,
+                  position: 'relative', zIndex: noteOpen ? 2 : 1,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3,
+                }}
+              >
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                Brief
+              </button>
+            )}
           </div>
           <div style={{ height: 1, backgroundColor: t.panelBorder, marginTop: -1, position: 'relative', zIndex: 0 }} />
         </div>
