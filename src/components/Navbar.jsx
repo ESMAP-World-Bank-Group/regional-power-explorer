@@ -3,7 +3,7 @@ import { useTheme } from '../App';
 import { getT, THEME_LIST, THEMES } from '../constants';
 import { useEffect, useState, useMemo } from 'react';
 
-const EPM_DASHBOARD_URL = 'https://epm-dashboard.onrender.com';
+const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
 
 function useBreadcrumb() {
   const location = useLocation();
@@ -151,7 +151,7 @@ export default function Navbar() {
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
             </svg>
-            EPM Suite
+            EPM View
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
                  style={{ opacity: 0.5 }}>
@@ -170,7 +170,7 @@ export default function Navbar() {
               pointerEvents: 'none',
             }}>
               <span style={{ color: t.lbl, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                EPM Suite · Capacity Expansion Results
+                EPM View · Capacity Expansion Results
               </span>
               Scenario comparisons, dispatch analysis, and planning outputs from the EPM model.{' '}
               <span style={{ color: 'rgba(74,143,204,0.8)', fontStyle: 'italic' }}>Coming soon.</span>
