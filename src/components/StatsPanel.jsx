@@ -129,7 +129,7 @@ export default function StatsPanel({ capacity, region, theme, source = 'osm', ta
                 }}>
                   <div style={{
                     width: `${(c.age / maxAge) * 100}%`, height: '100%',
-                    backgroundColor: '#F59F00', opacity: 0.75, borderRadius: 2,
+                    backgroundColor: '#C89420', opacity: 0.75, borderRadius: 2,
                   }} />
                 </div>
               </div>
@@ -157,7 +157,7 @@ export default function StatsPanel({ capacity, region, theme, source = 'osm', ta
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {withAccess.map(c => {
                 const val = access.countries[c.iso].total;
-                const color = val < 30 ? '#F03E3E' : val < 75 ? '#FCC419' : '#40C057';
+                const color = val < 30 ? '#B83838' : val < 75 ? '#D4A820' : '#4A9E6A';
                 return (
                   <div key={c.iso}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>

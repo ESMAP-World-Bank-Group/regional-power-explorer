@@ -30,14 +30,16 @@ function fitBounds(isos, countries) {
   return [[minLon - 0.5, minLat - 0.5], [maxLon + 0.5, maxLat + 0.5]];
 }
 
-/** Build the MapLibre filter for a status layer, respecting fuel visibility and minMw. */
-function makeLayerFilter(status, fuelsOff, minMw) {
+/** Build the MapLibre filter for a status layer, respecting fuel/country visibility and minMw. */
+function makeLayerFilter(status, fuelsOff, minMw, visibleIsos = null) {
   const clauses = [
     ['==', ['get', 'status'], status],
     ['>=', ['get', 'mw'], minMw],
   ];
   if (fuelsOff.size > 0)
     clauses.push(['!', ['in', ['get', 'fuel'], ['literal', [...fuelsOff]]]]);
+  if (visibleIsos !== null)
+    clauses.push(['in', ['get', 'country'], ['literal', visibleIsos]]);
   return ['all', ...clauses];
 }
 
@@ -90,6 +92,9 @@ export default function RegionPage() {
   const [corrCandOn,      setCorrCandOn]      = useState(false);
   const [zoningConfigs,   setZoningConfigs]   = useState([]);
   const [selectedSlug,    setSelectedSlug]    = useState(null);
+  const [countriesOff,    setCountriesOff]    = useState(new Set());
+  const [plantCount,      setPlantCount]      = useState(null);
+  const [corridorCount,   setCorridorCount]   = useState(null);
 
   // Static data
   useEffect(() => {
@@ -114,6 +119,7 @@ export default function RegionPage() {
     setMapMode('countries'); setZonesAvailable(false);
     setCorrExistOn(false); setCorrCommOn(false); setCorrCandOn(false);
     setZoningConfigs([]); setSelectedSlug(null);
+    setCountriesOff(new Set()); setPlantCount(null); setCorridorCount(null);
     fetch(`/data/zones/${regionId}_configs.json`)
       .then(r => r.ok ? r.json() : null)
       .then(cfgs => {
@@ -141,6 +147,43 @@ export default function RegionPage() {
     fetch(`/data/cache/region_age_${regionId}_gppd.json`)
       .then(r => r.ok ? r.json() : null).then(setFleetAge).catch(() => {});
   }, [plantSource, regionId]);
+
+  // Plant count for overview stats
+  useEffect(() => {
+    const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
+    fetch(`/data/cache/region_plants_${regionId}${suffix}.geojson`)
+      .then(r => r.json()).then(d => setPlantCount(d.features.length)).catch(() => {});
+  }, [regionId, plantSource]);
+
+  // Corridor count for overview stats (deduplicated by endpoint pair)
+  useEffect(() => {
+    if (!zoningConfigs.length) return;
+    fetch(`/data/zones/${regionId}_${zoningConfigs[0].slug}_corridors.geojson`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        const seen = new Set();
+        for (const f of data.features) {
+          const c = f.geometry.coordinates;
+          const a = `${c[0][0].toFixed(3)},${c[0][1].toFixed(3)}`;
+          const b = `${c[c.length-1][0].toFixed(3)},${c[c.length-1][1].toFixed(3)}`;
+          seen.add([a,b].sort().join('|'));
+        }
+        setCorridorCount(seen.size);
+      }).catch(() => {});
+  }, [regionId, zoningConfigs]);
+
+  // Country filter — reapply all plant filters when countriesOff changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map?.getLayer('plants-operating') || !region) return;
+    const visibleIsos = countriesOff.size > 0
+      ? region.countries.map(c => c.iso).filter(iso => !countriesOff.has(iso))
+      : null;
+    for (const s of PLANT_STATUSES)
+      if (map.getLayer(`plants-${s}`))
+        map.setFilter(`plants-${s}`, makeLayerFilter(s, fuelsOff, minMw, visibleIsos));
+  }, [countriesOff, fuelsOff, minMw, region]); // eslint-disable-line
 
   // Map initialisation
   useEffect(() => {
@@ -609,6 +652,15 @@ export default function RegionPage() {
         map.setFilter(`plants-${s}`, makeLayerFilter(s, fuelsOff, mw));
   }, [fuelsOff]);
 
+  const toggleCountry = useCallback(iso => {
+    setCountriesOff(prev => { const n = new Set(prev); n.has(iso) ? n.delete(iso) : n.add(iso); return n; });
+  }, []);
+  const selectAllCountries = useCallback(() => setCountriesOff(new Set()), []);
+  const deselectAllCountries = useCallback(() => {
+    if (!region) return;
+    setCountriesOff(new Set(region.countries.map(c => c.iso)));
+  }, [region]);
+
   const handleCircleScale = useCallback(scale => {
     const map = mapRef.current;
     if (!map) return;
@@ -793,6 +845,11 @@ export default function RegionPage() {
         onSourceChange={setPlantSource}
         onDownloadPlants={handleDownloadPlants}
         onDownloadLines={handleDownloadLines}
+        countries={region?.countries}
+        countriesOff={countriesOff}
+        onToggleCountry={toggleCountry}
+        onSelectAllCountries={selectAllCountries}
+        onDeselectAllCountries={deselectAllCountries}
       />
 
       <div style={{ position: 'relative', flex: 1 }}>
@@ -909,7 +966,7 @@ export default function RegionPage() {
           })}
         </div>
 
-        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} />}
+        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} corridorCount={corridorCount} />}
         {activeTab === 'countries' && <StatsPanel    capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} fleetAge={fleetAge} access={access} />}
 
         {/* Export section */}

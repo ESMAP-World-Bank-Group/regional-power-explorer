@@ -19,7 +19,7 @@ function KpiCard({ label, value, accent, t }) {
 }
 
 function accessColor(val) {
-  return val < 30 ? '#F03E3E' : val < 75 ? '#FCC419' : '#40C057';
+  return val < 30 ? '#B83838' : val < 75 ? '#D4A820' : '#4A9E6A';
 }
 
 export default function CountryOverview({ iso, region, capacity, fleetAge, tariffs, access, theme, source = 'osm' }) {
@@ -59,7 +59,7 @@ export default function CountryOverview({ iso, region, capacity, fleetAge, tarif
         <KpiCard
           label="RE Share"
           value={reShare !== null ? `${reShare}%` : '—'}
-          accent="#4DABF7"
+          accent="#3887C4"
           t={t}
         />
         {rank > 0 && (
@@ -132,7 +132,7 @@ export default function CountryOverview({ iso, region, capacity, fleetAge, tarif
                   <div key={label}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
                       <span style={{ fontSize: '0.6rem', color: t.lblRow }}>{label}</span>
-                      <span style={{ fontSize: '0.6rem', fontWeight: 700, color: '#74C0FC' }}>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, color: '#5A9FD4' }}>
                         ${Math.round(val * 1000)} USD/MWh
                       </span>
                     </div>
@@ -140,7 +140,7 @@ export default function CountryOverview({ iso, region, capacity, fleetAge, tarif
                       <div style={{
                         width: `${Math.min(100, (val * 1000 / scale) * 100)}%`,
                         height: '100%',
-                        backgroundColor: label === 'Average' ? '#4DABF7' : '#74C0FC',
+                        backgroundColor: label === 'Average' ? '#3887C4' : '#5A9FD4',
                         opacity: 0.8, borderRadius: 2,
                       }} />
                     </div>

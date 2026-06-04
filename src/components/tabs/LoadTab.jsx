@@ -93,11 +93,11 @@ function TrendChart({ historical, projected, t }) {
       })}
       <text transform={`translate(8, ${pT + iH / 2}) rotate(-90)`}
         textAnchor="middle" fill={t.lblMuted} fontSize={6}>TWh/yr</text>
-      <polyline points={histPts} fill="none" stroke="#4DABF7"
+      <polyline points={histPts} fill="none" stroke="#3887C4"
         strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
       {projPts && (
         <>
-          <polyline points={projPts} fill="none" stroke="#4DABF7"
+          <polyline points={projPts} fill="none" stroke="#3887C4"
             strokeWidth={1.4} strokeDasharray="4,3" strokeLinejoin="round"
             strokeLinecap="round" opacity={0.55} />
           {midProjVal != null && (
@@ -255,13 +255,13 @@ export default function LoadTab({ iso, theme }) {
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
             <div style={{ display: 'flex', gap: 12 }}>
-              {legend('#4DABF7', null,  'Historical (WB WDI)')}
-              {legend('#4DABF7', '4,3', 'Linear extrap.')}
+              {legend('#3887C4', null,  'Historical (WB WDI)')}
+              {legend('#3887C4', '4,3', 'Linear extrap.')}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               {cagr != null && (
                 <div style={{
-                  fontSize: '0.55rem', color: parseFloat(cagr) >= 0 ? '#40C057' : '#F03E3E',
+                  fontSize: '0.55rem', color: parseFloat(cagr) >= 0 ? '#4A9E6A' : '#B83838',
                   fontWeight: 700, letterSpacing: '0.3px',
                 }}>
                   {parseFloat(cagr) >= 0 ? '+' : ''}{cagr}%

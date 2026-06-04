@@ -35,7 +35,7 @@ function KpiCard({ label, value, accent, t }) {
   );
 }
 
-export default function CapacityChart({ capacity, region, theme, source = 'osm', tariffs, access }) {
+export default function CapacityChart({ capacity, region, theme, source = 'osm', tariffs, access, plantCount, corridorCount }) {
   const t = getT(theme);
   const sec = {
     fontSize: '0.5rem', letterSpacing: '2px', fontWeight: 700,
@@ -95,11 +95,13 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
   return (
     <div>
       {/* ── KPI cards ─────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginBottom: 16 }}>
         <KpiCard label="Total Capacity" value={`${(totalMW / 1000).toFixed(1)} GW`} t={t} />
-        <KpiCard label="RE Share"       value={reShare !== null ? `${reShare}%` : '—'} accent="#4DABF7" t={t} />
+        <KpiCard label="RE Share"       value={reShare !== null ? `${reShare}%` : '—'} accent="#3887C4" t={t} />
         <KpiCard label="Countries"      value={region.countries.length} t={t} />
+        {plantCount != null && <KpiCard label="Gen. Units"    value={plantCount} t={t} />}
         <KpiCard label="Fuel Types"     value={fuelsWithData.length} t={t} />
+        {corridorCount != null && <KpiCard label="NTC Corridors" value={corridorCount} t={t} />}
       </div>
 
       {/* ── RE share bar ──────────────────────── */}
@@ -113,10 +115,10 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
             }}>
               <div style={{
                 width: `${reShare}%`, height: '100%',
-                background: 'linear-gradient(90deg, #4DABF7, #40C057)', borderRadius: 3,
+                background: 'linear-gradient(90deg, #1E9AF5, #52C860)', borderRadius: 3,
               }} />
             </div>
-            <span style={{ fontSize: '1rem', fontWeight: 700, color: '#4DABF7', minWidth: 38, textAlign: 'right' }}>
+            <span style={{ fontSize: '1rem', fontWeight: 700, color: '#3887C4', minWidth: 38, textAlign: 'right' }}>
               {reShare}%
             </span>
           </div>
@@ -175,19 +177,19 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
           <span style={sec}>Electricity Tariffs · Residential</span>
           <div style={{
             height: 6, borderRadius: 3,
-            background: 'linear-gradient(90deg, #40C057, #FCC419, #F03E3E)',
+            background: 'linear-gradient(90deg, #52C860, #D4A820, #B83838)',
             marginBottom: 6,
           }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
             <span>
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#40C057' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#4A9E6A' }}>
                 ${Math.round(tMin * 1000)}
               </span>
               <span style={{ fontSize: '0.5rem', color: t.lblMuted, marginLeft: 3 }}>{tMinIso}</span>
             </span>
             <span>
               <span style={{ fontSize: '0.5rem', color: t.lblMuted, marginRight: 3 }}>{tMaxIso}</span>
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#F03E3E' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#B83838' }}>
                 ${Math.round(tMax * 1000)}
               </span>
             </span>
@@ -202,7 +204,7 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
       {aMin !== null && (() => {
         const vals = region.countries.map(c => access.countries?.[c.iso]?.total).filter(v => v != null);
         const avg = Math.round(vals.reduce((s, v) => s + v, 0) / vals.length);
-        const color = avg < 30 ? '#F03E3E' : avg < 75 ? '#FCC419' : '#40C057';
+        const color = avg < 30 ? '#B83838' : avg < 75 ? '#D4A820' : '#4A9E6A';
         return (
           <div style={{ marginBottom: 8 }}>
             <span style={sec}>Electricity Access · Regional Avg</span>
