@@ -12,7 +12,7 @@ export const ThemeCtx = createContext({ theme: 'fog', setTheme: () => {} });
 export const useTheme = () => useContext(ThemeCtx);
 
 export default function App() {
-  const [theme, setTheme] = useState('fog');
+  const [theme, setTheme] = useState('ink');
   const t = getT(theme);
 
   return (
