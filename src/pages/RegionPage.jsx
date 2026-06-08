@@ -43,12 +43,32 @@ function makeLayerFilter(status, fuelsOff, minMw, visibleIsos = null) {
   return ['all', ...clauses];
 }
 
+function lineKm(coords) {
+  let km = 0;
+  for (let i = 1; i < coords.length; i++) {
+    const [lon1, lat1] = coords[i - 1], [lon2, lat2] = coords[i];
+    const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+    km += R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  return km;
+}
+
 function downloadBlob(content, filename, type = 'application/octet-stream') {
   const blob = new Blob([content], { type });
   const url  = URL.createObjectURL(blob);
   const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function Row({ label, value, t }) {
+  return (
+    <div style={{ display:'flex', justifyContent:'space-between', gap:8, marginBottom:3 }}>
+      <span style={{ color: t.lblMuted, flexShrink:0 }}>{label}</span>
+      <span style={{ color: t.lbl, fontWeight:600, textAlign:'right' }}>{value}</span>
+    </div>
+  );
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -81,7 +101,8 @@ export default function RegionPage() {
   const [lcCircleScale,   setLcCircleScale]   = useState(1.0);
   const [minMw,           setMinMw]           = useState(100);
   const [circleScale,     setCircleScale]     = useState(1.0);
-  const [plantSource,     setPlantSource]     = useState('osm');
+  const [plantSource,     setPlantSource]     = useState('gem');
+  const [selFeature,      setSelFeature]      = useState(null);
   const [activeTab,       setActiveTab]       = useState('overview');
   const [basemap,         setBasemap]         = useState('minimal');
   const [satLabels,       setSatLabels]       = useState(false);
@@ -253,6 +274,12 @@ export default function RegionPage() {
           filter: kvFilters[key],
           paint: { 'line-color': colors[theme] ?? colors.fog, 'line-width': width,
             'line-opacity': tv.isDark ? 0.92 : 0.65 } });
+      }
+      // Invisible wide buffer layers for easier line clicking
+      for (const { key } of VOLTAGE_BRACKETS) {
+        map.addLayer({ id: `lines-${key}-hit`, type: 'line', source: 'lines',
+          filter: kvFilters[key],
+          paint: { 'line-color': 'transparent', 'line-width': 12 } });
       }
 
       // Region highlight
@@ -480,6 +507,43 @@ export default function RegionPage() {
       map.on('click', 'region-zones-fill', onZoneClick);
       map.on('mouseenter', 'region-zones-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
       map.on('mouseleave', 'region-zones-fill', () => { map.getCanvas().style.cursor = ''; });
+
+      // ── Feature click → detail panel ──────────────────────────────────────
+      let clickedFeature = false;
+
+      // Lines (click on buffer layers for easier hit)
+      for (const { key, label } of VOLTAGE_BRACKETS) {
+        map.on('mouseenter', `lines-${key}-hit`, () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', `lines-${key}-hit`, () => { map.getCanvas().style.cursor = ''; });
+        map.on('click', `lines-${key}-hit`, e => {
+          clickedFeature = true;
+          const geom = e.features[0].geometry;
+          const coords = geom.type === 'LineString' ? geom.coordinates
+            : geom.coordinates.flat();
+          const km = lineKm(coords);
+          setSelFeature({ type: 'line', props: { v: e.features[0].properties.v, voltageLabel: label }, km });
+        });
+      }
+
+      // Plants — keep hover popup, add click for detail panel
+      for (const status of PLANT_STATUSES) {
+        map.on('click', `plants-${status}`, e => {
+          clickedFeature = true;
+          setSelFeature({ type: 'plant', props: e.features[0].properties });
+        });
+      }
+
+      // Substations — keep hover popup, add click for detail panel
+      map.on('click', 'substations', e => {
+        clickedFeature = true;
+        setSelFeature({ type: 'substation', props: e.features[0].properties });
+      });
+
+      // Map background click → clear selection
+      map.on('click', () => {
+        if (!clickedFeature) setSelFeature(null);
+        clickedFeature = false;
+      });
 
     });
 
@@ -924,6 +988,71 @@ export default function RegionPage() {
                 {label}
               </button>
             ))}
+          </div>
+        )}
+
+        {/* Feature detail card */}
+        {selFeature && (
+          <div style={{
+            position: 'absolute', bottom: 24, left: 16, zIndex: 20,
+            backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+            borderRadius: 8, padding: '10px 14px', minWidth: 180, maxWidth: 260,
+            boxShadow: '0 2px 12px rgba(0,0,0,.22)',
+            fontSize: '0.7rem', color: t.text,
+          }}>
+            <button onClick={() => setSelFeature(null)} style={{
+              position: 'absolute', top: 6, right: 8,
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: t.lblMuted, fontSize: '0.9rem', lineHeight: 1, padding: 0,
+            }}>✕</button>
+
+            {selFeature.type === 'line' && (
+              <>
+                <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
+                  Transmission line
+                </div>
+                <Row label="Voltage" value={selFeature.props.voltageLabel} t={t} />
+                {selFeature.km > 0 && (
+                  <Row label="Length" value={`~${Math.round(selFeature.km)} km`} t={t} />
+                )}
+              </>
+            )}
+
+            {selFeature.type === 'plant' && (() => {
+              const p = selFeature.props;
+              return (
+                <>
+                  <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
+                    {p.name || 'Power plant'}
+                  </div>
+                  <Row label="Fuel" value={
+                    <span style={{ display:'inline-flex', alignItems:'center', gap:4 }}>
+                      <span style={{ width:8, height:8, borderRadius:'50%', flexShrink:0,
+                        backgroundColor: FUEL_COLORS[p.fuel] || '#888' }} />
+                      {p.fuel}
+                    </span>
+                  } t={t} />
+                  {p.mw > 0 && <Row label="Capacity" value={`${p.mw} MW`} t={t} />}
+                  <Row label="Country" value={p.country} t={t} />
+                  {p.status !== 'operating' && (
+                    <Row label="Status" value={p.status} t={t} />
+                  )}
+                </>
+              );
+            })()}
+
+            {selFeature.type === 'substation' && (() => {
+              const p = selFeature.props;
+              return (
+                <>
+                  <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
+                    {p.name || 'Substation'}
+                  </div>
+                  {p.v > 0 && <Row label="Voltage" value={`${Math.round(p.v / 1000)} kV`} t={t} />}
+                  {p.iso && <Row label="Country" value={p.iso} t={t} />}
+                </>
+              );
+            })()}
           </div>
         )}
       </div>
