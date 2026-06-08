@@ -275,12 +275,7 @@ export default function RegionPage() {
           paint: { 'line-color': colors[theme] ?? colors.fog, 'line-width': width,
             'line-opacity': tv.isDark ? 0.92 : 0.65 } });
       }
-      // Invisible wide buffer layers for easier line clicking
-      for (const { key } of VOLTAGE_BRACKETS) {
-        map.addLayer({ id: `lines-${key}-hit`, type: 'line', source: 'lines',
-          filter: kvFilters[key],
-          paint: { 'line-color': 'transparent', 'line-width': 12 } });
-      }
+
 
       // Region highlight
       const hl = tv.highlight;
@@ -509,40 +504,48 @@ export default function RegionPage() {
       map.on('mouseleave', 'region-zones-fill', () => { map.getCanvas().style.cursor = ''; });
 
       // ── Feature click → detail panel ──────────────────────────────────────
-      let clickedFeature = false;
-
-      // Lines (click on buffer layers for easier hit)
-      for (const { key, label } of VOLTAGE_BRACKETS) {
-        map.on('mouseenter', `lines-${key}-hit`, () => { map.getCanvas().style.cursor = 'pointer'; });
-        map.on('mouseleave', `lines-${key}-hit`, () => { map.getCanvas().style.cursor = ''; });
-        map.on('click', `lines-${key}-hit`, e => {
-          clickedFeature = true;
-          const geom = e.features[0].geometry;
-          const coords = geom.type === 'LineString' ? geom.coordinates
-            : geom.coordinates.flat();
-          const km = lineKm(coords);
-          setSelFeature({ type: 'line', props: { v: e.features[0].properties.v, voltageLabel: label }, km });
-        });
-      }
+      const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
 
       // Plants — keep hover popup, add click for detail panel
+      let clickedPoint = false;
       for (const status of PLANT_STATUSES) {
         map.on('click', `plants-${status}`, e => {
-          clickedFeature = true;
+          clickedPoint = true;
           setSelFeature({ type: 'plant', props: e.features[0].properties });
         });
       }
 
       // Substations — keep hover popup, add click for detail panel
       map.on('click', 'substations', e => {
-        clickedFeature = true;
+        clickedPoint = true;
         setSelFeature({ type: 'substation', props: e.features[0].properties });
       });
 
-      // Map background click → clear selection
-      map.on('click', () => {
-        if (!clickedFeature) setSelFeature(null);
-        clickedFeature = false;
+      // General map click: handle lines (queryRenderedFeatures with bbox) + background clear
+      map.on('click', e => {
+        if (clickedPoint) { clickedPoint = false; return; }
+        clickedPoint = false;
+
+        // Query line features within 8px radius of click
+        const { x, y } = e.point;
+        const bbox = [[x - 8, y - 8], [x + 8, y + 8]];
+        const activeLayers = LINE_LAYERS.filter(id => { try { return !!map.getLayer(id); } catch { return false; } });
+        const lineFeats = activeLayers.length ? map.queryRenderedFeatures(bbox, { layers: activeLayers }) : [];
+
+        if (lineFeats.length > 0) {
+          const v = lineFeats[0].properties.v;
+          const bracket = VOLTAGE_BRACKETS.find(b =>
+            b.key === '500' ? v >= 500_000
+            : b.key === '330' ? v >= 330_000 && v < 500_000
+            : b.key === '220' ? v >= 220_000 && v < 330_000
+            : v < 220_000
+          );
+          const geom = lineFeats[0].geometry;
+          const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
+          setSelFeature({ type: 'line', props: { v, voltageLabel: bracket?.label || `${Math.round(v / 1000)} kV` }, km: lineKm(coords) });
+        } else {
+          setSelFeature(null);
+        }
       });
 
     });
