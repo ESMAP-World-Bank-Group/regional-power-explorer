@@ -128,7 +128,7 @@ export default function CountryPage() {
     setFuelsOff(new Set()); setKvsOff(new Set());
     setLinesOn(true); setPlantsOn(true); setSubsOn(false); setMinMw(100); setCircleScale(1.0);
     setLcCircleScale(1.0);
-    setPlantSource('osm'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
+    setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(true);
     setHasNote(null); setNoteOpen(false);
     mapReadyRef.current = false;

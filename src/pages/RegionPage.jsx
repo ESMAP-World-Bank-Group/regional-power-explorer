@@ -135,7 +135,7 @@ export default function RegionPage() {
     setLinesOn(true); setPlantsOn(true); setSubsOn(false);
     setLoadCentersOn(false); setLcMinPop(300_000); setLcCircleScale(1.0);
     setMinMw(100); setCircleScale(1.0);
-    setPlantSource('osm'); setActiveTab('overview');
+    setPlantSource('gem'); setActiveTab('overview');
 
     setMapMode('countries'); setZonesAvailable(false);
     setCorrExistOn(false); setCorrCommOn(false); setCorrCandOn(false);
