@@ -9,6 +9,17 @@ import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 
+function lineKm(coords) {
+  let km = 0;
+  for (let i = 1; i < coords.length; i++) {
+    const [lon1, lat1] = coords[i - 1], [lon2, lat2] = coords[i];
+    const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+    km += R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  return km;
+}
+
 function Row({ label, value, t }) {
   return (
     <div style={{ display:'flex', justifyContent:'space-between', gap:8, marginBottom:3 }}>
@@ -368,9 +379,26 @@ export default function CountryPage() {
         clickedPoint = true;
         setSelFeature({ type: 'substation', props: e.features[0].properties });
       });
-      map.on('click', () => {
-        if (!clickedPoint) setSelFeature(null);
+      const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
+      map.on('click', e => {
+        if (clickedPoint) { clickedPoint = false; return; }
         clickedPoint = false;
+        const { x, y } = e.point;
+        const bbox = [[x - 8, y - 8], [x + 8, y + 8]];
+        const active = LINE_LAYERS.filter(id => { try { return !!map.getLayer(id); } catch { return false; } });
+        const lineFeats = active.length ? map.queryRenderedFeatures(bbox, { layers: active }) : [];
+        if (lineFeats.length > 0) {
+          const v = lineFeats[0].properties.v;
+          const bracket = VOLTAGE_BRACKETS.find(b =>
+            b.key === '500' ? v >= 500_000 : b.key === '330' ? v >= 330_000 && v < 500_000
+            : b.key === '220' ? v >= 220_000 && v < 330_000 : v < 220_000
+          );
+          const geom = lineFeats[0].geometry;
+          const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
+          setSelFeature({ type: 'line', props: { v, voltageLabel: bracket?.label || `${Math.round(v / 1000)} kV` }, km: lineKm(coords) });
+        } else {
+          setSelFeature(null);
+        }
       });
 
       // ── Zone overlay (fill + border + labels + interzone lines) ──────────────
@@ -942,6 +970,14 @@ export default function CountryPage() {
               background: 'none', border: 'none', cursor: 'pointer',
               color: t.lblMuted, fontSize: '0.9rem', lineHeight: 1, padding: 0,
             }}>✕</button>
+
+            {selFeature.type === 'line' && (
+              <>
+                <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>Transmission line</div>
+                <Row label="Voltage" value={selFeature.props.voltageLabel} t={t} />
+                {selFeature.km > 0 && <Row label="Length" value={`~${Math.round(selFeature.km)} km`} t={t} />}
+              </>
+            )}
 
             {selFeature.type === 'plant' && (() => {
               const p = selFeature.props;
