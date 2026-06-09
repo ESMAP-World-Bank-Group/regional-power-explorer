@@ -9,6 +9,15 @@ import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 
+function Row({ label, value, t }) {
+  return (
+    <div style={{ display:'flex', justifyContent:'space-between', gap:8, marginBottom:3 }}>
+      <span style={{ color: t.lblMuted, flexShrink:0 }}>{label}</span>
+      <span style={{ color: t.lbl, fontWeight:600, textAlign:'right' }}>{value}</span>
+    </div>
+  );
+}
+
 function downloadBlob(content, filename, type = 'application/octet-stream') {
   const blob = new Blob([content], { type });
   const url  = URL.createObjectURL(blob);
@@ -73,6 +82,7 @@ export default function CountryPage() {
   const [minMw,        setMinMw]        = useState(100);
   const [circleScale,  setCircleScale]  = useState(1.0);
   const [plantSource,        setPlantSource]        = useState('gem');
+  const [selFeature,         setSelFeature]         = useState(null);
   const [gppdAvailable,      setGppdAvailable]      = useState(null);
   const [gemAvailable,       setGemAvailable]       = useState(null);
   const [capacity,           setCapacity]           = useState(null);
@@ -343,6 +353,25 @@ export default function CountryPage() {
         popup.setLngLat(e.features[0].geometry.coordinates).setHTML(`${name}<span style="opacity:.75">Substation${kv ? ' · ' + kv : ''}</span>`).addTo(map);
       });
       map.on('mouseleave', 'substations', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
+
+      // ── Feature click → detail card ──────────────────────────────────────
+      let clickedPoint = false;
+
+      for (const fuel of Object.keys(FUEL_COLORS)) {
+        map.on('click', `plants-${fuel}`, e => {
+          clickedPoint = true;
+          const p = e.features[0].properties;
+          setSelFeature({ type: 'plant', props: { ...p, fuel } });
+        });
+      }
+      map.on('click', 'substations', e => {
+        clickedPoint = true;
+        setSelFeature({ type: 'substation', props: e.features[0].properties });
+      });
+      map.on('click', () => {
+        if (!clickedPoint) setSelFeature(null);
+        clickedPoint = false;
+      });
 
       // ── Zone overlay (fill + border + labels + interzone lines) ──────────────
       map.addLayer({
@@ -896,6 +925,59 @@ export default function CountryPage() {
                 No zone data — run pipeline
               </p>
             ) : null}
+          </div>
+        )}
+
+        {/* Feature detail card */}
+        {selFeature && (
+          <div style={{
+            position: 'absolute', bottom: 24, left: 16, zIndex: 20,
+            backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+            borderRadius: 8, padding: '10px 14px', minWidth: 180, maxWidth: 260,
+            boxShadow: '0 2px 12px rgba(0,0,0,.22)',
+            fontSize: '0.7rem', color: t.text,
+          }}>
+            <button onClick={() => setSelFeature(null)} style={{
+              position: 'absolute', top: 6, right: 8,
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: t.lblMuted, fontSize: '0.9rem', lineHeight: 1, padding: 0,
+            }}>✕</button>
+
+            {selFeature.type === 'plant' && (() => {
+              const p = selFeature.props;
+              return (
+                <>
+                  <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
+                    {p.name || 'Power plant'}
+                  </div>
+                  <Row label="Fuel" value={
+                    <span style={{ display:'inline-flex', alignItems:'center', gap:4 }}>
+                      <span style={{ width:8, height:8, borderRadius:'50%', flexShrink:0,
+                        backgroundColor: FUEL_COLORS[p.fuel] || '#888' }} />
+                      {p.fuel}
+                    </span>
+                  } t={t} />
+                  {p.mw > 0 && <Row label="Capacity" value={`${p.mw} MW`} t={t} />}
+                  {p.country && <Row label="Country" value={p.country} t={t} />}
+                  {p.status && p.status !== 'operating' && (
+                    <Row label="Status" value={p.status} t={t} />
+                  )}
+                </>
+              );
+            })()}
+
+            {selFeature.type === 'substation' && (() => {
+              const p = selFeature.props;
+              return (
+                <>
+                  <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
+                    {p.name || 'Substation'}
+                  </div>
+                  {p.v > 0 && <Row label="Voltage" value={`${Math.round(p.v / 1000)} kV`} t={t} />}
+                  {p.iso && <Row label="Country" value={p.iso} t={t} />}
+                </>
+              );
+            })()}
           </div>
         )}
       </div>
