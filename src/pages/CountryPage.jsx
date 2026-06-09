@@ -9,6 +9,16 @@ import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 
+function buildPlantFilter(fuel, mw, statusOff) {
+  const clauses = [
+    ['==', ['get', 'fuel'], fuel],
+    ['>=', ['get', 'mw'], mw],
+  ];
+  if (statusOff.size > 0)
+    clauses.push(['!', ['in', ['get', 'status'], ['literal', [...statusOff]]]]);
+  return ['all', ...clauses];
+}
+
 function lineKm(coords) {
   let km = 0;
   for (let i = 1; i < coords.length; i++) {
@@ -86,6 +96,7 @@ export default function CountryPage() {
   const [info,         setInfo]         = useState(null);  // { country, region }
   const [presentFuels, setPresentFuels] = useState(new Set());
   const [fuelsOff,     setFuelsOff]     = useState(new Set());
+  const [statusOff,    setStatusOff]    = useState(new Set());
   const [kvsOff,       setKvsOff]       = useState(new Set());
   const [linesOn,      setLinesOn]      = useState(true);
   const [plantsOn,     setPlantsOn]     = useState(true);
@@ -146,7 +157,7 @@ export default function CountryPage() {
         }
       }
     });
-    setFuelsOff(new Set()); setKvsOff(new Set());
+    setFuelsOff(new Set()); setStatusOff(new Set()); setKvsOff(new Set());
     setLinesOn(true); setPlantsOn(true); setSubsOn(false); setMinMw(100); setCircleScale(1.0);
     setLcCircleScale(1.0);
     setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
@@ -593,6 +604,20 @@ export default function CountryPage() {
     });
   }, []);
 
+  const toggleStatus = useCallback(status => {
+    const map = mapRef.current;
+    if (!map) return;
+    setStatusOff(prev => {
+      const next = new Set(prev);
+      next.has(status) ? next.delete(status) : next.add(status);
+      for (const fuel of Object.keys(FUEL_COLORS)) {
+        if (!map.getLayer(`plants-${fuel}`)) continue;
+        map.setFilter(`plants-${fuel}`, buildPlantFilter(fuel, minMw, next));
+      }
+      return next;
+    });
+  }, [minMw]);
+
   const toggleLoadCenters = useCallback(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -640,13 +665,13 @@ export default function CountryPage() {
     const map = mapRef.current;
     if (!map) return;
     setMinMw(mw);
-    for (const fuel of Object.keys(FUEL_COLORS)) {
-      if (!map.getLayer(`plants-${fuel}`)) continue;
-      map.setFilter(`plants-${fuel}`, ['all',
-        ['==',  ['get', 'fuel'], fuel],
-        ['>=', ['get', 'mw'],   mw],
-      ]);
-    }
+    setStatusOff(prev => {
+      for (const fuel of Object.keys(FUEL_COLORS)) {
+        if (!map.getLayer(`plants-${fuel}`)) continue;
+        map.setFilter(`plants-${fuel}`, buildPlantFilter(fuel, mw, prev));
+      }
+      return prev;
+    });
   }, []);
 
   const handleCircleScale = useCallback(scale => {
@@ -852,13 +877,13 @@ export default function CountryPage() {
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}>
       <LayerPanel
         theme={theme}
-        fuelsOff={fuelsOff} kvsOff={kvsOff}
+        fuelsOff={fuelsOff} statusOff={statusOff} kvsOff={kvsOff}
         linesOn={linesOn} plantsOn={plantsOn} subsOn={subsOn}
         minMw={minMw} circleScale={circleScale}
         plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable}
         presentFuels={presentFuels}
         basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
-        onToggleFuel={toggleFuel} onToggleKv={toggleKv}
+        onToggleFuel={toggleFuel} onToggleStatus={toggleStatus} onToggleKv={toggleKv}
         onToggleLines={toggleLines} onTogglePlants={togglePlants}
         onToggleSubs={toggleSubs}
         loadCentersOn={loadCentersOn} lcMinPop={lcMinPop} lcCircleScale={lcCircleScale}
