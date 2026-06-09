@@ -72,7 +72,7 @@ export default function CountryPage() {
   const [subsOn,       setSubsOn]       = useState(false);
   const [minMw,        setMinMw]        = useState(100);
   const [circleScale,  setCircleScale]  = useState(1.0);
-  const [plantSource,        setPlantSource]        = useState('osm');
+  const [plantSource,        setPlantSource]        = useState('gem');
   const [gppdAvailable,      setGppdAvailable]      = useState(null);
   const [gemAvailable,       setGemAvailable]       = useState(null);
   const [capacity,           setCapacity]           = useState(null);
