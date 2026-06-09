@@ -8,6 +8,7 @@ import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
+import SupplyTab from '../components/tabs/SupplyTab';
 
 function buildPlantFilter(fuel, mw, statusOff) {
   const clauses = [
@@ -115,6 +116,10 @@ export default function CountryPage() {
   const [filteredLinesData,  setFilteredLinesData]  = useState(null);
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [activeTab,          setActiveTab]          = useState('overview');
+  const [panelWidth,         setPanelWidth]         = useState(268);
+  const isDrRef   = useRef(false);
+  const drStartX  = useRef(0);
+  const drStartW  = useRef(0);
   const [basemap,            setBasemap]            = useState('minimal');
   const [satLabels,          setSatLabels]          = useState(false);
   const [loadCentersOn,      setLoadCentersOn]      = useState(true);
@@ -874,7 +879,11 @@ export default function CountryPage() {
   const { country, region } = info;
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}>
+    <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseUp={() => { isDrRef.current = false; }}
+      onMouseLeave={() => { isDrRef.current = false; }}
+    >
       <LayerPanel
         theme={theme}
         fuelsOff={fuelsOff} statusOff={statusOff} kvsOff={kvsOff}
@@ -1096,9 +1105,13 @@ export default function CountryPage() {
         </>
       )}
 
+      {/* Drag handle */}
+      <div style={{ width: 5, flexShrink: 0, cursor: 'col-resize', backgroundColor: 'transparent' }}
+        onMouseDown={e => { isDrRef.current = true; drStartX.current = e.clientX; drStartW.current = panelWidth; e.preventDefault(); }} />
+
       {/* Right panel */}
       <div style={{
-        width: 268, height: 'calc(100vh - 46px)', overflowY: 'auto',
+        width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         backgroundColor: t.panel,
         borderLeft: `1px solid ${t.panelBorder}`,
         flexShrink: 0, display: 'flex', flexDirection: 'column',
@@ -1132,6 +1145,7 @@ export default function CountryPage() {
           <div style={{ display: 'flex', gap: 3, marginBottom: 0 }}>
             {[
               { id: 'overview', label: 'Overview' },
+              { id: 'supply',   label: 'Supply' },
               { id: 'zoning',   label: 'Zones' },
               { id: 're',       label: 'RE' },
               { id: 'load',     label: 'Load' },
@@ -1233,6 +1247,10 @@ export default function CountryPage() {
                 </p>
               </div>
             </>
+          )}
+
+          {activeTab === 'supply' && (
+            <SupplyTab iso={iso} theme={theme} />
           )}
 
           {activeTab === 're' && (

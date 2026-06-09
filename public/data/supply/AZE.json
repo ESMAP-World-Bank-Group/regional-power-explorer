@@ -1,0 +1,33 @@
+{
+  "country": "Azerbaijan",
+  "generation": {
+    "source": "SSC Azerbaijan · Table 5.4 — State Statistical Committee",
+    "unit": "GWh",
+    "note": "Gas CCGT = Azerenerji public plants. Gas industrial = SOCAR self-gen (counted in SSC but not injected into public grid).",
+    "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    "fuels": {
+      "Gas CCGT (public)":          [20905,20699,20445,21243,22290,22471,24309,25137,25238,22683],
+      "Gas (industrial auto-prod)": [1955,2062,1900,1934,1873,1955,1962,1957,1946,1881],
+      "Hydro":                      [1638,1959,1746,1768,1565,1070,1277,1596,1763,3008],
+      "Solar":                      [5,35,37,39,44,47,55,61,81,556],
+      "Wind":                       [5,23,22,83,105,96,91,83,55,51],
+      "Waste/Other":                [182,175,170,162,196,201,193,205,223,233]
+    },
+    "demand": [17619,17618,17085,17812,18666,19019,20386,20259,20158,21392]
+  },
+  "capacity": {
+    "source": "SSC Azerbaijan · Table 5.3 — State Statistical Committee",
+    "unit": "MW",
+    "note": "Gas CHP+industrial estimated stable ~1,200 MW. Retired Soviet-era ST units (~610–2,200 MW) excluded.",
+    "years": [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    "fuels": {
+      "Gas CCGT (public)":       [3461,3461,3461,3461,3461,3461,3461,3461,3461,3461],
+      "Gas CHP+industrial (est.)":[1200,1200,1200,1200,1200,1200,1200,1200,1200,1200],
+      "Hydro":                   [1103,1105,1106,1131,1145,1149,1157,1165,1209,1062],
+      "Solar":                   [5,25,28,35,35,35,48,51,266,258],
+      "Wind":                    [8,16,16,66,66,66,66,64,64,64],
+      "Waste/Other":             [38,38,43,45,45,45,45,45,45,33]
+    },
+    "peak_demand": [4812,4702,4540,4691,4848,4869,5172,5135,5153,5333]
+  }
+}
