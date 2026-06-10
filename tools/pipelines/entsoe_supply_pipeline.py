@@ -1,14 +1,14 @@
 """
-ENTSO-E supply pipeline.
+ENTSO-E supply + trade pipeline.
 
-Generates public/data/supply/{ISO3}.json for all ENTSO-E member countries.
+Generates public/data/supply/{ISO3}.json and public/data/trade/{ISO3}.json
+for all ENTSO-E member countries.
 
 Data sources:
   Generation (GWh): A75 — Actual Generation per Production Type
-                    Queried year-by-year, resampled from hourly/15-min to annual.
   Capacity   (MW):  A68 — Installed Generation Capacity Aggregated
-                    Annual snapshot, single query per country.
-  Demand     (GWh): A65 — Actual Total Load, resampled to annual.
+  Demand     (GWh): A65 — Actual Total Load
+  Trade      (GWh): A11 — Cross-Border Physical Flows (exports + imports by partner)
 
 Token: env var API_TOKEN_ENTSOE, or [api_tokens] entsoe key in:
   1. {repo}/config/api_tokens.ini
@@ -17,13 +17,16 @@ Token: env var API_TOKEN_ENTSOE, or [api_tokens] entsoe key in:
 Raw cache: data-source/raw/ENTSOE/*.csv  (gitignored — regenerated from API)
 
 Usage:
-  # All countries (slow first run ~30-60 min, instant thereafter):
+  # All countries — supply + trade:
   python tools/pipelines/entsoe_supply_pipeline.py
 
-  # Specific countries (ISO2 codes):
+  # Specific countries:
   python tools/pipelines/entsoe_supply_pipeline.py BG RO GR
 
-  # Force re-download even if cache exists:
+  # Supply only (skip trade):
+  python tools/pipelines/entsoe_supply_pipeline.py --no-trade
+
+  # Force re-download:
   python tools/pipelines/entsoe_supply_pipeline.py --refresh BG RO
 """
 import json
@@ -36,9 +39,10 @@ from pathlib import Path
 import pandas as pd
 from entsoe import EntsoePandasClient
 
-ROOT = Path(__file__).resolve().parents[2]
-RAW  = ROOT / 'data-source' / 'raw' / 'ENTSOE'
-OUT  = ROOT / 'public' / 'data' / 'supply'
+ROOT      = Path(__file__).resolve().parents[2]
+RAW       = ROOT / 'data-source' / 'raw' / 'ENTSOE'
+OUT       = ROOT / 'public' / 'data' / 'supply'
+OUT_TRADE = ROOT / 'public' / 'data' / 'trade'
 
 YEARS = list(range(2015, 2025))
 TZ    = 'Europe/Brussels'
@@ -281,9 +285,143 @@ def _annual_demand_gwh(client, iso2, year, refresh):
     return round(float(gwh.iloc[0]), 1)
 
 
+# ── Partner name normalisation ────────────────────────────────────────────────
+# Maps ENTSO-E area codes / zone names to display names.
+AREA_TO_NAME = {
+    'AL': 'Albania',      'AT': 'Austria',      'BA': 'Bosnia and Herzegovina',
+    'BE': 'Belgium',      'BG': 'Bulgaria',      'CH': 'Switzerland',
+    'CY': 'Cyprus',       'CZ': 'Czech Republic','DE': 'Germany',
+    'DE_LU': 'Germany',   'DK': 'Denmark',       'DK_1': 'Denmark',
+    'DK_2': 'Denmark',    'EE': 'Estonia',       'ES': 'Spain',
+    'FI': 'Finland',      'FR': 'France',        'GB': 'United Kingdom',
+    'GR': 'Greece',       'HR': 'Croatia',       'HU': 'Hungary',
+    'IE': 'Ireland',      'IT': 'Italy',         'IT_NORD': 'Italy',
+    'IT_CNORD': 'Italy',  'IT_SUD': 'Italy',     'IT_CSUD': 'Italy',
+    'IT_SIC': 'Italy',    'IT_SAR': 'Italy',     'LT': 'Lithuania',
+    'LU': 'Luxembourg',   'LV': 'Latvia',        'ME': 'Montenegro',
+    'MK': 'North Macedonia', 'MT': 'Malta',      'NL': 'Netherlands',
+    'NO': 'Norway',       'NO_1': 'Norway',      'NO_2': 'Norway',
+    'NO_3': 'Norway',     'NO_4': 'Norway',      'NO_5': 'Norway',
+    'PL': 'Poland',       'PT': 'Portugal',      'RO': 'Romania',
+    'RS': 'Serbia',       'SE': 'Sweden',        'SE_1': 'Sweden',
+    'SE_2': 'Sweden',     'SE_3': 'Sweden',      'SE_4': 'Sweden',
+    'SI': 'Slovenia',     'SK': 'Slovakia',      'TR': 'Turkiye',
+    'UA': 'Ukraine',      'UA_BEI': 'Ukraine',   'MD': 'Moldova',
+    'AM': 'Armenia',      'AZ': 'Azerbaijan',    'GE': 'Georgia',
+    'BY': 'Belarus',      'RU': 'Russia',        'RU_KGD': 'Russia',
+    'MA': 'Morocco',      'DZ': 'Algeria',       'TN': 'Tunisia',
+    'LY': 'Libya',        'XK': 'Kosovo',
+}
+
+
+def _norm_partner(raw):
+    """Normalise an ENTSO-E area code/name to a display name."""
+    s = str(raw).strip()
+    # Direct lookup (ISO2 or zone code)
+    if s in AREA_TO_NAME:
+        return AREA_TO_NAME[s]
+    # Some entsoe-py versions return full country names already
+    return s
+
+
+def _drop_sum_cols(df):
+    """Remove 'sum' aggregate columns added by entsoe-py."""
+    bad = [c for c in df.columns if str(c).strip().lower() == 'sum']
+    return df.drop(columns=bad) if bad else df
+
+
+# ── Cross-border trade (GWh) ──────────────────────────────────────────────────
+
+def _fetch_xborder_year(client, iso2, year, direction, refresh):
+    """Fetch physical cross-border flows for one country/year.
+    direction: 'exp' (outgoing) or 'imp' (incoming).
+    """
+    cache = RAW / f'xbor_{direction}_{iso2}_{year}.csv'
+    if cache.exists() and not refresh:
+        df = pd.read_csv(cache, index_col=0, parse_dates=True)
+        return _drop_sum_cols(df)
+
+    start      = pd.Timestamp(f'{year}-01-01', tz=TZ)
+    end        = pd.Timestamp(f'{year+1}-01-01', tz=TZ)
+    code       = AREA_OVERRIDES.get(iso2, iso2)
+    export_dir = (direction == 'exp')
+    df = client.query_physical_crossborder_allborders(
+        code, start=start, end=end, export=export_dir
+    )
+    if not isinstance(df, pd.DataFrame):
+        df = pd.DataFrame(df)
+    df = _drop_sum_cols(df)
+    RAW.mkdir(parents=True, exist_ok=True)
+    df.to_csv(cache)
+    return df
+
+
+def _annual_xborder_gwh(client, iso2, year, direction, refresh):
+    """Return {partner_display_name: GWh} for one country/year/direction."""
+    df = _fetch_xborder_year(client, iso2, year, direction, refresh)
+    if df is None or df.empty or len(df) < 2:
+        return {}
+    gwh = _to_gwh(df.clip(lower=0))
+    result = {}
+    for col, val in gwh.items():
+        if val <= 0:
+            continue
+        name = _norm_partner(col)
+        result[name] = round(result.get(name, 0.0) + float(val), 1)
+    return result
+
+
+def _build_trade(client, iso2, iso3, name, refresh):
+    """Build and write trade/{ISO3}.json for one ENTSO-E country."""
+    exp_by_year: dict[int, dict] = {}
+    imp_by_year: dict[int, dict] = {}
+
+    for year in YEARS:
+        for direction, store in [('exp', exp_by_year), ('imp', imp_by_year)]:
+            try:
+                vals = _annual_xborder_gwh(client, iso2, year, direction, refresh)
+                if vals:
+                    store[year] = vals
+            except Exception as exc:
+                print(f'  trade {direction} {year}: SKIP ({exc})')
+            time.sleep(0.4)
+
+    years = sorted(set(exp_by_year) | set(imp_by_year))
+    if not years:
+        print(f'  trade: no data')
+        return
+
+    def _partner_series(by_year, years):
+        """Build {partner: [val_per_year]} dict, ordered by total descending."""
+        totals: dict[str, float] = {}
+        for d in by_year.values():
+            for p, v in d.items():
+                totals[p] = totals.get(p, 0.0) + v
+        partners = sorted(totals, key=lambda p: -totals[p])
+        return {p: [round(by_year.get(y, {}).get(p, 0.0), 1) for y in years]
+                for p in partners}
+
+    trade = {
+        'country': name,
+        'unit':    'GWh',
+        'source':  'ENTSO-E Transparency Platform — Cross-Border Physical Flows (A11)',
+        'years':   years,
+        'exports': _partner_series(exp_by_year, years),
+        'imports': _partner_series(imp_by_year, years),
+    }
+
+    OUT_TRADE.mkdir(parents=True, exist_ok=True)
+    out_path = OUT_TRADE / f'{iso3}.json'
+    with open(out_path, 'w', encoding='utf-8') as fh:
+        json.dump(trade, fh, indent=2, ensure_ascii=False)
+    exp_partners = len(trade['exports'])
+    imp_partners = len(trade['imports'])
+    print(f'  trade -> {out_path}  ({exp_partners} exp partners, {imp_partners} imp partners)')
+
+
 # ── Build one country ─────────────────────────────────────────────────────────
 
-def _build_country(client, iso2, iso3, name, refresh):
+def _build_country(client, iso2, iso3, name, refresh, with_trade=True):
     print(f'\n[{iso2}] {name}')
 
     # ── Generation ──
@@ -370,17 +508,21 @@ def _build_country(client, iso2, iso3, name, refresh):
     out_path = OUT / f'{iso3}.json'
     with open(out_path, 'w', encoding='utf-8') as fh:
         json.dump(supply, fh, indent=2, ensure_ascii=False)
-    print(f'  -> {out_path}')
+    print(f'  supply -> {out_path}')
+
+    if with_trade:
+        _build_trade(client, iso2, iso3, name, refresh)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
-def run(iso2_filter=None, refresh=False):
-    """Generate supply JSONs for ENTSO-E countries.
+def run(iso2_filter=None, refresh=False, with_trade=True):
+    """Generate supply + trade JSONs for ENTSO-E countries.
 
     Args:
         iso2_filter: list of ISO2 codes to process (None = all)
         refresh:     re-download even if cache exists
+        with_trade:  also generate trade/{ISO3}.json (default True)
     """
     RAW.mkdir(parents=True, exist_ok=True)
     token  = _load_token()
@@ -390,16 +532,17 @@ def run(iso2_filter=None, refresh=False):
         k: v for k, v in COUNTRIES.items()
         if iso2_filter is None or k.upper() in {c.upper() for c in iso2_filter}
     }
-    print(f'Processing {len(targets)} countries  (refresh={refresh})')
+    print(f'Processing {len(targets)} countries  (refresh={refresh}, trade={with_trade})')
 
     for iso2, (iso3, name) in targets.items():
         try:
-            _build_country(client, iso2, iso3, name, refresh)
+            _build_country(client, iso2, iso3, name, refresh, with_trade=with_trade)
         except Exception as exc:
             print(f'[{iso2}] FAILED: {exc}')
 
 
 if __name__ == '__main__':
-    args = [a for a in sys.argv[1:] if not a.startswith('-')]
-    refresh = '--refresh' in sys.argv
-    run(iso2_filter=args or None, refresh=refresh)
+    args      = [a for a in sys.argv[1:] if not a.startswith('-')]
+    refresh   = '--refresh'  in sys.argv
+    no_trade  = '--no-trade' in sys.argv
+    run(iso2_filter=args or None, refresh=refresh, with_trade=not no_trade)
