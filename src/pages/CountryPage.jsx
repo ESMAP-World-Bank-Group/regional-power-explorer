@@ -115,6 +115,7 @@ export default function CountryPage() {
   const [filteredPlantsData, setFilteredPlantsData] = useState(null);
   const [filteredLinesData,  setFilteredLinesData]  = useState(null);
   const [countryCenter,      setCountryCenter]      = useState(null);
+  const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
   const [panelWidth,         setPanelWidth]         = useState(268);
   const isDrRef   = useRef(false);
@@ -167,7 +168,7 @@ export default function CountryPage() {
     setLcCircleScale(1.0);
     setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(true);
-    setHasNote(null); setNoteOpen(false);
+    setHasNote(null); setNoteOpen(false); setCountryReady(false);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
   }, [iso]);
@@ -222,6 +223,7 @@ export default function CountryPage() {
       // Lines filtered by bbox (segments cross borders by nature)
       const countryFeature = countries.features.find(f => f.properties.ISO_A3 === iso);
       countryFeatureRef.current = countryFeature || null;
+      setCountryReady(true);
       let filteredPlants = plantsGJ;
       let filteredLines  = linesGJ;
       let filteredSubs   = subsGJ;
@@ -786,7 +788,7 @@ export default function CountryPage() {
   // ── Plant source hot-swap ─────────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
-    if (!map?.getSource('plants') || !info || !countryFeatureRef.current) return;
+    if (!map?.getSource('plants') || !info || !countryReady) return;
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     const filename = `region_plants_${info.region.id}${suffix}.geojson`;
     fetch(`/data/cache/${filename}`)
@@ -806,7 +808,7 @@ export default function CountryPage() {
         if (plantSource === 'gppd') { setGppdAvailable(false); setPlantSource('osm'); }
         if (plantSource === 'gem')  { setGemAvailable(false);  setPlantSource('osm'); }
       });
-  }, [plantSource, info]);
+  }, [plantSource, info, countryReady]);
 
   // Capacity summary for right panel
   useEffect(() => {

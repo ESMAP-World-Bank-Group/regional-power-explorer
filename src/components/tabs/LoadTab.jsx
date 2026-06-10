@@ -21,12 +21,6 @@ const ENTSOE_ISO3 = new Set(['ROU','BGR','TUR','ALB','BIH','MKD','MNE','SRB','KO
   'GEO','ARM','AZE','MAR','DZA','TUN','EGY']);
 
 const PROFILE_EUROPEAN = [42,38,35,33,32,33,38,56,75,82,85,86,87,87,85,83,84,88,93,96,91,78,65,52];
-const PROFILE_AVERAGE  = [44,40,37,35,34,36,43,60,72,78,80,79,78,76,75,77,82,90,97,100,93,80,66,53];
-
-function getProfile(iso) {
-  if (ENTSOE_ISO3.has(iso)) return { data: PROFILE_EUROPEAN, label: 'Typical weekday · European grid (ENTSO-E shape)', specific: true };
-  return { data: PROFILE_AVERAGE, label: 'Typical weekday · Global average shape (illustrative)', specific: false };
-}
 
 function downloadBlob(content, filename, type = 'application/octet-stream') {
   const blob = new Blob([content], { type });
@@ -78,7 +72,7 @@ function TrendChart({ historical, projected, t }) {
   const midProjVal  = projected.length ? projected[Math.floor(projected.length / 2)][1] : null;
 
   return (
-    <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
+    <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
       {tickVals.map(v => {
         const y = toY(v);
         return (
@@ -130,7 +124,7 @@ function ProfileChart({ profile, color, t }) {
     `${pL + iW},${pT + iH}`,
   ].join(' ');
   return (
-    <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
+    <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
       <polygon points={fill} fill={color} opacity={0.12} />
       <polyline points={pts} fill="none" stroke={color}
         strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
@@ -145,36 +139,63 @@ function ProfileChart({ profile, color, t }) {
 
 export default function LoadTab({ iso, theme }) {
   const t = getT(theme);
-  const [pts, setPts]       = useState(null); // [[year, TWh]]
+  const [pts,     setPts]     = useState(null); // [[year, TWh]]
+  const [peakMW,  setPeakMW]  = useState(null); // from supply capacity data if available
+  const [source,  setSource]  = useState(null); // data source label
   const [loading, setLoading] = useState(false);
-  const [error, setError]   = useState(false);
+  const [error,   setError]   = useState(false);
 
   useEffect(() => {
-    const iso2 = ISO3_TO_ISO2[iso];
-    if (!iso2) { setError(true); return; }
-    setLoading(true); setError(false); setPts(null);
+    setLoading(true); setError(false); setPts(null); setPeakMW(null); setSource(null);
 
-    const wdi = url => fetch(url).then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(([, rows]) =>
-        (rows || []).filter(r => r.value != null)
-          .map(r => [parseInt(r.date), r.value])
-          .sort(([a], [b]) => a - b)
-      );
-
-    const base = `https://api.worldbank.org/v2/country/${iso2}/indicator`;
-    Promise.all([
-      wdi(`${base}/EG.USE.ELEC.KH.PC?format=json&per_page=60&mrv=35`),
-      wdi(`${base}/SP.POP.TOTL?format=json&per_page=60&mrv=35`),
-    ])
-      .then(([pc, pop]) => {
-        const popMap = new Map(pop.map(([y, v]) => [y, v]));
-        const merged = pc
-          .filter(([y]) => popMap.has(y))
-          .map(([y, kwh_cap]) => [y, +(kwh_cap * popMap.get(y) / 1e9).toFixed(3)]);
+    // Try supply JSON first (authoritative national source)
+    fetch(`/data/supply/${iso}.json`)
+      .then(r => { if (!r.ok) throw new Error('no supply'); return r.json(); })
+      .then(data => {
+        const gen = data.generation;
+        const cap = data.capacity;
+        if (!gen?.demand || !gen?.years) throw new Error('no demand field');
+        const merged = gen.years
+          .map((yr, i) => gen.demand[i] != null ? [yr, +(gen.demand[i] / 1000).toFixed(3)] : null)
+          .filter(Boolean);
+        if (!merged.length) throw new Error('empty');
         setPts(merged);
+        // Use actual peak from capacity section if available
+        if (cap?.peak_demand?.length) {
+          const lastPeak = [...cap.peak_demand].reverse().find(v => v != null);
+          if (lastPeak != null) setPeakMW(lastPeak);
+        }
+        setSource(gen.source || data.country);
         setLoading(false);
       })
-      .catch(() => { setError(true); setLoading(false); });
+      .catch(() => {
+        // Fallback: WB WDI
+        const iso2 = ISO3_TO_ISO2[iso];
+        if (!iso2) { setError(true); setLoading(false); return; }
+
+        const wdi = url => fetch(url).then(r => { if (!r.ok) throw new Error(); return r.json(); })
+          .then(([, rows]) =>
+            (rows || []).filter(r => r.value != null)
+              .map(r => [parseInt(r.date), r.value])
+              .sort(([a], [b]) => a - b)
+          );
+
+        const base = `https://api.worldbank.org/v2/country/${iso2}/indicator`;
+        Promise.all([
+          wdi(`${base}/EG.USE.ELEC.KH.PC?format=json&per_page=60&mrv=35`),
+          wdi(`${base}/SP.POP.TOTL?format=json&per_page=60&mrv=35`),
+        ])
+          .then(([pc, pop]) => {
+            const popMap = new Map(pop.map(([y, v]) => [y, v]));
+            const merged = pc
+              .filter(([y]) => popMap.has(y))
+              .map(([y, kwh_cap]) => [y, +(kwh_cap * popMap.get(y) / 1e9).toFixed(3)]);
+            setPts(merged);
+            setSource('WB WDI');
+            setLoading(false);
+          })
+          .catch(() => { setError(true); setLoading(false); });
+      });
   }, [iso]);
 
   const historical = pts || [];
@@ -196,10 +217,13 @@ export default function LoadTab({ iso, theme }) {
 
   const lastTWh  = historical.length ? historical[historical.length - 1][1] : null;
   const lastYear = historical.length ? historical[historical.length - 1][0] : null;
-  // Estimated peak: annual TWh / (8760 h × 0.55 load factor)
-  const peakGW   = lastTWh != null ? (lastTWh * 1000 / (8760 * 0.55)).toFixed(1) : null;
+  // Peak: use actual from supply data if available, otherwise estimate from load factor
+  const peakGW = peakMW != null
+    ? (peakMW / 1000).toFixed(1)
+    : lastTWh != null ? (lastTWh * 1000 / (8760 * 0.55)).toFixed(1) : null;
+  const peakEstimated = peakMW == null;
 
-  const profile = getProfile(iso);
+  const hasEntsoe = ENTSOE_ISO3.has(iso);
 
   const sec = {
     fontSize: '0.45rem', letterSpacing: '2px', fontWeight: 700,
@@ -222,7 +246,7 @@ export default function LoadTab({ iso, theme }) {
       <span style={sec}>Electricity Demand</span>
 
       {loading && <p style={{ fontSize: '0.62rem', color: t.muted, fontStyle: 'italic' }}>Loading…</p>}
-      {error   && <p style={{ fontSize: '0.62rem', color: t.muted, fontStyle: 'italic' }}>No WB WDI data for this country.</p>}
+      {error   && <p style={{ fontSize: '0.62rem', color: t.muted, fontStyle: 'italic' }}>No data available.</p>}
       {!loading && !error && historical.length === 0 && (
         <p style={{ fontSize: '0.62rem', color: t.muted, fontStyle: 'italic' }}>No data available.</p>
       )}
@@ -242,12 +266,14 @@ export default function LoadTab({ iso, theme }) {
             </div>
             <div style={{ padding: '6px 8px', borderRadius: 5, backgroundColor: t.cardBg, border: `1px solid ${t.cardBorder}` }}>
               <div style={{ fontSize: '0.42rem', color: t.lblMuted, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 2 }}>
-                Est. Peak
+                Peak Demand
               </div>
               <div style={{ fontSize: '0.88rem', fontWeight: 700, color: t.lbl }}>
-                {peakGW != null ? `~${peakGW} GW` : '—'}
+                {peakGW != null ? `${peakEstimated ? '~' : ''}${peakGW} GW` : '—'}
               </div>
-              <div style={{ fontSize: '0.42rem', color: t.lblMuted }}>LF = 55%</div>
+              <div style={{ fontSize: '0.42rem', color: t.lblMuted }}>
+                {peakEstimated ? 'est. LF = 55%' : lastYear}
+              </div>
             </div>
           </div>
 
@@ -255,7 +281,7 @@ export default function LoadTab({ iso, theme }) {
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
             <div style={{ display: 'flex', gap: 12 }}>
-              {legend('#3887C4', null,  'Historical (WB WDI)')}
+              {legend('#3887C4', null,  `Historical (${source || ''})`)}
               {legend('#3887C4', '4,3', 'Linear extrap.')}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -299,9 +325,8 @@ export default function LoadTab({ iso, theme }) {
             </div>
           </div>
           <p style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 3, fontStyle: 'italic', marginBottom: 14 }}>
-            WB WDI · EG.USE.ELEC.KH.PC × SP.POP.TOTL ·{' '}
-            {historical[0][0]}–{historical[historical.length - 1][0]} ·{' '}
-            Peak estimated from load factor (55%)
+            {source} · {historical[0][0]}–{historical[historical.length - 1][0]}
+            {peakEstimated && ' · Peak estimated from load factor (55%)'}
           </p>
         </>
       )}
@@ -309,15 +334,18 @@ export default function LoadTab({ iso, theme }) {
       {/* ── Daily load profile ────────────────── */}
       <div style={{ borderTop: `1px solid ${t.panelBorder}`, paddingTop: 10 }}>
         <span style={sec}>Daily Load Profile</span>
-        <ProfileChart profile={profile.data} color={profile.specific ? '#74C0FC' : '#94A3B8'} t={t} />
-        <p style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 5, fontStyle: 'italic', lineHeight: 1.5 }}>
-          {profile.label}
-          {!profile.specific && (
-            <span style={{ color: 'rgba(250,180,50,0.8)', fontStyle: 'normal', marginLeft: 4 }}>
-              · No country-specific data available
-            </span>
-          )}
-        </p>
+        {hasEntsoe ? (
+          <>
+            <ProfileChart profile={PROFILE_EUROPEAN} color="#74C0FC" t={t} />
+            <p style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 5, fontStyle: 'italic', lineHeight: 1.5 }}>
+              Typical weekday · ENTSO-E shape
+            </p>
+          </>
+        ) : (
+          <p style={{ fontSize: '0.62rem', color: t.muted, fontStyle: 'italic' }}>
+            No load profile available for this country.
+          </p>
+        )}
       </div>
     </div>
   );
