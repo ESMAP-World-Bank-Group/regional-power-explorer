@@ -7,7 +7,7 @@ const OPEN_DATA = [
     category: 'Electricity Demand',
     rows: [
       { name: 'Our World in Data',   res: 'Yearly',         desc: 'Historical electricity consumption by country',          url: 'https://ourworldindata.org/energy' },
-      { name: 'ENTSO-E Transparency',res: 'Monthly / hourly',desc: 'Load data for European countries',                       url: 'https://transparency.entsoe.eu' },
+      { name: 'ENTSO-E Transparency',res: 'Monthly / hourly',desc: 'Load profiles for European countries (hourly, SFTP)',    url: 'https://transparency.entsoe.eu' },
       { name: 'SYNDE (GEGIS)',        res: 'Hourly',         desc: 'Modelled demand under SSP scenarios',                    url: 'https://github.com/Open-Poen/SYNDE' },
     ],
   },
@@ -47,6 +47,55 @@ const OPEN_DATA = [
 ];
 
 const SOURCES = [
+  {
+    category: 'Generation & Trade Statistics',
+    rows: [
+      {
+        layer:   'Generation mix · installed capacity · cross-border flows',
+        source:  'ENTSO-E Transparency Platform',
+        abbr:    'ENTSO-E',
+        version: 'A75 / A68 / A11',
+        updated: '2024–2025',
+        freq:    'Annual / monthly',
+        coverage:'European countries (EU + neighbours)',
+        quality: 'Good — official TSO-reported data. Covers generation by fuel type, capacity, and bilateral trade flows.',
+        url:     'https://transparency.entsoe.eu',
+      },
+      {
+        layer:   'Generation mix · installed capacity · electricity trade (Turkey)',
+        source:  'Turkish Electricity Transmission Company',
+        abbr:    'TEİAŞ',
+        version: '—',
+        updated: '2024',
+        freq:    'Annual',
+        coverage:'Turkey',
+        quality: 'Good — official national statistics. Files 9, 26, 63 from TEİAŞ statistical yearbook.',
+        url:     'https://www.teias.gov.tr',
+      },
+      {
+        layer:   'Generation mix · installed capacity · electricity trade (Azerbaijan)',
+        source:  'State Statistical Committee of Azerbaijan',
+        abbr:    'SSC Azerbaijan',
+        version: '—',
+        updated: '2024–2025',
+        freq:    'Annual',
+        coverage:'Azerbaijan',
+        quality: 'Good — official national statistics. Tables 5.3 & 5.4. Trade supplemented by Caliber.az / Galt & Taggart.',
+        url:     'https://stat.gov.az',
+      },
+      {
+        layer:   'Generation mix · installed capacity · electricity trade (Georgia)',
+        source:  'ESCO Georgia · GNERC',
+        abbr:    'ESCO / GNERC',
+        version: '—',
+        updated: '2024–2025',
+        freq:    'Annual',
+        coverage:'Georgia',
+        quality: 'Good — ESCO annual electricity balance; trade from GNERC annual reports.',
+        url:     'https://gnerc.org',
+      },
+    ],
+  },
   {
     category: 'Power Plants',
     rows: [
