@@ -1,0 +1,76 @@
+country: Armenia
+iso3: ARM
+updated: 2026-06
+
+sources:
+
+  - id: owid_generation
+    name: Our World in Data / Ember — Yearly Electricity Data
+    description: Annual electricity generation by fuel type (GWh), 2015–2023
+    provider: Our World in Data (consolidates Ember Climate data)
+    url: https://github.com/owid/energy-data
+    access: Automatic download — raw CSV from GitHub (no API key required, CC BY 4.0)
+    raw_file: data-source/raw/ARM/owid_energy.csv  # gitignored — regenerated
+    coverage: 2015–2023
+    notes: >
+      Fuels available for Armenia: Nuclear, Hydro (combined reservoir+RoR), Gas, Solar.
+      Wind and Bioenergy below detection threshold in this dataset for Armenia.
+      Demand derived as electricity_generation + net_elec_imports.
+    used_by: tools/pipelines/arm_pipeline.py → public/data/supply/ARM.json#generation
+
+  - id: iea_arm_iran_trade
+    name: IEA Armenia Energy Profile + Armstat / Ampop.am
+    description: Annual electricity exports from Armenia to Iran (GWh), 2016–2023
+    provider: International Energy Agency (IEA) · Armenian Statistical Committee (Armstat) · Ampop.am
+    url: https://www.iea.org/reports/armenia-energy-profile/energy-security-2
+    access: >
+      Curated data points hardcoded in arm_pipeline.py.
+      Anchored years: 2016 (Worldometer), 2019 (IEA: 0.379 bcm × 3 kWh/m³),
+      2021 (IEA: 0.3446 bcm × 3 kWh/m³), 2022–2023 (Ampop.am / Armstat).
+      Intermediate years linearly interpolated.
+    raw_file: ~  # no raw file — hardcoded in pipeline
+    coverage: 2015–2023
+    notes: >
+      Barter arrangement: Armenia exports 3 kWh of electricity per 1 m³ of Iranian gas.
+      76–88% of Armenia's total electricity exports go to Iran.
+      2023: Iran exported 19 GWh back to Armenia for system balancing (Armstat).
+    used_by: tools/pipelines/arm_pipeline.py → public/data/trade/ARM.json#exports.Iran
+
+  - id: geo_balance_pdfs_arm_trade
+    name: ESCO Georgia Generation Balance PDFs — Armenia cross-border flows
+    description: >
+      Annual electricity flows between Armenia and Georgia (GWh), 2020–2023.
+      Extracted rows: "Import from Armenia (Esco)", "Import from Armenia (Energy Solutions)",
+      "Transit from Armenia to Turkey", "Transit from Russia to Armenia".
+    provider: ESCO Georgia (Georgian State Electrosystem)
+    url: ~  # local files only — not publicly accessible via direct URL
+    access: >
+      Local PDF files (generation_2020.pdf – generation_2023.pdf) in
+      Data/Georgia/Team/Generation Balance/ (external to repo, not committed).
+      Extracted automatically by arm_pipeline._extract_geo_trade().
+    raw_file: external/Georgia/Team/Generation Balance/generation_YYYY.pdf  # local only
+    coverage: 2020–2023
+    notes: >
+      ARM→GEO direct: near-zero except 2022 winter (138.5 GWh, Esco + Energy Solutions).
+      ARM→Turkey via GEO transit: 144.7 GWh in Jan–Mar 2023 only.
+      RUS→ARM via GEO transit: 141.3 GWh (2021), 156.2 GWh (2022) — Russia exported
+      electricity to Armenia transiting through Georgia's grid.
+      GEO→ARM direct exports (Armenia's imports from Georgia) are NOT separately
+      labelled in these PDFs and are therefore absent from the trade JSON.
+    used_by: tools/pipelines/arm_pipeline.py → public/data/trade/ARM.json
+
+  - id: psrc_annual_reports
+    name: PSRC Armenia Annual Reports 2021 and 2023
+    description: Armenian electricity sector statistics for manual cross-validation
+    provider: Public Services Regulatory Commission of Armenia (PSRC)
+    url: https://www.psrc.am
+    access: Manual download — PDF files stored in data-source/raw/ARM/
+    raw_file: >
+      data-source/raw/ARM/PSRC_2021_report.pdf
+      data-source/raw/ARM/PSRC_2023_report.pdf
+    coverage: 2020–2023 (cross-validation only)
+    notes: >
+      PDFs use non-standard Armenian font encoding; row labels cannot be extracted
+      programmatically. Numeric values are readable. Used for manual validation only.
+      Page 69 of 2021 report contains the generation balance table with import/export totals.
+    used_by: manual validation only

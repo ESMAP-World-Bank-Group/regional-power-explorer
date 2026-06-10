@@ -17,6 +17,7 @@ data-source/cache/
 data-source/*.csv
 data-source/gem/
 data-source/raw/ENTSOE/
+data-source/raw/ARM/owid_energy.csv
 
 # Python
 __pycache__/

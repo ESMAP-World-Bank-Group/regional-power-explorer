@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from pipelines import tur_pipeline, aze_pipeline, geo_pipeline, entsoe_supply_pipeline
+from pipelines import tur_pipeline, aze_pipeline, geo_pipeline, arm_pipeline, entsoe_supply_pipeline
 
 if __name__ == '__main__':
     args = sys.argv[1:]
@@ -43,6 +43,9 @@ if __name__ == '__main__':
         print()
         print('=== GEO pipeline ===')
         geo_pipeline.run()
+        print()
+        print('=== ARM pipeline ===')
+        arm_pipeline.run()
         print()
 
     if not no_entsoe:

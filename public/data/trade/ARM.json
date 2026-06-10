@@ -1,0 +1,64 @@
+{
+  "country": "Armenia",
+  "unit": "GWh",
+  "source": "Exports to Iran: IEA Armenia Energy Profile (2019, 2021), Armstat / Ampop.am (2022-2023), Worldometer (2016). Georgia corridor: ESCO Georgia Generation Balance PDFs 2020-2023. Russia via Georgia: same ESCO PDFs (\"Transit from Russia to Armenia\").",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "exports": {
+    "Iran": [
+      1400.0,
+      938.0,
+      1000.0,
+      1050.0,
+      1140.0,
+      1040.0,
+      1034.0,
+      1178.0,
+      1096.0
+    ],
+    "Georgia": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      138.5,
+      144.7
+    ]
+  },
+  "imports": {
+    "Russia (via Georgia)": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      141.3,
+      156.2,
+      0.0
+    ],
+    "Iran": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      19.0
+    ]
+  }
+}
