@@ -374,6 +374,26 @@ export default function SupplyTab({ iso, theme }) {
     const section     = view === 'generation' ? supplyData.generation : supplyData.capacity;
     const demandKey   = view === 'generation' ? 'demand' : 'peak_demand';
     const demandLabel = view === 'generation' ? 'Demand (grid)' : 'Peak demand';
+
+    if (!section) return (
+      <>
+        <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+          {[['generation', 'Generation'], ['capacity', 'Capacity']].map(([v, lbl]) => (
+            <button key={v} onClick={() => { setView(v); setHiddenFuels(new Set()); setSupplyTip(null); }} style={{
+              fontSize: '0.47rem', letterSpacing: '0.5px', textTransform: 'uppercase',
+              padding: '3px 8px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
+              border: `1px solid ${view === v ? 'rgba(74,143,204,0.6)' : t.panelBorder}`,
+              backgroundColor: view === v ? 'rgba(74,143,204,0.1)' : 'transparent',
+              color: view === v ? t.lbl : t.lblMuted,
+            }}>{lbl}</button>
+          ))}
+        </div>
+        <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic', marginTop: 8 }}>
+          Capacity data not available for this country.
+        </p>
+      </>
+    );
+
     const allFuels    = Object.keys(section.fuels);
     const hasDemand   = (section[demandKey] || []).some(v => v != null);
 

@@ -48,4 +48,21 @@ sources:
       trade/GEO.json pre-generated; geo_pipeline.py handles supply only.
     used_by: public/data/trade/GEO.json (pre-generated)
 
-pipeline_status: implemented  # Phase 3 — geo_pipeline.py complete
+  - id: tyndp2022_capacity
+    name: World Bank Power Sector Data Repository — Installed Capacity (TYNDP 2022 basis)
+    description: Annual installed capacity by technology (MW), 2015–2021
+    provider: GSE / World Bank ESMAP — data aligned with ENTSO-E TYNDP 2022
+    url: null
+    access: Excel file received from World Bank Georgia team
+    raw_file: data-source/raw/GEO/tyndp2022_capacity.xlsx
+    coverage: 2015–2021 (official); 2022–2025 estimated in pipeline
+    notes: >
+      Sheet "Installed Capacity". Categories: Reservoir Hydro, Daily Regulation Hydro,
+      Run-of-River, Run-of-River (Small), Thermal (all gas in Georgia), Wind.
+      Aggregated in pipeline: Hydro Reservoir = Reservoir + Daily Regulation,
+      Hydro RoR = Run-of-River + Small HPPs.
+      2022-2025 extrapolated: RoR grows ~30-47 MW/year (GNERC Annual Report 2024
+      confirms +47.5 MW HPPs commissioned in 2024). Thermal and reservoir stable.
+    used_by: tools/pipelines/geo_pipeline.py -> public/data/supply/GEO.json
+
+pipeline_status: implemented  # Phase 3 complete — generation (ESCO PDFs) + capacity (TYNDP xlsx)

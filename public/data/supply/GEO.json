@@ -72,5 +72,67 @@
       14414.2,
       14884.0
     ]
+  },
+  "capacity": {
+    "source": "GSE / World Bank Power Sector Data Repository — TYNDP 2022 basis (2017-2021 official). 2022-2025 estimated from GNERC annual reports.",
+    "unit": "MW",
+    "note": "Hydro Reservoir = large reservoir HPPs + daily-regulation HPPs. Hydro RoR = seasonal run-of-river + small HPPs. Thermal is gas only (no coal in Georgia). Wind = Kartli WPP (20.7 MW, commissioned 2016). 2022-2025 are estimates: +47.5 MW HPPs confirmed for 2024 (GNERC Annual Report 2024).",
+    "years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "fuels": {
+      "Hydro Reservoir": [
+        2329.9,
+        2381.1,
+        2381.1,
+        2381.1,
+        2381.1,
+        2381.1,
+        2381.1,
+        2381.1,
+        2381.1
+      ],
+      "Hydro RoR": [
+        824.5,
+        863.4,
+        919.9,
+        949.0,
+        972.9,
+        1002.9,
+        1035.9,
+        1083.4,
+        1113.4
+      ],
+      "Gas": [
+        925.0,
+        925.0,
+        925.0,
+        1189.1,
+        1189.1,
+        1189.1,
+        1189.1,
+        1189.1,
+        1189.1
+      ],
+      "Wind": [
+        20.7,
+        20.7,
+        20.7,
+        20.7,
+        20.7,
+        20.7,
+        20.7,
+        20.7,
+        20.7
+      ]
+    }
   }
 }

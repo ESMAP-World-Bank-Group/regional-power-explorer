@@ -1,24 +1,31 @@
 """
 Georgia supply pipeline.
 
-Downloads ESCO annual electricity balance PDFs from:
-  https://esco.ge/files/data/Balance/energobalans_{year}_eng.pdf
+Generation data:
+  Downloads ESCO annual electricity balance PDFs from:
+    https://esco.ge/files/data/Balance/energobalans_{year}_eng.pdf
+  Extracts annual generation by category (GWh):
+    Hydro Reservoir — Regulatory HPPs (Enguri, Vardnil, Khrami, Zhinval, ...)
+    Hydro RoR       — Seasonal HPPs + Small power HPPs
+    Gas             — all thermal in Georgia is gas-fired
+    Wind            — Kartli WPP (single plant through 2024)
+  Demand estimated as: generation + imports - exports (from same PDF).
 
-Extracts annual generation by category (GWh):
-  Hydro Reservoir — Regulatory HPPs (Enguri, Vardnil, Khrami, Zhinval, ...)
-  Hydro RoR       — Seasonal HPPs + Small power HPPs
-  Gas             — all thermal in Georgia is gas-fired
-  Wind            — Kartli WPP (single plant through 2024)
-
-Demand estimated as: generation + imports - exports (from same PDF).
+Capacity data:
+  Reads from data-source/raw/GEO/tyndp2022_capacity.xlsx
+  Source: GSE / World Bank Power Sector Data Repository, TYNDP 2022 basis
+  Coverage: 2017-2021 (official). 2022-2025 extrapolated from confirmed additions:
+    - GNERC Annual Report 2024: +47.5 MW HPPs commissioned in 2024
+    - Gardabani TP 2 (255 MW) added 2020 — captured in TYNDP data
+  Categories: Hydro Reservoir (large + daily-regulation HPPs), Hydro RoR (seasonal + small HPPs),
+              Gas (all thermal), Wind (Kartli WPP)
 
 Outputs:
   public/data/supply/GEO.json
-
-Note: Capacity data (MW) not available from ESCO balance PDFs.
 """
 import json
 import requests
+import pandas as pd
 import pdfplumber
 from pathlib import Path
 
@@ -29,6 +36,69 @@ OUT_SUPPLY = ROOT / 'public' / 'data' / 'supply' / 'GEO.json'
 BASE_URL = 'https://esco.ge/files/data/Balance/energobalans_{year}_eng.pdf'
 YEARS    = list(range(2017, 2026))
 
+
+# ─── Capacity from TYNDP 2022 xlsx ───────────────────────────────────────────
+
+def _build_capacity():
+    """Read capacity series from TYNDP xlsx (official 2017-2021) and extend to 2025."""
+    xl   = pd.ExcelFile(RAW / 'tyndp2022_capacity.xlsx')
+    df   = xl.parse('Installed Capacity', header=None)
+
+    # Row 3 contains years; data rows start at row 5
+    year_row  = df.iloc[3]
+    col_years = {int(y): c for c, y in year_row.items() if isinstance(y, float) and not pd.isna(y)}
+
+    # Integer row indices within df
+    R_RESERVOIR = 5   # Reservoir Hydro
+    R_DAILY_REG = 6   # Daily Regulation Hydro
+    R_ROR       = 7   # Run-of-River
+    R_SMALL     = 8   # Run-of-River (Small)
+    R_THERMAL   = 9   # Thermal (all gas in Georgia)
+    R_WIND      = 10  # Wind
+
+    def cell(row_idx, year):
+        col = col_years.get(year)
+        if col is None:
+            return 0.0
+        val = df.iloc[row_idx, col]
+        try:
+            return float(val)
+        except Exception:
+            return 0.0
+
+    # Official 2017-2021
+    official = {}
+    for yr in range(2017, 2022):
+        official[yr] = {
+            'Hydro Reservoir': round(cell(R_RESERVOIR, yr) + cell(R_DAILY_REG, yr), 1),
+            'Hydro RoR':       round(cell(R_ROR, yr)       + cell(R_SMALL, yr),      1),
+            'Gas':             round(cell(R_THERMAL, yr), 1),
+            'Wind':            round(cell(R_WIND, yr),    1),
+        }
+
+    # 2022-2025 estimates based on trend + known additions
+    # Reservoir: stable (no new large HPPs)
+    # RoR+Small: ~30-47 MW/year (GNERC 2024 confirms +47.5 MW in 2024)
+    # Thermal: stable (no new gas plants through 2025)
+    # Wind: stable (Kartli only; Kartsakhi 147 MW not yet built)
+    base_res = official[2021]['Hydro Reservoir']   # 2381.1
+    base_ror = official[2021]['Hydro RoR']         # 972.8
+    base_gas = official[2021]['Gas']               # 1189.1
+    base_wnd = official[2021]['Wind']              # 20.7
+
+    # Estimated annual RoR additions: ~30 MW (2022), ~33 MW (2023), +47.5 MW (2024, GNERC confirmed), ~30 MW (2025)
+    estimates = {
+        2022: {'Hydro Reservoir': base_res, 'Hydro RoR': round(base_ror + 30.0, 1),   'Gas': base_gas, 'Wind': base_wnd},
+        2023: {'Hydro Reservoir': base_res, 'Hydro RoR': round(base_ror + 63.0, 1),   'Gas': base_gas, 'Wind': base_wnd},
+        2024: {'Hydro Reservoir': base_res, 'Hydro RoR': round(base_ror + 110.5, 1),  'Gas': base_gas, 'Wind': base_wnd},
+        2025: {'Hydro Reservoir': base_res, 'Hydro RoR': round(base_ror + 140.5, 1),  'Gas': base_gas, 'Wind': base_wnd},
+    }
+
+    merged = {**official, **estimates}
+    return merged
+
+
+# ─── Generation from ESCO PDFs ───────────────────────────────────────────────
 
 def _download(year):
     path = RAW / f'esco_energobalans_{year}.pdf'
@@ -47,8 +117,6 @@ def _num(s):
     if not s or not str(s).strip():
         return None
     try:
-        # Old PDFs (2017-2021) use space as thousands separator: '11 530.4'
-        # New PDFs (2022+) use comma: '1,174.902'
         return float(str(s).replace(',', '').replace(' ', '').strip())
     except ValueError:
         return None
@@ -59,7 +127,6 @@ def _is_subrow(name):
 
 
 def _parse_pdf(path):
-    """Return dict of annual totals (GWh) for key categories."""
     out = {}
     with pdfplumber.open(path) as pdf:
         for page in pdf.pages:
@@ -94,18 +161,19 @@ def _parse_pdf(path):
                 elif name.startswith('total export'):
                     out['exports'] = val
 
-    # Combine RoR components
     ror = (out.pop('_ror_seasonal', 0) or 0) + (out.pop('_ror_small', 0) or 0)
     if ror > 0:
         out['hydro_ror'] = round(ror, 1)
-
     return out
 
+
+# ─── Build and write JSON ─────────────────────────────────────────────────────
 
 def run():
     RAW.mkdir(parents=True, exist_ok=True)
 
-    records = []
+    # ── Generation ──
+    gen_records = []
     for year in YEARS:
         print(f'{year} ...', end=' ')
         try:
@@ -122,9 +190,8 @@ def run():
         gen   = data.get('generation', 0) or 0
         imp   = data.get('imports',    0) or 0
         exp   = data.get('exports',    0) or 0
-        demand = round(gen + imp - exp, 1)
-        data['demand'] = demand
-        records.append({'year': year, **data})
+        data['demand'] = round(gen + imp - exp, 1)
+        gen_records.append({'year': year, **data})
         print(
             f"{gen:.0f} GWh  "
             f"(res={data.get('hydro_reservoir',0):.0f}  "
@@ -133,12 +200,23 @@ def run():
             f"wind={data.get('wind',0):.0f})"
         )
 
-    if not records:
-        print('No data extracted — aborting.')
-        return
+    # ── Capacity ──
+    print('\nBuilding capacity from TYNDP xlsx...')
+    cap_data = _build_capacity()
+    cap_years = sorted(cap_data)
+    for yr in cap_years:
+        d = cap_data[yr]
+        flag = '' if yr <= 2021 else ' (est.)'
+        print(f'  {yr}{flag}: res={d["Hydro Reservoir"]:.0f}  ror={d["Hydro RoR"]:.0f}  gas={d["Gas"]:.0f}  wind={d["Wind"]:.0f}')
 
-    def col(key):
-        return [round(r.get(key) or 0, 1) for r in records]
+    # ── Assemble JSON ──
+    gen_years = [r['year'] for r in gen_records]
+
+    def gcol(key):
+        return [round(r.get(key) or 0, 1) for r in gen_records]
+
+    def ccol(key):
+        return [round(cap_data[yr][key], 1) for yr in cap_years]
 
     supply = {
         'country': 'Georgia',
@@ -151,21 +229,42 @@ def run():
                 'Hydro RoR = Seasonal HPPs + Small power HPPs. '
                 'Demand estimated as generation + imports - exports.'
             ),
-            'years': [r['year'] for r in records],
+            'years': gen_years,
             'fuels': {
-                'Hydro Reservoir': col('hydro_reservoir'),
-                'Hydro RoR':       col('hydro_ror'),
-                'Gas':             col('gas'),
-                'Wind':            col('wind'),
+                'Hydro Reservoir': gcol('hydro_reservoir'),
+                'Hydro RoR':       gcol('hydro_ror'),
+                'Gas':             gcol('gas'),
+                'Wind':            gcol('wind'),
             },
-            'demand': col('demand'),
+            'demand': gcol('demand'),
+        },
+        'capacity': {
+            'source': (
+                'GSE / World Bank Power Sector Data Repository — TYNDP 2022 basis (2017-2021 official). '
+                '2022-2025 estimated from GNERC annual reports.'
+            ),
+            'unit': 'MW',
+            'note': (
+                'Hydro Reservoir = large reservoir HPPs + daily-regulation HPPs. '
+                'Hydro RoR = seasonal run-of-river + small HPPs. '
+                'Thermal is gas only (no coal in Georgia). '
+                'Wind = Kartli WPP (20.7 MW, commissioned 2016). '
+                '2022-2025 are estimates: +47.5 MW HPPs confirmed for 2024 (GNERC Annual Report 2024).'
+            ),
+            'years': cap_years,
+            'fuels': {
+                'Hydro Reservoir': ccol('Hydro Reservoir'),
+                'Hydro RoR':       ccol('Hydro RoR'),
+                'Gas':             ccol('Gas'),
+                'Wind':            ccol('Wind'),
+            },
         },
     }
 
     OUT_SUPPLY.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_SUPPLY, 'w', encoding='utf-8') as f:
         json.dump(supply, f, indent=2, ensure_ascii=False)
-    print(f'GEO supply → {OUT_SUPPLY}')
+    print(f'\nGEO supply -> {OUT_SUPPLY}')
 
 
 if __name__ == '__main__':
