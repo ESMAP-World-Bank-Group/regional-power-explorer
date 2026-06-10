@@ -16,6 +16,7 @@ dist-ssr
 data-source/cache/
 data-source/*.csv
 data-source/gem/
+data-source/raw/ENTSOE/
 
 # Python
 __pycache__/

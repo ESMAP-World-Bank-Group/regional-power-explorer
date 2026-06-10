@@ -1,0 +1,96 @@
+provider: ENTSO-E Transparency Platform
+url: https://transparency.entsoe.eu
+access: >
+  API access via entsoe-py Python library.
+  Token stored in EPM project pre-analysis/config/api_tokens.ini (gitignored).
+pipeline: tools/pipelines/entsoe_supply_pipeline.py
+coverage: All ENTSO-E member countries, 2015-2024
+
+countries:
+  - {iso2: AL, iso3: ALB, name: Albania}
+  - {iso2: AT, iso3: AUT, name: Austria}
+  - {iso2: BA, iso3: BIH, name: Bosnia and Herzegovina}
+  - {iso2: BE, iso3: BEL, name: Belgium}
+  - {iso2: BG, iso3: BGR, name: Bulgaria}
+  - {iso2: CH, iso3: CHE, name: Switzerland}
+  - {iso2: CY, iso3: CYP, name: Cyprus}
+  - {iso2: CZ, iso3: CZE, name: Czech Republic}
+  - {iso2: DE, iso3: DEU, name: Germany}
+  - {iso2: DK, iso3: DNK, name: Denmark}
+  - {iso2: EE, iso3: EST, name: Estonia}
+  - {iso2: ES, iso3: ESP, name: Spain}
+  - {iso2: FI, iso3: FIN, name: Finland}
+  - {iso2: FR, iso3: FRA, name: France}
+  - {iso2: GB, iso3: GBR, name: United Kingdom}
+  - {iso2: GR, iso3: GRC, name: Greece}
+  - {iso2: HR, iso3: HRV, name: Croatia}
+  - {iso2: HU, iso3: HUN, name: Hungary}
+  - {iso2: IE, iso3: IRL, name: Ireland}
+  - {iso2: IT, iso3: ITA, name: Italy}
+  - {iso2: LT, iso3: LTU, name: Lithuania}
+  - {iso2: LU, iso3: LUX, name: Luxembourg}
+  - {iso2: LV, iso3: LVA, name: Latvia}
+  - {iso2: ME, iso3: MNE, name: Montenegro}
+  - {iso2: MK, iso3: MKD, name: North Macedonia}
+  - {iso2: MT, iso3: MLT, name: Malta}
+  - {iso2: NL, iso3: NLD, name: Netherlands}
+  - {iso2: NO, iso3: NOR, name: Norway}
+  - {iso2: PL, iso3: POL, name: Poland}
+  - {iso2: PT, iso3: PRT, name: Portugal}
+  - {iso2: RO, iso3: ROU, name: Romania}
+  - {iso2: RS, iso3: SRB, name: Serbia}
+  - {iso2: SE, iso3: SWE, name: Sweden}
+  - {iso2: SI, iso3: SVN, name: Slovenia}
+  - {iso2: SK, iso3: SVK, name: Slovakia}
+  - {iso2: UA, iso3: UKR, name: Ukraine}
+
+datasets:
+  - id: A75
+    name: Actual Generation per Production Type
+    unit: GWh
+    notes: >
+      Hourly or 15-min MW values, summed to annual GWh per production type.
+      MultiIndex columns (Actual Aggregated / Actual Consumption) — only
+      Actual Aggregated is kept. Negative pump-storage consumption clipped to 0.
+    used_for: generation section in supply JSON
+
+  - id: A68
+    name: Installed Generation Capacity Aggregated
+    unit: MW
+    notes: >
+      Annual snapshots per production type. Last snapshot per year used.
+      For countries with multiple bidding zones (DE=DE_LU, IT=IT_NORD,
+      DK=DK_1, NO=NO_1, SE=SE_3), zone-level data is used as proxy.
+    used_for: capacity section in supply JSON
+
+  - id: A65
+    name: Actual Total Load
+    unit: GWh
+    notes: >
+      Hourly or 15-min MW values, summed to annual GWh.
+      Used as demand line in generation section.
+    used_for: demand array in generation section
+
+fuel_mapping:
+  Fossil Gas: Gas
+  Fossil Coal-derived gas: Gas
+  Fossil Hard coal: Coal
+  Fossil Brown coal/Lignite: Lignite
+  Fossil Oil: Oil
+  Fossil Oil shale: Oil
+  Fossil Peat: Other
+  Hydro Run-of-river and poundage: Hydro RoR
+  Hydro Water Reservoir: Hydro Reservoir
+  Hydro Pumped Storage: Hydro Pumped Storage
+  Nuclear: Nuclear
+  Solar: Solar
+  Wind Onshore: Wind
+  Wind Offshore: Wind Offshore
+  Biomass: Biomass
+  Waste: Waste
+  Geothermal: Geothermal
+  Marine: Other
+  Other: Other
+  Other renewable: Other
+
+raw_cache: data-source/raw/ENTSOE/  # gitignored — regenerated from API
