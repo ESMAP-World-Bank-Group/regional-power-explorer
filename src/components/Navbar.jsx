@@ -46,11 +46,9 @@ export default function Navbar() {
 
   const dashboardUrl = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    const params = new URLSearchParams();
-    if (parts[0] === 'region' && parts[1]) params.set('region', parts[1]);
-    else if (parts[0] === 'country' && parts[1]) params.set('country', parts[1]);
-    const qs = params.toString();
-    return qs ? `${EPM_DASHBOARD_URL}?${qs}` : EPM_DASHBOARD_URL;
+    if (parts[0] === 'region' && parts[1]) return `${EPM_DASHBOARD_URL}/region/${parts[1]}`;
+    if (parts[0] === 'country' && parts[1]) return `${EPM_DASHBOARD_URL}/country/${parts[1]}`;
+    return EPM_DASHBOARD_URL;
   }, [location.pathname]);
 
   const navBtn = (active = false) => ({
