@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react';
+import { THEME_LIST } from './constants';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import WorldPage from './pages/WorldPage';
@@ -12,7 +13,10 @@ export const ThemeCtx = createContext({ theme: 'fog', setTheme: () => {} });
 export const useTheme = () => useContext(ThemeCtx);
 
 export default function App() {
-  const [theme, setTheme] = useState('ink');
+  const [theme, setTheme] = useState(() => {
+    const p = new URLSearchParams(window.location.search).get('theme');
+    return (p && THEME_LIST.includes(p)) ? p : 'ink';
+  });
   const t = getT(theme);
 
   return (

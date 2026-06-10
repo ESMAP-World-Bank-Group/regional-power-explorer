@@ -46,10 +46,11 @@ export default function Navbar() {
 
   const dashboardUrl = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    if (parts[0] === 'region' && parts[1]) return `${EPM_DASHBOARD_URL}/region/${parts[1]}`;
-    if (parts[0] === 'country' && parts[1]) return `${EPM_DASHBOARD_URL}/country/${parts[1]}`;
-    return EPM_DASHBOARD_URL;
-  }, [location.pathname]);
+    const suffix = `?theme=${theme}`;
+    if (parts[0] === 'region' && parts[1]) return `${EPM_DASHBOARD_URL}/region/${parts[1]}${suffix}`;
+    if (parts[0] === 'country' && parts[1]) return `${EPM_DASHBOARD_URL}/country/${parts[1]}${suffix}`;
+    return `${EPM_DASHBOARD_URL}${suffix}`;
+  }, [location.pathname, theme]);
 
   const navBtn = (active = false) => ({
     background: 'none',
