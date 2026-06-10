@@ -81,6 +81,9 @@ export default function RegionPage() {
 
   const containerRef = useRef(null);
   const mapRef       = useRef(null);
+  const isDrRef      = useRef(false);
+  const drStartX     = useRef(0);
+  const drStartW     = useRef(0);
 
   const [region,        setRegion]        = useState(null);
   const [capacity,      setCapacity]      = useState(null);
@@ -102,6 +105,8 @@ export default function RegionPage() {
   const [minMw,           setMinMw]           = useState(100);
   const [circleScale,     setCircleScale]     = useState(1.0);
   const [plantSource,     setPlantSource]     = useState('gem');
+  const [mapReady,        setMapReady]        = useState(false);
+  const [panelWidth,      setPanelWidth]      = useState(268);
   const [selFeature,      setSelFeature]      = useState(null);
   const [activeTab,       setActiveTab]       = useState('overview');
   const [basemap,         setBasemap]         = useState('minimal');
@@ -548,9 +553,10 @@ export default function RegionPage() {
         }
       });
 
+      setMapReady(true);
     });
 
-    return () => { popup.remove(); mapRef.current?.remove(); };
+    return () => { popup.remove(); mapRef.current?.remove(); setMapReady(false); };
   }, [region, theme]);
 
   // ── Basemap switcher ─────────────────────────────────────────────────────
@@ -784,7 +790,7 @@ export default function RegionPage() {
   // Plant source hot-swap
   useEffect(() => {
     const map = mapRef.current;
-    if (!map?.getSource('plants')) return;
+    if (!map?.getSource('plants') || !mapReady) return;
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     const f  = `region_plants_${regionId}${suffix}.geojson`;
     const cf = `region_capacity_${regionId}${suffix}.json`;
@@ -801,7 +807,7 @@ export default function RegionPage() {
         if (plantSource === 'gppd') { setGppdAvailable(false); setPlantSource('osm'); }
         if (plantSource === 'gem')  { setGemAvailable(false);  setPlantSource('osm'); }
       });
-  }, [plantSource, regionId]);
+  }, [plantSource, regionId, mapReady]);
 
 
   // ── Download helpers ──────────────────────────────────────────────────────
@@ -890,7 +896,11 @@ export default function RegionPage() {
   };
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}>
+    <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseUp={() => { isDrRef.current = false; }}
+      onMouseLeave={() => { isDrRef.current = false; }}
+    >
       <LayerPanel
         theme={theme}
         fuelsOff={fuelsOff} statusOff={statusOff}
@@ -1060,9 +1070,13 @@ export default function RegionPage() {
         )}
       </div>
 
+      {/* Drag handle */}
+      <div style={{ width: 5, flexShrink: 0, cursor: 'col-resize', backgroundColor: 'transparent' }}
+        onMouseDown={e => { isDrRef.current = true; drStartX.current = e.clientX; drStartW.current = panelWidth; e.preventDefault(); }} />
+
       {/* Right panel */}
       <div style={{
-        width: 260, height: 'calc(100vh - 46px)', overflowY: 'auto',
+        width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         padding: '18px 16px',
         backgroundColor: t.panel, borderLeft: `1px solid ${t.panelBorder}`,
         flexShrink: 0,

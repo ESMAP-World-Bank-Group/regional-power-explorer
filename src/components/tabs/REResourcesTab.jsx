@@ -41,7 +41,7 @@ function LineChart({ data, color, yUnit, t }) {
   const ticks = [minV, (minV + maxV) / 2, maxV];
   return (
     <div>
-      <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
+      <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
         {ticks.map((v, i) => {
           const y = toY(v);
           return (

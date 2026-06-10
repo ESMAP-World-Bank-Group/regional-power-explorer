@@ -19,18 +19,17 @@ const P = {
 
 function matchFuelColor(name) {
   const n = name.toLowerCase();
-  if (n.includes('coal'))                           return P.navyMid;
-  if (n.includes('gas'))                            return P.navyDark;
-  if (n.includes('hydro'))                          return P.blue;
-  if (n.includes('solar'))                          return P.amber;
-  if (n.includes('wind') && n.includes('geo'))      return P.teal;
-  if (n.includes('geothermal'))                     return P.tealLight;
-  if (n.includes('wind'))                           return P.teal;
-  if (n.includes('nuclear'))                        return P.blueLight;
-  if (n.includes('oil'))                            return P.grey;
-  if (n.includes('biomass') || n.includes('wood'))  return P.tealDark;
-  if (n.includes('waste') || n.includes('other') || n.includes('thermal')) return P.blueMid;
-  return P.icePale;
+  if (n.includes('coal'))                                                   return FUEL_COLORS.coal;
+  if (n.includes('gas'))                                                    return FUEL_COLORS.gas;
+  if (n.includes('hydro'))                                                  return FUEL_COLORS.hydro;
+  if (n.includes('solar'))                                                  return FUEL_COLORS.solar;
+  if (n.includes('geothermal'))                                             return FUEL_COLORS.geothermal;
+  if (n.includes('wind'))                                                   return FUEL_COLORS.wind;
+  if (n.includes('nuclear'))                                                return FUEL_COLORS.nuclear;
+  if (n.includes('oil'))                                                    return FUEL_COLORS.oil;
+  if (n.includes('biomass') || n.includes('wood'))                          return FUEL_COLORS.biomass;
+  if (n.includes('waste') || n.includes('other') || n.includes('thermal')) return FUEL_COLORS.waste;
+  return '#aaa';
 }
 
 // ── Partner colors ───────────────────────────────────────────────────────────
