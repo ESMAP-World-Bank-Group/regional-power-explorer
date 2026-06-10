@@ -1145,10 +1145,10 @@ export default function CountryPage() {
           <div style={{ display: 'flex', gap: 3, marginBottom: 0 }}>
             {[
               { id: 'overview', label: 'Overview' },
-              { id: 'supply',   label: 'Supply' },
-              { id: 'zoning',   label: 'Zones' },
-              { id: 're',       label: 'RE' },
               { id: 'load',     label: 'Load' },
+              { id: 'supply',   label: 'Supply' },
+              { id: 're',       label: 'RE' },
+              { id: 'zoning',   label: 'Zones' },
             ].map(({ id, label }) => {
               const active = activeTab === id;
               return (
