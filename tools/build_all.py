@@ -16,7 +16,7 @@ from pathlib import Path
 # Allow running from repo root or tools/
 sys.path.insert(0, str(Path(__file__).parent))
 
-from pipelines import tur_pipeline, aze_pipeline
+from pipelines import tur_pipeline, aze_pipeline, geo_pipeline
 
 if __name__ == '__main__':
     print('=== TUR pipeline ===')
@@ -25,4 +25,7 @@ if __name__ == '__main__':
     print('=== AZE pipeline ===')
     aze_pipeline.run()
     print()
-    print('Done. GEO trade JSON is pre-generated (Phase 3 pending).')
+    print('=== GEO pipeline ===')
+    geo_pipeline.run()
+    print()
+    print('Done.')

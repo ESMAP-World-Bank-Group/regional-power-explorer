@@ -17,19 +17,23 @@ sources:
       (e.g. "Russia (Kavkasioni)", "Turkey (BSTN)", "Armenia (Alaverdi)").
     used_by: null  # geo_pipeline.py — Phase 3 (not yet implemented)
 
-  - id: gse_generation_balance
-    name: GSE/GENEX Generation Balance
-    description: Monthly and annual electricity generation balance by technology (GWh)
-    provider: Georgian State Electrosystem (GSE) / GENEX
-    url: https://gse.com.ge/en/statistics
-    access: REST API or manual download from GSE website
-    raw_file: null
-    coverage: 2019–2025
+  - id: esco_balance
+    name: ESCO Georgia — Annual Electricity Balance
+    description: Annual electricity generation by fuel type (GWh), 2017–2025
+    provider: ESCO (Electricity System Commercial Operator of Georgia)
+    url: https://esco.ge/en/energy-balance/by-year-1
+    access: >
+      Automatic download via geo_pipeline.py.
+      PDFs cached locally in data-source/raw/GEO/esco_energobalans_{year}.pdf
+    raw_file: data-source/raw/GEO/esco_energobalans_{year}.pdf
+    coverage: 2017–2025
     notes: >
-      Currently only 2022 seasonal data available (summer/winter split).
-      Annual generation series by fuel type not yet extracted for this app.
-      supply/GEO.json is not yet generated — Phase 3 pending.
-    used_by: null  # geo_pipeline.py — Phase 3 (not yet implemented)
+      PDFs contain 14-column tables (Name | Jan–Dec | Annual), units = GWh.
+      Old format (2017-2021): space as thousands separator.
+      New format (2022+): comma as thousands separator.
+      Fuel categories: Total Thermal (all gas) · Kartli Wind · Regulatory HPPs · Seasonal HPPs · Small power HPPs.
+      Capacity data (MW) not available from this source.
+    used_by: tools/pipelines/geo_pipeline.py → public/data/supply/GEO.json
 
   - id: geo_trade_csv
     name: Compiled Georgia cross-border flows CSV
@@ -41,7 +45,7 @@ sources:
     coverage: 2019–2025
     notes: >
       Transit flows (AZ→TR, RU→TR, AM→TR) tracked separately.
-      trade/GEO.json already generated — see tools/pipelines phase 3 plan.
-    used_by: public/data/trade/GEO.json (pre-generated, not yet a pipeline)
+      trade/GEO.json pre-generated; geo_pipeline.py handles supply only.
+    used_by: public/data/trade/GEO.json (pre-generated)
 
-pipeline_status: pending  # Phase 3 — geo_pipeline.py not yet implemented
+pipeline_status: implemented  # Phase 3 — geo_pipeline.py complete
