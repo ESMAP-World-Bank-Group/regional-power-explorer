@@ -21,6 +21,7 @@ function matchFuelColor(name) {
   const n = name.toLowerCase();
   if (n.includes('coal'))                                                   return FUEL_COLORS.coal;
   if (n.includes('gas'))                                                    return FUEL_COLORS.gas;
+  if (n.includes('hydro') && (n.includes('ror') || n.includes('run')))     return '#1ABDE0';
   if (n.includes('hydro'))                                                  return FUEL_COLORS.hydro;
   if (n.includes('solar'))                                                  return FUEL_COLORS.solar;
   if (n.includes('geothermal'))                                             return FUEL_COLORS.geothermal;
