@@ -208,104 +208,98 @@ export default function SupplyTab({ iso, theme }) {
         ))}
       </div>
 
-      {/* source + note */}
-      <p style={{ fontSize: '0.58rem', color: t.lblMuted, margin: '0 0 2px' }}>{section.source}</p>
+      {/* chart + legend side-by-side */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+
+        {/* chart */}
+        <div ref={chartRef} style={{ flex: 1, position: 'relative', minWidth: 0 }}>
+          <StackedBarChart
+            section={section} demandKey={demandKey} t={t}
+            hiddenFuels={hiddenFuels}
+            hoveredYi={tooltip?.yi ?? null}
+            onColHover={handleColHover}
+          />
+
+          {/* tooltip */}
+          {ttData && (() => {
+            const TW = 120;
+            const left = tooltip.x > 140 ? tooltip.x - TW - 6 : tooltip.x + 8;
+            const top  = Math.max(tooltip.y - 30, 0);
+            return (
+              <div style={{
+                position: 'absolute', left, top,
+                width: TW, pointerEvents: 'none', zIndex: 10,
+                backgroundColor: t.panel,
+                border: `1px solid ${t.panelBorder}`,
+                borderRadius: 4, padding: '6px 8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+              }}>
+                <div style={{ fontWeight: 700, fontSize: '0.65rem', color: t.lbl, marginBottom: 4 }}>
+                  {ttData.yr}
+                  <span style={{ fontWeight: 400, color: t.lblMuted, marginLeft: 6 }}>
+                    {fmt(ttData.total)} {section.unit}
+                  </span>
+                </div>
+                {ttData.rows.map(({ f, v }) => (
+                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
+                    <div style={{ width: 6, height: 6, borderRadius: 1, flexShrink: 0, backgroundColor: matchFuelColor(f) }} />
+                    <span style={{ fontSize: '0.55rem', color: t.lblMuted, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f}</span>
+                    <span style={{ fontSize: '0.58rem', color: t.lbl, flexShrink: 0 }}>{fmt(v)}</span>
+                  </div>
+                ))}
+                {ttData.dVal != null && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, paddingTop: 4, borderTop: `1px solid ${t.panelBorder}` }}>
+                    <svg width="10" height="6" style={{ flexShrink: 0 }}>
+                      <line x1={0} y1={3} x2={10} y2={3} stroke={t.lbl} strokeWidth={1.2} strokeDasharray="2,1.5" opacity={0.7} />
+                    </svg>
+                    <span style={{ fontSize: '0.55rem', color: t.lblMuted, flex: 1 }}>{demandLabel}</span>
+                    <span style={{ fontSize: '0.58rem', color: t.lbl, flexShrink: 0 }}>{fmt(ttData.dVal)}</span>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+        </div>
+
+        {/* legend — right column */}
+        <div style={{ flexShrink: 0, width: 72, display: 'flex', flexDirection: 'column', gap: 4, paddingTop: 10 }}>
+          {allFuels.map(f => {
+            const hidden = hiddenFuels.has(f);
+            return (
+              <button key={f} onClick={() => toggleFuel(f)} style={{
+                display: 'flex', alignItems: 'center', gap: 4,
+                background: 'none', border: 'none', padding: 0,
+                cursor: 'pointer', opacity: hidden ? 0.35 : 1, textAlign: 'left',
+              }}>
+                <div style={{ width: 7, height: 7, borderRadius: 1, flexShrink: 0, backgroundColor: matchFuelColor(f), opacity: 0.88, position: 'relative' }}>
+                  {hidden && (
+                    <svg style={{ position: 'absolute', top: -1, left: -1 }} width={9} height={9}>
+                      <line x1={1} y1={8} x2={8} y2={1} stroke={t.lbl} strokeWidth={1.2} />
+                    </svg>
+                  )}
+                </div>
+                <span style={{ fontSize: '0.54rem', color: hidden ? t.lblMuted : t.lbl, textDecoration: hidden ? 'line-through' : 'none', lineHeight: 1.2 }}>{f}</span>
+              </button>
+            );
+          })}
+          {hasDemand && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+              <svg width="12" height="7" style={{ flexShrink: 0 }}>
+                <line x1={0} y1={3.5} x2={12} y2={3.5} stroke={t.lbl} strokeWidth={1.2} strokeDasharray="3,2" opacity={0.7} />
+              </svg>
+              <span style={{ fontSize: '0.54rem', color: t.lblMuted, lineHeight: 1.2 }}>{demandLabel}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* source + note below chart */}
+      <p style={{ fontSize: '0.55rem', color: t.lblMuted, margin: '6px 0 0', opacity: 0.75 }}>{section.source}</p>
       {section.note && (
-        <p style={{ fontSize: '0.55rem', color: t.lblMuted, fontStyle: 'italic', margin: '0 0 8px' }}>
+        <p style={{ fontSize: '0.53rem', color: t.lblMuted, fontStyle: 'italic', margin: '2px 0 0', opacity: 0.7 }}>
           {section.note}
         </p>
       )}
-
-      {/* chart with tooltip container */}
-      <div ref={chartRef} style={{ position: 'relative' }}>
-        <StackedBarChart
-          section={section} demandKey={demandKey} t={t}
-          hiddenFuels={hiddenFuels}
-          hoveredYi={tooltip?.yi ?? null}
-          onColHover={handleColHover}
-        />
-
-        {/* tooltip */}
-        {ttData && (() => {
-          const TW = 130;
-          const left = tooltip.x > 160 ? tooltip.x - TW - 6 : tooltip.x + 8;
-          const top  = Math.max(tooltip.y - 30, 0);
-          return (
-            <div style={{
-              position: 'absolute', left, top,
-              width: TW, pointerEvents: 'none', zIndex: 10,
-              backgroundColor: t.panel,
-              border: `1px solid ${t.panelBorder}`,
-              borderRadius: 4, padding: '6px 8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-            }}>
-              <div style={{ fontWeight: 700, fontSize: '0.65rem', color: t.lbl, marginBottom: 4 }}>
-                {ttData.yr}
-                <span style={{ fontWeight: 400, color: t.lblMuted, marginLeft: 6 }}>
-                  {fmt(ttData.total)} {section.unit}
-                </span>
-              </div>
-              {ttData.rows.map(({ f, v }) => (
-                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: 1, flexShrink: 0, backgroundColor: matchFuelColor(f) }} />
-                  <span style={{ fontSize: '0.55rem', color: t.lblMuted, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f}</span>
-                  <span style={{ fontSize: '0.58rem', color: t.lbl, flexShrink: 0 }}>{fmt(v)}</span>
-                </div>
-              ))}
-              {ttData.dVal != null && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4, paddingTop: 4, borderTop: `1px solid ${t.panelBorder}` }}>
-                  <svg width="10" height="6" style={{ flexShrink: 0 }}>
-                    <line x1={0} y1={3} x2={10} y2={3} stroke={t.lbl} strokeWidth={1.2} strokeDasharray="2,1.5" opacity={0.7} />
-                  </svg>
-                  <span style={{ fontSize: '0.55rem', color: t.lblMuted, flex: 1 }}>{demandLabel}</span>
-                  <span style={{ fontSize: '0.58rem', color: t.lbl, flexShrink: 0 }}>{fmt(ttData.dVal)}</span>
-                </div>
-              )}
-            </div>
-          );
-        })()}
-      </div>
-
-      {/* clickable legend */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 10px', marginTop: 8 }}>
-        {allFuels.map(f => {
-          const hidden = hiddenFuels.has(f);
-          return (
-            <button key={f} onClick={() => toggleFuel(f)} style={{
-              display: 'flex', alignItems: 'center', gap: 3,
-              background: 'none', border: 'none', padding: 0,
-              cursor: 'pointer', opacity: hidden ? 0.38 : 1,
-            }}>
-              <div style={{
-                width: 8, height: 8, borderRadius: 1, flexShrink: 0,
-                backgroundColor: matchFuelColor(f),
-                opacity: 0.88,
-                position: 'relative',
-              }}>
-                {hidden && (
-                  <svg style={{ position: 'absolute', top: -1, left: -1 }} width={10} height={10}>
-                    <line x1={1} y1={9} x2={9} y2={1} stroke={t.lbl} strokeWidth={1.2} />
-                  </svg>
-                )}
-              </div>
-              <span style={{
-                fontSize: '0.57rem',
-                color: hidden ? t.lblMuted : t.lbl,
-                textDecoration: hidden ? 'line-through' : 'none',
-              }}>{f}</span>
-            </button>
-          );
-        })}
-        {hasDemand && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <svg width="14" height="8" style={{ flexShrink: 0 }}>
-              <line x1={0} y1={4} x2={14} y2={4}
-                stroke={t.lbl} strokeWidth={1.2} strokeDasharray="3,2" opacity={0.7} />
-            </svg>
-            <span style={{ fontSize: '0.57rem', color: t.lblMuted }}>{demandLabel}</span>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
