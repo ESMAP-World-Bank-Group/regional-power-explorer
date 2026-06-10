@@ -1,39 +1,55 @@
 import { useState, useEffect, useRef } from 'react';
 import { FUEL_COLORS, getT } from '../../constants';
 
-// ── Fuel colors ──────────────────────────────────────────────────────────────
+// ── Chart palette (blue-teal-amber) ──────────────────────────────────────────
+const P = {
+  navyDark:  '#0D2B45',
+  navyMid:   '#1A4B72',
+  blue:      '#2478B4',
+  blueMid:   '#3A98C8',
+  blueLight: '#7EC8E0',
+  icePale:   '#ACD8E8',
+  tealDark:  '#0A5C50',
+  teal:      '#0E8070',
+  tealLight: '#2AADA0',
+  amber:     '#E8B820',
+  amberDark: '#C09010',
+  grey:      '#7A8898',
+};
+
 function matchFuelColor(name) {
   const n = name.toLowerCase();
-  if (n.includes('coal'))                           return FUEL_COLORS.coal;
-  if (n.includes('gas'))                            return FUEL_COLORS.gas;
-  if (n.includes('hydro'))                          return FUEL_COLORS.hydro;
-  if (n.includes('solar'))                          return FUEL_COLORS.solar;
-  if (n.includes('geothermal'))                     return FUEL_COLORS.geothermal;
-  if (n.includes('wind'))                           return FUEL_COLORS.wind;
-  if (n.includes('nuclear'))                        return FUEL_COLORS.nuclear;
-  if (n.includes('oil'))                            return FUEL_COLORS.oil;
-  if (n.includes('biomass') || n.includes('wood'))  return FUEL_COLORS.biomass;
-  if (n.includes('waste') || n.includes('other') || n.includes('thermal')) return FUEL_COLORS.waste;
-  return '#aaa';
+  if (n.includes('coal'))                           return P.navyMid;
+  if (n.includes('gas'))                            return P.navyDark;
+  if (n.includes('hydro'))                          return P.blue;
+  if (n.includes('solar'))                          return P.amber;
+  if (n.includes('wind') && n.includes('geo'))      return P.teal;
+  if (n.includes('geothermal'))                     return P.tealLight;
+  if (n.includes('wind'))                           return P.teal;
+  if (n.includes('nuclear'))                        return P.blueLight;
+  if (n.includes('oil'))                            return P.grey;
+  if (n.includes('biomass') || n.includes('wood'))  return P.tealDark;
+  if (n.includes('waste') || n.includes('other') || n.includes('thermal')) return P.blueMid;
+  return P.icePale;
 }
 
 // ── Partner colors ───────────────────────────────────────────────────────────
 const PARTNER_COLORS = {
-  'russia':       '#808890',
-  'russia/ussr':  '#808890',
-  'turkey':       '#D4A020',
-  'turkiye':      '#D4A020',
-  'azerbaijan':   '#1E9AF5',
-  'armenia':      '#52C860',
-  'georgia':      '#E05050',
-  'bulgaria':     '#9A7040',
-  'greece':       '#44DAEC',
-  'iran':         '#C8A8F0',
-  'iraq':         '#7A7068',
-  'syria':        '#8A9098',
-  'turkmenistan': '#72DC8A',
+  'russia':       P.navyDark,
+  'russia/ussr':  P.navyDark,
+  'turkey':       P.amber,
+  'turkiye':      P.amber,
+  'azerbaijan':   P.blueMid,
+  'armenia':      P.teal,
+  'georgia':      P.blue,
+  'bulgaria':     P.navyMid,
+  'greece':       P.blueLight,
+  'iran':         P.tealDark,
+  'iraq':         P.amberDark,
+  'syria':        P.grey,
+  'turkmenistan': P.tealLight,
 };
-const partnerColor = name => PARTNER_COLORS[name.toLowerCase()] || '#aaa';
+const partnerColor = name => PARTNER_COLORS[name.toLowerCase()] || P.icePale;
 
 // ── Shared helpers ───────────────────────────────────────────────────────────
 function niceTicks(maxVal) {
@@ -42,7 +58,7 @@ function niceTicks(maxVal) {
   const mag = Math.pow(10, Math.floor(Math.log10(raw)));
   const nice = [1, 2, 2.5, 5, 10].find(f => f * mag >= raw) * mag;
   const ticks = [0];
-  for (let v = nice; v <= maxVal * 1.12; v += nice) ticks.push(Math.round(v));
+  for (let v = nice; v <= maxVal + nice; v += nice) ticks.push(Math.round(v));
   return ticks;
 }
 
