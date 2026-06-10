@@ -83,9 +83,9 @@ export default function ContactPage() {
             }
           />
           <LinkCard
-            href="https://github.com/ESMAP-World-Bank-Group/epm-explorer"
+            href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
             label="Regional Power Explorer"
-            sub="Source code · epm-explorer"
+            sub="Source code · regional-power-explorer"
             icon={
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
