@@ -341,7 +341,7 @@ export default function AboutPage() {
             fontSize: '0.6rem', color: t.muted, lineHeight: 1.55,
           }}>
             Work in progress — suggestions welcome via{' '}
-            <a href="https://github.com/ESMAP-World-Bank-Group/epm-explorer/issues"
+            <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer/issues"
               target="_blank" rel="noopener noreferrer"
               style={{ color: 'rgba(74,143,204,0.8)', textDecoration: 'none' }}>
               GitHub Issues
@@ -389,7 +389,7 @@ export default function AboutPage() {
         {/* Footer */}
         <p style={{ fontSize: '0.55rem', color: t.lblMuted, marginTop: 32, lineHeight: 1.7 }}>
           EPM Regional Power Explorer · World Bank ESMAP ·{' '}
-          <a href="https://github.com/ESMAP-World-Bank-Group/epm-explorer"
+          <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
             target="_blank" rel="noopener noreferrer"
             style={{ color: 'rgba(74,143,204,0.7)', textDecoration: 'none' }}>
             GitHub
