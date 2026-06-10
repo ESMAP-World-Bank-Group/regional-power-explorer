@@ -112,7 +112,7 @@ export default function Navbar() {
       <div style={{ flex: 1, textAlign: 'center', pointerEvents: 'none' }}>
         <span style={{
           fontStyle: 'italic', fontSize: '0.6rem', letterSpacing: '0.25px',
-          color: t.lbl, opacity: 0.5,
+          color: t.navHint,
         }}>
           Click a region or country to explore &nbsp;·&nbsp; click a legend to filter the map
         </span>
