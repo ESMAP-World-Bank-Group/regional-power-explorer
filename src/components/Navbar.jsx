@@ -108,6 +108,16 @@ export default function Navbar() {
         )}
       </div>
 
+      {/* Center: hint */}
+      <div style={{ flex: 1, textAlign: 'center', pointerEvents: 'none' }}>
+        <span style={{
+          fontStyle: 'italic', fontSize: '0.6rem', letterSpacing: '0.25px',
+          color: t.lblMuted, opacity: 0.8,
+        }}>
+          Click a region or country to explore &nbsp;·&nbsp; click a legend to filter the map
+        </span>
+      </div>
+
       {/* Right: theme toggle | EPM Suite | Data Sources | Contact */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
 
