@@ -1,0 +1,57 @@
+country: Turkiye
+iso3: TUR
+updated: 2026-06
+
+sources:
+
+  - id: teias_generation
+    name: TEİAŞ Annual Statistics — File 63
+    description: Gross electricity generation by primary energy source (GWh), 2000–2024
+    provider: TEİAŞ (Turkish Electricity Transmission Corporation)
+    url: https://www.teias.gov.tr/istatistikler/istatistik-yayinlari
+    access: Manual download — XLS file from the annual statistics publication
+    raw_file: data-source/raw/TUR/teias_63_generation.xls
+    coverage: 2000–2024
+    notes: >
+      Wind and Geothermal are combined in this file (column 15).
+      Separation is only available in the capacity file (file 9).
+    used_by: tools/pipelines/tur_pipeline.py → public/data/supply/TUR.json#generation
+
+  - id: teias_capacity
+    name: TEİAŞ Annual Statistics — File 9
+    description: Installed capacity by primary energy source (MW), 2006–2024
+    provider: TEİAŞ (Turkish Electricity Transmission Corporation)
+    url: https://www.teias.gov.tr/istatistikler/istatistik-yayinlari
+    access: Manual download — XLS file from the annual statistics publication
+    raw_file: data-source/raw/TUR/teias_9_capacity.xls
+    coverage: 2006–2024
+    notes: >
+      Wind and Geothermal are separately reported here (unlike file 63).
+      Multi-fuel plants distributed across fuel categories.
+    used_by: tools/pipelines/tur_pipeline.py → public/data/supply/TUR.json#capacity
+
+  - id: teias_demand
+    name: TEİAŞ Annual Statistics — File 26
+    description: Gross demand (GWh) + installed capacity + peak demand (MW), 1980–2024
+    provider: TEİAŞ (Turkish Electricity Transmission Corporation)
+    url: https://www.teias.gov.tr/istatistikler/istatistik-yayinlari
+    access: Manual download — XLS file from the annual statistics publication
+    raw_file: data-source/raw/TUR/teias_26_demand.xls
+    coverage: 1980–2024
+    notes: >
+      Used to extract gross demand GWh (col 5) and peak instantaneous demand MW (col 3).
+      These are added as overlay lines to generation and capacity charts.
+    used_by: tools/pipelines/tur_pipeline.py → public/data/supply/TUR.json#generation.demand + capacity.peak_demand
+
+  - id: teias_trade
+    name: TEİAŞ Annual Statistics — Cross-border flows
+    description: Annual electricity imports and exports by partner country (GWh), 1975–2024
+    provider: TEİAŞ (Turkish Electricity Transmission Corporation)
+    url: https://www.teias.gov.tr/istatistikler/istatistik-yayinlari
+    access: Manual compilation from TEİAŞ XLS monthly files (86–92) into CSV
+    raw_file: data-source/raw/TUR/tur_cross_border_flows.csv
+    coverage: 1975–2024
+    notes: >
+      Compiled from monthly TEİAŞ files into an annual tidy CSV.
+      Turkmenistan flows are via Iran transit; USSR/Former-USSR mapped to Russia/USSR.
+    used_by: tools/pipelines/tur_pipeline.py → public/data/trade/TUR.json

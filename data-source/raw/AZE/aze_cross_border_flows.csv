@@ -1,0 +1,53 @@
+year,border,type,volume_GWh,is_estimate,notes,source
+2019,Georgia (Samukh-Gardabani),export,1000,1,~57% of total 1770 GWh; Georgia was main destination in 2018 at 1230 GWh then Turkey grew rapidly,AzerNews Jan 2020 / Galt & Taggart FY24 fig.8
+2019,Georgia (Samukh-Gardabani),import,20,1,small balancing flows,CEIC / SSC Azerbaijan
+2019,Turkey (via Georgia transit),export,550,1,~31% of total; transit via BSTN corridor started May 2019,AzerNews Jan 2020 / Caliber.az July 2025
+2019,Iran (Mugan / Astara / Julfa),export,100,1,~6% of total 1770 GWh,AzerNews May 2019
+2019,Iran (Mugan / Astara / Julfa),import,50,1,swap flows Nakhchivan; part of ~114 GWh total imports,CEIC / IEA Energy Profile AZ 2023
+2019,Russia (Hajigabul-Mozdok),export,120,1,~7% of total 1770 GWh,AzerNews May 2019
+2019,Russia (Hajigabul-Mozdok),import,50,1,part of ~114 GWh total imports,CEIC / IEA Energy Profile AZ 2023
+2020,Georgia (Samukh-Gardabani),export,590,1,~51% of total 1150 GWh; COVID reduced Turkey transit,GlobalEconomy / Caliber.az
+2020,Georgia (Samukh-Gardabani),import,15,1,small balancing flows,CEIC / SSC Azerbaijan
+2020,Turkey (via Georgia transit),export,430,1,~37% of total; Galt & Taggart fig.8 transit 0.2 TWh,Galt & Taggart FY24 fig.8 / Caliber.az
+2020,Iran (Mugan / Astara / Julfa),export,80,1,~7% of total 1150 GWh,Enerdata / IEA
+2020,Iran (Mugan / Astara / Julfa),import,45,1,swap flows Nakhchivan,CEIC / SSC Azerbaijan
+2020,Russia (Hajigabul-Mozdok),export,50,1,~4% of total 1150 GWh,Enerdata / IEA
+2020,Russia (Hajigabul-Mozdok),import,45,1,,CEIC / SSC Azerbaijan
+2021,Georgia (Samukh-Gardabani),export,670,1,~42% of total 1600 GWh; Jan-May exports to GE +21% y/y to 503 GWh,AzerNews Jun 2021 / IEA
+2021,Georgia (Samukh-Gardabani),import,15,1,small balancing flows,CEIC / SSC Azerbaijan
+2021,Turkey (via Georgia transit),export,770,1,~48% of total; Galt & Taggart fig.8 transit 1.1 TWh,Galt & Taggart FY24 fig.8 / IEA
+2021,Iran (Mugan / Astara / Julfa),export,100,1,~6% of total 1600 GWh,Enerdata / IEA
+2021,Iran (Mugan / Astara / Julfa),import,50,1,swap flows Nakhchivan,CEIC / SSC Azerbaijan
+2021,Russia (Hajigabul-Mozdok),export,60,1,~4% of total 1600 GWh,Enerdata / IEA
+2021,Russia (Hajigabul-Mozdok),import,55,1,,CEIC / SSC Azerbaijan
+2022,Georgia (Samukh-Gardabani),export,700,1,~23% of total 2997 GWh; OEC Georgia=$28.4M,OEC / CEIC 2022
+2022,Georgia (Samukh-Gardabani),import,10,1,small balancing flows,CEIC / SSC Azerbaijan
+2022,Turkey (via Georgia transit),export,1900,1,~63% of total; Galt & Taggart fig.8 transit 2.9 TWh; OEC Turkey=$79.3M,OEC / Galt & Taggart FY24 fig.8
+2022,Iran (Mugan / Astara / Julfa),export,280,1,~9% of total; OEC Iran=$5.47M,OEC 2022
+2022,Iran (Mugan / Astara / Julfa),import,55,1,swap flows Nakhchivan,CEIC / SSC Azerbaijan (137 GWh total)
+2022,Russia (Hajigabul-Mozdok),export,117,1,~4% of total; OEC Russia=$3.64M,OEC 2022
+2022,Russia (Hajigabul-Mozdok),import,60,1,,CEIC / SSC Azerbaijan (137 GWh total)
+2023,Georgia (Samukh-Gardabani),export,2070,0,confirmed by TradeMap/Statista,Statista (Trade Map) Jul 2024
+2023,Georgia (Samukh-Gardabani),import,5,1,negligible; World Bank WITS comtrade,Enerdata / SSC Azerbaijan
+2023,Turkey (via Georgia transit),export,2100,0,confirmed by TradeMap/Statista; transit via BSTN,Statista (Trade Map) Jul 2024
+2023,Iran (Mugan / Astara / Julfa),export,330,0,confirmed by TradeMap/Statista,Statista (Trade Map) Jul 2024
+2023,Iran (Mugan / Astara / Julfa),import,80,1,part of 212 GWh total imports (+54% y/y),CEIC / Enerdata Jan 2024
+2023,Russia (Hajigabul-Mozdok),export,5,0,~$4k value per Statista; marginal volume,Statista (Trade Map) Jul 2024
+2023,Russia (Hajigabul-Mozdok),import,100,1,part of 212 GWh total imports; Russia main supplier,CEIC / OEC 2022 proxy / Enerdata
+2023,Armenia,import,32,1,part of 212 GWh total imports; OEC Armenia=$1.27M 2022 proxy,OEC / CEIC
+2024,Georgia (Samukh-Gardabani),export,300,1,~21% of total 1397 GWh; Georgian transit data: AZ transit to TR = 1.015 TWh,Caliber.az Jul 2025 / GNERC 2024
+2024,Georgia (Samukh-Gardabani),import,20,1,small flows; GSE balance,GNERC 2024 / Galt & Taggart FY24
+2024,Turkey (via Georgia transit),export,1040,0,94.4% of 1.1 TWh transit through Georgia,GNERC 2024 Annual Market Review
+2024,Iran (Mugan / Astara / Julfa),export,130,1,~9% of total 1397 GWh,Caliber.az Jul 2025 / Enerdata
+2024,Iran (Mugan / Astara / Julfa),import,75,1,part of estimated ~200 GWh total imports,SSC Azerbaijan / Enerdata
+2024,Russia (Hajigabul-Mozdok),export,5,1,marginal,Caliber.az / Enerdata
+2024,Russia (Hajigabul-Mozdok),import,90,1,part of estimated ~200 GWh total imports,SSC Azerbaijan / Enerdata
+2024,Armenia,import,25,1,small volumes,SSC Azerbaijan / Enerdata
+2025,Georgia (Samukh-Gardabani),export,180,1,~25% of total ~737 GWh (jan-jul); Georgia imports from AZ 417 GWh full yr (2.2x 2024),APA.az Jan 2026 citing GSE annual report
+2025,Georgia (Samukh-Gardabani),import,49,1,Georgia exported 49 GWh to AZ in 2025 (9.8% of 500 GWh),Galt & Taggart FY25
+2025,Turkey (via Georgia transit),export,594,0,Azerbaijan share of transit through Georgia to Turkey,APA.az Jan 2026 / Galt & Taggart FY25
+2025,Iran (Mugan / Astara / Julfa),export,50,1,~7% of total ~737 GWh (jan-jul annualised),Report.az Aug 2025 / Enerdata
+2025,Iran (Mugan / Astara / Julfa),import,60,1,estimated; swap flows Nakhchivan continuing,SSC Azerbaijan / Enerdata
+2025,Russia (Hajigabul-Mozdok),export,5,1,marginal,Report.az Aug 2025
+2025,Russia (Hajigabul-Mozdok),import,70,1,estimated based on prior years trend,SSC Azerbaijan / Enerdata
+2025,Armenia,import,20,1,small volumes estimated,SSC Azerbaijan / Enerdata

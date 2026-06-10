@@ -1,0 +1,47 @@
+country: Azerbaijan
+iso3: AZE
+updated: 2026-06
+
+sources:
+
+  - id: ssc_generation
+    name: SSC Azerbaijan — Table 5.4 (Energy balance)
+    description: Electricity generation by technology type (GWh), 2015–2024
+    provider: State Statistical Committee of Azerbaijan Republic (stat.gov.az)
+    url: https://stat.gov.az/source/balance_fuel/
+    access: Manual download — XLS file from chapter 5 (Energy balance)
+    raw_file: data-source/raw/AZE/ssc_005_4_generation.xls
+    coverage: 2015–2024
+    notes: >
+      Gas CCGT = Azerenerji public plants.
+      Industrial self-generation (SOCAR) is counted in SSC but not injected into the public grid.
+      The hardcoded arrays in aze_pipeline.py were manually extracted from this XLS.
+    used_by: tools/pipelines/aze_pipeline.py → public/data/supply/AZE.json#generation
+
+  - id: ssc_capacity
+    name: SSC Azerbaijan — Table 5.3 (Installed capacity)
+    description: Installed electricity capacity by technology (MW), 2015–2024
+    provider: State Statistical Committee of Azerbaijan Republic (stat.gov.az)
+    url: https://stat.gov.az/source/balance_fuel/
+    access: Manual download — XLS file from chapter 5 (Energy balance)
+    raw_file: data-source/raw/AZE/ssc_005_3_capacity.xls
+    coverage: 2015–2024
+    notes: >
+      Gas CHP + industrial self-gen estimated stable at ~1,200 MW.
+      Soviet-era steam turbine units (610–2,200 MW) excluded as retired capacity.
+    used_by: tools/pipelines/aze_pipeline.py → public/data/supply/AZE.json#capacity
+
+  - id: aze_trade
+    name: Multi-source trade compilation — Azerbaijan
+    description: Annual electricity imports and exports by partner country (GWh), 2019–2025
+    provider: SSC Azerbaijan · Caliber.az · Galt & Taggart · APA.az
+    url: >
+      https://stat.gov.az/source/balance_fuel/
+      https://caliber.az/
+    access: Manual compilation from multiple sources into tidy CSV
+    raw_file: data-source/raw/AZE/aze_cross_border_flows.csv
+    coverage: 2019–2025
+    notes: >
+      Multi-source compilation. Some years are estimates (is_estimate flag in CSV).
+      Georgia-Turkey corridor includes Azerbaijani exports transiting via Georgian grid.
+    used_by: tools/pipelines/aze_pipeline.py → public/data/trade/AZE.json

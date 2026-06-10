@@ -1,0 +1,47 @@
+country: Georgia
+iso3: GEO
+updated: 2026-06
+
+sources:
+
+  - id: gnerc_market_review
+    name: GNERC Annual Market Review
+    description: Annual electricity market statistics including imports, exports, transit (GWh)
+    provider: Georgian National Energy and Water Supply Regulatory Commission (GNERC)
+    url: https://gnerc.org/en/statistical-information/annual-market-review/
+    access: Manual download — PDF annual reports, data manually extracted
+    raw_file: null
+    coverage: 2019–2025
+    notes: >
+      Primary source for cross-border flows. Physical border points named
+      (e.g. "Russia (Kavkasioni)", "Turkey (BSTN)", "Armenia (Alaverdi)").
+    used_by: null  # geo_pipeline.py — Phase 3 (not yet implemented)
+
+  - id: gse_generation_balance
+    name: GSE/GENEX Generation Balance
+    description: Monthly and annual electricity generation balance by technology (GWh)
+    provider: Georgian State Electrosystem (GSE) / GENEX
+    url: https://gse.com.ge/en/statistics
+    access: REST API or manual download from GSE website
+    raw_file: null
+    coverage: 2019–2025
+    notes: >
+      Currently only 2022 seasonal data available (summer/winter split).
+      Annual generation series by fuel type not yet extracted for this app.
+      supply/GEO.json is not yet generated — Phase 3 pending.
+    used_by: null  # geo_pipeline.py — Phase 3 (not yet implemented)
+
+  - id: geo_trade_csv
+    name: Compiled Georgia cross-border flows CSV
+    description: Annual imports, exports and transit flows by partner (GWh), 2019–2025
+    provider: GNERC Annual Market Reviews + GSE
+    url: null
+    access: Manually compiled tidy CSV (in EPM Data/Georgia folder)
+    raw_file: null  # Not yet committed to data-source/raw/GEO/
+    coverage: 2019–2025
+    notes: >
+      Transit flows (AZ→TR, RU→TR, AM→TR) tracked separately.
+      trade/GEO.json already generated — see tools/pipelines phase 3 plan.
+    used_by: public/data/trade/GEO.json (pre-generated, not yet a pipeline)
+
+pipeline_status: pending  # Phase 3 — geo_pipeline.py not yet implemented

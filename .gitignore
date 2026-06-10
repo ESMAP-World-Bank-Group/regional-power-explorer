@@ -17,6 +17,11 @@ data-source/cache/
 data-source/*.csv
 data-source/gem/
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
