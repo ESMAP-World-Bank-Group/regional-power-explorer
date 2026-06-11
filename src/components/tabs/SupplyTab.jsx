@@ -49,7 +49,23 @@ const PARTNER_COLORS = {
   'syria':        P.grey,
   'turkmenistan': P.tealLight,
 };
-const partnerColor = name => PARTNER_COLORS[name.toLowerCase()] || P.icePale;
+
+// Fallback palette for unmapped partners — visually distinct, deterministic by name
+const _FALLBACK_PALETTE = [
+  '#E15759','#F28E2B','#76B7B2','#59A14F','#EDC948',
+  '#B07AA1','#FF9DA7','#9C755F','#BAB0AC','#4E79A7',
+  '#F1CE63','#A0CBE8','#FFBE7D','#8CD17D','#B6992D',
+  '#499894','#86BCB6','#D4A6C8','#D7B5A6','#79706E',
+];
+function _strHash(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+const partnerColor = name => {
+  const key = name.toLowerCase();
+  return PARTNER_COLORS[key] ?? _FALLBACK_PALETTE[_strHash(key) % _FALLBACK_PALETTE.length];
+};
 
 // ── Shared helpers ───────────────────────────────────────────────────────────
 function niceTicks(maxVal) {
