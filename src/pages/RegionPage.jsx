@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { track } from '@vercel/analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import {
@@ -141,6 +142,7 @@ export default function RegionPage() {
     setLoadCentersOn(false); setLcMinPop(300_000); setLcCircleScale(1.0);
     setMinMw(100); setCircleScale(1.0);
     setPlantSource('gem'); setActiveTab('overview');
+    track('region_view', { region: regionId });
 
     setMapMode('countries'); setZonesAvailable(false);
     setCorrExistOn(false); setCorrCommOn(false); setCorrCandOn(false);
@@ -813,6 +815,7 @@ export default function RegionPage() {
   // ── Download helpers ──────────────────────────────────────────────────────
 
   const handleDownloadPlants = useCallback(async (format = 'geojson') => {
+    track('data_download', { type: 'plants', format, source: plantSource, region: regionId });
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     const url  = `/data/cache/region_plants_${regionId}${suffix}.geojson`;
     const data = await fetch(url).then(r => r.json());
@@ -834,6 +837,7 @@ export default function RegionPage() {
   }, [plantSource, regionId]);
 
   const handleDownloadLines = useCallback(async (format = 'geojson') => {
+    track('data_download', { type: 'lines', format, region: regionId });
     const url  = `/data/cache/region_lines_${regionId}.geojson`;
     const data = await fetch(url).then(r => r.json());
     if (format === 'csv') {
@@ -919,7 +923,7 @@ export default function RegionPage() {
         onToggleLoadCenters={toggleLoadCenters} onLcMinPopChange={handleLcMinPop}
         onLcCircleScaleChange={handleLcCircleScale}
         onMinMwChange={handleMinMw} onCircleScaleChange={handleCircleScale}
-        onSourceChange={setPlantSource}
+        onSourceChange={s => { setPlantSource(s); track('plant_source_change', { source: s, region: regionId }); }}
         onDownloadPlants={handleDownloadPlants}
         onDownloadLines={handleDownloadLines}
         countries={region?.countries}
@@ -1099,7 +1103,7 @@ export default function RegionPage() {
           {['Overview', 'Countries'].map(tab => {
             const active = activeTab === tab.toLowerCase();
             return (
-              <button key={tab} onClick={() => setActiveTab(tab.toLowerCase())} style={{
+              <button key={tab} onClick={() => { setActiveTab(tab.toLowerCase()); track('tab_change', { tab: tab.toLowerCase(), region: regionId }); }} style={{
                 flex: 1, fontSize: '0.58rem', letterSpacing: '1px',
                 textTransform: 'uppercase', fontFamily: 'inherit',
                 padding: '4px 0', borderRadius: 4, cursor: 'pointer',

@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT, THEME_LIST, THEMES } from '../constants';
 import { useEffect, useState, useMemo } from 'react';
+import { track } from '@vercel/analytics';
 
 const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
 
@@ -153,6 +154,7 @@ export default function Navbar() {
             }}
             onMouseOver={e => e.currentTarget.style.background = 'rgba(74,143,204,0.07)'}
             onMouseOut={e => { e.currentTarget.style.background = 'none'; setTooltipVisible(false); }}
+            onClick={() => track('epm_view_click', { from: location.pathname })}
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round">

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { track } from '@vercel/analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr } from '../constants';
@@ -171,6 +172,7 @@ export default function CountryPage() {
     setHasNote(null); setNoteOpen(false); setCountryReady(false);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
+    track('country_view', { iso });
   }, [iso]);
 
   useEffect(() => {
@@ -842,6 +844,7 @@ export default function CountryPage() {
 
   const handleDownloadPlants = useCallback((format = 'geojson') => {
     if (!filteredPlantsData) return;
+    track('data_download', { type: 'plants', format, source: plantSource, iso });
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     if (format === 'csv') {
       const header = 'name,fuel,mw,country,status,lat,lon,source';
@@ -863,6 +866,7 @@ export default function CountryPage() {
 
   const handleDownloadLines = useCallback((format = 'geojson') => {
     if (!filteredLinesData) return;
+    track('data_download', { type: 'lines', format, iso });
     if (format === 'csv') {
       const header = 'id,voltage_kv,geometry_wkt';
       const rows = filteredLinesData.features.map((f, i) => {
@@ -901,7 +905,7 @@ export default function CountryPage() {
         onToggleLoadCenters={toggleLoadCenters} onLcMinPopChange={handleLcMinPop}
         onLcCircleScaleChange={handleLcCircleScale}
         onMinMwChange={handleMinMw} onCircleScaleChange={handleCircleScale}
-        onSourceChange={setPlantSource}
+        onSourceChange={s => { setPlantSource(s); track('plant_source_change', { source: s, iso }); }}
         onDownloadPlants={handleDownloadPlants}
         onDownloadLines={handleDownloadLines}
       />
@@ -1154,7 +1158,7 @@ export default function CountryPage() {
             ].map(({ id, label }) => {
               const active = activeTab === id;
               return (
-                <button key={id} onClick={() => setActiveTab(id)} style={{
+                <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
                   flex: 1, fontSize: '0.48rem', letterSpacing: '0.5px',
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
