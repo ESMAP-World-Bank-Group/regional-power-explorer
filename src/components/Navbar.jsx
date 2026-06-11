@@ -6,6 +6,14 @@ import { track } from '@vercel/analytics';
 
 const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
 
+// Countries and regions with published EPM models in epm-data-explorer
+const EPM_ISOS = new Set([
+  'ARM','AZE','BGR','GEO','ROU','TUR',                          // Black Sea
+  'EGY','SDN','SSD','ETH','DJI','KEN','TZA','UGA','RWA','BDI','COD','SOM', // EAPP
+  'ZAF','ZWE','ZMB','BWA','MOZ','MWI','NAM','LSO','SWZ','AGO','MDG',        // SAPP
+]);
+const EPM_REGIONS = new Set(['black_sea', 'eapp', 'sapp']);
+
 function useBreadcrumb() {
   const location = useLocation();
   const [label, setLabel] = useState('');
@@ -52,6 +60,13 @@ export default function Navbar() {
     if (parts[0] === 'country' && parts[1]) return `${EPM_DASHBOARD_URL}/country/${parts[1]}${suffix}`;
     return `${EPM_DASHBOARD_URL}${suffix}`;
   }, [location.pathname, theme]);
+
+  const epmAvailable = useMemo(() => {
+    const parts = location.pathname.split('/').filter(Boolean);
+    if (parts[0] === 'country' && parts[1]) return EPM_ISOS.has(parts[1]);
+    if (parts[0] === 'region' && parts[1]) return EPM_REGIONS.has(parts[1]);
+    return true;
+  }, [location.pathname]);
 
   const navBtn = (active = false) => ({
     background: 'none',
@@ -140,21 +155,23 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* EPM Suite */}
+        {/* EPM View */}
         <div style={{ position: 'relative' }}>
           <a
-            href={dashboardUrl}
+            href={epmAvailable ? dashboardUrl : undefined}
             onMouseEnter={() => setTooltipVisible(true)}
             onMouseLeave={() => setTooltipVisible(false)}
             style={{
               ...navBtn(),
-              color: 'rgba(74,143,204,0.9)',
-              border: `1px solid rgba(74,143,204,0.45)`,
+              color: epmAvailable ? 'rgba(74,143,204,0.9)' : t.lblMuted,
+              border: `1px solid ${epmAvailable ? 'rgba(74,143,204,0.45)' : t.panelBorder}`,
               gap: 6,
+              cursor: epmAvailable ? 'pointer' : 'default',
+              opacity: epmAvailable ? 1 : 0.5,
             }}
-            onMouseOver={e => e.currentTarget.style.background = 'rgba(74,143,204,0.07)'}
+            onMouseOver={e => { if (epmAvailable) e.currentTarget.style.background = 'rgba(74,143,204,0.07)'; }}
             onMouseOut={e => { e.currentTarget.style.background = 'none'; setTooltipVisible(false); }}
-            onClick={() => track('epm_view_click', { from: location.pathname })}
+            onClick={() => { if (epmAvailable) track('epm_view_click', { from: location.pathname }); }}
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -167,16 +184,25 @@ export default function Navbar() {
             <div style={{
               position: 'absolute', top: 36, right: 0, zIndex: 300,
               backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
-              borderRadius: 6, padding: '10px 14px', width: 240,
+              borderRadius: 6, padding: '10px 14px', width: 220,
               fontSize: '0.68rem', color: t.muted,
               boxShadow: '0 4px 16px rgba(0,0,0,0.18)', lineHeight: 1.6,
               pointerEvents: 'none',
             }}>
-              <span style={{ color: t.lbl, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                EPM View · Capacity Expansion Results
-              </span>
-              Scenario comparisons, dispatch analysis, and planning outputs from the EPM model.{' '}
-              <span style={{ color: 'rgba(74,143,204,0.8)', fontStyle: 'italic' }}>Coming soon.</span>
+              {epmAvailable ? (
+                <span style={{ color: t.lbl, fontWeight: 600, display: 'block' }}>
+                  EPM View · Capacity Expansion Results
+                </span>
+              ) : (
+                <>
+                  <span style={{ color: t.lbl, fontWeight: 600, display: 'block', marginBottom: 4 }}>
+                    EPM model not published yet
+                  </span>
+                  <span style={{ fontStyle: 'italic' }}>
+                    No EPM results available for this country or region.
+                  </span>
+                </>
+              )}
             </div>
           )}
         </div>
