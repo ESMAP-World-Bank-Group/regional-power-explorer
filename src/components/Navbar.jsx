@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT, THEME_LIST, THEMES } from '../constants';
 import { useEffect, useState, useMemo } from 'react';
-import { track } from '@vercel/analytics';
+import { track } from '../analytics';
 
 const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
 
