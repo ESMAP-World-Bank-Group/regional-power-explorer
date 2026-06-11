@@ -12,7 +12,7 @@ const EPM_ISOS = new Set([
   'EGY','SDN','SSD','ETH','DJI','KEN','TZA','UGA','RWA','BDI','COD','SOM', // EAPP
   'ZAF','ZWE','ZMB','BWA','MOZ','MWI','NAM','LSO','SWZ','AGO','MDG',        // SAPP
 ]);
-const EPM_REGIONS = new Set(['black_sea', 'eapp', 'sapp']);
+const EPM_REGIONS = new Set(['blacksea', 'eapp', 'sapp']);
 
 function useBreadcrumb() {
   const location = useLocation();
