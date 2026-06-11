@@ -52,14 +52,35 @@ export default function Navbar() {
   const crumb = useBreadcrumb();
   const location = useLocation();
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [epmCountryPath, setEpmCountryPath] = useState(null);
+
+  // Resolve EPM path from ISO: /country/AZE → /region/black_sea/country/Azerbaijan
+  useEffect(() => {
+    const parts = location.pathname.split('/').filter(Boolean);
+    if (parts[0] !== 'country' || !parts[1]) { setEpmCountryPath(null); return; }
+    const iso = parts[1];
+    fetch('/data/regions.json')
+      .then(r => r.json())
+      .then(d => {
+        for (const r of (d.regions || [])) {
+          const c = (r.countries || []).find(c => c.iso === iso);
+          if (c) { setEpmCountryPath(`/region/${r.id}/country/${encodeURIComponent(c.name)}`); return; }
+        }
+        setEpmCountryPath(null);
+      })
+      .catch(() => setEpmCountryPath(null));
+  }, [location.pathname]);
 
   const dashboardUrl = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
     const suffix = `?theme=${theme}`;
     if (parts[0] === 'region' && parts[1]) return `${EPM_DASHBOARD_URL}/region/${parts[1]}${suffix}`;
-    if (parts[0] === 'country' && parts[1]) return `${EPM_DASHBOARD_URL}/country/${parts[1]}${suffix}`;
+    if (parts[0] === 'country' && parts[1]) {
+      if (epmCountryPath) return `${EPM_DASHBOARD_URL}${epmCountryPath}${suffix}`;
+      return `${EPM_DASHBOARD_URL}/country/${parts[1]}${suffix}`;
+    }
     return `${EPM_DASHBOARD_URL}${suffix}`;
-  }, [location.pathname, theme]);
+  }, [location.pathname, theme, epmCountryPath]);
 
   const epmAvailable = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
