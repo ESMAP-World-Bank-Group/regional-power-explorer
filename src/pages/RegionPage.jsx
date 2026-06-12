@@ -1196,7 +1196,7 @@ export default function RegionPage() {
             }} />
             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text }}>{region.name}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: t.lbl, letterSpacing: '0.3px' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: t.lbl, letterSpacing: '0.3px' }}>
                 {panelExpanded ? 'Close' : 'Data'}
               </span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(74,143,204,1)" strokeWidth="2.8" strokeLinecap="round">
