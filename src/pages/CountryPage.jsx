@@ -972,11 +972,11 @@ export default function CountryPage() {
         <div ref={containerRef} style={{ position: 'absolute', inset: 0, backgroundColor: t.bg }} />
         {isMobile && (
           <button onClick={() => setLayerPanelOpen(o => !o)} style={{
-            position: 'absolute', bottom: 56, left: 12, zIndex: 200,
-            width: 42, height: 42, borderRadius: 21,
+            position: 'absolute', top: 10, left: 12, zIndex: 200,
+            width: 36, height: 36, borderRadius: 8,
             backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.3)', color: t.lbl,
+            boxShadow: '0 1px 4px rgba(0,0,0,.25)', color: t.lbl,
           }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12 2 2 7 12 12 22 7 12 2"/>
@@ -1192,11 +1192,11 @@ export default function CountryPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        height: panelExpanded ? '50vh' : 44,
+        height: panelExpanded ? '50vh' : 56,
         overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
-        boxShadow: '0 -4px 20px rgba(0,0,0,0.25)',
+        boxShadow: '0 -6px 24px rgba(0,0,0,0.35)',
         transition: 'height 0.25s ease',
       } : {
         width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
@@ -1206,23 +1206,23 @@ export default function CountryPage() {
       }}>
         {isMobile && (
           <div onClick={() => setPanelExpanded(e => !e)} style={{
-            height: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '0 16px', cursor: 'pointer', flexShrink: 0,
             borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
             position: 'relative',
           }}>
             <div style={{
-              position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%)',
-              width: 32, height: 4, borderRadius: 2,
-              backgroundColor: t.muted, opacity: 0.35,
+              position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
+              width: 36, height: 5, borderRadius: 3,
+              backgroundColor: t.muted, opacity: 0.55,
             }} />
             <span style={{ fontSize: '0.8rem', fontWeight: 600, color: t.lbl }}>{country.name}</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.muted} strokeWidth="2.5" strokeLinecap="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={t.text} strokeWidth="2.5" strokeLinecap="round">
               {panelExpanded ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}
             </svg>
           </div>
         )}
-        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 44px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 56px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* ── Fixed header ── */}
         <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
           {/* Breadcrumb */}
