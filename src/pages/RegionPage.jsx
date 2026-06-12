@@ -841,17 +841,26 @@ export default function RegionPage() {
     const map = mapRef.current;
     if (!map?.getSource('plants') || !mapReady) return;
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
-    const f  = `region_plants_${regionId}${suffix}.geojson`;
-    const cf = `region_capacity_${regionId}${suffix}.json`;
+    const f    = `region_plants_${regionId}${suffix}.geojson`;
+    const cf   = `/data/cache/region_capacity_${regionId}${suffix}.json`;
+    const cfBase = `/data/cache/region_capacity_${regionId}.json`;
     fetch(`/data/cache/${f}`)
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(data => {
         map.getSource('plants').setData(data);
         const fuels = new Set(data.features.map(f => f.properties.fuel).filter(f => FUEL_COLORS[f]));
         setPresentFuels(fuels);
-        return fetch(`/data/cache/${cf}`).then(r => r.json());
+        return Promise.all([
+          suffix ? fetch(cfBase).then(r => r.json()).catch(() => null) : Promise.resolve(null),
+          fetch(cf).then(r => r.json()).catch(() => null),
+        ]);
       })
-      .then(setCapacity)
+      .then(([base, primary]) => {
+        if (!primary && !base) return;
+        if (!primary) { setCapacity(base); return; }
+        if (!base || !suffix) { setCapacity(primary); return; }
+        setCapacity({ ...primary, countries: { ...(base.countries || {}), ...(primary.countries || {}) } });
+      })
       .catch(() => {
         if (plantSource === 'gppd') { setGppdAvailable(false); setPlantSource('osm'); }
         if (plantSource === 'gem')  { setGemAvailable(false);  setPlantSource('osm'); }

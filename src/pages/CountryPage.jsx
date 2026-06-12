@@ -858,12 +858,23 @@ export default function CountryPage() {
   }, [plantSource, info, countryReady]);
 
   // Capacity summary for right panel
+  // Always fetch GPKG base + primary source; merge countries (primary wins, GPKG fills gaps)
   useEffect(() => {
     if (!info) return;
     setCapacity(null);
     const capSuffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
-    const cf = `/data/cache/region_capacity_${info.region.id}${capSuffix}.json`;
-    fetch(cf).then(r => r.json()).then(setCapacity).catch(() => {});
+    const baseUrl    = `/data/cache/region_capacity_${info.region.id}.json`;
+    const primaryUrl = capSuffix ? `/data/cache/region_capacity_${info.region.id}${capSuffix}.json` : null;
+    Promise.all([
+      fetch(baseUrl).then(r => r.json()).catch(() => null),
+      primaryUrl ? fetch(primaryUrl).then(r => r.json()).catch(() => null) : Promise.resolve(null),
+    ]).then(([base, primary]) => {
+      if (!base && !primary) return;
+      if (!primary) { setCapacity(base); return; }
+      if (!base)    { setCapacity(primary); return; }
+      // Merge: primary-source wins per country, GPKG fills gaps
+      setCapacity({ ...primary, countries: { ...(base.countries || {}), ...(primary.countries || {}) } });
+    });
   }, [info, plantSource]);
 
   // Fleet age — GPPD only
