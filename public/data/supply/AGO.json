@@ -1,0 +1,98 @@
+{
+  "country": "Angola",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        0.0,
+        0.0,
+        40.0,
+        80.0,
+        1640.0,
+        1650.0,
+        1660.0,
+        1670.0,
+        1390.0
+      ],
+      "Hydro": [
+        5280.0,
+        6360.0,
+        7650.0,
+        10370.0,
+        11510.0,
+        12640.0,
+        12640.0,
+        12640.0,
+        11220.0
+      ],
+      "Solar": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        390.0,
+        390.0
+      ],
+      "Oil": [
+        4440.0,
+        4550.0,
+        3050.0,
+        2620.0,
+        2600.0,
+        2450.0,
+        2480.0,
+        2560.0,
+        2700.0
+      ],
+      "Bioenergy": [
+        40.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      "Other Renewables": [
+        40.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ]
+    },
+    "demand": [
+      9780.0,
+      10980.0,
+      10810.0,
+      13140.0,
+      15820.0,
+      16810.0,
+      16850.0,
+      17310.0,
+      15750.0
+    ]
+  }
+}

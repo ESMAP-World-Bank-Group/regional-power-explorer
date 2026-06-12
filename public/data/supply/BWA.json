@@ -1,0 +1,65 @@
+{
+  "country": "Botswana",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Coal": [
+        2860.0,
+        2680.0,
+        3010.0,
+        3090.0,
+        2500.0,
+        2120.0,
+        2390.0,
+        2450.0,
+        3190.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Oil": [
+        110.0,
+        10.0,
+        10.0,
+        10.0,
+        0.0,
+        50.0,
+        90.0,
+        100.0,
+        30.0
+      ]
+    },
+    "demand": [
+      4440.0,
+      4360.0,
+      4240.0,
+      3820.0,
+      3520.0,
+      4230.0,
+      4150.0,
+      4360.0,
+      4740.0
+    ]
+  }
+}

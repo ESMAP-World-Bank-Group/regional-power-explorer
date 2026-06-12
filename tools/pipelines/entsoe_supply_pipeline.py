@@ -148,13 +148,27 @@ def _load_token():
 # ── DataFrame helpers ─────────────────────────────────────────────────────────
 
 def _select_actual_aggregated(df):
-    """For MultiIndex columns (Actual Aggregated / Actual Consumption), keep only generation."""
+    """For MultiIndex columns (Actual Aggregated / Actual Consumption), keep only generation.
+
+    entsoe-py 0.6+ returns (fuel_type, metric) MultiIndex where level 0 = fuel type
+    and level 1 = 'Actual Aggregated' / 'Actual Consumption'.
+    Older cached CSVs may have single-level columns (fuel type only).
+    """
     if df is None:
         return pd.DataFrame()
     if isinstance(df.columns, pd.MultiIndex):
-        mask = df.columns.get_level_values(0) == 'Actual Aggregated'
-        df = df.loc[:, mask].copy()
-        df.columns = df.columns.get_level_values(1)
+        lvl0 = df.columns.get_level_values(0)
+        lvl1 = df.columns.get_level_values(1)
+        if 'Actual Aggregated' in lvl1:
+            # entsoe-py 0.6+ format: (fuel_type, metric) — level 1 has the metric
+            mask = lvl1 == 'Actual Aggregated'
+            df = df.loc[:, mask].copy()
+            df.columns = df.columns.get_level_values(0)
+        elif 'Actual Aggregated' in lvl0:
+            # Older format: (metric, fuel_type) — level 0 has the metric
+            mask = lvl0 == 'Actual Aggregated'
+            df = df.loc[:, mask].copy()
+            df.columns = df.columns.get_level_values(1)
     return df
 
 

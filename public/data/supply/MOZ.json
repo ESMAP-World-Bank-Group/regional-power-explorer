@@ -1,0 +1,98 @@
+{
+  "country": "Mozambique",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        1270.0,
+        2830.0,
+        2790.0,
+        2870.0,
+        3780.0,
+        3000.0,
+        3040.0,
+        3060.0,
+        3120.0
+      ],
+      "Hydro": [
+        17090.0,
+        15600.0,
+        14060.0,
+        13900.0,
+        14930.0,
+        15700.0,
+        15470.0,
+        16170.0,
+        16480.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        30.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "Oil": [
+        20.0,
+        430.0,
+        650.0,
+        250.0,
+        140.0,
+        140.0,
+        170.0,
+        130.0,
+        160.0
+      ],
+      "Bioenergy": [
+        0.0,
+        0.0,
+        140.0,
+        120.0,
+        110.0,
+        110.0,
+        110.0,
+        130.0,
+        130.0
+      ],
+      "Other Renewables": [
+        0.0,
+        0.0,
+        140.0,
+        120.0,
+        110.0,
+        110.0,
+        110.0,
+        130.0,
+        130.0
+      ]
+    },
+    "demand": [
+      15080.0,
+      15530.0,
+      15920.0,
+      15730.0,
+      16500.0,
+      15610.0,
+      15900.0,
+      16370.0,
+      16500.0
+    ]
+  }
+}

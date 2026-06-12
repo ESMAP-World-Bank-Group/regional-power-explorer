@@ -86,6 +86,18 @@ DEFAULT_COUNTRIES: dict[str, str] = {
     'RWA': 'Rwanda',
     'BDI': 'Burundi',
     'COD': 'DR Congo',
+    # SAPP
+    'ZAF': 'South Africa',
+    'ZWE': 'Zimbabwe',
+    'ZMB': 'Zambia',
+    'MOZ': 'Mozambique',
+    'NAM': 'Namibia',
+    'BWA': 'Botswana',
+    'LSO': 'Lesotho',
+    'SWZ': 'Eswatini',
+    'MWI': 'Malawi',
+    'AGO': 'Angola',
+    'MDG': 'Madagascar',
     # ASEAN
     'BRN': 'Brunei',
     'KHM': 'Cambodia',
