@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"type": "Feature", "id": 0, "geometry": {"type": "Point", "coordinates": [-16.225, 12.559]}, "properties": {"name": "Centrale \u00e9lectrique de Boutoute", "fuel": "oil", "mw": 26.8, "country": "", "status": "operating"}}]}
