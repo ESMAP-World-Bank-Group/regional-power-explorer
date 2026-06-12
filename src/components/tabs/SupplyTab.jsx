@@ -50,33 +50,31 @@ const PARTNER_COLORS = {
   'turkmenistan': P.tealLight,
 };
 
-// Convert HSL (0-1 each) to hex — used for golden-ratio color generation
-function _hslToHex(h, s, l) {
-  const a = s * Math.min(l, 1 - l);
-  const f = n => {
-    const k = (n + h * 12) % 12;
-    return Math.round(255 * (l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)))
-      .toString(16).padStart(2, '0');
-  };
-  return `#${f(0)}${f(8)}${f(4)}`;
-}
+// Curated palette — blues, teals, slates, with amber accents.
+// 30 entries so charts with many partners (e.g. UZB = 28) never repeat.
+const _PALETTE = [
+  '#2478B4','#7EC8E0','#1A4B72','#2AADA0','#3A98C8',
+  '#ACD8E8','#0E8070','#4E79A7','#3CBFB0','#1E6DB8',
+  '#88BDD8','#0A5C50','#5A9EC8','#6ACAD8','#0D5C8A',
+  '#4ABCB0','#8AAEC0','#1A9080','#3A6878','#5888A0',
+  '#4A8098','#2A5068','#6898B0','#0B7068','#7A9AB0',
+  '#E8B820','#C09010','#D4A030','#7A8898','#A8986C',
+];
 
-// Build a per-chart color map guaranteeing ALL partners get distinct colors,
-// regardless of how many there are.
-// Known partners get their fixed color; the rest get colors spread evenly
-// around the hue wheel using the golden ratio — never wraps or repeats.
-const _GOLDEN = 0.618033988749895;
+// Build a per-chart color map guaranteeing all partners get distinct colors.
+// Known partners get their fixed color; remaining partners pull from the
+// curated palette in order (30 slots — no realistic chart will exceed this).
 function buildPartnerColorMap(partners) {
   const colorMap = {};
   for (const p of partners) {
     const fixed = PARTNER_COLORS[p.toLowerCase()];
     if (fixed) colorMap[p] = fixed;
   }
-  let hue = 0.13;
+  let i = 0;
   for (const p of partners) {
     if (!colorMap[p]) {
-      hue = (hue + _GOLDEN) % 1.0;
-      colorMap[p] = _hslToHex(hue, 0.62, 0.52);
+      colorMap[p] = _PALETTE[i % _PALETTE.length];
+      i++;
     }
   }
   return colorMap;
