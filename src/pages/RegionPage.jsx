@@ -434,7 +434,6 @@ export default function RegionPage() {
       }
       map.addImage('sub-sq', { width: sqSz, height: sqSz, data: sqData });
       map.addLayer({ id: 'substations', type: 'symbol', source: 'substations',
-        filter: ['in', ['get', 'iso'], ['literal', isos]],
         layout: { 'icon-image': 'sub-sq', 'icon-allow-overlap': true, 'icon-ignore-placement': true, visibility: 'none' },
         paint: { 'icon-opacity': 0.8 } });
       map.on('mouseenter', 'substations', e => {

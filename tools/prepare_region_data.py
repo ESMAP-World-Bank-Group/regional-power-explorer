@@ -245,16 +245,15 @@ def build_substations(region_id, region_union):
         print(f"  Warning: {e}")
         return
     region_buf = region_union.buffer(0.02)
-    subs = []
+    tagged, untagged = [], []
     for row in rows:
         v_raw = row.get("max_voltage")
-        if v_raw is None:
-            continue
         try:
-            v = int(v_raw)
+            v = int(v_raw) if v_raw is not None else 0
         except (ValueError, TypeError):
-            continue
-        if v < 110_000:
+            v = 0
+        # Skip explicitly low-voltage substations
+        if 0 < v < 110_000:
             continue
         geom = row["geometry"]
         if geom is None or geom.is_empty:
@@ -264,14 +263,23 @@ def build_substations(region_id, region_union):
                 continue
         except Exception:
             continue
-        subs.append({
+        entry = {
             "lat":  round(geom.y, COORD_PREC),
             "lon":  round(geom.x, COORD_PREC),
             "name": str(row.get("name") or row.get("name_en") or "").strip(),
             "v":    v,
-        })
+        }
+        (tagged if v >= 110_000 else untagged).append(entry)
 
-    print(f"  {len(subs):,} substations >= 110 kV within region")
+    # In densely mapped regions (EU etc.) untagged points are mostly distribution boxes;
+    # use tagged-only when the combined count would exceed the cap.
+    UNTAGGED_CAP = 3_000
+    if len(tagged) + len(untagged) > UNTAGGED_CAP:
+        subs = tagged
+        print(f"  {len(tagged):,} tagged substations >=110 kV (dropped {len(untagged):,} untagged — well-mapped region)")
+    else:
+        subs = tagged + untagged
+        print(f"  {len(subs):,} substations (>=110 kV or untagged) within region")
     out = OUT_DIR / f"region_substations_{region_id}.json"
     with open(out, "w", encoding="utf-8") as f:
         json.dump(subs, f, separators=(",", ":"), ensure_ascii=False)
