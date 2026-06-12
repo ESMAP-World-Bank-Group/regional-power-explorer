@@ -185,67 +185,73 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* EPM View */}
-        <div style={{ position: 'relative' }}>
-          <a
-            href={epmAvailable ? dashboardUrl : undefined}
-            onMouseEnter={() => setTooltipVisible(true)}
-            onMouseLeave={() => setTooltipVisible(false)}
-            style={{
-              ...navBtn(),
-              color: epmAvailable ? 'rgba(74,143,204,0.9)' : t.lblMuted,
-              border: `1px solid ${epmAvailable ? 'rgba(74,143,204,0.45)' : t.panelBorder}`,
-              gap: 6,
-              cursor: epmAvailable ? 'pointer' : 'default',
-              opacity: epmAvailable ? 1 : 0.5,
-            }}
-            onMouseOver={e => { if (epmAvailable) e.currentTarget.style.background = 'rgba(74,143,204,0.07)'; }}
-            onMouseOut={e => { e.currentTarget.style.background = 'none'; setTooltipVisible(false); }}
-            onClick={() => { if (epmAvailable) track('epm_view_click', { from: location.pathname }); }}
-          >
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-            EPM View
-          </a>
+        {/* EPM View — desktop only */}
+        {!isMobile && (
+          <div style={{ position: 'relative' }}>
+            <a
+              href={epmAvailable ? dashboardUrl : undefined}
+              onMouseEnter={() => setTooltipVisible(true)}
+              onMouseLeave={() => setTooltipVisible(false)}
+              style={{
+                ...navBtn(),
+                color: epmAvailable ? 'rgba(74,143,204,0.9)' : t.lblMuted,
+                border: `1px solid ${epmAvailable ? 'rgba(74,143,204,0.45)' : t.panelBorder}`,
+                gap: 6,
+                cursor: epmAvailable ? 'pointer' : 'default',
+                opacity: epmAvailable ? 1 : 0.5,
+              }}
+              onMouseOver={e => { if (epmAvailable) e.currentTarget.style.background = 'rgba(74,143,204,0.07)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'none'; setTooltipVisible(false); }}
+              onClick={() => { if (epmAvailable) track('epm_view_click', { from: location.pathname }); }}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              EPM View
+            </a>
 
-          {tooltipVisible && (
-            <div style={{
-              position: 'absolute', top: 36, right: 0, zIndex: 300,
-              backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
-              borderRadius: 6, padding: '10px 14px', width: 220,
-              fontSize: '0.68rem', color: t.muted,
-              boxShadow: '0 4px 16px rgba(0,0,0,0.18)', lineHeight: 1.6,
-              pointerEvents: 'none',
-            }}>
-              {epmAvailable ? (
-                <span style={{ color: t.lbl, fontWeight: 600, display: 'block' }}>
-                  EPM View · Capacity Expansion Results
-                </span>
-              ) : (
-                <>
-                  <span style={{ color: t.lbl, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                    EPM model not published yet
+            {tooltipVisible && (
+              <div style={{
+                position: 'absolute', top: 36, right: 0, zIndex: 300,
+                backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+                borderRadius: 6, padding: '10px 14px', width: 220,
+                fontSize: '0.68rem', color: t.muted,
+                boxShadow: '0 4px 16px rgba(0,0,0,0.18)', lineHeight: 1.6,
+                pointerEvents: 'none',
+              }}>
+                {epmAvailable ? (
+                  <span style={{ color: t.lbl, fontWeight: 600, display: 'block' }}>
+                    EPM View · Capacity Expansion Results
                   </span>
-                  <span style={{ fontStyle: 'italic' }}>
-                    No EPM results available for this country or region.
-                  </span>
-                </>
-              )}
-            </div>
-          )}
-        </div>
+                ) : (
+                  <>
+                    <span style={{ color: t.lbl, fontWeight: 600, display: 'block', marginBottom: 4 }}>
+                      EPM model not published yet
+                    </span>
+                    <span style={{ fontStyle: 'italic' }}>
+                      No EPM results available for this country or region.
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
-        {/* Data Sources */}
-        <Link to="/about" style={navBtn(location.pathname === '/about')}>
-          Data Sources
-        </Link>
+        {/* Data Sources — desktop only */}
+        {!isMobile && (
+          <Link to="/about" style={navBtn(location.pathname === '/about')}>
+            Data Sources
+          </Link>
+        )}
 
-        {/* About */}
-        <Link to="/contact" style={navBtn(location.pathname === '/contact')}>
-          About
-        </Link>
+        {/* About — desktop only */}
+        {!isMobile && (
+          <Link to="/contact" style={navBtn(location.pathname === '/contact')}>
+            About
+          </Link>
+        )}
 
       </div>
     </div>

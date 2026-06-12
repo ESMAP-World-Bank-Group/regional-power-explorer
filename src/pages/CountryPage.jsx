@@ -973,18 +973,18 @@ export default function CountryPage() {
         {isMobile && (
           <button onClick={() => setLayerPanelOpen(o => !o)} style={{
             position: 'absolute', top: 10, left: 12, zIndex: 200,
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '6px 10px', borderRadius: 6, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 7,
+            padding: '8px 13px', borderRadius: 6, cursor: 'pointer',
             border: `1px solid ${t.panelBorder}`,
             backgroundColor: t.panel,
             boxShadow: '0 1px 6px rgba(0,0,0,.22)', color: t.lbl,
           }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12 2 2 7 12 12 22 7 12 2"/>
               <polyline points="2 17 12 22 22 17"/>
               <polyline points="2 12 12 17 22 12"/>
             </svg>
-            <span style={{ fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.3px' }}>Legend & Filter</span>
+            <span style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.3px' }}>Legend & Filter</span>
           </button>
         )}
 
@@ -992,11 +992,11 @@ export default function CountryPage() {
           <div style={{
             position: 'absolute', top: 10, right: 12, zIndex: 5,
             backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
-            borderRadius: 6, padding: '6px 10px',
+            borderRadius: 6, padding: '8px 12px',
             boxShadow: '0 1px 6px rgba(0,0,0,.2)',
           }}>
-            <div style={{ fontSize: '0.6rem', fontWeight: 600, color: t.lbl }}>Tap a plant or line</div>
-            <div style={{ fontSize: '0.55rem', color: t.muted, marginTop: 2 }}>to explore its data</div>
+            <div style={{ fontSize: '0.72rem', fontWeight: 600, color: t.lbl }}>Tap a plant or line</div>
+            <div style={{ fontSize: '0.65rem', color: t.muted, marginTop: 2 }}>to explore its data</div>
           </div>
         )}
 
