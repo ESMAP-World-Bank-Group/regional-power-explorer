@@ -1155,8 +1155,8 @@ export default function CountryPage() {
           <div style={{
             position: 'fixed',
             top: 46,
-            left: 170,
-            right: 268,
+            left: isMobile ? 0 : 170,
+            right: isMobile ? 0 : 268,
             bottom: 0,
             zIndex: 999,
             backgroundColor: '#fff',

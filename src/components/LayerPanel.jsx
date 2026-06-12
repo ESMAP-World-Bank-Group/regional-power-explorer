@@ -132,6 +132,14 @@ export default function LayerPanel({
       flexShrink: 0,
     }}>
 
+      {/* ── Filter hint ───────────────────────────── */}
+      <div style={{
+        fontSize: '0.5rem', color: t.muted, letterSpacing: '0.3px',
+        marginBottom: 12, lineHeight: 1.4,
+      }}>
+        Click an item to filter the map
+      </div>
+
       {/* ── BASEMAP ───────────────────────────────── */}
       {onBasemap && (
         <div style={{ marginBottom: 14 }}>
