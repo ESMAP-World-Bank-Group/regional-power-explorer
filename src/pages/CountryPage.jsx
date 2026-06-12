@@ -1206,7 +1206,7 @@ export default function CountryPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        height: panelExpanded ? '50vh' : 68,
+        height: panelExpanded ? '50vh' : 88,
         overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
@@ -1220,7 +1220,7 @@ export default function CountryPage() {
       }}>
         {isMobile && (
           <div onClick={() => setPanelExpanded(e => !e)} style={{
-            height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            height: 88, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '0 20px', cursor: 'pointer', flexShrink: 0,
             borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
             position: 'relative',
@@ -1241,7 +1241,7 @@ export default function CountryPage() {
             </div>
           </div>
         )}
-        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 68px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 88px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* ── Fixed header ── */}
         <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
           {/* Breadcrumb */}

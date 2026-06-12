@@ -119,12 +119,13 @@ export default function Navbar() {
     }}>
 
       {/* Left: logo + breadcrumb */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
         <Link to="/" style={{
           fontSize: '0.7rem', fontWeight: 700, letterSpacing: '2px',
           color: t.muted, textTransform: 'uppercase',
           display: 'flex', alignItems: 'center', gap: 8,
           fontFamily: "'Segoe UI', system-ui, sans-serif",
+          flexShrink: 0,
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
@@ -133,20 +134,25 @@ export default function Navbar() {
             <line x1="2.5" y1="9" x2="21.5" y2="9"/>
             <line x1="2.5" y1="15" x2="21.5" y2="15"/>
           </svg>
-          Regional Power <span style={{ fontWeight: 400 }}>Explorer</span>
+          {isMobile
+            ? <span style={{ fontWeight: 400 }}>Explorer</span>
+            : <>Regional Power <span style={{ fontWeight: 400 }}>Explorer</span></>
+          }
         </Link>
-        <span style={{
-          fontSize: '0.48rem', fontWeight: 700, letterSpacing: '1.5px',
-          color: 'rgba(74,143,204,0.7)', textTransform: 'uppercase',
-          border: '1px solid rgba(74,143,204,0.3)', borderRadius: 3,
-          padding: '1px 5px', lineHeight: 1,
-        }}>
-          Beta
-        </span>
+        {!isMobile && (
+          <span style={{
+            fontSize: '0.48rem', fontWeight: 700, letterSpacing: '1.5px',
+            color: 'rgba(74,143,204,0.7)', textTransform: 'uppercase',
+            border: '1px solid rgba(74,143,204,0.3)', borderRadius: 3,
+            padding: '1px 5px', lineHeight: 1,
+          }}>
+            Beta
+          </span>
+        )}
         {crumb && (
           <>
             <span style={{ color: t.panelBorder, fontSize: '0.75rem' }}>›</span>
-            <span style={{ fontSize: '0.75rem', color: t.lbl }}>{crumb}</span>
+            <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{crumb}</span>
           </>
         )}
       </div>

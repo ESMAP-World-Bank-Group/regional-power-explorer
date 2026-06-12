@@ -1169,7 +1169,7 @@ export default function RegionPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        height: panelExpanded ? '50vh' : 68,
+        height: panelExpanded ? '50vh' : 88,
         overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
@@ -1183,7 +1183,7 @@ export default function RegionPage() {
       }}>
         {isMobile && (
           <div onClick={() => setPanelExpanded(e => !e)} style={{
-            height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            height: 88, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '0 20px', cursor: 'pointer', flexShrink: 0,
             borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
             position: 'relative',
@@ -1204,7 +1204,7 @@ export default function RegionPage() {
             </div>
           </div>
         )}
-        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 68px)', padding: '12px 16px 24px' } : {}}>
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 88px)', padding: '12px 16px 24px' } : {}}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 16, flexWrap: 'wrap' }}>
           <Link to="/" style={{ fontSize: '0.75rem', color: t.muted }}>World</Link>
           <span style={{ color: t.panelBorder, fontSize: '0.75rem' }}>/</span>
