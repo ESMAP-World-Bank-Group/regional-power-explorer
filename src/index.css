@@ -56,6 +56,10 @@ a { text-decoration: none; color: inherit; }
 }
 .layer-row:hover { background: rgba(128,160,200,0.09); }
 
+/* ── Legend filter buttons ───────────────────────────────────────────────── */
+.legend-btn { border-radius: 3px; transition: background 0.1s ease; }
+.legend-btn:hover { background: rgba(128,160,200,0.09) !important; }
+
 /* ── Number input ────────────────────────────────────────────────────────── */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }

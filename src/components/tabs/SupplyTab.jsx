@@ -304,6 +304,7 @@ function ChartWithLegend({ chartRef, chart, legendItems, tooltip }) {
         {tooltip}
       </div>
       <div style={{ flexShrink: 0, width: 72, display: 'flex', flexDirection: 'column', gap: 4, paddingTop: 10 }}>
+        <span style={{ fontSize: '0.5rem', color: '#8A94A6', userSelect: 'none', lineHeight: 1, marginBottom: 1 }}>click to filter</span>
         {legendItems}
       </div>
     </div>
@@ -357,10 +358,10 @@ export default function SupplyTab({ iso, theme }) {
   };
 
   const renderLegendBtn = (key, color, label, hidden, onToggle, dashed = false) => (
-    <button key={key} onClick={() => onToggle(key)} style={{
+    <button key={key} onClick={() => onToggle(key)} className="legend-btn" style={{
       display: 'flex', alignItems: 'center', gap: 4,
-      background: 'none', border: 'none', padding: 0,
-      cursor: 'pointer', opacity: hidden ? 0.35 : 1, textAlign: 'left',
+      background: 'none', border: 'none', padding: '2px 3px',
+      cursor: 'pointer', opacity: hidden ? 0.35 : 1, textAlign: 'left', width: '100%',
     }}>
       {dashed ? (
         <svg width="12" height="7" style={{ flexShrink: 0 }}>

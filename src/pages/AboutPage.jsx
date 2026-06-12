@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT } from '../constants';
@@ -259,6 +260,10 @@ function qualityChip(text, t) {
 export default function AboutPage() {
   const { theme } = useTheme();
   const t = getT(theme);
+  const [meta, setMeta] = useState(null);
+  useEffect(() => {
+    fetch('/data/metadata.json').then(r => r.ok ? r.json() : null).then(d => d && setMeta(d)).catch(() => {});
+  }, []);
 
   const th = {
     fontSize: '0.5rem', letterSpacing: '1.5px', fontWeight: 700,
@@ -303,6 +308,20 @@ export default function AboutPage() {
             Coverage and accuracy vary by region. All data should be treated as indicative
             and cross-checked against national statistics for planning purposes.
           </p>
+          {meta && (
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 14,
+              padding: '5px 12px', borderRadius: 20,
+              backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+              fontSize: '0.6rem', color: t.muted,
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#40C057', flexShrink: 0, display: 'inline-block' }} />
+              Data last refreshed:&nbsp;<strong style={{ color: t.lbl }}>
+                {new Date(meta.lastUpdated + '-01').toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
+              </strong>
+              &nbsp;·&nbsp;Target: semi-annual
+            </div>
+          )}
         </div>
 
         {/* Tables by category */}
