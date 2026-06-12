@@ -407,9 +407,10 @@ export default function RegionPage() {
         },
       });
 
-      // Planned: faint filled + thin stroke
+      // Planned: faint filled + thin stroke — hidden by default (statusOff init)
       map.addLayer({ id: 'plants-planned', type: 'circle', source: 'plants',
         filter: makeLayerFilter('planned', new Set(), 100),
+        layout: { visibility: 'none' },
         paint: {
           'circle-radius':         plantRadiusExpr(),
           'circle-color':          colorExpr,

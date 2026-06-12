@@ -349,10 +349,7 @@ export default function CountryPage() {
           id: `plants-${fuel}`,
           type: 'circle',
           source: 'plants',
-          filter: ['all',
-            ['==',  ['get', 'fuel'], fuel],
-            ['>=', ['get', 'mw'],   100],
-          ],
+          filter: buildPlantFilter(fuel, 100, new Set(['planned'])),
           paint: {
             'circle-radius':  plantRadiusExpr(),
             'circle-color':   color,
