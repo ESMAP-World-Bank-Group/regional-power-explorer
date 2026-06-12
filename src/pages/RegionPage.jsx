@@ -513,6 +513,39 @@ export default function RegionPage() {
       // ── Feature click → detail panel ──────────────────────────────────────
       const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
 
+      // Line hover → popup with exact voltage + endpoint substation names
+      const nearestSubName = (coord) => {
+        try {
+          const feats = map.querySourceFeatures('substations');
+          let best = null, bestD = Infinity;
+          for (const f of feats) {
+            if (f.geometry?.type !== 'Point') continue;
+            const [lng, lat] = f.geometry.coordinates;
+            const d = (lng - coord[0]) ** 2 + (lat - coord[1]) ** 2;
+            if (d < bestD) { bestD = d; best = f; }
+          }
+          return bestD < 0.01 ? (best?.properties?.name || null) : null;
+        } catch { return null; }
+      };
+      for (const { key } of VOLTAGE_BRACKETS) {
+        map.on('mouseenter', `lines-${key}`, e => {
+          map.getCanvas().style.cursor = 'pointer';
+          const feat = e.features[0];
+          const v = feat.properties.v;
+          const geom = feat.geometry;
+          const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
+          const fromName = nearestSubName(coords[0]);
+          const toName   = nearestSubName(coords[coords.length - 1]);
+          const route = (fromName || toName)
+            ? `<b>${[fromName, toName].filter(Boolean).join(' — ')}</b><br>` : '';
+          popup.setLngLat(e.lngLat)
+            .setHTML(`${route}<span style="opacity:.75">${Math.round(v / 1000)} kV</span>`)
+            .addTo(map);
+        });
+        map.on('mousemove', `lines-${key}`, e => { popup.setLngLat(e.lngLat); });
+        map.on('mouseleave', `lines-${key}`, () => { map.getCanvas().style.cursor = ''; popup.remove(); });
+      }
+
       // Plants — keep hover popup, add click for detail panel
       let clickedPoint = false;
       for (const status of PLANT_STATUSES) {
