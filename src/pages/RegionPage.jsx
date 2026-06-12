@@ -95,7 +95,7 @@ export default function RegionPage() {
   const [gemAvailable,  setGemAvailable]  = useState(null);
   const [presentFuels,  setPresentFuels]  = useState(new Set());
   const [fuelsOff,      setFuelsOff]      = useState(new Set());
-  const [statusOff,     setStatusOff]     = useState(new Set());
+  const [statusOff,     setStatusOff]     = useState(new Set(['planned']));
   const [kvsOff,        setKvsOff]        = useState(new Set());
   const [linesOn,       setLinesOn]       = useState(true);
   const [plantsOn,      setPlantsOn]      = useState(true);

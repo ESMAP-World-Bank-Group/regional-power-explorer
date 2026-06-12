@@ -98,7 +98,7 @@ export default function CountryPage() {
   const [info,         setInfo]         = useState(null);  // { country, region }
   const [presentFuels, setPresentFuels] = useState(new Set());
   const [fuelsOff,     setFuelsOff]     = useState(new Set());
-  const [statusOff,    setStatusOff]    = useState(new Set());
+  const [statusOff,    setStatusOff]    = useState(new Set(['planned']));
   const [kvsOff,       setKvsOff]       = useState(new Set());
   const [linesOn,      setLinesOn]      = useState(true);
   const [plantsOn,     setPlantsOn]     = useState(true);
@@ -1186,7 +1186,7 @@ export default function CountryPage() {
             {[
               { id: 'overview', label: 'Overview' },
               { id: 'load',     label: 'Load' },
-              { id: 'supply',   label: 'Supply' },
+              { id: 'supply',   label: 'Supply & Trade' },
               { id: 're',       label: 'RE' },
               { id: 'zoning',   label: 'Zones' },
             ].map(({ id, label }) => {
