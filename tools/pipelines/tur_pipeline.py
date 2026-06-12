@@ -34,6 +34,8 @@ def _n(v):
 def _r(v):
     try:
         f = float(v)
+        if f != f:  # NaN is the only float not equal to itself
+            return None
         return round(f, 1)
     except Exception:
         return None
@@ -192,7 +194,7 @@ def run():
 
     OUT_SUPPLY.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_SUPPLY, 'w', encoding='utf-8') as f:
-        json.dump(supply, f, indent=2, ensure_ascii=False)
+        json.dump(supply, f, indent=2, ensure_ascii=False, allow_nan=False)
     print(f'TUR supply → {OUT_SUPPLY}')
 
     years, imp, exp = _build_trade()
@@ -207,7 +209,7 @@ def run():
 
     OUT_TRADE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_TRADE, 'w', encoding='utf-8') as f:
-        json.dump(trade, f, indent=2, ensure_ascii=False)
+        json.dump(trade, f, indent=2, ensure_ascii=False, allow_nan=False)
     print(f'TUR trade  → {OUT_TRADE}')
 
 

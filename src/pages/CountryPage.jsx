@@ -160,6 +160,7 @@ export default function CountryPage() {
   useEffect(() => {
     fetch('/data/regions.json').then(r => r.json()).then(d => {
       for (const region of (d.regions || [])) {
+        if (region.type === 'meta') continue; // meta-regions have no cache files
         const country = region.countries.find(c => c.iso === iso);
         if (country) {
           setInfo({ country, region });
