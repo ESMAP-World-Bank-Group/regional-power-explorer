@@ -1,0 +1,98 @@
+{
+  "country": "Madagascar",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Coal": [
+        80.0,
+        80.0,
+        120.0,
+        460.0,
+        480.0,
+        210.0,
+        470.0,
+        510.0,
+        510.0
+      ],
+      "Hydro": [
+        930.0,
+        880.0,
+        780.0,
+        960.0,
+        890.0,
+        820.0,
+        770.0,
+        820.0,
+        980.0
+      ],
+      "Solar": [
+        20.0,
+        20.0,
+        20.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        80.0,
+        80.0
+      ],
+      "Oil": [
+        740.0,
+        900.0,
+        1030.0,
+        890.0,
+        1040.0,
+        1070.0,
+        1220.0,
+        1200.0,
+        880.0
+      ],
+      "Bioenergy": [
+        20.0,
+        20.0,
+        30.0,
+        30.0,
+        20.0,
+        20.0,
+        30.0,
+        30.0,
+        30.0
+      ],
+      "Other Renewables": [
+        20.0,
+        20.0,
+        30.0,
+        30.0,
+        20.0,
+        20.0,
+        30.0,
+        30.0,
+        30.0
+      ]
+    },
+    "demand": [
+      1790.0,
+      1900.0,
+      1980.0,
+      2380.0,
+      2470.0,
+      2160.0,
+      2530.0,
+      2640.0,
+      2480.0
+    ]
+  }
+}
