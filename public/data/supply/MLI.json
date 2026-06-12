@@ -1,0 +1,87 @@
+{
+  "country": "Mali",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        1120.0,
+        1480.0,
+        1480.0,
+        1360.0,
+        1370.0,
+        1440.0,
+        1330.0,
+        1640.0,
+        970.0
+      ],
+      "Solar": [
+        30.0,
+        30.0,
+        30.0,
+        30.0,
+        30.0,
+        100.0,
+        140.0,
+        150.0,
+        150.0
+      ],
+      "Oil": [
+        1300.0,
+        1450.0,
+        1870.0,
+        2160.0,
+        2350.0,
+        2330.0,
+        2400.0,
+        2480.0,
+        4820.0
+      ],
+      "Bioenergy": [
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "Other Renewables": [
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ]
+    },
+    "demand": [
+      2640.0,
+      2670.0,
+      3190.0,
+      3480.0,
+      3860.0,
+      4090.0,
+      4100.0,
+      4610.0,
+      5290.0
+    ]
+  }
+}

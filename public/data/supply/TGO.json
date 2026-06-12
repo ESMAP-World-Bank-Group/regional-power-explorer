@@ -1,0 +1,76 @@
+{
+  "country": "Togo",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        180.0,
+        30.0,
+        130.0,
+        210.0,
+        460.0,
+        460.0,
+        480.0,
+        650.0,
+        520.0
+      ],
+      "Hydro": [
+        60.0,
+        200.0,
+        210.0,
+        200.0,
+        120.0,
+        80.0,
+        90.0,
+        80.0,
+        80.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        70.0,
+        100.0,
+        110.0
+      ],
+      "Oil": [
+        200.0,
+        710.0,
+        470.0,
+        180.0,
+        20.0,
+        60.0,
+        70.0,
+        70.0,
+        0.0
+      ]
+    },
+    "demand": [
+      1010.0,
+      1690.0,
+      1550.0,
+      1480.0,
+      1450.0,
+      1420.0,
+      1510.0,
+      2030.0,
+      2250.0
+    ]
+  }
+}

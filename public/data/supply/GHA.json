@@ -1,0 +1,98 @@
+{
+  "country": "Ghana",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        4860.0,
+        4000.0,
+        3990.0,
+        5120.0,
+        7190.0,
+        11590.0,
+        13800.0,
+        14230.0,
+        14390.0
+      ],
+      "Hydro": [
+        5790.0,
+        5510.0,
+        5620.0,
+        6020.0,
+        7250.0,
+        7290.0,
+        7530.0,
+        8190.0,
+        9190.0
+      ],
+      "Solar": [
+        0.0,
+        30.0,
+        30.0,
+        30.0,
+        50.0,
+        60.0,
+        130.0,
+        160.0,
+        150.0
+      ],
+      "Oil": [
+        970.0,
+        3610.0,
+        3640.0,
+        3720.0,
+        2790.0,
+        770.0,
+        600.0,
+        620.0,
+        550.0
+      ],
+      "Bioenergy": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0
+      ],
+      "Other Renewables": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0
+      ]
+    },
+    "demand": [
+      11280.0,
+      13730.0,
+      13350.0,
+      14310.0,
+      16000.0,
+      17990.0,
+      20390.0,
+      21050.0,
+      21850.0
+    ]
+  }
+}

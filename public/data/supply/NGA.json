@@ -1,0 +1,87 @@
+{
+  "country": "Nigeria",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        26700.0,
+        28330.0,
+        24440.0,
+        28940.0,
+        27950.0,
+        30190.0,
+        31100.0,
+        28610.0,
+        31640.0
+      ],
+      "Hydro": [
+        6420.0,
+        8150.0,
+        7750.0,
+        7700.0,
+        8430.0,
+        7690.0,
+        7940.0,
+        9230.0,
+        9110.0
+      ],
+      "Solar": [
+        30.0,
+        30.0,
+        30.0,
+        40.0,
+        50.0,
+        80.0,
+        100.0,
+        100.0,
+        110.0
+      ],
+      "Bioenergy": [
+        20.0,
+        30.0,
+        20.0,
+        30.0,
+        30.0,
+        40.0,
+        60.0,
+        60.0,
+        60.0
+      ],
+      "Other Renewables": [
+        20.0,
+        30.0,
+        20.0,
+        30.0,
+        30.0,
+        40.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    "demand": [
+      33170.0,
+      34600.0,
+      29780.0,
+      33710.0,
+      34130.0,
+      34990.0,
+      36140.0,
+      35570.0,
+      38600.0
+    ]
+  }
+}

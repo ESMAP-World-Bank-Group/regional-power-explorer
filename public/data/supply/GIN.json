@@ -1,0 +1,65 @@
+{
+  "country": "Guinea",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        880.0,
+        1080.0,
+        1210.0,
+        1190.0,
+        1290.0,
+        1490.0,
+        2640.0,
+        2950.0,
+        2950.0
+      ],
+      "Solar": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        30.0,
+        30.0
+      ],
+      "Oil": [
+        240.0,
+        510.0,
+        540.0,
+        730.0,
+        740.0,
+        970.0,
+        980.0,
+        1020.0,
+        1020.0
+      ]
+    },
+    "demand": [
+      1140.0,
+      1610.0,
+      1770.0,
+      1940.0,
+      2050.0,
+      2480.0,
+      3640.0,
+      4000.0,
+      4000.0
+    ]
+  }
+}

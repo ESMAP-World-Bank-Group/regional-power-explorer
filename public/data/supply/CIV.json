@@ -1,0 +1,98 @@
+{
+  "country": "Cote d'Ivoire",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        6800.0,
+        8480.0,
+        7890.0,
+        7030.0,
+        7120.0,
+        7800.0,
+        8620.0,
+        9140.0,
+        7650.0
+      ],
+      "Hydro": [
+        1340.0,
+        1510.0,
+        2030.0,
+        2930.0,
+        3450.0,
+        3350.0,
+        2610.0,
+        3350.0,
+        3200.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0
+      ],
+      "Oil": [
+        460.0,
+        70.0,
+        80.0,
+        10.0,
+        10.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0
+      ],
+      "Bioenergy": [
+        100.0,
+        170.0,
+        110.0,
+        60.0,
+        70.0,
+        70.0,
+        80.0,
+        80.0,
+        90.0
+      ],
+      "Other Renewables": [
+        100.0,
+        170.0,
+        110.0,
+        60.0,
+        70.0,
+        70.0,
+        80.0,
+        80.0,
+        90.0
+      ]
+    },
+    "demand": [
+      7850.0,
+      9020.0,
+      8260.0,
+      8990.0,
+      9570.0,
+      10140.0,
+      10800.0,
+      11850.0,
+      10270.0
+    ]
+  }
+}

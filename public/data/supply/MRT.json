@@ -1,0 +1,76 @@
+{
+  "country": "Mauritania",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        190.0,
+        130.0,
+        170.0,
+        190.0,
+        200.0,
+        210.0,
+        210.0,
+        210.0,
+        210.0
+      ],
+      "Solar": [
+        30.0,
+        60.0,
+        60.0,
+        150.0,
+        150.0,
+        140.0,
+        140.0,
+        140.0,
+        140.0
+      ],
+      "Wind": [
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        120.0,
+        120.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "Oil": [
+        840.0,
+        870.0,
+        1020.0,
+        1020.0,
+        1100.0,
+        1160.0,
+        1130.0,
+        1190.0,
+        1640.0
+      ]
+    },
+    "demand": [
+      1340.0,
+      1380.0,
+      1540.0,
+      1660.0,
+      1770.0,
+      1850.0,
+      1770.0,
+      2020.0,
+      2350.0
+    ]
+  }
+}

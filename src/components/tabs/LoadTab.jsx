@@ -32,6 +32,46 @@ const ENTSOE_ISO3 = new Set(['ROU','BGR','TUR','ALB','BIH','MKD','MNE','SRB','KO
 
 const PROFILE_EUROPEAN = [42,38,35,33,32,33,38,56,75,82,85,86,87,87,85,83,84,88,93,96,91,78,65,52];
 
+function getSourceMeta(src) {
+  if (!src) return { short: '—', rel: null, note: '' };
+  const s = src.toLowerCase();
+  if (s.includes('entso-e'))                      return { short: 'ENTSO-E',          rel: 'high',   note: 'Official hourly metered data' };
+  if (s.includes('eapp'))                         return { short: 'EAPP Secretariat', rel: 'high',   note: 'Official annual interconnection statistics' };
+  if (s.includes('teias') || s.includes('epias')) return { short: 'TEIAS/EPIAS',      rel: 'high',   note: 'Official Turkish TSO data' };
+  if (s.includes('owid') || s.includes('ember'))  return { short: 'OWID/Ember',       rel: 'medium', note: 'Cross-validated estimates; small countries may be approximate' };
+  if (s.includes('comtrade'))                     return { short: 'Comtrade HS 2716', rel: 'medium', note: 'Customs declarations; coverage varies by country' };
+  if (s.includes('wdi') || s.includes('world bank')) return { short: 'WB WDI',        rel: 'medium', note: 'Derived from per-capita electricity use × population' };
+  const short = src.split('—')[0].split('(')[0].trim();
+  return { short: short.length > 28 ? short.slice(0, 25) + '…' : short, rel: 'medium', note: '' };
+}
+
+const _REL_STYLE = {
+  high:   { color: '#1A9060', label: 'Official'  },
+  medium: { color: '#B87820', label: 'Estimated' },
+  low:    { color: '#B84040', label: 'Partial'   },
+};
+
+function SourceBadge({ source, t }) {
+  const { short, rel, note } = getSourceMeta(source);
+  const rs = rel ? _REL_STYLE[rel] : null;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+      <span style={{ fontSize: '0.46rem', color: t.lblMuted, fontStyle: 'italic' }}>{short}</span>
+      {rs && (
+        <span title={note || rs.label} style={{
+          display: 'inline-flex', alignItems: 'center', gap: 2,
+          fontSize: '0.38rem', padding: '1px 4px', borderRadius: 3,
+          background: `${rs.color}18`, color: rs.color,
+          fontWeight: 700, letterSpacing: '0.3px', cursor: 'default',
+        }}>
+          <span style={{ fontSize: '0.45rem', lineHeight: 1 }}>●</span>
+          {rs.label}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function downloadBlob(content, filename, type = 'application/octet-stream') {
   const blob = new Blob([content], { type });
   const url  = URL.createObjectURL(blob);
@@ -334,9 +374,10 @@ export default function LoadTab({ iso, theme }) {
               </button>
             </div>
           </div>
-          <p style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 3, fontStyle: 'italic', marginBottom: 14 }}>
-            {source} · {historical[0][0]}–{historical[historical.length - 1][0]}
-            {peakEstimated && ' · Peak estimated from load factor (55%)'}
+          <p style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 3, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
+            <SourceBadge source={source} t={t} />
+            <span>· {historical[0][0]}–{historical[historical.length - 1][0]}</span>
+            {peakEstimated && <span>· Peak est. LF = 55%</span>}
           </p>
         </>
       )}
