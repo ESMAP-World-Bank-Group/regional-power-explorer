@@ -86,8 +86,9 @@ export default function ContactPage() {
         <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 32 }}>
           A{' '}<ExternalLink href="https://www.worldbank.org">World Bank</ExternalLink>{' '}
           tool for exploring power sector data across multiple regions.
-          It aggregates open-access data on power plants, transmission lines, renewable energy
-          resources, and country profiles to support regional energy planning and cross-border analysis.
+          It aggregates open-access data on power plants, transmission lines, renewable energy resources,
+          and country profiles — providing an overview and understanding of regional power systems,
+          and supporting data access for power system planning and cross-border analysis.
         </p>
 
         {/* GitHub — main repo */}
