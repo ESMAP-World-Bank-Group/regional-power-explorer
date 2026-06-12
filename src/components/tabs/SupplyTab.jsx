@@ -50,28 +50,34 @@ const PARTNER_COLORS = {
   'turkmenistan': P.tealLight,
 };
 
-// Fallback palette for unmapped partners — visually distinct
-const _FALLBACK_PALETTE = [
-  '#E15759','#F28E2B','#76B7B2','#59A14F','#EDC948',
-  '#B07AA1','#FF9DA7','#9C755F','#BAB0AC','#4E79A7',
-  '#F1CE63','#A0CBE8','#FFBE7D','#8CD17D','#B6992D',
-  '#499894','#86BCB6','#D4A6C8','#D7B5A6','#79706E',
-];
+// Convert HSL (0-1 each) to hex — used for golden-ratio color generation
+function _hslToHex(h, s, l) {
+  const a = s * Math.min(l, 1 - l);
+  const f = n => {
+    const k = (n + h * 12) % 12;
+    return Math.round(255 * (l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)))
+      .toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
 
-// Build a per-chart color map guaranteeing all partners get distinct colors.
-// Known partners get their fixed color first; remaining partners are assigned
-// fallback palette slots in order, skipping any already taken.
+// Build a per-chart color map guaranteeing ALL partners get distinct colors,
+// regardless of how many there are.
+// Known partners get their fixed color; the rest get colors spread evenly
+// around the hue wheel using the golden ratio — never wraps or repeats.
+const _GOLDEN = 0.618033988749895;
 function buildPartnerColorMap(partners) {
   const colorMap = {};
-  const usedColors = new Set();
   for (const p of partners) {
     const fixed = PARTNER_COLORS[p.toLowerCase()];
-    if (fixed) { colorMap[p] = fixed; usedColors.add(fixed); }
+    if (fixed) colorMap[p] = fixed;
   }
-  const available = _FALLBACK_PALETTE.filter(c => !usedColors.has(c));
-  let i = 0;
+  let hue = 0.13;
   for (const p of partners) {
-    if (!colorMap[p]) { colorMap[p] = available[i % available.length] ?? '#aaa'; i++; }
+    if (!colorMap[p]) {
+      hue = (hue + _GOLDEN) % 1.0;
+      colorMap[p] = _hslToHex(hue, 0.62, 0.52);
+    }
   }
   return colorMap;
 }
