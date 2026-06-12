@@ -984,8 +984,20 @@ export default function CountryPage() {
               <polyline points="2 17 12 22 22 17"/>
               <polyline points="2 12 12 17 22 12"/>
             </svg>
-            <span style={{ fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.3px' }}>Legend</span>
+            <span style={{ fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.3px' }}>Legend & Filter</span>
           </button>
+        )}
+
+        {isMobile && (
+          <div style={{
+            position: 'absolute', top: 10, right: 12, zIndex: 5,
+            backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+            borderRadius: 6, padding: '6px 10px',
+            boxShadow: '0 1px 6px rgba(0,0,0,.2)',
+          }}>
+            <div style={{ fontSize: '0.6rem', fontWeight: 600, color: t.lbl }}>Tap a plant or line</div>
+            <div style={{ fontSize: '0.55rem', color: t.muted, marginTop: 2 }}>to explore its data</div>
+          </div>
         )}
 
         {/* ── Floating zone selector ── */}
@@ -1194,7 +1206,7 @@ export default function CountryPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        height: panelExpanded ? '50vh' : 60,
+        height: panelExpanded ? '50vh' : 68,
         overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
@@ -1208,7 +1220,7 @@ export default function CountryPage() {
       }}>
         {isMobile && (
           <div onClick={() => setPanelExpanded(e => !e)} style={{
-            height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '0 20px', cursor: 'pointer', flexShrink: 0,
             borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
             position: 'relative',
@@ -1229,7 +1241,7 @@ export default function CountryPage() {
             </div>
           </div>
         )}
-        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 60px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 68px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* ── Fixed header ── */}
         <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
           {/* Breadcrumb */}
