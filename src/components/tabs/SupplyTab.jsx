@@ -36,7 +36,7 @@ function matchFuelColor(name) {
   if (n.includes('wind'))                                                   return FUEL_COLORS.wind;
   if (n.includes('nuclear'))                                                return FUEL_COLORS.nuclear;
   if (n.includes('oil'))                                                    return FUEL_COLORS.oil;
-  if (n.includes('biomass') || n.includes('wood'))                          return FUEL_COLORS.biomass;
+  if (n.includes('biomass') || n.includes('bioenergy') || n.includes('wood')) return FUEL_COLORS.biomass;
   if (n.includes('waste') || n.includes('other') || n.includes('thermal')) return FUEL_COLORS.waste;
   return '#aaa';
 }

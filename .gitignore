@@ -21,6 +21,7 @@ data-source/raw/ARM/owid_energy.csv
 config/api_tokens.ini
 data-source/raw/OWID/
 data-source/raw/COMTRADE/
+data-source/raw/EMBER/
 
 # Python
 __pycache__/
