@@ -1170,7 +1170,7 @@ export default function RegionPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        height: panelExpanded ? '50vh' : 88,
+        height: panelExpanded ? '50vh' : 96,
         overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
@@ -1184,28 +1184,28 @@ export default function RegionPage() {
       }}>
         {isMobile && (
           <div onClick={() => setPanelExpanded(e => !e)} style={{
-            height: 88, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            height: 96, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '0 20px', cursor: 'pointer', flexShrink: 0,
             borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
             position: 'relative',
           }}>
             <div style={{
               position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
-              width: 40, height: 5, borderRadius: 3,
-              backgroundColor: t.muted, opacity: 0.6,
+              width: 44, height: 5, borderRadius: 3,
+              backgroundColor: t.muted, opacity: 0.7,
             }} />
             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text }}>{region.name}</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ fontSize: '0.55rem', color: t.muted, letterSpacing: '0.3px' }}>
-                {panelExpanded ? 'Close' : 'Details'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: t.lbl, letterSpacing: '0.3px' }}>
+                {panelExpanded ? 'Close' : 'Data'}
               </span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(74,143,204,0.85)" strokeWidth="2.5" strokeLinecap="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(74,143,204,1)" strokeWidth="2.8" strokeLinecap="round">
                 {panelExpanded ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}
               </svg>
             </div>
           </div>
         )}
-        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 88px)', padding: '12px 16px 24px' } : {}}>
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 96px)', padding: '12px 16px 24px' } : {}}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 16, flexWrap: 'wrap' }}>
           <Link to="/" style={{ fontSize: '0.75rem', color: t.muted }}>World</Link>
           <span style={{ color: t.panelBorder, fontSize: '0.75rem' }}>/</span>
