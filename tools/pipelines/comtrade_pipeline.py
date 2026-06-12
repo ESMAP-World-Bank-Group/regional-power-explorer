@@ -188,9 +188,19 @@ def _build_trade(iso3: str, api_key: str, refresh: bool) -> dict | None:
         print(f'  [{iso3}] no trade data found')
         return None
 
-    # Remove all-zero series
-    exports = {p: v for p, v in exports_by_partner.items() if any(x > 0 for x in v)}
-    imports = {p: v for p, v in imports_by_partner.items() if any(x > 0 for x in v)}
+    # Remove all-zero series, then filter noise:
+    # keep only partners where at least one year exceeds MIN_PARTNER_YEAR_GWH.
+    # Tiny values (< 5 GWh/year peak) are Comtrade re-export/transit artefacts
+    # that have no physical electricity connection (e.g. UZB→Singapore 96 GWh total).
+    MIN_PARTNER_YEAR_GWH = 5.0
+    exports = {
+        p: v for p, v in exports_by_partner.items()
+        if max(v) >= MIN_PARTNER_YEAR_GWH
+    }
+    imports = {
+        p: v for p, v in imports_by_partner.items()
+        if max(v) >= MIN_PARTNER_YEAR_GWH
+    }
 
     total_exp = sum(sum(v) for v in exports.values())
     total_imp = sum(sum(v) for v in imports.values())
