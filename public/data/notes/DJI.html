@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Djibouti Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout-warn{background:#FEF3C7;border-left:4px solid #B7770D;padding:13px 17px;margin:14px 0;font-size:13px;color:#78350F;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Djibouti electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~90 MW</div><div class="kpi-lbl">Installed capacity (mostly diesel)</div></div>
+  <div class="kpi"><div class="kpi-val">~60%</div><div class="kpi-lbl">Supply from Ethiopia imports (EDD)</div></div>
+  <div class="kpi"><div class="kpi-val">65%</div><div class="kpi-lbl">Electrification rate (World Bank 2023)</div></div>
+  <div class="kpi"><div class="kpi-val">$0.28</div><div class="kpi-lbl">Average tariff (per kWh)</div></div>
+</div>
+
+<div class="body">
+
+<div class="callout-warn"><strong>Data quality note:</strong> Djibouti is a small, centralised state (~1 million population) with relatively limited publicly available energy statistics. EDD (Electricité de Djibouti) does not publish detailed annual reports. Figures on capacity, generation shares, and electrification rates are drawn from World Bank project documents, IMF Article IV consultations, IEA, and IRENA. The installed capacity and import dependence figures are estimates with moderate uncertainty.</div>
+
+<h2>1. Energy context</h2>
+<p>Djibouti is a city-state and strategic chokepoint at the mouth of the Red Sea, through which approximately 30% of global shipping traffic passes. With a population of only ~1 million (mostly in Djibouti City), a modest land area, and no hydrocarbon resources, the country's electricity sector is characterised by acute <strong>import dependency</strong> and high tariffs. Approximately <strong>60% of Djibouti's electricity</strong> is imported from Ethiopia via the EDD-EEP interconnection — making Djibouti one of the most import-dependent electricity systems in the world. The remaining ~40% comes from domestic diesel and HFO thermal generation owned and operated by <strong>EDD (Electricité de Djibouti)</strong>, the state monopoly.</p>
+<p>Ethiopia's electricity is relatively cheap (EEPCO/EEP export price ~USD 0.03–0.07/kWh) compared to domestic diesel generation (~USD 0.20–0.30/kWh), making imports economically rational. However, the dependency creates a profound strategic vulnerability: any disruption to the Ethiopian grid — from drought affecting hydro output (as in 2015–2016 and 2021–2023), political disruption, or physical damage — directly translates into power outages in Djibouti. The 2015–2016 Ethiopian drought cut Djibouti's electricity supply significantly, exposing the risk.</p>
+<p>Two long-run diversification strategies have been discussed for decades: <strong>Lake Assal geothermal</strong> (30–50 MW potential from the world's third-lowest point and most saline lake, in an active volcanic zone) and <strong>Tadjoura wind/geothermal</strong>. Both remain under development/financing with significant execution risk. The World Bank's Djibouti Geothermal Power Generation Project and associated drilling programmes represent the primary multilateral effort to reduce import dependency over the 2025–2030 horizon.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix and supply</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Supply mix (estimated, 2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~0.7</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Domestic capacity (~90 MW nominal)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~90</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Supply mix and domestic installed capacity. ~60% of supply imported from Ethiopia; ~40% from domestic diesel/HFO thermal. Sources: IEA, IRENA, World Bank DGP project documents, IMF Article IV.</p>
+
+<ul>
+  <li><strong>Ethiopia interconnection (~60% of supply):</strong> EDD imports electricity from Ethiopia's national utility (EEP, formerly EEPCO) via a 230 kV AC transmission line (~200 MW capacity). Multiple upgrades to the interconnection have increased import capacity over time; the most recent upgrade expanded capacity to approximately 200–250 MW. Imports are priced under a long-term bilateral agreement. Reliability depends on Ethiopia's own generation balance — challenging given Ethiopia's grid reliability crisis (~39 outages/month reported in 2023).</li>
+  <li><strong>EDD domestic diesel/HFO (~40% of supply, ~90 MW):</strong> Multiple HFO and diesel generators in Djibouti City. These serve as backup when Ethiopian imports are disrupted and as peak-shaving capacity. Operating cost is approximately USD 0.20–0.30/kWh — far above the Ethiopian import price. The government's strategy is to reduce diesel dispatch as geothermal and solar capacity comes online.</li>
+  <li><strong>Solar PV (nascent, growing):</strong> Several small commercial and rooftop solar installations; government has announced a 250 MW solar target (Damerjog and Grand Bara sites) but utility-scale projects have been slow to reach FID. First utility solar IPP still in development as of mid-2026.</li>
+  <li><strong>Geothermal (pre-commercial):</strong> Lake Assal area and Tadjoura have confirmed geothermal resource. Drilling and exploration have been funded by multiple donors. Commercial-scale development (30+ MW) remains at advanced exploration/pre-FEED stage as of mid-2026 despite decades of discussion. The World Bank DGEOTHERMAL project is the primary financing vehicle.</li>
+</ul>
+<div class="callout"><strong>Military base economy:</strong> Djibouti hosts six foreign military bases: the United States (Camp Lemonnier, AFRICOM HQ, ~4,000 personnel), France, China, Japan, Italy, and Saudi Arabia. Each generates its own electricity — the bases are not grid-connected for primary supply. However, base economies support the broader Djibouti GDP and create affiliated demand from service sectors. Camp Lemonnier pays Djibouti ~USD 63 million/year in base rights. China's base (opened 2017) is politically sensitive; Japan's Jibouti facility is its only overseas military base. These installations represent de facto energy infrastructure investments not captured in EDD statistics.</div>
+
+<h3>2.2 Interconnections and import dependency</h3>
+<table>
+  <tr><th>Link</th><th>Capacity</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Ethiopia (EEP) → Djibouti (EDD)</strong></td><td>~200–250 MW</td><td>230 kV AC; primary electricity supply for Djibouti. Expanded in 2024. ~60% of Djibouti's supply. Single point of failure risk.</td></tr>
+  <tr><td><strong>Ethiopia second interconnector</strong></td><td>~200 MW additional planned</td><td>Second transmission line under discussion to increase resilience and capacity. Would allow higher import share and reduce diesel dispatch.</td></tr>
+  <tr><td><strong>Regional solar interconnection</strong></td><td>Long-term concept</td><td>Djibouti positioned as potential renewable energy transit hub (Gulf of Aden submarine cable to Arabian Peninsula). Early-stage concept; not financed.</td></tr>
+</table>
+
+<h2>3. Key actors</h2>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Notes</th></tr>
+  <tr><td><strong>Ministry of Housing, Urban Planning, Energy and Water</strong></td><td>Policy — EDD oversight, geothermal programme, solar targets, Ethiopia interconnection</td><td>Government of Djibouti</td></tr>
+  <tr><td><strong>EDD (Electricité de Djibouti)</strong></td><td>Vertically integrated state monopoly — generation (diesel+HFO), transmission, distribution; manages Ethiopia import contracts</td><td>State-owned. Financially stressed: tariff USD 0.28/kWh below long-run cost of supply.</td></tr>
+  <tr><td><strong>EEP (Ethiopian Electric Power)</strong></td><td>Electricity supplier — imports to Djibouti under bilateral agreement; manages 230 kV interconnection from Ethiopian side</td><td>Ethiopian state utility</td></tr>
+  <tr><td><strong>World Bank / IDA</strong></td><td>DGEOTHERMAL Project — geothermal exploration, drilling, pre-FEED for Lake Assal/Tadjoura; renewable energy development</td><td>Primary geothermal financier</td></tr>
+  <tr><td><strong>IMF</strong></td><td>Article IV surveillance; structural reform including EDD tariff reform conditionality</td><td>No active programme; surveillance only</td></tr>
+  <tr><td><strong>US (AFRICOM)</strong></td><td>Camp Lemonnier — self-generates; pays base rights; indirect economic demand driver</td><td>US military</td></tr>
+  <tr><td><strong>China (PLA Navy)</strong></td><td>China's first overseas military base — self-generates; geopolitically sensitive bilateral relationship</td><td>Chinese military</td></tr>
+  <tr><td><strong>DP World / Port of Djibouti</strong></td><td>Port operations — significant electricity consumer; partially self-generates for port and free zone facilities</td><td>UAE private / joint venture</td></tr>
+</table>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 Strategic vulnerability — the Ethiopia dependency</h3>
+<ul>
+  <li>Djibouti imports ~60% of its electricity from Ethiopia. The economics make sense: Ethiopian hydro at ~USD 0.04–0.06/kWh export price versus domestic diesel at USD 0.20–0.30/kWh — a 4–5x cost advantage for imports. But the strategic vulnerability is significant. Ethiopia's grid reliability crisis (2022–2024, ~39 outages/month in Addis) caused spillover disruptions to Djibouti. Any major reduction in Ethiopian export availability — drought years, domestic demand rationing, political disruption — directly affects Djibouti's supply security.</li>
+  <li>A second Ethiopia–Djibouti interconnector (under discussion) would increase resilience by providing a redundant transmission path but would not address the fundamental single-country dependency. Geothermal development — if it reaches commercial scale — is the structural diversification answer. Until then, Djibouti is strategically dependent on Ethiopia's electricity sector reliability.</li>
+</ul>
+<h3>4.2 Geothermal potential — promising but decades in development</h3>
+<ul>
+  <li>Djibouti sits on the Afar Triple Junction, where three tectonic plates meet — one of the most geologically active environments on earth. Lake Assal (155 m below sea level, 34% salinity) and the broader Afar Depression have confirmed high-temperature geothermal resources. Resource surveys since the 1970s consistently identify a viable 30–100+ MW potential.</li>
+  <li>Despite this resource, no commercial geothermal plant has been built. Challenges include: extremely corrosive brine chemistry requiring specialised materials, remote location, high drilling costs, limited local technical capacity, and the small market size making private IPP structures difficult to finance commercially. The World Bank DGEOTHERMAL project has funded multiple drilling campaigns; as of mid-2026 the most recently completed well (Fiale field) confirmed steam but has not yet proceeded to commercial FEED. A 2026 target for commercial development has slipped to 2028+.</li>
+</ul>
+<h3>4.3 Digital economy — data centres and the electricity cost ceiling</h3>
+<ul>
+  <li>Djibouti is home to the Djibouti Data Centre (DDC) — a major submarine cable landing station where 17 international submarine cables terminate, making it one of the most important internet infrastructure nodes in the world. Data centres are significant electricity consumers; their expansion depends on reliable, affordable power. At USD 0.28/kWh (among the highest in East Africa), Djibouti's electricity costs are a competitive disadvantage for data centre growth versus Kenya or Ethiopia.</li>
+  <li>If geothermal development delivers 50–100 MW of cheap baseload power by 2030, Djibouti would have a compelling proposition for data centre expansion — clean baseload at competitive prices, with submarine cable infrastructure already in place. This is the government's stated long-term strategy; execution depends on geothermal coming online.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Djibouti imports approximately 60% of its electricity from Ethiopia — making it one of the most import-dependent electricity systems on earth. The economics are sound (Ethiopian hydro is 4–5x cheaper than domestic diesel) but the strategic vulnerability is severe: Ethiopia's own reliability crisis, drought risk, and political dynamics directly flow through to Djibouti's power supply. There is currently no viable alternative to this dependency at scale.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Geothermal is Djibouti's structural long-run solution to energy independence. The Afar Triple Junction resource is real (confirmed by decades of surveys and recent drilling), but development has been delayed by challenging brine chemistry, high drilling costs, and small market size. The World Bank DGEOTHERMAL project represents the most credible path, but timelines have repeatedly slipped. Commercial geothermal is now a 2028+ prospect, not a 2026 reality.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Djibouti's extraordinary geopolitical position — six foreign military bases (US, France, China, Japan, Italy, Saudi Arabia) on its soil — provides fiscal revenue (~USD 150M+ annually in base rights) that underwrites a state budget far beyond what a 1-million-person economy could otherwise sustain. But these bases self-generate electricity and do not contribute to EDD's commercial load base or help solve the power cost problem.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The Djibouti Data Centre (17 submarine cables landing) positions Djibouti as a potential African digital infrastructure hub. But data centre growth is bottlenecked by electricity cost (USD 0.28/kWh vs. Kenya at ~$0.18/kWh) and reliability. Cheap geothermal baseload would unlock a strategically significant growth opportunity. The electricity sector's performance is directly linked to Djibouti's ability to capture the digital economy value of its geography.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Djibouti's electricity system is small (~700 GWh/year), simple (one utility, one supplier), and centrally managed — making institutional reform and regulatory improvements faster to implement than in larger systems. EDD tariff reform (currently ~$0.28/kWh below full cost-recovery) and utility financial restructuring are prerequisites for attracting private investment in solar and eventually geothermal IPPs. The IMF has flagged this repeatedly; political will to raise tariffs in an expensive import-dependent system is limited.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+World Bank — Djibouti Geothermal Power Generation Project (P146588) &nbsp;·&nbsp; World Bank — Access to Electricity, Djibouti (2023) &nbsp;·&nbsp; IEA Africa Energy Outlook 2022 — Djibouti data &nbsp;·&nbsp; IRENA Djibouti country profile (2024) &nbsp;·&nbsp; IMF Djibouti Article IV Consultation 2024 &nbsp;·&nbsp; AfDB — Djibouti energy sector review &nbsp;·&nbsp; Djibouti Data Centre (DDC) corporate information &nbsp;·&nbsp; OECD — Djibouti multi-dimensional country review &nbsp;·&nbsp; Reuters — Camp Lemonnier base agreement renewal &nbsp;·&nbsp; Chatham House — Horn of Africa geopolitics and Djibouti's balancing act &nbsp;·&nbsp; Energypedia — Djibouti electricity &nbsp;·&nbsp; International Geothermal Association — Djibouti resource assessment
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Internal note — for discussion purposes</span>
+  <span>Prepared with AI assistance &nbsp;·&nbsp; June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Ethiopia imports','Diesel / HFO'];
+const C1=['#1E9AF5','#9A7040'];
+const D1=[60,40];
+
+const L2=['HFO steam turbines','Diesel generators','Solar (small)'];
+const C2=['#9A7040','#808890','#FFD700'];
+const MW2=[55,30,5];
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:D1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:MW2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed} MW`}}}}});
+</script>
+</body>
+</html>

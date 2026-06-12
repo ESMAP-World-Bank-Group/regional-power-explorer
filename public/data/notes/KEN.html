@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenya Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}.actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Kenyan electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~3.4 GW</div><div class="kpi-lbl">Installed capacity (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">12.5 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~90%</div><div class="kpi-lbl">Renewable share of generation</div></div>
+  <div class="kpi"><div class="kpi-val">79%</div><div class="kpi-lbl">Electrification rate (2023)</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Kenya is one of the world's most renewable-intensive electricity systems, with approximately <strong>84–90% of generation</strong> from renewables — a figure driven by the East African Rift Valley's exceptional geothermal resource and a cascade of hydro plants on the Tana River. The system is not a function of recent energy transition policy; it is a structural legacy of geology. Kenya sits atop one of the world's most productive geothermal corridors, and KenGen has developed the Olkaria complex (Naivasha) into the largest geothermal generating site in Africa, approaching 1 GW.</p>
+<p>The country's two structural challenges sit at opposite ends of the value chain. On the supply side, <strong>Kenya Power (KPLC)</strong> — the sole transmission and distribution licensee — accumulated seven consecutive years of negative working capital through FY2022/23, driven by USD-denominated PPA obligations against a depreciating shilling, high system losses (~23%), and unpaid government debts (~KSh 26 billion). A cost-reflective tariff reform in April 2023 turned the company around (FY2023/24 profit: KSh 43.7 billion before tax), but the underlying structural issues — loss levels, IPP cost burden, low grid reliability — persist. On the demand side, 21% of the population remains without electricity, concentrated in arid northern counties and remote rural areas reachable only by off-grid solar.</p>
+<p>Kenya's electrification rate rose from 37% in 2013 to 79% in 2023 — one of the fastest sustained expansions globally — largely through the Last Mile Connectivity Programme. The Ethiopia–Kenya HVDC interconnector (commercial operations December 2023) is the most important regional infrastructure development, adding cheap Ethiopian hydro to the Kenyan mix and positioning Kenya as a transit hub within EAPP.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (December 2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">3.4</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">12.5</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation. Sources: EPRA Bi-Annual Statistics Report Jan–Dec 2023, IEA Kenya 2024, KenGen Annual Report 2024.</p>
+
+<ul>
+  <li><strong>Geothermal (27% capacity / 47% generation):</strong> Kenya's defining resource. The Olkaria complex near Naivasha (~885 MW KenGen-owned: Olkaria I 268 MW, II 105 MW, III 139 MW [Ormat IPP], IV 140 MW, V 158 MW, plus wellheads ~75 MW) produces the dominant share of electricity. Menengai field (Nakuru, GDC steam-sales model): first IPP unit (Sosian, 35 MW) commissioned August 2023. Baringo-Silali frontier corridor: GDC drilling underway, 300 MW Phase 1 target. Kenya's geothermal potential is estimated at 10 GW.</li>
+  <li><strong>Hydro (24% capacity / 21% generation):</strong> Seven Forks cascade on the Tana River (~600 MW: Masinga 40 MW, Kamburu 94 MW, Gitaru 225 MW, Kindaruma 72 MW, Kiambere 168 MW). Subject to drought-year output drops. High Grand Falls (700 MW, lower Tana) is being revived under a PPP framework; transaction advisor RfP issued March 2026.</li>
+  <li><strong>Wind (12% capacity / 16% generation):</strong> Lake Turkana Wind Power (310 MW, Loiyangalani, Vestas V52) — Africa's largest single wind farm, generating ~1,367–1,481 GWh/year. USD-denominated PPA adds forex cost to KPLC.</li>
+  <li><strong>Solar (12% capacity / 4% generation):</strong> ~440 MW grid-connected by end-2023. First utility-scale solar auctions under the Renewable Energy Auction Policy (REAP), replacing feed-in tariffs from 2021. Kenya is Africa's leading off-grid solar market — birthplace of PAYGo financing (M-Kopa, 2012).</li>
+  <li><strong>Thermal (19% capacity / 10% generation):</strong> Diesel/HFO peakers and IPP thermal plants (Rabai 90 MW, Thika 87 MW, Tsavo 74 MW, Iberafrica ~108 MW). High operating cost (~$150–250/MWh) means dispatch only for peak and emergency. Senate has called for renegotiating thermal IPP PPAs.</li>
+</ul>
+<div class="callout">Kenya's renewable share (~84–90%) is among the highest nationally-weighted figures in sub-Saharan Africa. This is structural, not aspirational — it reflects the geology of the Rift Valley and the Tana River, not a recent policy choice. The system operates on near-zero-carbon baseload from geothermal, with hydro and wind as complements and thermal as expensive backup.</div>
+
+<h3>2.2 Demand — historical trend and grid metrics</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">12.5</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Generation trend (2014–2023) and end-use. CAGR ~3.8%/yr 2016–2023. Sources: EPRA Statistics Reports, IEA Kenya 2024, Statista.</p>
+<p>Peak demand reached a new record of 2,316 MW in February 2025 — growth driven by Last Mile connections, ICT sector, and EV charging. System losses remain stubbornly high at 23.47% (EPRA benchmark: 18.5%), driven by commercial losses (meter tampering, theft, billing irregularities) as much as technical losses. Grid reliability: SAIDI 9.42 hours/customer/month, SAIFI 3.57 outages/month — both missing EPRA benchmarks and constraining industrial investment.</p>
+<div class="callout"><strong>Tariffs (2024):</strong> Residential lifeline ~KSh 12/kWh (~$0.09/kWh); standard domestic KSh 26–31.75/kWh (~$0.20–0.24/kWh); large industrial KSh 13.90–16.48/kWh (~$0.10–0.13/kWh). Kenya's electricity is among the most expensive in sub-Saharan Africa relative to GDP per capita — a persistent competitiveness constraint for industry. Multiple levies (fuel cost adjustment, forex adjustment, RELevies, VAT) add to the base tariff.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Ethiopia (Eastern Electricity Highway)</strong></td><td>±500 kV HVDC, 1,045 km (Sodo–Suswa)</td><td>Commercial operation December 2023. Kenya imported 751.95 GWh in H2 2024. Current contract ~200 MW growing toward 400 MW; rated 2,000 MW. AfD/AfDB/EIB/KfW financed (~$1.3 bn). Reduces thermal dispatch in Kenya.</td></tr>
+  <tr><td><strong>Uganda</strong></td><td>132 kV AC, Lessos–Tororo</td><td>Active, bidirectional. Kenya imports in dry seasons, exports when hydro is high. Upgrading capacity.</td></tr>
+  <tr><td><strong>Tanzania</strong></td><td>400 kV, under construction</td><td>Part of the Zambia–Tanzania–Kenya (ZTK) corridor — the first physical SAPP–EAPP bridge. Completion targeted 2026.</td></tr>
+</table>
+
+<h3>2.4 Kenya Power — from near-collapse to turnaround</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Financial distress and the April 2023 reform <span class="trade-badge">Structural</span></div>
+      <p class="trade-body">Kenya Power (KPLC) posted a net loss in FY2022/23 (KSh 3.2 billion), its seventh consecutive year of negative working capital. The auditor raised going-concern doubts. Root causes: USD-denominated PPA obligations (including Lake Turkana's dollar-indexed contract) while revenues are in KES; ~KSh 26 billion in unpaid debts from government agencies; commercial losses at 23.5% of units purchased. The April 2023 cost-reflective tariff reform turned the company around dramatically: FY2023/24 profit before tax was KSh 43.7 billion. But the structural issues — forex mismatch, system losses, IPP cost burden — remain. The FY2024 "profit" also incorporated significant reversal of previously unrealized forex losses as the KES stabilised in H2 2024 rather than representing purely operational improvement.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Ethiopia imports — strategic shift <span class="trade-badge trade-badge-grey">Growing</span></div>
+      <p class="trade-body">Ethiopian hydro via the HVDC interconnector is structurally cheaper than Kenyan thermal peakers (~$30–40/MWh vs. $150–250/MWh). Kenya imported 751.95 GWh in H2 2024 alone and plans to double contracted volumes to ~400 MW by 2026. This import strategy reduces thermal dispatch and lowers KPLC's average purchase cost — but creates a new strategic dependency on Ethiopian generation reliability and the HVDC line's availability. It also positions Kenya as a transit hub if the Tanzania link is completed, enabling arbitrage between Ethiopian hydro and SAPP markets.</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure</h3>
+<p>Kenya's electricity sector is formally unbundled. <strong>KenGen</strong> (74.1% government-owned, publicly listed) generates ~75% of dispatched electricity. IPPs contribute ~33% of installed capacity (~1,163 MW). <strong>KETRACO</strong> (100% government) owns and operates new high-voltage transmission assets. <strong>Kenya Power (KPLC)</strong> is the single buyer of bulk power and sole retail distributor (~50.1% government, publicly listed). <strong>EPRA</strong> is the independent regulator. <strong>REREC</strong> manages rural electrification and off-grid programs (replacing REA under the Energy Act 2019).</p>
+<p>In practice the sector retains a single-buyer structure: EETC/KPLC purchases all power and sells to end-users. The 2019 Energy Act introduced bilateral PPA rights for large industrial consumers (≥1,500 kVA demand), but the framework is nascent. KPLC is restructuring its balance sheet by transferring KSh 70.4 billion in legacy transmission assets to KETRACO to deleverage.</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Ownership / Notes</th></tr>
+  <tr><td><strong>Ministry of Energy</strong></td><td>Policy — REAP auctions, rural electrification targets, LAPSSET energy components</td><td>Government</td></tr>
+  <tr><td><strong>EPRA</strong></td><td>Regulator — tariffs, licensing, standards, reliability benchmarks (SAIDI/SAIFI)</td><td>State / independent</td></tr>
+  <tr><td><strong>KenGen</strong></td><td>Dominant generator — 1,904 MW; ~75% dispatch share; Olkaria, Seven Forks, Ngong wind, Naivasha geo</td><td>GoK 74.1%, NSE-listed</td></tr>
+  <tr><td><strong>Kenya Power (KPLC)</strong></td><td>Single buyer, transmission, distribution, retail — 9.6 million customers</td><td>GoK ~50.1%, NSE-listed</td></tr>
+  <tr><td><strong>KETRACO</strong></td><td>New HV transmission assets — built HVDC line; receiving KPLC legacy assets</td><td>100% Government</td></tr>
+  <tr><td><strong>REREC</strong></td><td>Rural electrification, KOSAP mini-grids, off-grid solar scale-up</td><td>State agency</td></tr>
+  <tr><td><strong>GDC</strong></td><td>Geothermal Development Company — drills and sells steam to IPPs at Menengai and Baringo-Silali</td><td>State-owned</td></tr>
+  <tr><td><strong>Lake Turkana Wind Power (LTWP)</strong></td><td>IPP — 310 MW wind, Loiyangalani; 20-year PPA with KPLC; ~1,400 GWh/year</td><td>Private (Aldwych, KP&amp;P, Vestas)</td></tr>
+  <tr><td><strong>Ormat Technologies</strong></td><td>IPP — Olkaria III geothermal (139 MW); long-standing profitable IPP</td><td>US-listed (NASDAQ)</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 920 420" role="img">
+<title>Kenyan electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>.nt{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;fill:#fff}.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}</style>
+
+<rect x="20"  y="18" width="155" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="98"  y="44" text-anchor="middle" dominant-baseline="central">Ministry of Energy</text>
+<rect x="215" y="18" width="145" height="52" rx="8" fill="#5B3FA0"/>
+<text class="nt" x="288" y="34" text-anchor="middle" dominant-baseline="central">EPRA</text>
+<text class="ns" x="288" y="54" text-anchor="middle" dominant-baseline="central">Regulator</text>
+<line x1="175" y1="44" x2="213" y2="44" class="arrd"/>
+<rect x="600" y="18" width="155" height="52" rx="8" fill="#1A7A4A"/>
+<text class="nt" x="678" y="34" text-anchor="middle" dominant-baseline="central">REREC / GDC</text>
+<text class="ns" x="678" y="54" text-anchor="middle" dominant-baseline="central">Rural elec · geothermal dev</text>
+
+<rect x="20"  y="120" width="145" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="93"  y="145" text-anchor="middle" dominant-baseline="central">KenGen</text>
+<text class="ns" x="93"  y="163" text-anchor="middle" dominant-baseline="central">1,904 MW · 75% dispatch</text>
+<rect x="185" y="120" width="145" height="70" rx="8" fill="#808890"/>
+<text class="nt" x="258" y="145" text-anchor="middle" dominant-baseline="central">IPPs</text>
+<text class="ns" x="258" y="163" text-anchor="middle" dominant-baseline="central">LTWP · Ormat · thermal</text>
+<line x1="165" y1="155" x2="183" y2="155" class="arr"/>
+<rect x="360" y="120" width="145" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="433" y="145" text-anchor="middle" dominant-baseline="central">KETRACO</text>
+<text class="ns" x="433" y="163" text-anchor="middle" dominant-baseline="central">Transmission · HV grid</text>
+<line x1="330" y1="155" x2="358" y2="155" class="arr"/>
+<rect x="535" y="120" width="145" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="608" y="145" text-anchor="middle" dominant-baseline="central">Kenya Power</text>
+<text class="ns" x="608" y="163" text-anchor="middle" dominant-baseline="central">Distribution · 9.6 M cust.</text>
+<line x1="505" y1="155" x2="533" y2="155" class="arr"/>
+<rect x="710" y="120" width="155" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="788" y="145" text-anchor="middle" dominant-baseline="central">Consumers</text>
+<text class="ns" x="788" y="163" text-anchor="middle" dominant-baseline="central">Residential · industrial</text>
+<line x1="680" y1="155" x2="708" y2="155" class="arr"/>
+
+<!-- Sub-gen -->
+<line x1="93" y1="190" x2="93" y2="228" stroke="#CBD5E0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<rect x="20"  y="230" width="100" height="68" rx="6" fill="#FF8C42"/>
+<text class="nt" x="70"  y="251" text-anchor="middle" dominant-baseline="central">Geothermal</text>
+<text class="ns" x="70"  y="267" text-anchor="middle" dominant-baseline="central">Olkaria ~885 MW</text>
+<text class="ns" x="70"  y="283" text-anchor="middle" dominant-baseline="central">Menengai 35 MW</text>
+<rect x="130" y="230" width="100" height="68" rx="6" fill="#1E9AF5"/>
+<text class="nt" x="180" y="251" text-anchor="middle" dominant-baseline="central">Hydro</text>
+<text class="ns" x="180" y="267" text-anchor="middle" dominant-baseline="central">Seven Forks</text>
+<text class="ns" x="180" y="283" text-anchor="middle" dominant-baseline="central">~600 MW</text>
+<rect x="240" y="230" width="100" height="68" rx="6" fill="#44DAEC"/>
+<text class="nt" x="290" y="251" text-anchor="middle" dominant-baseline="central">Wind</text>
+<text class="ns" x="290" y="267" text-anchor="middle" dominant-baseline="central">L. Turkana</text>
+<text class="ns" x="290" y="283" text-anchor="middle" dominant-baseline="central">310 MW</text>
+
+<!-- Ethiopia import -->
+<rect x="430" y="230" width="145" height="68" rx="6" fill="#1A7A4A"/>
+<text class="nt" x="503" y="251" text-anchor="middle" dominant-baseline="central">Ethiopia import</text>
+<text class="ns" x="503" y="267" text-anchor="middle" dominant-baseline="central">HVDC · ~200–400 MW</text>
+<text class="ns" x="503" y="283" text-anchor="middle" dominant-baseline="central">growing</text>
+<line x1="503" y1="230" x2="503" y2="192" class="arrd"/>
+
+<!-- Legend -->
+<rect x="20"  y="340" width="10" height="10" rx="2" fill="#5B3FA0"/><text class="lbl" x="34"  y="349">Regulator</text>
+<rect x="110" y="340" width="10" height="10" rx="2" fill="#0F7B72"/><text class="lbl" x="124" y="349">Generation</text>
+<rect x="210" y="340" width="10" height="10" rx="2" fill="#1B3A5C"/><text class="lbl" x="224" y="349">Grid / consumers</text>
+<rect x="330" y="340" width="10" height="10" rx="2" fill="#C0392B"/><text class="lbl" x="344" y="349">Distribution</text>
+<rect x="430" y="340" width="10" height="10" rx="2" fill="#1A7A4A"/><text class="lbl" x="444" y="349">Rural / imports</text>
+<line x1="20"  y1="365" x2="42"  y2="365" stroke="#6B7280" stroke-width="1.4" marker-end="url(#ar)"/>
+<text class="lbl" x="48" y="369">power / commercial</text>
+<line x1="200" y1="365" x2="222" y2="365" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+<text class="lbl" x="228" y="369">ownership / strategic</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 5 — Actor map of the Kenyan electricity sector.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 Geothermal — Africa's deepest competitive advantage</h3>
+<ul>
+  <li>Kenya's geothermal resource is unique in Africa: ~985 MW installed across Olkaria alone, a national potential of ~10 GW, and a geological corridor (Rift Valley) extending north toward Baringo, Silali, Korosi, and Paka — sites GDC is actively drilling. Geothermal produces ~47% of Kenya's electricity while consuming no fuel and emitting near-zero carbon.</li>
+  <li>Menengai (GDC steam-sales model) broke new ground in August 2023 when Sosian Energy commissioned the first 35 MW IPP unit using GDC-supplied steam. The remaining two Menengai units (2 × 35 MW) are in development. Olkaria VII (80.3 MW, KenGen) has been approved.</li>
+  <li>The binding constraint on geothermal expansion is not geological potential but drilling cost (~$5–7 million/well) and the capital-intensive surface infrastructure. GDC's steam-sales model de-risks exploration for private IPPs — replicating this at Baringo-Silali is the key near-term ambition.</li>
+</ul>
+
+<h3>4.2 Kenya Power — structural repair underway but incomplete</h3>
+<ul>
+  <li>The April 2023 tariff reform delivered a dramatic financial turnaround for KPLC (from KSh 3.2 billion net loss to KSh 43.7 billion PBT). But ~KSh 20+ billion of that swing reflects accounting reversal of unrealised forex losses as the KES stabilised — not operational improvement.</li>
+  <li>System losses at 23.47% remain far above the EPRA benchmark of 18.5%. The 5% gap represents roughly 625 GWh/year of electricity stolen or unbilled — equivalent to the output of a mid-sized power plant. Reducing this is the single most impactful operational improvement available to KPLC.</li>
+  <li>IPP cost burden: IPPs generate ~30% of electricity but receive ~52% of total KPLC payments, reflecting legacy contracts with high capacity payments. Senate pressure to renegotiate or terminate expensive thermal IPP PPAs is growing. The Lake Turkana dollar-indexed PPA is Kenya's most expensive renewable contract on a per-kWh basis given KES depreciation.</li>
+</ul>
+
+<h3>4.3 Last-mile electrification and off-grid</h3>
+<ul>
+  <li>Kenya's electrification rate rose from 37% (2013) to 79% (2023) — a 42-percentage-point increase in a decade — driven by the Last Mile Connectivity Programme (LMCP) and the Jubilee government's Big 4 agenda. LMCP has added ~1.55 million households since 2015 by subsidising connection costs for households within 600 m of an existing transformer.</li>
+  <li>The remaining ~21% unconnected population is concentrated in northern Kenya (Turkana, Marsabit, Mandera, Wajir counties) — arid, dispersed communities where grid extension costs exceed $10,000/household. Off-grid solar (solar home systems and mini-grids) is the only cost-effective solution.</li>
+  <li>Kenya is Africa's largest off-grid solar market and the birthplace of PAYGo financing (M-Kopa, 2012). KOSAP (World Bank $150 million) targets 250,000 SHS and 137 solar mini-grids. IEA projects Kenya on track for universal access by 2030 under current trajectories.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Kenya runs one of Africa's most renewable electricity systems (~84–90%) not because of recent policy but because of geology: the East African Rift Valley hosts world-class geothermal and hydro resources. Geothermal at Olkaria (~985 MW) is the backbone, producing ~47% of generation with zero fuel cost and near-zero carbon intensity.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Kenya Power's financial crisis (seven consecutive loss years through FY2022/23) was structural — a mismatch between USD-denominated PPA obligations and a depreciating shilling. The April 2023 tariff reform resolved the immediate crisis; the structural issues (system losses at 23.5%, IPP cost burden, grid reliability) persist and require continued management.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The Ethiopia–Kenya HVDC interconnector (commercial December 2023, 2,000 MW rated capacity) is the most strategically significant regional infrastructure development in EAPP. It brings cheap Ethiopian hydro into Kenya, reduces thermal dispatch, and positions Kenya as a transit hub as the Tanzania link completes. Managing this import dependency on Ethiopia's generation reliability is the key operational risk.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Electrification from 37% to 79% in a decade is a genuine achievement, driven by Last Mile Connectivity. The remaining 21% unconnected population is in remote northern counties where grid extension is uneconomic — requiring off-grid solar at scale. Kenya's PAYGo solar market (M-Kopa, SunKing, others) is the commercial mechanism to close this gap, but reaching the poorest households requires continued results-based financing.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Kenya's geothermal frontier — Baringo-Silali, Menengai expansion, Olkaria VII — is the most cost-competitive generation pipeline in East Africa. GDC's steam-sales model (drill and sell steam to private IPPs) reduces IPP risk and is proving commercially viable at Menengai. Replicating this at scale across the northern rift corridor is Kenya's most compelling long-run energy investment case.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+IEA Kenya 2024 Energy Policy Review &nbsp;·&nbsp; EPRA Bi-Annual Statistics Report Jan–Dec 2023 &nbsp;·&nbsp; EPRA Energy and Petroleum Statistics FY2023/24 &nbsp;·&nbsp; KenGen Annual Report FY2024 &nbsp;·&nbsp; Kenya Power FY2024 results &nbsp;·&nbsp; World Bank — Access to Electricity Kenya (WDI) &nbsp;·&nbsp; KETRACO — Eastern Electricity Highway &nbsp;·&nbsp; ThinkGeoEnergy — Olkaria VII / Baringo-Silali / Menengai &nbsp;·&nbsp; Lake Turkana Wind Power (LTWP) official data &nbsp;·&nbsp; Business Daily Africa — LTWP output 2024 &nbsp;·&nbsp; International Water Power — High Grand Falls revival (2026) &nbsp;·&nbsp; GOGLA Kenya Country Brief 2024 &nbsp;·&nbsp; Low Carbon Power Kenya 2024 &nbsp;·&nbsp; Wikipedia — Geothermal power in Kenya &nbsp;·&nbsp; AfDB — Last Mile Connectivity project &nbsp;·&nbsp; Capital FM — Kenya Power losses FY2022/23 &nbsp;·&nbsp; EAPP official website &nbsp;·&nbsp; LTWP second H2 2024 generation report
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Internal note — for discussion purposes</span>
+  <span>Prepared with AI assistance &nbsp;·&nbsp; June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Geothermal','Hydro','Thermal','Wind','Solar','Biomass'];
+const C1=['#FF8C42','#1E9AF5','#808890','#44DAEC','#FFD700','#1A7A4A'];
+const D1=[27,24,19,12,12,3];
+const GW1=[0.94,0.87,0.66,0.44,0.44,0.10];
+
+const L2=['Geothermal','Hydro','Wind','Thermal','Solar','Imports'];
+const C2=['#FF8C42','#1E9AF5','#44DAEC','#808890','#FFD700','#1A7A4A'];
+const D2=[47,21,16,10,4,5];
+const TWh2=D2.map(v=>+(v*12.5/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} GW (${D1[c.dataIndex]}%)`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[9.1,9.5,9.6,10.1,10.4,11.6,11.6,11.7,13.0,12.5];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:7,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Commercial &amp; industrial','Residential','Other'];
+const C3=['#1B3A5C','#2E75B6','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[55,35,10],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>

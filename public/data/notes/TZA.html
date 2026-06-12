@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanzania Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}.stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}.trade-flag{font-size:26px;flex-shrink:0;margin-top:2px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}.actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Tanzanian electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~4.1 GW</div><div class="kpi-lbl">Installed capacity (2025)</div></div>
+  <div class="kpi"><div class="kpi-val">~11 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">48%</div><div class="kpi-lbl">Electrification rate (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">2,115 MW</div><div class="kpi-lbl">JNHPP — East Africa's largest plant</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Tanzania's electricity sector entered a new era in March 2025 with the full commissioning of the <strong>Julius Nyerere Hydropower Project (JNHPP)</strong> on the Rufiji River — a 2,115 MW scheme that more than doubled the country's installed capacity overnight and made Tanzania the largest power producer in East Africa. For a country where 52% of the population still lacks reliable electricity access and per-capita consumption sits at barely 110 kWh per year, the dam represents a structural inflection point: from chronic shortage to potential surplus and regional export.</p>
+<p>Until recently the system ran on a precarious mix: natural gas (supplied from the offshore Songo Songo and Mnazi Bay fields) covered roughly two-thirds of generation, with the remainder coming from a chain of older hydro plants on the Ruaha and Pangani rivers. Droughts periodically collapsed hydro output, forcing the utility to rent expensive diesel peakers. JNHPP ends that vulnerability. The sector's remaining challenges are now about the <em>other side</em> of the equation: grid infrastructure has not kept pace with generation growth, TANESCO's finances remain structurally loss-making, electrification of the rural majority is incomplete, and a USD 42 billion offshore LNG export project has been stalled by commercial and policy disagreements since 2014.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2025, post-JNHPP)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">4.1</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, pre-JNHPP)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">11</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity reflects post-JNHPP commissioning (March 2025); generation reflects last full year prior to JNHPP ramp-up. Sources: EWURA Electricity Sub-Sector Performance Report FY 2023–24, TANESCO, IEA, LowCarbonPower.</p>
+
+<ul>
+  <li><strong>Hydro (67% of 2025 capacity / 32% of 2023 generation):</strong> JNHPP (2,115 MW, 9 Francis turbines on Rufiji River, fully operational March 2025) is the centrepiece — East Africa's largest power station. Legacy hydro comprises Kidatu (204 MW, Great Ruaha), Kihansi (180 MW), Mtera (80 MW), Pangani Falls (68 MW), and smaller plants. Annual JNHPP output is projected at 5,920 GWh/year, which will push generation above 16 TWh once fully ramped. The generation mix will shift to hydro-dominant in subsequent years.</li>
+  <li><strong>Natural gas (29% of 2025 capacity / 67% of 2023 generation):</strong> ~1,190 MW of gas-fired plant — Kinyerezi I (150 MW), Kinyerezi II (240 MW CCGT), Songas Ubungo (190 MW IPP, Songo Songo gas), IPTL Tegeta (100 MW), plus older TANESCO turbines. Gas is critical for dry-season baseload when reservoirs draw down; this role is not eliminated by JNHPP. Gas supply comes via the 232 km Songo Songo–Dar es Salaam pipeline (GASCO operated).</li>
+  <li><strong>Heavy fuel oil (2% of capacity):</strong> ~84 MW of legacy HFO plants — emergency and peaking role only; operated primarily by Aggreko under short-term contracts. Cost of ~$180–250/MWh compared with gas at ~$60/MWh means dispatch only when necessary.</li>
+  <li><strong>Solar (1% of capacity):</strong> Kishapu Solar Plant (50 MW, Shinyanga, commissioned February 2026) was Tanzania's first grid-connected utility-scale solar project. Phase 2 (100 MW) is planned. Off-grid and mini-grid solar is widespread but collectively small (~25–30 MW prior to Kishapu).</li>
+</ul>
+<div class="callout">JNHPP was financed by a USD 3 billion Export-Import Bank of China loan and constructed by Arab Contractors / PowerChina. All 9 turbines reached commercial operation in March 2025 — on a construction timeline that began in 2019. The dam is the fourth-largest in Africa by reservoir capacity.</div>
+
+<h3>2.2 Demand — historical trend and end-use</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">11</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Historical generation (grid only; off-grid solar not captured). 2024–25 uptick reflects JNHPP ramp-up. Sources: IRENA, EWURA, LowCarbonPower, IEA; end-use: TANESCO/MoE estimates.</p>
+<p>Generation grew at roughly 5–7% per year from 2014 to 2021, driven by Kinyerezi gas plant expansions. A drought dip in 2019 and a temporary plateau in 2022 interrupted the trend; JNHPP adds ~5.9 TWh/year to the system. TANESCO forecasts demand reaching 4,870 MW by 2030 — implying an investment requirement of USD 12.9 billion in generation and grid, far beyond current financing commitments.</p>
+<div class="callout"><strong>Per-capita consumption:</strong> ~110 kWh/year (2022) — one of the world's lowest. Urban households consume 300–400 kWh/year; rural connections often use less than 50 kWh. Tariffs (2024): residential blocks ~TZS 100–350/kWh (~$0.04–0.13/kWh), commercial ~TZS 372/kWh. EWURA-set tariffs cover only ~85% of TANESCO's supply costs, leaving a structural subsidy gap.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<p>TANESCO operates the national grid at 132 kV and 220 kV (backbone), with 33 kV distribution. The network was designed around northern industrial centres (Dar es Salaam, Tanga) and the Ruaha hydro cascade; the JNHPP required a dedicated 400 kV evacuation corridor south of Dar es Salaam. A USD 12.9 billion grid investment gap by 2030 means that JNHPP's surplus cannot currently all reach end consumers or export markets.</p>
+<table>
+  <tr><th>Link</th><th>Voltage</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Tanzania–Kenya</strong></td><td>400 kV</td><td>Active EAPP interconnector; bidirectional trade. Kenya imported surplus Tanzanian hydro in wet seasons; Tanzania imports Kenyan-sourced Ethiopian power during dry-season shortfalls.</td></tr>
+  <tr><td><strong>Zambia–Tanzania (ZTK Phase 1)</strong></td><td>400 kV</td><td>Kapiri Mposhi–Tunduma line; World Bank IDA-financed (USD 245 M grant). Completed 2024. First physical link between SAPP and EAPP — enables power trading from southern Africa to East Africa.</td></tr>
+  <tr><td><strong>Tanzania–Zanzibar</strong></td><td>33 kV submarine</td><td>Active; ~130 MW imported to Zanzibar from mainland. ZECO operates Unguja and Pemba islands. Capacity and reliability constraints drive Zanzibar solar expansion plans.</td></tr>
+  <tr><td><strong>Tanzania–Uganda (planned)</strong></td><td>400 kV</td><td>Proposed under EAPP master plan; not yet financed. Would open JNHPP export route northward.</td></tr>
+</table>
+
+<h3>2.4 Cross-border trade and regional role</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-flag"></div>
+    <div class="trade-content">
+      <div class="trade-title">From import dependence to export ambition <span class="trade-badge">Structural shift</span></div>
+      <p class="trade-body">Prior to JNHPP, Tanzania was a net electricity importer in dry years, dependent on Kenyan and Ethiopian flows to supplement drought-constrained hydro. By mid-2025, with ~1,175 MW from JNHPP feeding the grid and ~940 MW available for dispatch above domestic requirements, the Ministry of Energy formally identified export target markets: Burundi, Rwanda, Mozambique, and Malawi. This is a profound reversal of strategic position — but realising export revenues requires grid investment that is only partially financed.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-flag"></div>
+    <div class="trade-content">
+      <div class="trade-title">Zambia–Tanzania–Kenya corridor (ZTK) <span class="trade-badge trade-badge-grey">Operational</span></div>
+      <p class="trade-body">The ZTK interconnector (target full completion 2026) is the first physical bridge between the Southern Africa Power Pool (SAPP) and the Eastern Africa Power Pool (EAPP). Tanzania sits at the centre of this corridor. When complete, it will enable power trading from South African generators all the way to Ethiopia — a historically fragmented continental grid beginning to knit together. Tanzania's geography makes it the indispensable transit country for this integration.</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure</h3>
+<p>Tanzania operates a <strong>vertically integrated monopoly</strong> model: TANESCO (Tanzania Electric Supply Company) controls generation, high-voltage transmission, and distribution on the mainland, owned 100% by the Government of Tanzania. ZECO (Zanzibar Electricity Corporation) operates semi-independently on the islands. IPPs contribute only ~12% of installed capacity — far below regional peers — reflecting historically difficult PPA negotiations and payment risk.</p>
+<p>A 2025–2035 ESI Reform Strategy envisages reorganising TANESCO into specialised subsidiaries with private management contracts in distribution, expanded IPP participation, and eventually separated transmission. Implementation has been slow: multiple reform rounds since 2015 have stalled at the point of actual unbundling. EWURA (Energy and Water Utilities Regulatory Authority) sets tariffs and licences operators but is constrained by below-cost-recovery tariff levels mandated by government policy.</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Ownership / notes</th></tr>
+  <tr><td><strong>Ministry of Energy</strong></td><td>Policy — sector strategy, rural electrification, LNG framework, tariff guidance</td><td>Government</td></tr>
+  <tr><td><strong>EWURA</strong></td><td>Regulator — electricity, gas downstream, water. Tariff setting, licensing, standards</td><td>State / independent authority</td></tr>
+  <tr><td><strong>TANESCO</strong></td><td>Vertically integrated utility — generation (~88% of capacity), 132–400 kV transmission, distribution on mainland</td><td>100% Government of Tanzania</td></tr>
+  <tr><td><strong>TPDC</strong></td><td>Upstream gas — manages domestic gas allocation vs. LNG export; 15% EACOP partner</td><td>State-owned</td></tr>
+  <tr><td><strong>GASCO</strong></td><td>Gas transmission — Songo Songo pipeline and natural gas distribution to generators</td><td>State-owned (TPDC subsidiary)</td></tr>
+  <tr><td><strong>Songas Ltd</strong></td><td>IPP — 190 MW gas (Ubungo); oldest large IPP; Songo Songo gas under long-term PPA</td><td>Private (Globeleq, IFC, others)</td></tr>
+  <tr><td><strong>IPTL</strong></td><td>IPP — 100 MW HFO/gas (Tegeta); controversial history of disputes with TANESCO</td><td>Private</td></tr>
+  <tr><td><strong>REA Tanzania</strong></td><td>Rural Energy Agency — last-mile grid extension, mini-grids; 99.1% village coverage achieved Oct 2024</td><td>State</td></tr>
+  <tr><td><strong>Equinor / Shell / TPDC</strong></td><td>LNG project sponsors — Likong'o 10 mtpa terminal (USD 42B project; FID pending)</td><td>Equinor 33%, Shell 33%, TPDC 15%, others</td></tr>
+  <tr><td><strong>TotalEnergies / EACOP consortium</strong></td><td>East African Crude Oil Pipeline — 1,444 km Hoima–Tanga; ~79% complete by Dec 2025</td><td>TotalEnergies 62%, TPDC 15%, UNOC 15%, CNOOC 8%</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 920 460" role="img">
+<title>Tanzanian electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>.nt{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;fill:#fff}.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}</style>
+
+<!-- ROW 1: Ministry + EWURA -->
+<rect x="20"  y="18" width="160" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="100" y="44" text-anchor="middle" dominant-baseline="central">Ministry of Energy</text>
+<rect x="220" y="18" width="155" height="52" rx="8" fill="#5B3FA0"/>
+<text class="nt" x="298" y="34" text-anchor="middle" dominant-baseline="central">EWURA</text>
+<text class="ns" x="298" y="54" text-anchor="middle" dominant-baseline="central">Regulator · tariffs · licences</text>
+<line x1="180" y1="44" x2="218" y2="44" class="arrd"/>
+
+<!-- TPDC / GASCO -->
+<rect x="560" y="18" width="150" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="635" y="34" text-anchor="middle" dominant-baseline="central">TPDC / GASCO</text>
+<text class="ns" x="635" y="54" text-anchor="middle" dominant-baseline="central">Gas upstream + pipeline</text>
+
+<!-- ROW 2: Generation → Transmission → Distribution → Consumers -->
+<rect x="20"  y="120" width="155" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="98"  y="145" text-anchor="middle" dominant-baseline="central">TANESCO</text>
+<text class="ns" x="98"  y="163" text-anchor="middle" dominant-baseline="central">Generation (~88%)</text>
+<line x1="175" y1="155" x2="206" y2="155" class="arr"/>
+<rect x="207" y="120" width="155" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="285" y="145" text-anchor="middle" dominant-baseline="central">TANESCO</text>
+<text class="ns" x="285" y="163" text-anchor="middle" dominant-baseline="central">Transmission (132–400 kV)</text>
+<line x1="362" y1="155" x2="393" y2="155" class="arr"/>
+<rect x="394" y="120" width="155" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="472" y="145" text-anchor="middle" dominant-baseline="central">TANESCO</text>
+<text class="ns" x="472" y="163" text-anchor="middle" dominant-baseline="central">Distribution + retail</text>
+<line x1="549" y1="155" x2="580" y2="155" class="arr"/>
+<rect x="581" y="120" width="155" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="659" y="145" text-anchor="middle" dominant-baseline="central">Consumers</text>
+<text class="ns" x="659" y="163" text-anchor="middle" dominant-baseline="central">~6.5 M connections</text>
+
+<!-- TPDC gas feed to generation -->
+<line x1="635" y1="70" x2="635" y2="96" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3"/>
+<line x1="635" y1="96" x2="98"  y2="96" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3"/>
+<line x1="98"  y1="96" x2="98"  y2="120" class="arrd"/>
+<text class="lbl" x="360" y="90" text-anchor="middle">gas supply</text>
+
+<!-- Ministry oversight (dashed down) -->
+<path d="M100 70 L100 90" fill="none" stroke="#6B7280" stroke-width="1" stroke-dasharray="4 3"/>
+
+<!-- ROW 3: IPPs + JNHPP + REA -->
+<line x1="98" y1="190" x2="98" y2="230" stroke="#CBD5E0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<rect x="20"  y="235" width="120" height="68" rx="6" fill="#808890"/>
+<text class="nt" x="80"  y="256" text-anchor="middle" dominant-baseline="central">IPPs</text>
+<text class="ns" x="80"  y="272" text-anchor="middle" dominant-baseline="central">Songas, IPTL</text>
+<text class="ns" x="80"  y="288" text-anchor="middle" dominant-baseline="central">~12% capacity</text>
+<line x1="140" y1="269" x2="207" y2="190" class="arrd"/>
+
+<rect x="155" y="235" width="135" height="68" rx="6" fill="#1E9AF5"/>
+<text class="nt" x="223" y="256" text-anchor="middle" dominant-baseline="central">JNHPP</text>
+<text class="ns" x="223" y="272" text-anchor="middle" dominant-baseline="central">2,115 MW · Rufiji</text>
+<text class="ns" x="223" y="288" text-anchor="middle" dominant-baseline="central">March 2025</text>
+<line x1="223" y1="235" x2="223" y2="192" class="arrd"/>
+
+<!-- REA -->
+<rect x="730" y="120" width="155" height="70" rx="8" fill="#1A7A4A"/>
+<text class="nt" x="808" y="145" text-anchor="middle" dominant-baseline="central">REA Tanzania</text>
+<text class="ns" x="808" y="163" text-anchor="middle" dominant-baseline="central">Rural electrification</text>
+<line x1="736" y1="155" x2="736" y2="155" class="arr"/>
+
+<!-- Regional exports -->
+<rect x="310" y="235" width="135" height="68" rx="6" fill="#B7770D"/>
+<text class="nt" x="378" y="256" text-anchor="middle" dominant-baseline="central">EAPP / SAPP</text>
+<text class="ns" x="378" y="272" text-anchor="middle" dominant-baseline="central">KEN · ZMB exports</text>
+<text class="ns" x="378" y="288" text-anchor="middle" dominant-baseline="central">ZTK corridor</text>
+<line x1="378" y1="235" x2="378" y2="192" class="arrd"/>
+
+<!-- Legend -->
+<rect x="20"  y="360" width="10" height="10" rx="2" fill="#5B3FA0"/><text class="lbl" x="34"  y="369">Regulator</text>
+<rect x="110" y="360" width="10" height="10" rx="2" fill="#1B3A5C"/><text class="lbl" x="124" y="369">Grid / market</text>
+<rect x="210" y="360" width="10" height="10" rx="2" fill="#0F7B72"/><text class="lbl" x="224" y="369">Generation</text>
+<rect x="305" y="360" width="10" height="10" rx="2" fill="#C0392B"/><text class="lbl" x="319" y="369">Distribution</text>
+<rect x="405" y="360" width="10" height="10" rx="2" fill="#1A7A4A"/><text class="lbl" x="419" y="369">Rural access</text>
+<line x1="20"  y1="385" x2="42"  y2="385" stroke="#6B7280" stroke-width="1.4" marker-end="url(#ar)"/>
+<text class="lbl" x="48" y="389">power / commercial</text>
+<line x1="200" y1="385" x2="222" y2="385" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+<text class="lbl" x="228" y="389">ownership / supply / strategic</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 5 — Actor map of the Tanzanian electricity sector. TANESCO's vertical integration means the same entity appears across generation, transmission, and distribution.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 JNHPP — transformational but grid-constrained</h3>
+<ul>
+  <li>The <strong>Julius Nyerere dam (2,115 MW, March 2025)</strong> adds more capacity than existed in the entire pre-JNHPP system. Its expected annual output of 5,920 GWh would raise national generation by ~55% relative to 2023, ending the era of rolling load shedding that has plagued Tanzanian industry and households for decades.</li>
+  <li>The binding constraint is now <strong>transmission, not generation</strong>. Tanzania faces a USD 12.9 billion grid investment gap by 2030. Surplus JNHPP power cannot reach northern regions or export markets without grid reinforcement that is only partially financed. TANESCO's weak financial position limits self-financing; World Bank, AfDB, and bilateral partners are mobilising but the scale of need is large.</li>
+  <li>The dam's reservoir management also introduces a seasonal dimension: in dry years, JNHPP output will fall, and gas plants will again become critical baseload backup. The optimal long-run portfolio combines JNHPP hydro with gas baseload and solar peaking — a mix only achievable with substantial grid investment.</li>
+</ul>
+
+<h3>4.2 The LNG dilemma — gas for power or export</h3>
+<ul>
+  <li>Tanzania holds approximately <strong>57 Tcf of proven natural gas reserves</strong> — among the largest in sub-Saharan Africa — concentrated in offshore deepwater blocks off Lindi and Mtwara. The core strategic tension: use the gas domestically (gas-to-power, industrial feedstock) or export as LNG.</li>
+  <li>The <strong>Likong'o LNG terminal</strong> (10 mtpa, USD 42 billion) has been in negotiation since 2014 without reaching Final Investment Decision. The project involves Equinor, Shell, ExxonMobil, Pavilion Energy, and TPDC. As of June 2026, a Host Government Agreement remains under negotiation — stalled on domestic gas allocation requirements, local content rules, and insurance provisions. Every year of delay narrows Tanzania's window as global LNG markets tighten with competing Australian, Qatari and American supply.</li>
+  <li>With JNHPP online, the domestic gas-to-power case weakens somewhat for baseload (hydro can now cover that) but strengthens for dry-season backup. The strategic calculus has shifted: Tanzania now needs gas primarily as a seasonal reserve, not a year-round primary fuel. This could actually improve LNG economics by freeing more gas for export.</li>
+</ul>
+<div class="callout">If the LNG FID is taken in 2026 and construction proceeds, first exports would arrive around 2030–2031. But global LNG supply is forecast to rise 42% by 2030 as Qatar, the US, and others bring new capacity online — meaning Tanzania risks entering a buyers' market if it delays further.</div>
+
+<h3>4.3 TANESCO — structural financial weakness</h3>
+<ul>
+  <li>TANESCO's tariffs cover only ~85% of supply costs — a structural subsidy gap that limits investment capacity, contributes to IPP payment arrears, and concentrates risk on the government balance sheet. Historical disputes with IPPs (Symbion arbitration; IPTL commercial conflicts) have damaged Tanzania's reputation as an IPP market, keeping private capital share at ~12% of installed capacity.</li>
+  <li>The 2025–2035 ESI Reform Strategy envisages distribution management contracts with private operators and IPP expansion. Whether this reform actually proceeds depends on political will: unbundling TANESCO means ending a state monopoly that successive governments have treated as a patronage resource. The track record of reform announcements without implementation is long.</li>
+  <li>JNHPP debt service to China Exim Bank adds a new fixed-cost obligation that TANESCO must service regardless of electricity revenues. If tariff reform does not proceed, the gap between costs and revenues will widen as depreciation and debt service climb.</li>
+</ul>
+
+<h3>4.4 Rural electrification — villages connected, households not</h3>
+<ul>
+  <li>REA Tanzania achieved a milestone in October 2024: 12,240 of ~12,300 villages (99.1%) have been connected to the grid. The headline figure masks the real situation: <strong>actual household connection rates remain around 23–40% in rural areas</strong>, because last-mile internal wiring, connection fees (~TZS 320,000 / ~$120), and metering costs are beyond the means of most rural households.</li>
+  <li>Tanzania's population of ~65 million means that even at 48% national electrification (World Bank 2023), approximately 34 million people lack reliable electricity access. Per-capita consumption of ~110 kWh/year is one of the world's lowest — below Haiti, below Bangladesh.</li>
+  <li>A rapid scale-up of off-grid and mini-grid solar (in parallel with grid extension) is the most cost-effective path to closing this gap — particularly for dispersed rural settlements where grid extension costs exceed $10,000/household.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>The Julius Nyerere Hydropower Project (2,115 MW, March 2025) is the most significant single infrastructure event in Tanzania's history. It more than doubled installed capacity and ended the era of structural generation shortage. Tanzania has shifted from chronic importer to potential regional power exporter within 12 months — but grid investment has not kept pace with generation growth.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Natural gas remains essential: it covered 67% of generation in 2023 and will remain critical as dry-season baseload backup for JNHPP. Tanzania's 57 Tcf of proven offshore reserves are simultaneously a strategic national asset and the subject of a decade-long LNG export negotiation (USD 42B, Equinor/Shell) that has not reached FID. Every year of delay narrows the window as global LNG supply expands.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>TANESCO is vertically integrated, financially loss-making (tariffs cover ~85% of costs), and has managed to keep ~88% of generation capacity within its control despite multiple reform rounds. IPPs contribute only ~12% of installed capacity — far below regional peers. The 2025–2035 ESI Reform Strategy is the current framework for change; implementation pace is the key uncertainty.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>99% of villages are grid-connected but only ~48% of households have electricity access. The gap is last-mile cost: connection fees and internal wiring are unaffordable for poor rural households. Tanzania's ~34 million people without electricity access will not be served by grid extension alone — off-grid and mini-grid solar at scale is the complement that has been consistently under-resourced.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Tanzania sits at the geographic centre of East-Southern Africa power integration: the Zambia–Tanzania–Kenya corridor (ZTK) is the first physical bridge between SAPP and EAPP, completed in 2024. When JNHPP is exporting surplus and ZTK is fully operational, Tanzania becomes the transit hub for continental power trade. This is a geopolitically significant shift — but requires the transmission grid investment currently lacking.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+EWURA Electricity Sub-Sector Performance Report FY 2023–24 &nbsp;·&nbsp; TANESCO official data &nbsp;·&nbsp; World Bank — Tanzania Power Sector Sustainability Project P179654 (PAD, Feb 2024) &nbsp;·&nbsp; Julius Nyerere Hydropower Station — Wikipedia / FurtherAfrica (April 2025) &nbsp;·&nbsp; IEA Tanzania Country Profile &nbsp;·&nbsp; IRENA Tanzania Statistical Profile (2022) &nbsp;·&nbsp; LowCarbonPower Tanzania (2023) &nbsp;·&nbsp; World Bank — Access to Electricity indicator (Tanzania) &nbsp;·&nbsp; Tanzania LNG Project — Wikipedia / TPDC / FurtherAfrica (May 2025) &nbsp;·&nbsp; PwC Tanzania LNG analysis (2024) &nbsp;·&nbsp; Kinyerezi I/II — Wikipedia / Power Technology &nbsp;·&nbsp; ZTK interconnector — PVKnowhow / Open Zambia (2024) &nbsp;·&nbsp; Kishapu Solar — TanzaniaInvest / SolarQuarter (Feb 2026) &nbsp;·&nbsp; REA Tanzania — allAfrica (Dec 2023) &nbsp;·&nbsp; ESI Reform Strategy 2025–2035 — Ministry of Energy Tanzania &nbsp;·&nbsp; EACOP — Wikipedia / TanzaniaInvest updates &nbsp;·&nbsp; Africalix — JNHPP export analysis (2025) &nbsp;·&nbsp; EWURA Fact Sheet (2024)
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Internal note — for discussion purposes</span>
+  <span>Prepared with AI assistance &nbsp;·&nbsp; June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Hydro','Gas','HFO','Solar'];
+const C1=['#1E9AF5','#9A7040','#808890','#FFD700'];
+const D1=[67,29,2,1];
+const GW1=D1.map(v=>+(v*4.1/100).toFixed(2));
+
+const L2=['Gas','Hydro','HFO'];
+const C2=['#9A7040','#1E9AF5','#808890'];
+const D2=[67,32,1];
+const TWh2=D2.map(v=>+(v*11/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} GW (${D1[c.dataIndex]}%)`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[5.1,5.4,6.4,6.6,6.8,6.0,7.7,10.3,9.7,11.0];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:3,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Residential','Industry &amp; services','Other'];
+const C3=['#1B3A5C','#2E75B6','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[50,35,15],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>
