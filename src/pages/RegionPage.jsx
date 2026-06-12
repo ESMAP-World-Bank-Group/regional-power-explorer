@@ -10,6 +10,7 @@ import {
 import LayerPanel from '../components/LayerPanel';
 import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
+import MetaRegionPage from './MetaRegionPage';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -944,6 +945,8 @@ export default function RegionPage() {
     fontSize: '0.6rem', fontFamily: 'inherit',
     display: 'inline-flex', alignItems: 'center', gap: 3,
   };
+
+  if (region?.type === 'meta') return <MetaRegionPage region={region} />;
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}

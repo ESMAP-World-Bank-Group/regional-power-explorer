@@ -21,9 +21,11 @@ export default function WorldPage() {
     if (!containerRef.current || !regions) return;
 
     // iso → array of available regions (can be 2+ for overlapping pools)
+    // meta-regions are skipped here — their sub-regions handle country mapping
     const isoToRegions = {};
     const available = regions.filter(r => r.status === 'available');
     for (const r of available) {
+      if (r.type === 'meta') continue;
       for (const c of r.countries) {
         if (!isoToRegions[c.iso]) isoToRegions[c.iso] = [];
         isoToRegions[c.iso].push({ id: r.id, name: r.name, color: r.color, countryName: c.name });
@@ -203,9 +205,9 @@ export default function WorldPage() {
         }}>
           <div style={{ fontSize: '0.52rem', letterSpacing: '2px', fontWeight: 700,
             color: t.lblMuted, textTransform: 'uppercase', marginBottom: 2 }}>
-            Power Pools
+            Power Pools & Regions
           </div>
-          {regions.map(r => (
+          {regions.filter(r => r.type !== 'sub').map(r => (
             <div
               key={r.id}
               onClick={() => r.status === 'available' && navigate(`/region/${r.id}`)}
@@ -215,7 +217,8 @@ export default function WorldPage() {
                 opacity: r.status === 'available' ? 1 : 0.38,
               }}
             >
-              <span style={{ width: 9, height: 9, borderRadius: 2,
+              <span style={{ width: 9, height: 9,
+                borderRadius: r.type === 'meta' ? '50%' : 2,
                 backgroundColor: r.color, flexShrink: 0 }} />
               <span style={{ fontSize: '0.75rem', color: t.text }}>{r.name}</span>
               {r.status !== 'available' && (
