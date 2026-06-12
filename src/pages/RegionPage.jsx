@@ -1012,6 +1012,9 @@ export default function RegionPage() {
                 <polyline points="2 12 12 17 22 12"/>
               </svg>
               <span style={{ fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.3px' }}>Legend & Filter</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,143,204,1)" strokeWidth="2.8" strokeLinecap="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
             </button>
           )}
           {!isMobile && zonesAvailable && (
