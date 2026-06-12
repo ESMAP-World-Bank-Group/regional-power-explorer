@@ -1,0 +1,65 @@
+{
+  "country": "Trinidad and Tobago",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        9540.0,
+        9380.0,
+        9280.0,
+        9190.0,
+        9150.0,
+        9180.0,
+        9220.0,
+        9450.0,
+        9470.0
+      ],
+      "Solar": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Oil": [
+        20.0,
+        30.0,
+        30.0,
+        30.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ]
+    },
+    "demand": [
+      9570.0,
+      9420.0,
+      9320.0,
+      9230.0,
+      9200.0,
+      9230.0,
+      9270.0,
+      9500.0,
+      9520.0
+    ]
+  }
+}

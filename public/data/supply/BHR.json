@@ -1,0 +1,54 @@
+{
+  "country": "Bahrain",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Gas": [
+        28480.0,
+        28510.0,
+        29220.0,
+        29540.0,
+        33090.0,
+        33360.0,
+        33870.0,
+        35600.0,
+        37380.0
+      ],
+      "Solar": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        20.0,
+        20.0,
+        40.0,
+        80.0,
+        90.0
+      ]
+    },
+    "demand": [
+      28480.0,
+      28500.0,
+      29270.0,
+      29750.0,
+      33190.0,
+      33160.0,
+      33930.0,
+      35710.0,
+      37950.0
+    ]
+  }
+}

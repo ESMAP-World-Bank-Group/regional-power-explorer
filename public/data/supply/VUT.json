@@ -1,0 +1,76 @@
+{
+  "country": "Vanuatu",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Wind": [
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Oil": [
+        50.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    "demand": [
+      60.0,
+      70.0,
+      60.0,
+      80.0,
+      90.0,
+      90.0,
+      80.0,
+      80.0,
+      80.0
+    ]
+  }
+}

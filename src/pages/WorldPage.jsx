@@ -10,18 +10,90 @@ export default function WorldPage() {
   const navigate = useNavigate();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
+  const metaMarkersRef = useRef([]);
+  const metaActiveRef = useRef(null);
   const [regions, setRegions] = useState(null);
-  const [disambig, setDisambig] = useState(null); // {x, y, iso, regions[]}
+  const [metaActive, setMetaActive] = useState(null); // region obj or null
+  const [disambig, setDisambig] = useState(null);
 
   useEffect(() => {
     fetch('/data/regions.json').then(r => r.json()).then(d => setRegions(d.regions));
   }, []);
 
+  // --- Cluster marker helpers ---
+  function buildClusterEl(sub, meta) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;width:80px;height:80px;display:flex;flex-direction:column;align-items:center;cursor:pointer;';
+
+    const circle = document.createElement('div');
+    circle.style.cssText = [
+      'width:60px;height:60px;border-radius:50%;',
+      `background:${meta.color};`,
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;',
+      'box-shadow:0 3px 16px rgba(0,0,0,.45);',
+      'transition:transform .15s,box-shadow .15s;margin:0 auto;',
+    ].join('');
+
+    const cnt = document.createElement('div');
+    cnt.style.cssText = 'font-size:16px;font-weight:700;color:#fff;line-height:1;font-family:inherit;';
+    cnt.textContent = sub.countries.length;
+
+    const unit = document.createElement('div');
+    unit.style.cssText = 'font-size:8px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-family:inherit;';
+    unit.textContent = 'countries';
+
+    circle.appendChild(cnt);
+    circle.appendChild(unit);
+    wrap.appendChild(circle);
+
+    const lbl = document.createElement('div');
+    lbl.style.cssText = [
+      'margin-top:5px;font-size:10px;font-weight:600;white-space:nowrap;font-family:inherit;',
+      `color:${t.text};background:${t.panel};border:1px solid ${t.panelBorder};`,
+      'padding:2px 8px;border-radius:4px;letter-spacing:.2px;',
+    ].join('');
+    lbl.textContent = sub.name.replace(' SIDS', '');
+    wrap.appendChild(lbl);
+
+    wrap.addEventListener('mouseenter', () => {
+      circle.style.transform = 'scale(1.1)';
+      circle.style.boxShadow = '0 5px 22px rgba(0,0,0,.55)';
+    });
+    wrap.addEventListener('mouseleave', () => {
+      circle.style.transform = 'scale(1)';
+      circle.style.boxShadow = '0 3px 16px rgba(0,0,0,.45)';
+    });
+
+    return wrap;
+  }
+
+  function applyMetaMarkers(meta, map) {
+    metaMarkersRef.current.forEach(m => m.remove());
+    metaMarkersRef.current = [];
+    if (!meta || !map) return;
+    const subs = (regions || []).filter(r => r.parent === meta.id);
+    subs.forEach(sub => {
+      if (!sub.center) return;
+      const el = buildClusterEl(sub, meta);
+      el.addEventListener('click', () => navigate(`/region/${sub.id}`));
+      const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+        .setLngLat(sub.center)
+        .addTo(map);
+      metaMarkersRef.current.push(marker);
+    });
+  }
+
+  function handleMetaToggle(r) {
+    const next = metaActiveRef.current?.id === r.id ? null : r;
+    metaActiveRef.current = next;
+    setMetaActive(next);
+    if (mapRef.current) applyMetaMarkers(next, mapRef.current);
+  }
+
+  // Main map effect
   useEffect(() => {
     if (!containerRef.current || !regions) return;
 
-    // iso → array of available regions (can be 2+ for overlapping pools)
-    // meta-regions are skipped here — their sub-regions handle country mapping
     const isoToRegions = {};
     const available = regions.filter(r => r.status === 'available');
     for (const r of available) {
@@ -44,7 +116,6 @@ export default function WorldPage() {
     });
     mapRef.current = map;
 
-    // Close popover on map move
     map.on('movestart', () => setDisambig(null));
 
     map.on('load', async () => {
@@ -60,19 +131,16 @@ export default function WorldPage() {
       });
 
       map.addSource('countries', { type: 'geojson', data: countries, generateId: false });
-
       map.addLayer({ id: 'land',    type: 'fill', source: 'countries',
         paint: { 'fill-color': t.land, 'fill-opacity': 1 } });
       map.addLayer({ id: 'borders', type: 'line', source: 'countries',
         paint: { 'line-color': t.worldBdr, 'line-width': t.worldBdrW } });
 
       if (availableIsos.length) {
-        // For countries in multiple pools, use the first pool's color; ambiguous ones get a stripe via opacity trick
         const colorExpr = ['match', ['get', 'ISO_A3'],
           ...availableIsos.flatMap(iso => [iso, isoToRegions[iso][0].color]),
           'transparent',
         ];
-
         map.addLayer({
           id: 'region-fill',
           type: 'fill',
@@ -83,7 +151,6 @@ export default function WorldPage() {
             'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.55, 0.28],
           },
         });
-
         map.addLayer({
           id: 'region-border',
           type: 'line',
@@ -136,10 +203,29 @@ export default function WorldPage() {
           setDisambig({ x: pixel.x, y: pixel.y, iso, regions: rs });
         }
       });
+
+      // Restore meta markers after map rebuild (e.g., theme change)
+      if (metaActiveRef.current) applyMetaMarkers(metaActiveRef.current, map);
     });
 
-    return () => { mapRef.current?.remove(); setDisambig(null); };
+    return () => {
+      metaMarkersRef.current = []; // map.remove() detaches them
+      mapRef.current?.remove();
+      setDisambig(null);
+    };
   }, [regions, theme]);
+
+  // Build flattened legend items (main regions + sub-regions when meta is active)
+  const legendItems = regions
+    ? regions.flatMap(r => {
+        if (r.type === 'sub') return [];
+        const items = [r];
+        if (r.type === 'meta' && metaActive?.id === r.id) {
+          items.push(...regions.filter(s => s.parent === r.id));
+        }
+        return items;
+      })
+    : [];
 
   return (
     <div style={{ height: 'calc(100vh - 46px)', position: 'relative', backgroundColor: t.bg }}>
@@ -148,7 +234,6 @@ export default function WorldPage() {
       {/* Disambiguation popover */}
       {disambig && (
         <>
-          {/* Invisible backdrop to close on outside click */}
           <div
             onClick={() => setDisambig(null)}
             style={{ position: 'absolute', inset: 0, zIndex: 9 }}
@@ -207,27 +292,72 @@ export default function WorldPage() {
             color: t.lblMuted, textTransform: 'uppercase', marginBottom: 2 }}>
             Power Pools & Regions
           </div>
-          {regions.filter(r => r.type !== 'sub').map(r => (
-            <div
-              key={r.id}
-              onClick={() => r.status === 'available' && navigate(`/region/${r.id}`)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                cursor: r.status === 'available' ? 'pointer' : 'default',
-                opacity: r.status === 'available' ? 1 : 0.38,
-              }}
-            >
-              <span style={{ width: 9, height: 9,
-                borderRadius: r.type === 'meta' ? '50%' : 2,
-                backgroundColor: r.color, flexShrink: 0 }} />
-              <span style={{ fontSize: '0.75rem', color: t.text }}>{r.name}</span>
-              {r.status !== 'available' && (
-                <span style={{ fontSize: '0.58rem', color: t.lblMuted }}>soon</span>
-              )}
-            </div>
-          ))}
+          {legendItems.map(r => {
+            const isSub = r.type === 'sub';
+            const isMeta = r.type === 'meta';
+            const isActive = isMeta && metaActive?.id === r.id;
+            return (
+              <div
+                key={r.id}
+                onClick={() => {
+                  if (isMeta) { handleMetaToggle(r); return; }
+                  if (r.status === 'available') navigate(`/region/${r.id}`);
+                }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  paddingLeft: isSub ? 14 : 0,
+                  cursor: r.status === 'available' ? 'pointer' : 'default',
+                  opacity: r.status === 'available' ? 1 : 0.38,
+                }}
+              >
+                <span style={{
+                  width: isSub ? 6 : 9,
+                  height: isSub ? 6 : 9,
+                  borderRadius: (isMeta || isSub) ? '50%' : 2,
+                  backgroundColor: r.color,
+                  flexShrink: 0,
+                }} />
+                <span style={{ fontSize: isSub ? '0.68rem' : '0.75rem', color: isSub ? t.muted : t.text }}>
+                  {r.name}
+                </span>
+                {isMeta && (
+                  <span style={{ marginLeft: 'auto', fontSize: '0.58rem', color: t.muted, paddingLeft: 4 }}>
+                    {isActive ? '▲' : '▼'}
+                  </span>
+                )}
+                {!isMeta && !isSub && r.status !== 'available' && (
+                  <span style={{ fontSize: '0.58rem', color: t.lblMuted }}>soon</span>
+                )}
+                {isSub && (
+                  <span style={{ marginLeft: 'auto', fontSize: '0.55rem', color: t.muted }}>→</span>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
+
+      {/* Click hint — top right */}
+      <div style={{
+        position: 'absolute', top: 10, right: 12, zIndex: 50,
+        backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+        borderRadius: 6, padding: '6px 10px',
+        boxShadow: '0 1px 8px rgba(0,0,0,.18)',
+        display: 'flex', alignItems: 'center', gap: 7,
+        pointerEvents: 'none',
+      }}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={t.muted}
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+          <path d="M13 13l6 6"/>
+        </svg>
+        <div>
+          <div style={{ fontSize: '0.62rem', fontWeight: 600, color: t.lbl, lineHeight: 1.2 }}>
+            Click a country or region
+          </div>
+          <div style={{ fontSize: '0.55rem', color: t.muted, lineHeight: 1.3 }}>to explore the power grid</div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,65 @@
+{
+  "country": "Seychelles",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        40.0,
+        60.0,
+        70.0,
+        80.0,
+        80.0
+      ],
+      "Wind": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Oil": [
+        450.0,
+        490.0,
+        500.0,
+        510.0,
+        530.0,
+        520.0,
+        520.0,
+        530.0,
+        530.0
+      ]
+    },
+    "demand": [
+      460.0,
+      500.0,
+      510.0,
+      520.0,
+      570.0,
+      590.0,
+      600.0,
+      620.0,
+      620.0
+    ]
+  }
+}
