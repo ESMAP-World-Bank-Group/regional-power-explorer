@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambodia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
+  <div class="doc-title">The Cambodia electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~4.6 GW</div><div class="kpi-lbl">Installed domestic capacity (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~12 TWh</div><div class="kpi-lbl">Total supply incl. imports (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~92%</div><div class="kpi-lbl">Electrification rate (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">No new coal</div><div class="kpi-lbl">Policy from 2024 (PDMP 2022–2040)</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Cambodia has achieved one of the most rapid electrification expansions in Southeast Asia: from below 12% household access in 2010 to ~92% in 2023, targeting 100% by 2030. The country's electricity sector has grown roughly three-fold in a decade, driven by hydropower construction on the Mekong tributaries, coal power imports and domestic plants, significant solar deployment since 2020, and sustained cross-border electricity imports from Vietnam, Thailand, and Laos.</p>
+<p>Despite this progress, Cambodia faces a <strong>dual challenge</strong>: electricity tariffs are among the highest in Southeast Asia for industrial consumers (~USD 0.14–0.20/kWh) while the generation mix remains heavily dependent on coal (~30%) and cross-border imports (~25–30%). The <strong>Power Development Master Plan 2022–2040 (PDMP)</strong>, approved by the Royal Government in 2022, is the sector's governing document: it commits to <strong>no new coal investment after 2024</strong> (existing plants may continue operating), a target of 70% renewable energy by 2030, and carbon neutrality by 2050.</p>
+<p>Solar power has emerged as the fastest-growing source since 2020. Utility-scale solar farms in Kampong Speu, Koh Kong, and Pursat provinces have added over 800 MWp of capacity. However, grid integration challenges, limited interconnection capacity with neighbouring countries, and the need to manage seasonal hydro variability (from Mekong upstream dam operations) remain structural constraints.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Domestic installed capacity (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">4.6</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Supply mix incl. imports (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~12</div><div class="chart-center-lbl">TWh total</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and supply. Sources: EAC Cambodia Annual Report 2023, PDMP 2022–2040, ERIA ASEAN Energy Outlook 2023.</p>
+
+<ul>
+  <li><strong>Hydropower (45% of domestic capacity, ~1,800 MW):</strong> Large hydro on Mekong tributaries — Kamchay (193 MW, Sinohydro/EDF concession), Russei Chrum Krom (338 MW), Lower Sesan 2 (400 MW, China Huaneng + Cambodia). Production is highly seasonal, with a pronounced dry-season deficit (November–May) that forces increased reliance on imports and coal. Upstream Mekong dams in Laos and China reduce sediment and water flow, affecting downstream productivity and raising long-term hydro generation risk.</li>
+  <li><strong>Coal (33% of domestic capacity, ~1,300 MW):</strong> Domestic coal power plants commissioned 2016–2022 (primarily Chinese-backed IPPs). Key plants: Han Hao (260 MW, Koh Kong), Sihanoukville (100 MW), Erdos (700 MW, Stung Hav). Under the PDMP 2022–2040, no new coal capacity will be approved after 2024; existing plants will continue but are not eligible for capacity extensions. Coal tariffs from Chinese IPPs have been a source of tension with EDC over PPA pricing.</li>
+  <li><strong>Solar (18% of domestic capacity, ~830 MW):</strong> Rapid growth since 2020 — from near-zero to ~830 MWp by end-2023, with a further 720 MW pipeline for 2024–2025. Primarily utility-scale IPPs. Koh Kong Solar (60 MWp, Blue Circle), Kandal Solar, and several Chinese-backed farms. The PDMP targets solar at ~2 GWp by 2030. Grid integration (limited storage, transmission upgrades needed) is the binding constraint on further acceleration.</li>
+  <li><strong>Oil / Diesel (~10% domestic capacity):</strong> Legacy diesel generation and backup oil plants, declining as newer sources come online.</li>
+  <li><strong>Imports (~25–30% of total supply):</strong> ~3 TWh/year imported from Vietnam (primary source, via 220 kV Chau Doc–Takeo line), Thailand (~115 kV AC link), and Laos. Import dependency is being actively managed downward through domestic solar development but remains structurally significant during the dry season.</li>
+</ul>
+<div class="callout">Cambodia's highest industrial tariff (~USD 0.14–0.20/kWh) relative to regional peers is a competitiveness concern for manufacturing FDI, particularly garment and electronics assembly industries. The government is actively pursuing tariff reduction through domestic generation cost reduction and import diversification.</div>
+
+<h3>2.2 Demand — historical trend</h3>
+<div>
+  <div class="chart-title">Total electricity supply — historical trend (TWh, generation + imports)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Total electricity supply 2014–2023 (CAGR ~12%/yr). Sources: EAC, World Bank, ERIA.</p>
+<p>Cambodia has one of the fastest-growing electricity demand profiles in Southeast Asia, driven by rapid urbanisation, garment-sector industrialisation (Phnom Penh Special Economic Zones), GDP growth (~7%/yr pre-COVID), and the ongoing rural electrification programme. Peak demand has grown from ~350 MW in 2015 to over 1,800 MW in 2023. Residential consumption is growing rapidly as household appliance penetration rises with income. The industrial mix is shifting toward more electricity-intensive activities (light manufacturing, real estate, commercial services).</p>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Partner</th><th>Infrastructure</th><th>Current volume / Status</th></tr>
+  <tr><td><strong>Vietnam</strong></td><td>220 kV AC line (Chau Doc–Takeo); additional 220 kV links under expansion</td><td>Primary import source; ~1.5–2 TWh/yr. EVN (Vietnam) is the main counterparty. Additional 220–500 kV upgrades planned to increase capacity to ~600 MW.</td></tr>
+  <tr><td><strong>Thailand</strong></td><td>115 kV AC (Surin–Banteay Meanchey) and additional points</td><td>Secondary import source; lower volume (~200–300 MW capacity). EGAT/PEA are counterparties. Planned expansion to 100 MW additional import by 2025–2026.</td></tr>
+  <tr><td><strong>Laos</strong></td><td>115 kV AC links; new 230 kV link planned</td><td>300 MW hydroelectric/solar import from Laos planned from 2026 under ADB-supported framework. Currently limited flow.</td></tr>
+  <tr><td><strong>Singapore (via ASEAN grid)</strong></td><td>Indirect via LTMS-PIP framework</td><td>Cambodia identified as potential transit country for regional power trade. No direct flows to Singapore yet.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Electricité du Cambodge (EDC) <span class="trade-badge">State Utility</span></div>
+      <p class="trade-body">EDC is the state-owned utility responsible for generation, transmission, distribution, and retail. It purchases power from domestic IPPs and imports under long-term PPAs and bilateral agreements, then distributes to consumers through its regulated grid. EDC's financial viability is constrained by below-cost-recovery tariffs for some consumer classes and high PPA costs from legacy Chinese coal plants. EDC is also responsible for rural electrification through the national grid extension programme.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Electricity Authority of Cambodia (EAC) <span class="trade-badge trade-badge-grey">Independent Regulator</span></div>
+      <p class="trade-body">EAC is the independent regulatory authority, established under the Electricity Law (2001). It issues electricity licences (generation, transmission, distribution, rural electrification), approves tariffs, and enforces technical and safety standards. EAC publishes annual sector statistics and is the primary regulatory interface for IPPs and import counterparties. EAC approves the net energy metering (NEM) framework for rooftop solar (introduced 2023, updated 2024) but currently prohibits net export payments — a barrier to distributed solar.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">IPPs (domestic and import) <span class="trade-badge trade-badge-grey">Generation</span></div>
+      <p class="trade-body">Major domestic IPPs include Chinese-backed coal plants (Han Hao, Erdos Hongjun, STT), Sinohydro hydro concessions (Kamchay, Russei Chrum), and newer solar developers (Blue Circle, Chinese and Cambodian developers). Cross-border import PPAs are negotiated bilaterally with EVN (Vietnam), EGAT (Thailand), and EDL (Laos) at government-to-government level. The Royal Government reviews and approves all cross-border PPAs; no competitive auction mechanism exists for import contracts.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Coal phase-out transition:</strong> The PDMP no-new-coal commitment (from 2024) marks a significant policy shift, but ~1,300 MW of existing coal capacity will continue operating through the 2030s. Chinese coal IPPs hold multi-decade PPAs that lock in coal generation costs. Managing the transition without stranded asset disputes while maintaining affordable tariffs is the central challenge for the next decade.</li>
+  <li><strong>Import dependency and dry-season vulnerability:</strong> ~25–30% of supply is imported, primarily in the dry season when domestic hydro output falls sharply. This exposes Cambodia to supply disruptions and price volatility in neighbouring grids. Expanding domestic solar and battery storage is the principal response, but requires capital and grid upgrades.</li>
+  <li><strong>Mekong upstream dam impacts:</strong> Hydro generation is sensitive to upstream operations by Laos and China. Dam impoundments have altered seasonal flow patterns, reducing dry-season flows and sediment delivery, affecting fisheries, agriculture, and downstream hydropower productivity. Cambodia is a net loser from upstream Mekong development: hydro IPPs face production risk, and the Tonle Sap ecosystem — which supports millions of rural livelihoods — is under stress.</li>
+  <li><strong>High industrial electricity tariffs:</strong> At ~USD 0.14–0.20/kWh for industry, Cambodia is among the most expensive in ASEAN for manufacturing power. This constrains FDI attraction in electricity-intensive industries and puts pressure on EDC to reduce procurement costs. The tariff gap is particularly acute compared to Vietnam (~USD 0.07–0.10/kWh) and Thailand (~USD 0.11–0.13/kWh).</li>
+  <li><strong>Grid modernisation and solar integration:</strong> The transmission grid is underdeveloped relative to the rapid expansion of installed capacity. Solar curtailment is emerging as a constraint in the south and southwest; investment in transmission upgrades, grid balancing, and battery storage is needed to absorb the planned 720 MW+ solar pipeline through 2025.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Cambodia has achieved one of Southeast Asia's fastest electrification expansions (12% to 92% in 13 years) but at the cost of high tariffs and coal-heavy generation — the sector is now navigating the transition under the PDMP 2022–2040 framework.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The no-new-coal commitment from 2024 is a clear policy signal, but existing coal plants (~1,300 MW) will continue for decades under locked-in Chinese IPP PPAs — the transition pace depends on solar cost reductions and PPA renegotiation.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Solar has grown from near-zero to ~830 MWp in three years and is now the primary growth vector; the 70% RE by 2030 target is achievable if grid integration bottlenecks are resolved.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Import dependency (~25–30% of supply) is a structural feature driven by seasonal hydro shortfalls; diversifying import corridors (Laos 300 MW planned) and domestic storage reduces but does not eliminate this vulnerability.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Upstream Mekong dam operations (Laos, China) pose a long-term risk to Cambodian hydro productivity and the Tonle Sap ecosystem — a transboundary water governance challenge that the electricity sector cannot resolve unilaterally.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EAC Cambodia Annual Report 2023; Royal Government of Cambodia — Power Development Master Plan 2022–2040; ERIA ASEAN Energy Outlook 2023; ADB — Cambodia Energy Sector Assessment 2023; Ember Global Electricity Review 2024; Low Carbon Power — Cambodia 2024; U.S. Trade.gov — Cambodia Energy Guide 2024; Khmer Times — 720 MW solar expansion 2024; VOD English — coal plans PDMP; IEA Cambodia Country Profile; World Bank electricity access data.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Cambodia (KHM) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Coal','Solar','Oil / Diesel'];
+const C1=['#1E9AF5','#2C2C2C','#FFD700','#A0522D'];
+const GW1=[1.80,1.30,0.83,0.40];
+
+const L2=['Hydro','Coal','Solar','Oil','Imports'];
+const C2=['#1E9AF5','#2C2C2C','#FFD700','#A0522D','#5B3FA0'];
+const D2=[22,28,8,5,28];
+const scl=12;
+const TWh2=D2.map(v=>+(v*scl/100).toFixed(2));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[3.8,4.5,5.2,6.3,7.5,8.5,9.2,9.8,10.3,12.0];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

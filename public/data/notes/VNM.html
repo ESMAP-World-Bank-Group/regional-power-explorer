@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vietnam Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
+  <div class="doc-title">The Vietnam electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~80 GW</div><div class="kpi-lbl">Installed capacity (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~284 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~99.7%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">PDP8 (2023)</div><div class="kpi-lbl">Offshore wind 6 GW by 2030 · JETP $15.5B</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Vietnam achieved one of the most dramatic solar energy deployments in recorded history: from near-zero (<100 MW) in 2017 to over 20 GW of installed solar capacity by 2021 — driven by generous feed-in tariffs (FiT) that attracted massive domestic and international investment. This surge made Vietnam the world's 9th largest solar market by installed capacity by 2021, a remarkable achievement for a middle-income developing country. However, the collapse of the solar FiT programme in 2020, combined with grid bottlenecks in the South, led to severe curtailment (up to 30% in some periods) and a temporary halt in new RE development.</p>
+<p>The sector's structural challenge is the north–south <strong>transmission bottleneck</strong>: most renewable energy (solar, wind) is concentrated in the South and Centre, while a disproportionate share of industrial and urban load is in the North (Hanoi, Hai Phong) and growing rapidly. The <strong>500 kV North–South transmission line 3</strong> (circuit 3), completed June 2024 after a record 6-month construction sprint, added 2,200 MW of transfer capacity and partially alleviated the constraint. A planned circuit 4 would add further relief.</p>
+<p>Vietnam's sector governance is anchored in the <strong>Power Development Plan 8 (PDP8)</strong>, approved by the government in May 2023. PDP8 sets ambitious targets for offshore wind (6 GW by 2030, 70 GW by 2050), nuclear energy (revival of the Ninh Thuan project, deferred since 2016), and LNG import terminals for gas-fired baseload. The <strong>Just Energy Transition Partnership (JETP)</strong> announced in December 2022 commits USD 15.5 billion from G7+EU partners to accelerate Vietnam's clean energy transition and coal phase-out.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">80</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">284</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation. Sources: EVN Annual Report 2023, MOIT Vietnam, PDP8 (2023), Ember Vietnam 2024.</p>
+
+<ul>
+  <li><strong>Coal (28% capacity / 39% generation):</strong> ~22.5 GW of coal capacity generates disproportionate output (~111 TWh) due to high dispatch priority and capacity factors. Coal plants concentrated in the North (Quang Ninh, Ha Long Bay area, Hai Phong) and Centre (Vinh Tan). The Vinh Tan complex (6.4 GW in operation and planned) has been the subject of protests over air quality and ash disposal. PDP8 calls for no new coal plants after 2030 and a phased retirement schedule — however, binding mechanisms and financing for early retirement remain under discussion with JETP partners.</li>
+  <li><strong>Large hydropower (22% capacity / 31% generation):</strong> ~17.7 GW of large hydro (above 30 MW), mostly on the Da River (Hoa Binh 1,920 MW, Son La 2,400 MW), Dong Nai River, and Sesan River systems. Production is highly seasonal: wet season (June–November) sees near-maximum output; dry season creates deficits. The major northern hydro reservoirs provide multi-season storage that is critical for system balancing. Most large-hydro potential has been exploited; remaining feasibility is in the North Centre and Central Highlands.</li>
+  <li><strong>Solar (25% capacity / 7% generation):</strong> 20+ GW installed, the legacy of the 2017–2021 FiT boom. Capacity factors (~18–22%) are significantly lower than coal or gas, explaining the large gap between 25% capacity share and 7% generation share. Most solar is in the South and Centre. Curtailment remains a problem: the North–South 500 kV line 3 (completed June 2024) added 2,200 MW of North-South transfer capacity, reducing but not eliminating curtailment. New solar development under PDP8 uses competitive auctions (replacing the FiT) and requires co-located storage for projects above a certain size.</li>
+  <li><strong>Gas (10% capacity / 9% generation):</strong> ~8 GW of gas-fired capacity, primarily from domestic Bach Ho, Nam Con Son, and Cuu Long basin fields. Vietnam's domestic gas production is declining; PDP8 plans to import LNG via new regasification terminals (Son My FSRU in the South, Ca Na terminal) to fuel new CCGT capacity. The LNG import terminals are needed not only for baseload power but to fill the gap as coal is phased out post-2030.</li>
+  <li><strong>Small hydro (8% capacity / ~5% generation):</strong> ~6.4 GW of small hydro (&lt;30 MW) distributed across Vietnam's mountainous Central Highlands and North. Collectively important but individually small; many plants suffer seasonal flow variability.</li>
+  <li><strong>Wind (7% capacity / 5% generation):</strong> ~5.6 GW of onshore and nearshore wind installed, primarily in Ninh Thuan, Binh Thuan, Binh Dinh, and Ca Mau provinces. Significant growth since 2020 as the government's 9.5 US cents/kWh wind FiT drove rapid deployment. PDP8 targets 6 GW of offshore wind by 2030 (from near zero) — a challenging but strategically important target given the global decline in onshore wind LCOE.</li>
+</ul>
+<div class="callout">Vietnam's electricity tariff (~VND 1,984/kWh average, ~USD 0.079/kWh) has not increased since 2019 and is widely acknowledged as <strong>below cost-recovery</strong>. EVN reported losses of VND 26–36 trillion/yr (2022–2023). The government approved phased tariff increases from mid-2023, but political sensitivity (inflation concerns, consumer protection) means prices remain insufficient to attract private investment without PPAs at above-tariff rates. Tariff reform is a JETP conditionality and prerequisite for PDP8 delivery.</div>
+
+<h3>2.2 Demand — historical trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Generation trend 2014–2023 (CAGR ~6.5%/yr). Sources: EVN Annual Report 2023, Ember Vietnam 2024.</p>
+<p>Vietnam has one of the highest electricity demand growth rates in ASEAN (~6–8%/yr CAGR), driven by rapid GDP growth (~6–7%/yr), industrialisation (FDI-driven electronics manufacturing, Samsung, Intel, LG), urbanisation, and rising household appliance penetration. The North is growing fastest, driven by industrial zones in Hanoi, Bac Ninh, and Hai Phong. The south (Ho Chi Minh City, Dong Nai, Binh Duong) also has strong industrial demand. Peak demand is expected to reach ~140 GW by 2050 under PDP8 projections.</p>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Status / Notes</th></tr>
+  <tr><td><strong>China (Yunnan–Guangxi)</strong></td><td>500 kV DC and 220 kV AC border lines (Lao Cai, Ha Giang, Mong Cai crossings)</td><td>Active. Vietnam imports ~500 MW from Yunnan during dry-season demand peaks; also exports small amounts in wet season. China is a strategic backstop for North Vietnam's supply security.</td></tr>
+  <tr><td><strong>Laos</strong></td><td>220–500 kV AC lines (Sekong, Xekaman, Attapeu–Pleiku)</td><td>Vietnam imports ~2 GW contracted from Laos hydro (primarily via southern corridor). EVN targets 5 GW of Lao imports by 2030. Key for South and Centre Vietnam balancing. Growing strategic importance as Vietnam's domestic hydro is fully exploited.</td></tr>
+  <tr><td><strong>Cambodia</strong></td><td>220 kV AC (Chau Doc–Takeo)</td><td>Vietnam exports ~1.5–2 TWh/yr to Cambodia (EDC). Small commercial and balancing role. Capacity expansion planned for bilateral trade growth.</td></tr>
+  <tr><td><strong>North–South domestic (500 kV circuit 3)</strong></td><td>500 kV line 3, 1,400 km, 2,200 MW transfer capacity, completed June 2024</td><td>Critical domestic grid reinforcement that alleviated the southern solar curtailment problem. Built in 6 months — a notable infrastructure delivery achievement. Circuit 4 is planned.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EVN (Electricity of Vietnam) <span class="trade-badge">Vertically Integrated State Utility</span></div>
+      <p class="trade-body">EVN is the vertically integrated state utility under the Ministry of Industry and Trade (MOIT). EVN owns ~40% of generation capacity directly (primarily large hydro through EVN's subsidiary EVNHPC, and some thermal plants through EVN CPC and EVNGENCO). EVN is the sole operator of the national transmission system (220–500 kV) via its subsidiary NLDC/NPT, and the sole buyer for all IPP power. EVN's financial losses (~VND 26–36T/yr in 2022–2023) due to below-cost tariffs and rising fuel costs represent a systemic risk; the government has approved phased tariff increases from 2023.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">MOIT &amp; ERAV (Electricity Regulatory Authority of Vietnam) <span class="trade-badge trade-badge-grey">Policy &amp; Regulation</span></div>
+      <p class="trade-body">MOIT (Ministry of Industry and Trade) is responsible for electricity policy, including approving PPAs, the PDP, and tariff structures. ERAV (Electricity Regulatory Authority of Vietnam), a MOIT agency, handles licensing, technical standards, and market oversight. There is no fully independent regulator; tariff approval is a Cabinet/government decision. The Vietnam Competitive Wholesale Electricity Market (VWEM) has been in pilot since 2019 but remains very limited — generation companies bid into a pool but EVN controls dispatch through long-term contracts.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">IPPs — growing private sector <span class="trade-badge trade-badge-grey">Generation</span></div>
+      <p class="trade-body">EVN subsidiaries (EVNGENCO 1, 2, 3) own ~40% of capacity; the remaining ~60% is owned by state-owned enterprises (PVN gas plants via PV Power, VINACOMIN coal plants via VMIN) and private IPPs. Private solar and wind developers (domestic conglomerates: T&amp;T Group, Trung Nam Group, BIM Group; international: AES, Copenhagen Infrastructure Partners, Mainstream, Orion Renewables) hold significant solar and wind capacity. Under PDP8, offshore wind will primarily be developed by large IPP consortia under competitive auctions.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Solar curtailment and grid bottlenecks:</strong> Up to 30% of solar output was curtailed in southern Vietnam in 2021–2022, representing significant stranded investment. The 500 kV circuit 3 (June 2024) reduces curtailment in the South, but transmission bottlenecks within regions and within the south remain. Storage co-location requirements in new solar projects will help but add cost. Offshore wind would shift generation toward more distributed production and reduce transmission concentration.</li>
+  <li><strong>JETP implementation and coal phase-out:</strong> The USD 15.5B JETP commitment (December 2022) is contingent on Vietnam meeting specific policy conditions: tariff reform, carbon pricing, PPA renegotiation for coal early retirement, and developing a credible Just Transition plan for coal mining communities in Quang Ninh. Progress has been slower than expected on all four fronts, mirroring the pattern seen in Indonesia.</li>
+  <li><strong>Electricity tariff reform:</strong> EVN's sustained financial losses (below-cost tariffs since 2019) have been a drag on sector investment. Government-approved tariff increases from mid-2023 partially address the gap but remain politically constrained. Full cost-recovery pricing is necessary for attracting private capital to offshore wind and LNG-to-power projects without government guarantees.</li>
+  <li><strong>Offshore wind development:</strong> PDP8's 6 GW by 2030 offshore wind target is highly ambitious — as of 2024, no offshore wind projects are operating in Vietnam. The main barriers are: unclear seabed leasing procedures, no completed competitive auction framework, grid connection uncertainty, and absence of local supply chain. However, Vietnam's coastline (3,200 km, average wind speed &gt;8 m/s offshore) represents one of Asia's best offshore wind resources.</li>
+  <li><strong>LNG import dependency and gas transition:</strong> As domestic gas production declines from Bach Ho and Nam Con Son fields, Vietnam must import LNG to fuel new CCGTs under PDP8. LNG import terminals (Son My, Ca Na) face permitting, financing, and construction delays. Gas-fired power is planned as the transition bridge from coal to RE — but LNG price exposure (demonstrated by the 2022 global gas crisis) makes this a significant fiscal risk for EVN PPAs.</li>
+  <li><strong>Nuclear revival debate:</strong> PDP8 includes a revival of the Ninh Thuan nuclear power project (deferred in 2016). The National Assembly passed a resolution in November 2024 to restart nuclear planning. Vietnam would be the first country in mainland Southeast Asia to commission a commercial nuclear plant. Timeline, technology choice, and financing (likely from Russia or South Korea) remain undefined.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Vietnam deployed 20+ GW of solar in 4 years (2017–2021) — the fastest solar buildout in ASEAN history — but failed to build the transmission to absorb it, resulting in severe curtailment; the June 2024 North–South 500 kV circuit 3 is a critical course correction.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>PDP8 (May 2023) is Vietnam's most ambitious energy plan: 6 GW offshore wind by 2030, nuclear revival, LNG import terminals, and 45% RE by 2030 — but implementation depends on tariff reform, JETP delivery, and regulatory frameworks that are all lagging.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>EVN's structural financial losses (~USD 1–1.5B/yr in 2022–2023 from below-cost tariffs) constrain both investment and creditworthiness; tariff reform is not just a fiscal issue but the prerequisite for mobilising the private capital needed for PDP8's offshore wind and LNG targets.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Vietnam's ~22.5 GW of coal capacity is geographically concentrated in the North, while renewable energy is concentrated in the South — creating a structural north–south energy security dependency that the 500 kV transmission system is addressing, but slowly.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Vietnam is the only ASEAN country actively planning nuclear power (Ninh Thuan, resolved to proceed November 2024) — if delivered, it would profoundly reshape the country's low-carbon baseload strategy and its energy relationship with Russia or South Korea as the likely technology partner.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EVN Annual Report 2023; PDP8 (Decision 500/QD-TTg, May 2023, MOIT Vietnam); JETP Vietnam Resource Mobilisation Plan 2023; Ember Vietnam Electricity Review 2024; IEA Vietnam Energy Profile; IEEFA Vietnam solar curtailment; World Bank Vietnam Energy Sector assessment; Reuters — Vietnam 500 kV line 3 completion June 2024; Vietnam National Assembly — nuclear resolution November 2024; IRENA Vietnam offshore wind potential; ADB — Vietnam LNG-to-power development.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Vietnam (VNM) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Coal','Large Hydro','Solar','Gas','Small Hydro','Wind','Biomass & Other'];
+const C1=['#2C2C2C','#1E9AF5','#FFD700','#808890','#44DAEC','#B0E0FF','#1A7A4A'];
+const GW1=[22.5,17.7,20.3,8.1,6.4,5.6,4.4];
+
+const L2=['Coal','Hydro (all)','Gas','Solar','Wind','Others'];
+const C2=['#2C2C2C','#1E9AF5','#808890','#FFD700','#B0E0FF','#1A7A4A'];
+const D2=[39,31,9,7,5,9];
+const TWh2=D2.map(v=>+(v*284/100).toFixed(0));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[163,175,191,211,223,243,253,272,278,284];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>
