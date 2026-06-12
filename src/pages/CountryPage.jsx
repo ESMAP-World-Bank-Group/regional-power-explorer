@@ -138,7 +138,9 @@ export default function CountryPage() {
   const countryFeatureRef  = useRef(null);
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
   const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
-  const [panelExpanded,   setPanelExpanded]   = useState(false);
+  const [sheetHeight,     setSheetHeight]     = useState(96);
+  const [isDragging,      setIsDragging]      = useState(false);
+  const dragRef = useRef(null);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
@@ -147,8 +149,35 @@ export default function CountryPage() {
   }, []);
 
   useEffect(() => {
+    if (!isMobile) return;
+    function onMove(e) {
+      if (!dragRef.current) return;
+      e.preventDefault();
+      const dy = dragRef.current.startY - e.touches[0].clientY;
+      const max = window.innerHeight - 56;
+      const newH = Math.max(96, Math.min(max, dragRef.current.startH + dy));
+      dragRef.current.currentH = newH;
+      setSheetHeight(newH);
+    }
+    function onEnd() {
+      if (!dragRef.current) return;
+      const h = dragRef.current.currentH;
+      dragRef.current = null;
+      setIsDragging(false);
+      const snaps = [96, Math.round(window.innerHeight * 0.5), window.innerHeight - 56];
+      setSheetHeight(snaps.reduce((a, b) => Math.abs(b - h) < Math.abs(a - h) ? b : a));
+    }
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onEnd);
+    return () => {
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [isMobile]);
+
+  useEffect(() => {
     setTimeout(() => mapRef.current?.resize(), 260);
-  }, [panelExpanded, isMobile]);
+  }, [sheetHeight, isMobile]);
 
   // Static data — fetch once
   useEffect(() => {
@@ -1218,12 +1247,12 @@ export default function CountryPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        height: panelExpanded ? '50vh' : 96,
+        height: sheetHeight,
         overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
         boxShadow: '0 -6px 24px rgba(0,0,0,0.35)',
-        transition: 'height 0.25s ease',
+        transition: isDragging ? 'none' : 'height 0.25s ease',
       } : {
         width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         backgroundColor: t.panel,
@@ -1231,12 +1260,18 @@ export default function CountryPage() {
         flexShrink: 0, display: 'flex', flexDirection: 'column',
       }}>
         {isMobile && (
-          <div onClick={() => setPanelExpanded(e => !e)} style={{
-            height: 96, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '0 20px', cursor: 'pointer', flexShrink: 0,
-            borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
-            position: 'relative',
-          }}>
+          <div
+            onClick={() => setSheetHeight(h => h > 96 ? 96 : Math.round(window.innerHeight * 0.5))}
+            onTouchStart={e => {
+              dragRef.current = { startY: e.touches[0].clientY, startH: sheetHeight, currentH: sheetHeight };
+              setIsDragging(true);
+            }}
+            style={{
+              height: 96, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0 20px', cursor: 'pointer', flexShrink: 0,
+              borderBottom: sheetHeight > 96 ? `1px solid ${t.panelBorder}` : 'none',
+              position: 'relative',
+            }}>
             <div style={{
               position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
               width: 44, height: 5, borderRadius: 3,
@@ -1245,15 +1280,15 @@ export default function CountryPage() {
             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text }}>{country.name}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ fontSize: '0.82rem', fontWeight: 700, color: t.lbl, letterSpacing: '0.3px' }}>
-                {panelExpanded ? 'Close' : 'Data'}
+                {sheetHeight > 96 ? 'Close' : 'Data'}
               </span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(74,143,204,1)" strokeWidth="2.8" strokeLinecap="round">
-                {panelExpanded ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}
+                {sheetHeight > 96 ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}
               </svg>
             </div>
           </div>
         )}
-        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 96px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        <div style={isMobile ? { overflowY: 'auto', height: sheetHeight - 96, padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* ── Fixed header ── */}
         <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
           {/* Breadcrumb */}
