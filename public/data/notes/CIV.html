@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Côte d'Ivoire Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Côte d'Ivoire electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~2.9 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">11.1 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">72.4%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">WAPP hub</div><div class="kpi-lbl">Exporter to 5+ countries</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Côte d'Ivoire is the electricity hub of francophone West Africa, exporting power to Mali, Burkina Faso, Ghana (via interconnection), Liberia, Sierra Leone, and Guinea through the CLSG (Côte d'Ivoire–Liberia–Sierra Leone–Guinea) interconnection. With a generation mix that is 69% natural gas and 29% hydropower, the country has built a relatively diversified system centred on a small but competitive market model that has attracted significant private investment in gas-fired generation.</p>
+<p>Electricity is supplied under a concession arrangement: CI-ENERGIES (state) is the asset-owner and planning entity, while the private operator CIE (Compagnie Ivoirienne d'Electricité, majority-owned by EDF/Eranove group) manages the distribution network under an affermage contract. This structure, which has been in place since 1990, is often cited as a successful African electricity reform model — though CIE's financial health and the pace of rural electrification remain ongoing concerns.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~2.9 GW, 2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">2.9</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, ~11.1 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">11.1</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Côte d'Ivoire installed capacity and generation mix, 2023/2024. Sources: CI-ENERGIES; ARE-CI; ANARE-CI; Ember Electricity Data 2024; IEA CIV Profile.</p>
+
+<ul>
+  <li><strong>Natural gas (~62% of capacity, ~69% of generation):</strong> Two large private gas-fired plants dominate: <strong>Azito Energy</strong> (713 MW combined-cycle, Globeleq/Eranove, Abidjan) and <strong>CIPREL</strong> (556 MW, EDF/Eranove, also near Abidjan). Additional open-cycle units at Vridi and Songon. Gas is supplied from offshore Ivorian fields (Foxtrot International, CNR International) via pipelines to the Abidjan coast. CI-Energie manages long-term gas supply agreements.</li>
+  <li><strong>Hydropower (~34% of capacity, ~29% of generation):</strong> A cascade of dams on the Bandama and Sassandra rivers: Kossou (174 MW), Taabo (210 MW), Buyo (165 MW, Sassandra), and Soubré (275 MW, commissioned 2017 by Sinohydro, the largest). Rainfall variability causes interannual generation swings of ±20%. The northern Faye and Tiboto projects are in pre-development.</li>
+  <li><strong>Solar and oil (minor shares):</strong> The first utility-scale solar PV plant, Boundiali (37.5 MW, Soleva/Globeleq), was commissioned in 2023. Oil-fired peakers are used sparingly. A solar development programme targeting 500 MW by 2030 is advancing slowly.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — CIV generation and domestic demand (TWh), 2015–2023. Generation consistently exceeds domestic demand — the surplus is exported to neighbouring WAPP members. Sources: CI-ENERGIES; Ember; IEA.</p>
+
+<h3>2.3 WAPP export interconnections</h3>
+<table>
+  <tr><th>Destination</th><th>Infrastructure</th><th>Notes</th></tr>
+  <tr><td><strong>Mali</strong></td><td>225 kV; ~100 MW</td><td>Key supply for EDM-SA Bamako network; disrupted by security situation in northern corridors.</td></tr>
+  <tr><td><strong>Burkina Faso</strong></td><td>225 kV; ~150 MW</td><td>Major SONABEL supply source; security incidents on northern lines a growing risk.</td></tr>
+  <tr><td><strong>Ghana</strong></td><td>225 kV; bilateral balancing</td><td>Interconnection exists primarily for frequency support and balancing; small net volumes.</td></tr>
+  <tr><td><strong>CLSG (Liberia–Sierra Leone–Guinea)</strong></td><td>225 kV; 240 MW design</td><td>CIV is the CLSG supply source (anchor of the 225 kV ring interconnecting the four countries). LBR, SLE, GIN receive CIV power. Partially commissioned, full loop pending SLE completion.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">CI-ENERGIES <span class="trade-badge">State Asset Owner</span></div>
+      <p class="trade-body">Compagnie Ivoirienne d'Electricité CI-ENERGIES (formerly SOPIE/SOGEPE) is the state company that owns generation and transmission assets, manages sector planning, and oversees the gas supply agreement for power generation. CI-ENERGIES issues PPAs and manages the financial flow between the state, CIE, and independent generators. It is answerable to the Ministry of Mines, Petroleum and Energy (MMPE).</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">CIE — Compagnie Ivoirienne d'Electricité <span class="trade-badge trade-badge-grey">Private Concessionaire</span></div>
+      <p class="trade-body">CIE (majority held by Eranove Group, which is itself 33% EDF) holds the distribution affermage for the south and operates the national transmission grid under management delegation. CIE manages roughly 1.4 million distribution customers. The affermage model has been renewed multiple times since 1990 and is praised for creating a commercially-managed distribution company while keeping assets in public hands. CIE also manages power exports to WAPP neighbours under CI-ENERGIES direction.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Azito Energie / CIPREL <span class="trade-badge trade-badge-grey">IPP</span></div>
+      <p class="trade-body"><strong>Azito Energie</strong> (713 MW, owned by Globeleq and Eranove) and <strong>CIPREL</strong> (556 MW, EDF/Eranove) are the two anchor IPPs providing the bulk of CIV's gas-fired baseload. Both operate under long-term PPAs with CI-ENERGIES. Azito upgraded to a combined-cycle configuration (Phase 3, 2015) to improve efficiency. Both plants are at or near Abidjan's coastal industrial zone, close to the offshore gas supply terminals.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ANARE-CI — Sectoral Regulator <span class="trade-badge">Regulator</span></div>
+      <p class="trade-body">The Autorité Nationale de Régulation du secteur de l'Electricité de Côte d'Ivoire (ANARE-CI) is the independent electricity regulator established in 2014. Its primary mandate includes tariff oversight, service quality standards, dispute resolution, and licensing of new entrants. Tariff setting remains politically sensitive, with the government cross-subsidising residential consumers through higher industrial tariffs.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Export role vs. domestic rural access gap:</strong> CIV exports ~10–15% of its total generation to neighbours while ~27.6% of its own population lacks electricity access. The tension between the commercial logic of export revenues (which help finance the system) and the equity imperative of rural electrification is ongoing. The PRONER (Programme National d'Electrification Rurale) has made progress but rural coverage remains under 40%.</li>
+  <li><strong>Hydropower climate vulnerability:</strong> CIV's 991 MW of hydro capacity is sensitive to rainfall variability in the Bandama and Sassandra watersheds. Dry years (e.g. 2018–2019, 2023) force heavier dispatch of gas peakers, increase fuel costs, and can reduce export capacity — directly affecting neighbours who depend on CIV supply.</li>
+  <li><strong>CLSG interconnection completion:</strong> The CLSG (Côte d'Ivoire–Liberia–Sierra Leone–Guinea) 225 kV ring is the largest WAPP capital project after North Core. CIV and Liberia sections are complete; the Sierra Leone and Guinea sections have faced delays. Full commissioning would allow CIV to supply the entire Atlantic coast subregion from a single meshed backbone.</li>
+  <li><strong>Gas supply security:</strong> CIV's domestic gas production from offshore fields (Foxtrot's CI-02 block, CNR's CI-26) has been the backbone of its gas-to-power sector. Production has shown signs of decline from mature fields. The government has launched new offshore licensing rounds and Perenco is developing additional blocks. Any production shortfall would directly impair gas-fired dispatch and export capacity.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Côte d'Ivoire is the most important electricity exporter in the WAPP zone west of Nigeria: it supplies Mali, Burkina Faso, Liberia, Sierra Leone, and Guinea — making CIV's generation capacity a genuine regional public good, and its own supply disruptions a regional crisis.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The CIE affermage model (state assets + private operator) is one of the longest-running successful electricity public-private partnerships in Sub-Saharan Africa — 35+ years of continuous operation — and offers a structural lesson for other WAPP utilities considering reforms.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The Azito–CIPREL duopoly provides 44% of installed capacity from a single fuel and location cluster near Abidjan: a concentrated single-point-of-failure risk in case of gas supply disruption or a major plant outage.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Completing the CLSG ring (CIV–LBR–SLE–GIN) would transform WAPP's western corridor from a series of bilateral connections into a meshed subregional grid, dramatically improving resilience for Liberia, Sierra Leone, and Guinea, which currently have among the lowest electrification rates in the world.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>CIV's renewable transition is nascent: with only ~37 MW of solar operational in 2023 and a solar target of 500 MW by 2030, rapid scale-up will require policy clarity, bankable PPAs, and resolution of land-use constraints — the regulatory framework exists but deployment has lagged ambition.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> CI-ENERGIES Annual Report 2023; ANARE-CI Rapport Annuel 2023; Ember Electricity Data West Africa 2024; IEA Côte d'Ivoire Energy Profile; World Bank CLSG Interconnection Project ICR; AfDB Energy Sector Loans — CIV country documents; Eranove Group Annual Report 2023; Globeleq Azito Project Profile; WAPP — Annual Report 2023; IFC Azito Phase 3 project documentation; Africa Energy Portal CIV Country Profile; Reuters — CIV energy sector briefings 2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Côte d'Ivoire (CIV) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Gas','Hydro','Solar','Oil'];
+const C1=['#2E75B6','#0F7B72','#F59F00','#5B3FA0'];
+const GW1=[1.82,0.99,0.04,0.05];
+
+const L2=['Gas','Hydro','Solar','Other'];
+const C2=['#2E75B6','#0F7B72','#F59F00','#8A94A6'];
+const D2=[69,29,1,1];
+const TWh2=D2.map(v=>+(v*11.1/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[8.8,10.4,10.2,10.1,10.7,11.3,11.4,12.7,11.1];
+const dem=[7.9,9.0,8.3,9.0,9.6,10.1,10.8,11.9,10.3];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2},{label:'Demand (domestic)',data:dem,borderColor:'#0F7B72',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

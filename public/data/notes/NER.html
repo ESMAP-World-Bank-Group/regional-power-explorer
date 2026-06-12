@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niger Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-crit{background:#FDECEA;border-left:4px solid var(--coral);padding:13px 17px;margin:14px 0;font-size:13px;color:#7A1A12;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-badge-crit{background:#C0392B}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Niger electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~370 MW</div><div class="kpi-lbl">Domestic installed capacity</div></div>
+  <div class="kpi"><div class="kpi-val">0.97 TWh</div><div class="kpi-lbl">Domestic generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">20.1%</div><div class="kpi-lbl">Electrification rate (lowest WAPP)</div></div>
+  <div class="kpi"><div class="kpi-val">Post-coup crisis</div><div class="kpi-lbl">Nigeria electricity cut July 2023</div></div>
+</div>
+
+<div class="body">
+
+<div class="callout-crit"><strong>Fragile and conflict-affected state — military coup July 2023.</strong> Niger experienced a military coup on 26 July 2023 when the Presidential Guard (CNSP, led by General Abdourahamane Tiani) ousted elected President Mohamed Bazoum. ECOWAS imposed sanctions, Nigeria suspended electricity exports (previously supplying ~60% of Niger's grid), and France expelled its diplomats in response to the junta's demand. Niger subsequently joined the Alliance of Sahel States (AES) with Mali and Burkina Faso. As of June 2026, the junta remains in power, Western aid has been suspended or significantly reduced, and the electricity crisis triggered by the Nigerian supply cut has severely damaged economic activity and humanitarian conditions, particularly in Niamey. Sector data post-coup carries high uncertainty. Standard development financing and sector reform approaches are not applicable under the current circumstances.</div>
+
+<h2>1. Energy context</h2>
+<p>Niger has the lowest electrification rate in the WAPP zone — and one of the lowest in the world — at approximately 20% nationally (urban ~72%, rural ~2%). Before the July 2023 coup, Niger depended on Nigeria for approximately 60–70% of its total electricity supply through a 132 kV interconnection (Kainji–Gaya). This extreme import dependency, combined with a fragile domestic generation base of ~370 MW, left Niger entirely vulnerable to the ECOWAS/Nigeria sanctions that immediately followed the coup: Nigeria suspended electricity exports within weeks, causing immediate and severe load-shedding in Niamey (extended to 20+ hours/day) that persisted through 2023–2024.</p>
+<p>Niger is also one of the world's largest uranium producers (SOMAIR, COMINAK mines, historically operated by Orano/France). Following the coup, France suspended uranium imports from Niger, and Orano was expelled from its mining concessions in 2024. China's CNPC operates the Agadem oil field and a 20,000 bbl/day refinery, with an associated power plant. The post-coup energy situation is a humanitarian emergency layered on an already-depleted sector.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="callout-warn">Figures below reflect pre-coup or estimated 2023 data. Post-coup, effective supply to Niamey fell sharply following the Nigerian export suspension. Domestic generation capacity operated at maximum dispatch. Reliable post-coup operational data is not publicly available.</div>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~370 MW, 2023 est.)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">370</div><div class="chart-center-lbl">MW (domestic)</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Domestic generation mix (2023, ~0.97 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">0.97</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Niger domestic generation only. Pre-coup total supply (domestic + Nigeria imports) was ~2.2 TWh; post-coup, available supply fell sharply. Sources: NIGELEC; IEA Niger Profile; Ember Electricity Data 2024; World Bank.</p>
+
+<ul>
+  <li><strong>Oil/diesel (~75% of domestic generation):</strong> NIGELEC operates diesel/HFO thermal plants in Niamey (principal: Goudel Power Plant, ~100 MW HFO; additional units at Dosso, Zinder, Agadez, Maradi). All fuel is imported by road through Nigeria — a supply chain vulnerable to both the Nigeria relationship and security conditions. Post-coup, fuel import logistics became more difficult under ECOWAS sanctions and road blockages, though informal fuel imports continued.</li>
+  <li><strong>Coal (~18% of domestic generation):</strong> A small Chinese-built coal-fired plant (~35 MW) near Niamey and the SORAZ refinery power plant (co-generation, ~30 MW) provide a minor coal share. Coal is trucked from the Anou Araren mine (northern Niger).</li>
+  <li><strong>Gas (~5%):</strong> Some associated gas from the CNPC Agadem oil field powers the oil refinery. Limited gas-to-power assets exist outside this captive industrial use.</li>
+  <li><strong>Solar (~2%):</strong> Several small solar projects (Agadez 10 MWp, Dosso 5 MW, and others) have been commissioned. The Kandadji Dam hydropower component (~130 MW) was under active construction pre-coup, targeting completion in 2026.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Domestic electricity generation (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Niger domestic generation (TWh), 2015–2023. Gradual increase in domestic generation, but total supply (including Nigeria imports) was ~2× the domestic figure pre-coup. Sources: NIGELEC; IEA; Ember.</p>
+
+<h3>2.3 Interconnections — before and after coup</h3>
+<table>
+  <tr><th>Link</th><th>Pre-coup Status</th><th>Post-coup Status</th></tr>
+  <tr><td><strong>Nigeria → Niger</strong></td><td>132 kV; ~160–200 MW supply; supplied ~60–70% of Niger's total demand</td><td>Suspended by TCN/Nigeria following ECOWAS sanctions (July 2023). Partial, intermittent restoration reported by mid-2024 as ECOWAS pressures softened, but volumes significantly reduced.</td></tr>
+  <tr><td><strong>Kandadji Hydro (Niger River)</strong></td><td>130 MW under construction (Gezhouba, China); completion targeted 2026</td><td>Construction status post-coup unclear. Chinese contractor presence may have continued under Sino-Niger bilateral arrangements. Key strategic priority for the junta as a domestic supply alternative to Nigeria.</td></tr>
+  <tr><td><strong>Algeria proposal</strong></td><td>N/A — proposed gas pipeline (TSGP) and power link discussed in pre-coup planning</td><td>Algeria has maintained diplomatic relations with the junta and accelerated energy discussions, including a possible gas connection via Agadez. No infrastructure is in service.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">NIGELEC — Société Nigerienne d'Electricité <span class="trade-badge trade-badge-crit">Under Junta Control</span></div>
+      <p class="trade-body">NIGELEC is the state-owned vertically-integrated electricity utility. Under the post-coup CNSP government, NIGELEC operates under military administration and emergency management following the Nigerian supply suspension. Its pre-coup financial position was already critically weak — chronic underpayment by the state, uncollectable receivables from government agencies, tariffs below cost recovery, and technical losses exceeding 30%. The post-coup crisis has made NIGELEC's situation functionally non-viable without emergency state support and international assistance, much of which was suspended following the coup.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">CNPC / SORAZ — Oil and associated power <span class="trade-badge trade-badge-grey">Chinese State Enterprise</span></div>
+      <p class="trade-body">China's CNPC operates the Agadem oil block (20,000 bbl/day refinery at Zinder, SORAZ), with an associated power plant providing electricity to the refinery complex. China has maintained relations with the junta and provided some diplomatic and economic support, making the CNPC enclave a continued operational reality in an otherwise disrupted sector. The Agadem–Benin crude oil export pipeline (1,950 km) was inaugurated in 2024 under the junta, representing a major infrastructure completion that changed Niger's export economics.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Nigerian electricity suspension — a catastrophic dependency materialised:</strong> Niger's pre-coup 60–70% dependence on Nigerian electricity via 132 kV interconnection was always the sector's most acute vulnerability. When ECOWAS sanctions triggered the Nigerian supply cut in July 2023, Niamey experienced 20+ hours of daily load-shedding within weeks. Hospitals, water pumping stations, and markets were severely disrupted. This event represents one of the most vivid demonstrations in WAPP history of what hyper-import dependence means in practice when the political relationship with the exporting country breaks down.</li>
+  <li><strong>Kandadji dam — the domestic supply lifeline:</strong> The Kandadji hydropower project (130 MW, on the Niger River, 180 km northwest of Niamey) was begun in 2011 and construction accelerated in 2017–2021 with World Bank and IsDB support. The project is critical: 130 MW would replace a significant portion of the lost Nigerian imports. Construction status under the coup government is uncertain — Gezhouba (Chinese contractor) may have continued work, but the coup-related withdrawal of World Bank financing (loan suspended) creates a financial gap. Completion is the junta's stated energy priority.</li>
+  <li><strong>Electrification — the lowest in WAPP:</strong> With only 20% national electrification (2% rural), Niger's energy poverty is extreme. There are 24 million people without electricity access. The pre-coup trajectory — supported by World Bank/AfDB off-grid solar and rural mini-grid programmes — has been halted by the suspension of international development financing. The humanitarian cost of this halt is compounded by the post-coup supply crisis.</li>
+  <li><strong>Uranium geopolitics:</strong> Niger supplies ~7% of global uranium production. Pre-coup, France (via Orano) was the dominant partner. Post-coup, Orano's mining concessions were cancelled, creating a potential windfall for alternative partners (Russia, China). The uranium sector's energy consumption (mines require significant power) is relevant to NIGELEC's revenue: losing uranium mine customers reduces the utility's most creditworthy load.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Niger's July 2023 coup and the subsequent Nigerian electricity supply suspension is the most dramatic realisation of energy import vulnerability in WAPP history: within weeks, Niamey went from 60% Nigerian supply to 20+ hours of daily load-shedding — a textbook crisis of strategic import dependence in a low-resilience system.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>With 20% electrification nationally and 2% rural, Niger has the deepest energy poverty problem in the WAPP zone — and the post-coup suspension of World Bank and AfDB off-grid solar programmes has stalled the only realistic path to closing this gap in the near term.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Kandadji dam (130 MW) is the single most important energy infrastructure project for Niger's medium-term resilience: it could replace a large share of the lost Nigerian imports and has been under construction for a decade — but World Bank financing suspension and political isolation are creating a serious completion risk.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Niger's geopolitical pivot — AES alliance, expulsion of French Orano uranium partnership, Chinese and Russian engagement — is reshaping the energy sector's financial and technical partnerships. The Agadem–Benin crude export pipeline inaugurated under the junta represents the one major energy infrastructure success of the post-coup period, diversifying the country's export geography beyond Nigeria.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Niger's electricity sector cannot recover under the current political conditions — the combination of junta governance, ECOWAS sanctions (even as they soften), Western development financing suspension, and Nigerian supply uncertainty creates a compounding crisis that only a political transition and restoration of international partnerships can structurally resolve.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> NIGELEC annual data (pre-coup); IEA Niger Energy Profile; Ember Electricity Data 2024; World Bank Niger Electricity Access project (loan status and suspension); AfDB Niger Power sector operations; Kandadji Agency — project progress reports (pre-coup); CNPC/SORAZ — Agadem refinery and pipeline press releases 2024; ECOWAS — Niger sanctions announcements July 2023; Reuters / AFP / RFI — coup and energy crisis reporting 2023–2024; International Crisis Group — Niger coup analysis 2023; Global Energy Monitor — Niger Power Tracker; Africa Energy Portal Niger Country Profile.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Niger (NER) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Oil','Coal','Gas','Solar'];
+const C1=['#5B3FA0','#5A6474','#2E75B6','#F59F00'];
+const GW1=[0.25,0.035,0.060,0.025];
+
+const L2=['Oil','Coal','Gas','Solar'];
+const C2=['#5B3FA0','#5A6474','#2E75B6','#F59F00'];
+const D2=[75,18,5,2];
+const TWh2=D2.map(v=>+(v*0.97/100).toFixed(2));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[0.54,0.70,0.56,0.53,0.67,0.67,0.71,0.79,0.97];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#C0392B',backgroundColor:'rgba(192,57,43,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#C0392B',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

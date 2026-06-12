@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nigeria Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-crit{background:#FDECEA;border-left:4px solid var(--coral);padding:13px 17px;margin:14px 0;font-size:13px;color:#7A1A12;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Nigeria electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~13.4 GW</div><div class="kpi-lbl">Nominal installed capacity (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">41 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~60%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~4–5 GW</div><div class="kpi-lbl">Effective daily dispatch (2024)</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Nigeria is Sub-Saharan Africa's largest economy (GDP ~USD 475B, 2023) and most populous nation (~220 million people), yet its electricity sector chronically delivers only a fraction of its nominal capacity. With ~13.4 GW of installed generation, Nigeria regularly dispatches only 4,000–5,000 MW — less than the city of London — leaving an estimated 40% of the population without grid access and businesses running on diesel generators costing an estimated USD 14B/year in self-generation losses.</p>
+<p>The sector has undergone two major reforms in the past two decades: the unbundling and privatisation of the Power Holding Company of Nigeria (PHCN) into 18 successor companies (2013), and the Electricity Act of 2023 which opened the sector to state-level generation and distribution. Despite these structural changes, the fundamental constraints — gas supply failures, transmission bottlenecks, and distribution company (DisCo) financial insolvency — have persisted. The 2023 Electricity Act represents a potential turning point, permitting subnational players and bilateral wheeling arrangements for the first time.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~13.4 GW nominal, 2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">13.4</div><div class="chart-center-lbl">GW nominal</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, ~41 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">41</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Nigeria installed capacity and generation mix, 2023/2024. Sources: NERC 2023 Annual Report; IEA Nigeria Country Profile; Ember Electricity Data 2024; TCN Annual Technical Report.</p>
+
+<div class="callout-warn"><strong>Capacity utilisation crisis:</strong> Of Nigeria's 13.4 GW nominal installed capacity, only 4,000–5,500 MW is typically available on any given day. Gas supply failures account for ~3,000–4,000 MW of lost generation; the rest is attributed to water shortage, grid constraints, and ageing plant failures. Effective capacity factor is below 40% for thermal plants.</div>
+
+<ul>
+  <li><strong>Gas (~66% of capacity, ~77% of generation):</strong> Thermal gas plants dominate — Egbin (1,320 MW), Sapele (1,020 MW), Alaoji (1,074 MW), Olorunsogo (750 MW), Geregu ((434 MW), Omotosho (335 MW) and others. Most operate well below nameplate due to insufficient gas supply from NNPC pipelines (vandalism, under-investment). Domestic gas pricing below international parity discourages supply diversion to power sector.</li>
+  <li><strong>Hydropower (~22% of capacity, ~22% of generation):</strong> Four major plants on the Niger and Kaduna rivers: Kainji (760 MW), Jebba (578 MW), Shiroro (600 MW), and the recently commissioned Zungeru (700 MW, 2022). Seasonal low-water periods further reduce available hydro output, with droughts causing major shortfalls in Q1.</li>
+  <li><strong>Oil/diesel (~5% of capacity):</strong> Legacy HFO and diesel plants provide peaking capacity; expensive to run and increasingly moth-balled as gas plants are preferred. Transamadi (100 MW HFO) and various barge units.</li>
+  <li><strong>Solar (~3%):</strong> Katsina wind (10 MW), and newer solar additions including De Sovereign (100 MW Bauchi), plus distributed rooftop. Solar capacity growing rapidly under Electricity Act 2023 state-level frameworks.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Nigeria annual generation (TWh), 2015–2023. Dip in 2017 reflects grid collapse events. Sources: IEA; Ember; NERC Annual Reports.</p>
+
+<h3>2.3 Transmission and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Voltage / Capacity</th><th>Status</th></tr>
+  <tr><td><strong>Nigeria → Niger</strong></td><td>132 kV; ~30–50 MW</td><td>Significantly reduced since July 2023 ECOWAS sanctions following Niger coup; partial resumption 2024. Main point at Kainji–Gaya interconnection.</td></tr>
+  <tr><td><strong>Nigeria → Benin–Togo–Ghana (North Core)</strong></td><td>330 kV; 1,000 MW design capacity</td><td>North Core WAPP interconnection under construction; Nigeria–Benin 330 kV existing since 1980s (~150 MW); upgrade ongoing. Key WAPP backbone project.</td></tr>
+  <tr><td><strong>Domestic 330 kV grid</strong></td><td>330 kV / 132 kV backbone</td><td>TCN operates 23,000+ km network; T&D losses ~45–50%; system collapse events occur 1–2x/year typically triggered by frequency excursions or trip cascades.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">TCN — Transmission Company of Nigeria <span class="trade-badge">State Operator</span></div>
+      <p class="trade-body">The sole transmission system operator, TCN manages the high-voltage grid and market operation. Under a management contract with Manitoba Hydro International (2012–2021, later extended). TCN is consistently underfunded: the grid cannot wheel the full output of commissioned generators, creating "stranded" capacity. A USD 486M World Bank DARES project targets grid reinforcement, but wheeling capacity remains the binding constraint on sector output.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">GenCos (11 privatised generation companies) <span class="trade-badge trade-badge-grey">Privatised 2013</span></div>
+      <p class="trade-body">The 2013 privatisation created 11 Generation Companies (GenCos) including Egbin Power (Sahara Group), Transcorp Ughelli (Transcorp), Enugu Disco-linked plants, and others. Most GenCos have struggled with low capacity payments, gas supply failures, and foreign-exchange exposure. The Niger Delta Power Holding Company (NDPHC) retains state ownership of the NIPP (National Integrated Power Plants) additions — Alaoji, Calabar, Olorunsogo Phase 2, etc.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">DISCOs (11 distribution companies) <span class="trade-badge trade-badge-amber">Financial Distress</span></div>
+      <p class="trade-body">Eleven privatised Distribution Companies (DisCos) including Ikeja Electric, Eko Electricity, Kano Electricity, Abuja AEDC, and others. DisCos are the weakest link in the value chain: cumulative debts to GenCos and TCN exceed NGN 2 trillion. Under-metering (~40% of customers have meters), billing losses, energy theft, and tariff suppression below cost-recovery have created a structural deficit. Government tariff reform in 2024 (raising Band A tariff to NGN 225/kWh) was the most significant tariff adjustment in over a decade.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">NERC — Nigerian Electricity Regulatory Commission <span class="trade-badge">Regulator</span></div>
+      <p class="trade-body">NERC was established by the Electric Power Sector Reform Act (EPSRA) 2005. Under the Electricity Act 2023, NERC's mandate has been adjusted to accommodate a dual-layer regulatory framework: federal regulation of bulk/interstate transmission, and state-level regulatory bodies (SEREBs — State Electricity Regulatory Boards) for intrastate activities. This creates complexity but opens the door to Lagos, Rivers, and other states building their own mini-grids and distribution systems outside NERC oversight.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">NNPC / Nigerian Upstream Petroleum <span class="trade-badge trade-badge-grey">Fuel Supply</span></div>
+      <p class="trade-body">The Nigerian National Petroleum Company (NNPC) controls domestic gas supply through its Downstream Gas Infrastructure Fund. Gas supply to power plants is frequently interrupted due to pipeline vandalism (especially in the Niger Delta), under-investment in mid-stream infrastructure, and gas pricing disputes between NNPC and GenCos. The Petroleum Industry Act 2021 restructured NNPC into a commercially-oriented entity, with implications for domestic gas pricing and supply discipline.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Gas-to-power structural failure:</strong> Nigeria has among the world's largest gas reserves (~210 TCF proven) but cannot reliably supply gas to its own power plants. Domestic gas prices below USD 2.50/MMBtu (vs. export parity of USD 9+) create disincentives for investment. Pipeline vandalism in the Niger Delta has cost the sector billions annually. The PIA 2021 introduces market pricing for gas, but implementation has been slow.</li>
+  <li><strong>Transmission grid collapse events:</strong> Nigeria's grid has experienced multiple total system collapses — a "system collapse" in which generation falls to near-zero before recovery over 12–24 hours. These occur due to insufficient spinning reserve, transmission fault cascades, and operator errors. Each collapse inflicts ~USD 200–500M in economic losses. TCN's grid reinforcement programme, supported by AfDB and World Bank, targets enhanced protection and automated switching.</li>
+  <li><strong>DisCo insolvency and tariff reform:</strong> The distribution sector's accumulated debt (NGN 2+ trillion) to GenCos and TCN has created a liquidity crisis across the entire value chain. The 2024 tariff hike (Band A customers: NGN 225/kWh from NGN 68) was politically contentious but necessary. Full cost-reflective tariffs for all bands remain politically sensitive given widespread poverty. The Presidential Metering Initiative (PMI) targeting 5 million meters is underway to reduce commercial losses.</li>
+  <li><strong>Electricity Act 2023 — subnational framework:</strong> The landmark Electricity Act 2023 allows states to develop their own generation, distribution, and even mini-grid systems without federal involvement, provided they connect to the national grid at agreed points. Lagos, Rivers, and Imo states have moved fastest to establish State Electricity Regulatory Boards. This decentralisation could unlock state-level investment but risks fragmenting national grid coherence.</li>
+  <li><strong>WAPP and regional exports:</strong> Nigeria has historically exported power to Benin, Togo, and Ghana via the WAPP interconnection. The North Core 330 kV project (Nigeria–Benin–Togo–Ghana) is the backbone of WAPP's regional trade architecture. Nigeria's ability to serve as a net exporter depends on resolving domestic generation shortfalls first. The post-coup suspension of exports to Niger (2023–2024) was a significant geopolitical signal.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Nigeria has 13.4 GW of nominal installed capacity but routinely dispatches only 4–5 GW — the gap is overwhelmingly explained by gas supply failures, not absent plant capacity. This is a fuel supply and infrastructure problem, not a generation investment deficit per se.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The distribution sector is the sector's financial black hole: DisCo debts of over NGN 2 trillion, under-metering of ~40% of customers, and tariffs suppressed below cost recovery have made the entire value chain illiquid, deterring the generation investment Nigeria desperately needs.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The Electricity Act 2023 is a structural inflection point: by allowing states to generate, wheel, and distribute independently, it opens Nigeria to a more decentralised electricity architecture — Lagos, Rivers, and other states with fiscal capacity could move faster than the federal framework has allowed.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Nigeria anchors the West African Power Pool (WAPP) — it is the North Core's largest potential supplier and the political kingpin of regional electricity trade. Its own chronic supply shortfall is the most binding constraint on wider WAPP market development.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Self-generation by businesses (diesel and gas generators) is estimated to cost the Nigerian economy USD 14B/year — more than the formal electricity sector's entire revenue base. Improving grid reliability even marginally would generate immediate and large welfare gains.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> NERC Annual Report 2023; TCN Annual Technical Report 2023; IEA Nigeria Energy Profile 2024; Ember Global Electricity Review 2024; World Bank Nigeria Electricity Sector Assessment; African Development Bank Nigeria Energy Sector DPL; PwC Nigeria Electric Power Sector Analysis 2023; Presidency of the Federal Republic of Nigeria — Electricity Act 2023 (official text); NNPC Annual Statistical Bulletin 2023; Stears Energy Tracker Nigeria 2024; Global Energy Monitor — Nigeria Gas Tracker; Reuters / Bloomberg — Nigerian tariff reform and DisCo debt reporting 2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Nigeria (NGA) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Gas','Hydro','Oil','Solar'];
+const C1=['#2E75B6','#0F7B72','#5B3FA0','#F59F00'];
+const GW1=[8.9,2.9,0.7,0.4];
+
+const L2=['Gas','Hydro','Solar'];
+const C2=['#2E75B6','#0F7B72','#F59F00'];
+const D2=[77,22,1];
+const TWh2=D2.map(v=>+(v*41/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[33.2,36.6,32.3,36.7,36.5,38.0,39.3,38.1,41.0];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

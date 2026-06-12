@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cape Verde Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Cape Verde electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~230 MW</div><div class="kpi-lbl">Total installed capacity (all islands)</div></div>
+  <div class="kpi"><div class="kpi-val">0.50 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">98.6%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">50% RE by 2030</div><div class="kpi-lbl">Target (currently ~28% in 2023)</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Cape Verde is a small island state (600,000 population) composed of ten islands in the Atlantic Ocean, 570 km west of Senegal. It is WAPP's only island member and is not physically connected to any continental grid — each inhabited island operates as a separate electricity system. Despite this fragmentation, Cape Verde has achieved the highest electrification rate in WAPP (98.6%) and is classified as a lower-middle-income country, largely driven by tourism revenue. It is also a renewable energy pioneer: wind power from São Vicente and Sal islands, and solar across all islands, have reached a combined share of ~28% in 2023, on a path toward the government's 50% RE target by 2030.</p>
+<p>The electricity sector underwent a major structural reform in 2024: ELECTRA (the former integrated state utility) was unbundled into three separate companies — <strong>EPEC</strong> (Empresa Pública de Electricidade da Cabo Verde) for generation, <strong>ONSEC</strong> (Operação Nacional do Sistema Eléctrico da Cabo Verde) for transmission and system operation, and <strong>EDEC</strong> (Empresa de Distribuição de Electricidade da Cabo Verde) for distribution. This unbundling, supported by the World Bank and EU, aims to attract private investment in generation while maintaining regulated transmission and distribution.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix — aggregated across all islands</h3>
+<div class="callout">Cape Verde's electricity system comprises separate grids on each inhabited island (Santiago, São Vicente, Sal, Fogo, Santo Antão, Brava, São Nicolau, Maio, Boa Vista). Figures below represent the national aggregate. The two largest grids are Santiago (Praia) and São Vicente (Mindelo), which together account for ~70% of national generation.</div>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~230 MW, all islands)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">230</div><div class="chart-center-lbl">MW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, ~0.50 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">0.50</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Cape Verde aggregated national capacity and generation, 2023. Each island has its own separate grid with its own generation mix. Sources: EPEC/ELECTRA; ARME; Ember Electricity Data 2024; IEA CPV Profile; IRENA.</p>
+
+<ul>
+  <li><strong>Oil/diesel (~72% of generation):</strong> Diesel-electric sets on each island provide baseload and backup generation. Santiago (Praia): Palmarejo diesel plants. São Vicente: Mindelo diesel. Sal: Santa Maria diesel. Diesel is 100% imported at high cost, making Cape Verde's electricity among the most expensive in West Africa (USD 0.339/kWh for residential consumers). The island topology prevents any grid interconnection that would allow efficient large-scale renewable integration.</li>
+  <li><strong>Wind (~14% of generation):</strong> São Vicente island (Mindelo area): Cabeólica wind farm (25.5 MW, EDF/Globeleq joint venture with ELECTRA), the flagship wind project. Several other smaller wind turbines on Sal, Santiago, and São Nicolau. The Cabeólica project has been a benchmark for island wind integration in Africa, demonstrating that wind can provide 30–40% of São Vicente's electricity even on a small island grid with adequate battery backup.</li>
+  <li><strong>Solar (~14% of generation):</strong> Solar PV has been deployed across all islands under a mix of ELECTRA-owned systems and small IPP projects. Santiago and Sal have the largest solar installations. The IRENA-supported SIDS (Small Island Developing States) programme has financed several island solar-plus-storage systems. Total solar capacity across all islands is approximately 55–65 MW.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Electricity generation (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Cape Verde total generation (TWh), 2015–2023. Modest growth consistent with tourism-driven demand; COVID-19 dip clearly visible (2020). Sources: ELECTRA/EPEC; Ember; IEA.</p>
+
+<h3>2.3 Island-by-island generation profile</h3>
+<table>
+  <tr><th>Island</th><th>Main Grid</th><th>RE Share (est.)</th></tr>
+  <tr><td><strong>Santiago</strong></td><td>Praia (largest); diesel + solar ~30 MW</td><td>~20–25% solar</td></tr>
+  <tr><td><strong>São Vicente</strong></td><td>Mindelo; diesel + Cabeólica 25.5 MW wind + solar</td><td>~35–40% wind+solar (highest in CPV)</td></tr>
+  <tr><td><strong>Sal</strong></td><td>Santa Maria; diesel + wind + solar (tourist-driven demand)</td><td>~25–30%</td></tr>
+  <tr><td><strong>Fogo</strong></td><td>Small diesel grid; solar slowly replacing diesel</td><td>&lt;15%</td></tr>
+  <tr><td><strong>Santo Antão / others</strong></td><td>Small diesel / micro-hydro; mainly off-grid solar</td><td>Variable, generally low</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EPEC / ONSEC / EDEC (formerly ELECTRA) <span class="trade-badge">Unbundled 2024</span></div>
+      <p class="trade-body">The 2024 unbundling of ELECTRA into EPEC (generation), ONSEC (transmission/system operation), and EDEC (distribution) marks a fundamental restructuring of the sector. The objective is to attract private IPP investment in generation — particularly solar and wind on each island — while keeping the transmission and distribution wires regulated. EPEC will initially own the existing generation assets; new generation capacity is expected to be competed through IPP tenders under power purchase agreements with EDEC/ONSEC as offtakers. This is modelled on successful island energy unbundlings in Mauritius, Réunion, and Pacific SIDS.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ARME — Electricity Sector Regulator <span class="trade-badge">Regulator</span></div>
+      <p class="trade-body">The Agência de Regulação Multissectorial da Economia (ARME) is Cape Verde's multi-sector economic regulator covering electricity, water, and telecommunications. ARME sets electricity tariffs, approves IPP licences, and monitors quality of service. Cape Verde's electricity tariff (USD 0.339/kWh residential) is regulated by ARME and is one of the highest in the ECOWAS region, reflecting island isolation and diesel fuel costs. ARME has also developed a renewable energy integration standard for island grids, allowing up to 40% instantaneous RE penetration with mandatory storage back-up requirements.</div>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Cabeólica S.A. — Flagship Wind IPP <span class="trade-badge trade-badge-grey">Private IPP</span></div>
+      <p class="trade-body">Cabeólica S.A. (EDF/Globeleq and ELECTRA joint venture) operates 25.5 MW of wind capacity across four Cape Verdean islands (São Vicente, Sal, Santiago, São Nicolau), commissioned 2011–2012. It is Africa's first bankable wind energy project on small island systems and has been cited as a model for private wind investment in SIDS. The project's IFC and AfDB-backed financing structure and the PPA framework with ELECTRA have been replicated in other island energy programmes globally.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Island fragmentation — the structural constraint:</strong> Nine inhabited islands, each with its own small isolated grid (typically 3–30 MW demand), face the fundamental challenge of small island electricity systems: renewable energy variability (wind, solar) must be balanced within very small systems with limited inertia. Battery storage and smart grid controls are required at much higher penetrations than for continental grids. This drives up the cost of RE integration and limits the economically viable RE share before storage costs become prohibitive.</li>
+  <li><strong>Diesel import dependency and tariff pressure:</strong> With 72% of generation from diesel in 2023 and diesel 100% imported, Cape Verde is acutely exposed to global oil prices. The residential tariff of USD 0.339/kWh is already one of the highest in West Africa — a constraint on tourism competitiveness and household welfare. The 50% RE target by 2030 is fundamentally driven by the economics of reducing diesel import costs, not only by climate objectives.</li>
+  <li><strong>50% RE target by 2030 — achievable but storage-intensive:</strong> Reaching 50% RE by 2030 requires roughly doubling the current renewable capacity across all islands within 6 years. This is technically feasible given the excellent wind and solar resources. The binding constraints are: (1) adequate battery storage to manage variability on each small island grid; (2) IPP financing (the ELECTRA unbundling is designed to address this); and (3) grid management capacity (ONSEC) to operate higher RE penetration grids safely. The 40% RE share already achieved on São Vicente demonstrates the feasibility of the target.</li>
+  <li><strong>Tourism economy — peak demand and seasonal variation:</strong> Cape Verde's economy is dominated by tourism (particularly on Sal, Boa Vista, and São Vicente), which creates highly seasonal electricity demand profiles: peak in October–April (European winter tourism season) and significantly lower consumption in summer. This seasonality complicates capacity planning and RE integration, as the grid must be sized for peak tourist demand while running at low utilisation in the off-season.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Cape Verde is WAPP's outlier: an island nation with 98.6% electrification, a tourism-based economy, and a renewable energy transition underway — it shares WAPP membership but faces fundamentally different electricity sector challenges (island isolation, small grid fragmentation, high tariffs) compared to its continental peers.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The Cabeólica wind project (25.5 MW across four islands, 2011–2012) was Africa's first bankable private wind investment in island systems and established a financing model — PPA + IFC/AfDB backing + private equity — that has since been replicated in SIDS worldwide. Cape Verde's RE leadership is a genuine regional precedent.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The 2024 ELECTRA unbundling (into EPEC, ONSEC, EDEC) is the right structural reform for the next phase of Cape Verde's energy transition: it creates a framework for private IPPs to develop island solar and wind projects under bankable PPAs, without requiring ELECTRA's constrained balance sheet to finance new capacity directly.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>São Vicente's 35–40% wind+solar penetration demonstrates that high RE shares on small island grids are technically manageable with adequate storage and smart grid controls — the Cabeólica experience can be replicated and scaled on Santiago, Sal, and other islands to drive the aggregate 50% national RE target.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Cape Verde's USD 0.339/kWh residential tariff — the highest in WAPP — is simultaneously the strongest economic incentive for private RE investment (high avoided cost) and the country's most urgent energy equity challenge; success in hitting the 50% RE target would materially reduce the cost of electricity that is the foundation of the tourism sector's competitiveness.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> ELECTRA/EPEC Cape Verde Annual Report 2023; ARME — Relatório Anual 2023; Ember Electricity Data 2024; IEA Cape Verde Energy Profile; IRENA Cape Verde Country Profile 2024; World Bank — Cape Verde Energy Transition Programme; IFC — Cabeólica Wind Project documentation; EDF/Globeleq — Cabeólica annual operating data; AfDB Cape Verde energy sector loans; IRENA SIDS Lighthouse Initiative — Cape Verde case study; Africa Energy Portal Cape Verde Country Profile; Inforpress — Cape Verde media on electricity sector 2023–2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Cape Verde (CPV) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Oil','Wind','Solar'];
+const C1=['#5B3FA0','#1A7A4A','#F59F00'];
+const GW1=[0.115,0.057,0.058];
+
+const L2=['Oil','Wind','Solar'];
+const C2=['#5B3FA0','#1A7A4A','#F59F00'];
+const D2=[72,14,14];
+const TWh2=[0.36,0.07,0.07];
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[0.43,0.45,0.43,0.43,0.44,0.42,0.43,0.50,0.50];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#1A7A4A',backgroundColor:'rgba(26,122,74,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#1A7A4A',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${(c.parsed.y*1000).toFixed(0)} GWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

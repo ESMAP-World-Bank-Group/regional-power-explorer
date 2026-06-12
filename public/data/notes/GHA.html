@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghana Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Ghana electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~5.3 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">24.3 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~89.5%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">WAPP exporter</div><div class="kpi-lbl">Togo, Benin, Burkina Faso, CIV</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Ghana has one of West Africa's most developed electricity sectors, anchored by the iconic Akosombo dam (Volta River, 1,020 MW), a legacy of President Nkrumah's industrialisation vision in the 1960s. With an electrification rate near 90%, Ghana surpasses most peers in access, but the sector has been haunted by a recurring cycle of financial distress — the so-called "Dumsor" (Twi for "off-on") crises of 2014–2016 that saw rolling 24–48 hour load-shedding schedules and a second crisis in 2022–2023 driven by IPP debt accumulation and the macroeconomic collapse (IMF programme declared late 2022).</p>
+<p>Ghana is both a net electricity exporter within WAPP (supplying Togo, Benin, and historically Burkina Faso) and a country struggling with the fiscal and financial sustainability of its power sector. The Electricity Company of Ghana (ECG) has been unable to collect sufficient revenue to pay Independent Power Producers (IPPs), creating a growing debt overhang estimated at USD 1.5–2B by 2024. Structural reform — including the possible private concession of ECG — has been debated for over a decade.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~5.3 GW, 2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">5.3</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, ~24.3 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">24.3</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Ghana installed capacity and generation mix, 2023/2024. Sources: Energy Commission Ghana; GRIDCO; Ember Electricity Data 2024; IEA Ghana Profile.</p>
+
+<ul>
+  <li><strong>Gas (~33% of capacity, ~59% of generation):</strong> Ghana's thermal fleet runs primarily on natural gas from the Jubilee and Sankofa fields (supplied via West African Gas Pipeline from Nigeria, and increasingly from domestic offshore). Key plants include Aboadze Thermal Plant (560 MW), Sunon Asogli Phase 1–2 (560 MW, China Power International), Karpower FSRU (450 MW, operated by Karpowership), and CENIT/Volta River Authority (VRA) thermal units. Gas supply reliability issues from Nigeria's WAGP pipeline created severe shortfalls in 2014–2016.</li>
+  <li><strong>Hydro (~30% of capacity, ~38% of generation):</strong> Akosombo (1,020 MW) and Kpong (160 MW) on the Volta River are operated by VRA. Bui dam (400 MW, commissioned 2013, built by Sinohydro) on the Black Volta. Rainfall variability — particularly the 2023 low-water episode in Akosombo — creates significant interannual generation volatility.</li>
+  <li><strong>Oil (~28% of capacity, ~2% of generation):</strong> Substantial light crude oil and HFO capacity is held in reserve (primarily older VRA and IPP units), rarely dispatched at full load due to cost. Karpowership's HFO/LNG FSRU, Tico, and Takoradi plants can burn oil as backup.</li>
+  <li><strong>Solar (~1.4%):</strong> BXC 20 MW, Nzema 155 MW (partial), and distributed systems. Solar capacity was a small but growing share with several utility-scale projects in the pipeline under the Renewable Energy Act 2011.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Ghana generation and demand (TWh), 2015–2023. Strong upward trend reflecting industrialisation and access expansion, with dip in 2016–2017 during Akosombo low-water crisis. Sources: Energy Commission Ghana; Ember; IEA.</p>
+
+<h3>2.3 Transmission and WAPP exports</h3>
+<table>
+  <tr><th>Link</th><th>Voltage / Capacity</th><th>Status</th></tr>
+  <tr><td><strong>Ghana → Togo, Benin</strong></td><td>161 kV; ~200–260 MW</td><td>Operational. Ghana (VRA/GRIDCo) supplies Togo's CEET and Benin's SBEE; Togo and Benin import ~60–80% of their electricity. Key WAPP export corridor.</td></tr>
+  <tr><td><strong>Ghana → Burkina Faso</strong></td><td>225 kV; ~60 MW</td><td>Variable due to security situation in Burkina Faso. Ghana–CIV cross-border link also exists for balancing.</td></tr>
+  <tr><td><strong>North Core (Ghana–Togo–Benin–Nigeria)</strong></td><td>330 kV; 1,000 MW design</td><td>Under development as flagship WAPP interconnection. Ghana section connecting to existing 161 kV export points.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">VRA — Volta River Authority <span class="trade-badge">State Generation</span></div>
+      <p class="trade-body">VRA owns and operates the Akosombo and Kpong hydro plants (1,180 MW combined), the Aboadze thermal plant complex, and several thermal IPP equity stakes. As Ghana's oldest and largest generation entity, VRA's hydro output drives national energy security: in low-water years (2022/23 saw Akosombo reservoir at a record low), thermal generation must compensate, driving fuel costs sharply higher. VRA also manages the electricity supply agreement with Togo and Benin.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">GRIDCo — Ghana Grid Company <span class="trade-badge">Transmission SO</span></div>
+      <p class="trade-body">GRIDCo is the sole transmission system operator and wholesale market manager, unbundled from VRA in 2006. It operates the 161 kV and 330 kV national grid and manages WAPP interconnection with Togo, Benin, and Burkina Faso. GRIDCo is generally regarded as the best-managed entity in the value chain; its grid losses (~3–4%) are relatively low by regional standards.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ECG / NEDCo — Distribution <span class="trade-badge trade-badge-amber">Financial Distress</span></div>
+      <p class="trade-body">The Electricity Company of Ghana (ECG) serves the south (including Greater Accra and Kumasi) and the Northern Electricity Distribution Company (NEDCo, VRA subsidiary) serves the north. ECG is Ghana's most financially distressed utility — estimated IPP arrears of USD 1.5–2B in 2024. Attempts to concession ECG to a private operator (Power Distribution Services, a US-led consortium, was awarded a concession in 2019 that was cancelled in 2020) have repeatedly stalled due to political opposition.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">PURC / Energy Commission <span class="trade-badge">Regulator</span></div>
+      <p class="trade-body">The Public Utilities Regulatory Commission (PURC) regulates tariffs, consumer affairs, and utility performance. The Energy Commission licenses generators and manages renewable energy policy under the Renewable Energy Act 2011 (amended 2020). PURC tariff reviews have historically been infrequent and politically influenced, contributing to structural under-pricing.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>IPP debt overhang:</strong> Ghana signed numerous take-or-pay IPP contracts during the 2012–2016 dumsor crisis, resulting in significant over-capacity and contractual capacity payments far exceeding what ECG can collect from customers. The IPP debt has mushroomed to USD 1.5–2B and is a major component of Ghana's sovereign debt distress (IMF programme from 2023). Restructuring has involved haircuts on capacity charges and maturity extensions — a controversial but ultimately necessary process.</li>
+  <li><strong>Akosombo low-water crisis (2023–2024):</strong> The Volta reservoir dropped to critically low levels in late 2023, forcing VRA to spill operations well below minimum generation levels (400 MW vs. design 1,020 MW) for extended periods. This triggered a dumsor recurrence: 12–24 hour load-shedding schedules in Q4 2023. Emergency HFO thermal generation and Karpowership dispatch were used to compensate at very high cost.</li>
+  <li><strong>Karpowership controversy:</strong> Ghana has contracted Karpowership's floating FSRU unit (Karadeniz) for ~450 MW of power generation on a USD 30/MWh capacity charge basis. The contract, valued at over USD 500M during its term, has been contentious — Parliament and civil society have questioned value for money, and the ECG debt overhang has caused payment delays that put the arrangement at risk.</li>
+  <li><strong>Tariff reform and subsidy rationalisation:</strong> Ghana's end-user tariffs have been periodically adjusted by PURC but generally lag cost-reflective levels. The 2023 IMF programme required accelerated tariff reviews. Cross-subsidies between residential and commercial categories are complex and create market distortions. The macroeconomic crisis (currency depreciation of ~50% in 2022) sharply increased the GHS-denominated cost of USD-denominated IPP contracts.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Ghana's "Dumsor" crises illustrate the twin vulnerabilities of a hydro-thermal system: drought cuts hydro output while thermal plants require reliable gas supply — both risks materialised simultaneously in 2023, causing a recurrence of rolling load-shedding that damaged economic confidence.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>IPP over-contracting during 2012–2016 created a financial time bomb: take-or-pay capacity payments for plants not fully utilised have accumulated into a USD 1.5–2B debt that has become part of Ghana's sovereign debt crisis — a cautionary tale for energy planning under political pressure.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Ghana is the linchpin of WAPP exports to Togo, Benin, and Burkina Faso — when Ghana's own supply is under stress, downstream countries lose 60–80% of their electricity overnight, demonstrating the systemic risk of over-dependence on a single WAPP exporter.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>ECG's privatisation remains the sector's unresolved structural question: the Power Distribution Services concession failure (2019–2020) showed the political difficulty of private distribution, yet ECG's chronic financial dysfunction makes the status quo equally unsustainable.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Ghana's offshore gas discoveries (Jubilee, Sankofa) offer the potential for a domestically-fuelled thermal fleet that reduces WAGP pipeline dependence — but the transition requires upstream gas infrastructure investment and robust domestic gas pricing reform to make power-sector offtake commercially attractive.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> Energy Commission Ghana — National Energy Statistics 2023; GRIDCo Annual Report 2023; VRA Annual Report 2023; PURC Tariff Review 2024; Ember Global Electricity Review 2024; IEA Ghana Energy Profile; World Bank Ghana Energy DPL; IMF Ghana ECF Programme Article IV 2023; Global Energy Monitor — Ghana Gas and Coal Tracker; Reuters / Bloomberg — ECG debt and Karpowership reporting 2023–2024; Africa Energy Portal Ghana Country Profile.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Ghana (GHA) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Gas','Hydro','Oil','Solar'];
+const C1=['#2E75B6','#0F7B72','#5B3FA0','#F59F00'];
+const GW1=[1.76,1.58,1.50,0.08];
+
+const L2=['Gas','Hydro','Oil','Solar'];
+const C2=['#2E75B6','#0F7B72','#5B3FA0','#F59F00'];
+const D2=[59,38,2,1];
+const TWh2=D2.map(v=>+(v*24.3/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[11.7,13.2,13.3,14.9,17.3,19.8,22.1,23.2,24.3];
+const dem=[11.3,13.7,13.4,14.3,16.0,18.0,20.4,21.1,21.9];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2},{label:'Demand',data:dem,borderColor:'#0F7B72',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

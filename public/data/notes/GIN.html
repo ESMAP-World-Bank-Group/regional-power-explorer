@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guinea Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Guinea electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~1.2 GW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">4.0 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~47%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~26,000 MW</div><div class="kpi-lbl">Technically exploitable hydro potential</div></div>
+</div>
+
+<div class="body">
+
+<div class="callout-warn"><strong>Political instability — military junta since September 2021.</strong> Guinea has been under military government (CNRD, led by Colonel Mamadi Doumbouya) since the coup against Alpha Condé in September 2021. The junta has suspended the constitution and delayed the transition timeline multiple times. While Guinea has not experienced the jihadist security crisis affecting its Sahel neighbours, the political environment reduces the predictability of the regulatory and investment framework. International lenders (World Bank, AfDB) have maintained some engagement. Data quality in recent years may be affected by reduced statistical capacity.</div>
+
+<h2>1. Energy context</h2>
+<p>Guinea has one of the most paradoxical electricity situations in West Africa: it sits on one of the continent's largest technically exploitable hydropower potentials (estimated at 26,000 MW, including the extraordinary Fomi cascade on the Niger River and the Konkoure, Bafing, and Tinkisso basins), yet only 47% of its population has electricity access and the national utility EDG (Electricité De Guinée) is chronically dysfunctional. The commissioning of Kaléta (240 MW, 2015) and Souapiti (450 MW, 2021) — both Chinese-financed and constructed — has transformed the country's generation base, yet access, reliability, and financial sustainability remain deeply problematic.</p>
+<p>Guinea is also critical to regional connectivity: it is the terminal point of the CLSG interconnection (Côte d'Ivoire–Liberia–Sierra Leone–Guinea), and its Kaléta dam provides the electricity backbone for the OMVG (Organisation pour la Mise en Valeur du fleuve Gambie) interconnection with Senegal, Gambia, and Guinea-Bissau. Despite this potential, EDG's operational failure means that Conakry and most provincial capitals continue to face daily outages of 6–12 hours even with the new hydro capacity in place.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~1.2 GW, 2024 est.)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~1.2</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, ~4.0 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">4.0</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Guinea installed capacity and generation mix, 2023. Generation tripled between 2020 and 2021 with Souapiti commissioning. Sources: EDG Guinea; Ember Electricity Data 2024; IEA GIN Profile; AfDB; World Bank.</p>
+
+<ul>
+  <li><strong>Hydropower (~74% of generation):</strong> <strong>Kaléta</strong> (240 MW, China Three Gorges/CWE, commissioned June 2015) was the first major hydro addition in decades and immediately transformed Conakry's electricity supply. <strong>Souapiti</strong> (450 MW, China Three Gorges, commissioned 2021) is the current flagship — it is the largest power plant in Guinea and explains the generation doubling from 2020 to 2021 visible in the historical trend. Both are run-of-river plants on the Konkoure River and face dry season output reduction. Older plants at Kindia (Grandes Chutes, 75 MW) and Garafiri (75 MW) add further capacity.</li>
+  <li><strong>Oil/diesel (~25% of generation):</strong> EDG's diesel fleet (Tombo, Kaloum thermal stations in Conakry) provides backup and seasonal peaking when hydro output is low. HFO imports are expensive and the fuel bill is a major EDG financial burden. Some industrial consumers (bauxite mines) operate captive diesel plants.</li>
+  <li><strong>Solar (~1%):</strong> Small solar systems in provincial towns and off-grid sites. A larger utility-scale solar programme is aspirational — Guinea's solar resource is good (4.5–5 kWh/m²/day) but grid integration capacity limits utility-scale addition without transmission upgrades.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Guinea generation (TWh), 2015–2023. The step change from 2020 to 2021 reflects Souapiti (450 MW) commissioning. Sources: EDG; Ember; IEA; AfDB.</p>
+
+<h3>2.3 Interconnections and regional role</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Notes</th></tr>
+  <tr><td><strong>CLSG (CIV→LBR→SLE→GIN)</strong></td><td>225 kV ring; 240 MW design</td><td>Guinea is the terminal end of the CLSG ring that originates in Côte d'Ivoire. The Guinea section connects to Kaléta dam. CIV–Liberia and CIV–Guinea links are operational (limited); Sierra Leone section remains incomplete, preventing full CLSG ring closure.</td></tr>
+  <tr><td><strong>OMVG (Kaléta → Gambia/Guinea-Bissau)</strong></td><td>225 kV; partial operation since late 2023</td><td>The OMVG 225 kV line transmitting Kaléta power north toward Dakar/Banjul/Bissau reached limited operational status in late 2023. This gives Gambia and Guinea-Bissau their first access to West African grid power. Guinea is the supply anchor for OMVG.</td></tr>
+  <tr><td><strong>Fomi Dam (future)</strong></td><td>90 MW; Niger River, Upper Guinea</td><td>Fomi is the next major hydro project in Guinea's development pipeline, on the Niger River at the source. Its reservoir would extend into Mali. AfDB and IDA financing has been secured, but construction has been delayed by environmental concerns and COVID. Completion target is ~2027–2028.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EDG — Electricité De Guinée <span class="trade-badge trade-badge-amber">Operationally Dysfunctional</span></div>
+      <p class="trade-body">EDG is the vertically-integrated state utility. Despite 690 MW of modern hydro capacity (Kaléta + Souapiti), EDG delivers unreliable supply — often 6–12 hours of daily outages in Conakry — due to: extreme transmission and distribution losses (40–50%); inability to bill and collect from government entities (the largest consumers); lack of metering on ~30% of connections; and weak technical capacity. EDG has had multiple donor-supported reform programs (World Bank, AfDB) without sustained improvement. The junta has not yet delivered the EDG structural reform that donors have consistently demanded as a condition for further investment.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">China Three Gorges / CWE — Project Developers <span class="trade-badge trade-badge-grey">Chinese State Enterprise</span></div>
+      <p class="trade-body">China Three Gorges (CTG) and its subsidiary CWE financed and constructed both Kaléta (2015) and Souapiti (2021) under EPC+finance agreements with the Guinean state. Repayment is structured as concessional loans backed by bauxite export revenues. CTG has also been involved in initial discussions for the Amaria cascade (further downstream on the Konkoure). China's willingness to finance and build at scale, on terms that the World Bank's environmental and social standards cannot match, has made it the dominant infrastructure partner in Guinea's hydro sector.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Kaléta and Souapiti — capacity without reliability:</strong> Guinea has commissioned 690 MW of modern hydro in 10 years, more than tripling its generation base. Yet Conakry still faces 6–12 hours of daily outages. The constraint is not generation but transmission and distribution: the 110 kV transmission network has insufficient capacity to wheel all available hydro output; distribution networks are saturated, lossy, and unmaintained; and EDG's billing and collection are non-functional. Generation capacity is a necessary but not sufficient condition for reliable supply.</li>
+  <li><strong>Bauxite mining as anchor demand:</strong> Guinea has 60% of the world's bauxite reserves (Sangaredi, Boké region) and is the world's second-largest producer. Major operations include CBG (Boké, Alcoa/Rio Tinto JV), SMB-Winning (China), and GAC (smaller operators). Most mines self-generate on dedicated HFO plants because EDG cannot provide reliable supply. Winning EDG's mining customers would transform the utility's revenue — but requires grid extension to Boké (200 km from Conakry) and supply reliability that EDG cannot currently provide.</li>
+  <li><strong>Dry season hydrology risk:</strong> Kaléta and Souapiti are run-of-river plants sensitive to rainfall on the Konkoure watershed. During the dry season (November–April), output can fall to 30–40% of installed capacity, requiring diesel backup. Guinea's longer-term hydro development (Fomi reservoir dam on the Niger) would address seasonality by providing storage regulation, but Fomi is years from completion.</li>
+  <li><strong>OMVG and regional export potential:</strong> The Kaléta–OMVG interconnection reaching Gambia and Guinea-Bissau (late 2023) positions Guinea as a hydro exporter to the smallest and most oil-dependent countries in WAPP. This role — analogous to CIV's for the coastal region — is strategically valuable for Guinea's economy (export revenues) and for regional energy security. Maximising OMVG offtake requires financial and commercial arrangements that are still being negotiated.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Guinea's electricity paradox — enormous hydro potential, 690 MW of modern commissioned capacity, yet persistent 6–12 hour daily outages in Conakry — demonstrates that generation capacity alone cannot deliver reliable electricity: transmission, distribution, metering, billing, and utility governance are equally critical.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Kaléta (2015) and Souapiti (2021) have been transformational projects, tripling Guinea's generation base — but both were financed by Chinese concessional debt backed by bauxite revenues, creating a commodity-linked debt structure that makes Guinea vulnerable to bauxite price downturns or supply disruptions.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Winning Guinea's bauxite mines as EDG customers would be the single most impactful commercial transformation available: mining is the country's largest creditworthy electricity consumer, currently self-generating on expensive diesel — converting mines to grid supply would fundamentally change EDG's revenue base and viability.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The OMVG Kaléta–Gambia–Guinea-Bissau interconnection, partially operational since late 2023, positions Guinea as a hydro anchor for the Atlantic mini-grid sub-region: it brings the cheapest and most reliable electricity available to Gambia and Guinea-Bissau for the first time — a genuine regional public good that Guinea can leverage diplomatically and commercially.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>The CLSG ring's completion (the Sierra Leone section remains the blocking gap) would complete a 225 kV mesh from CIV through Guinea, connecting West Africa's hydro-rich interior to its most electricity-deprived coastal frontier — Guinea's role as the terminal CLSG node makes it an irreplaceable link in WAPP's Atlantic architecture.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EDG Guinea Annual Report (last available); IEA Guinea Energy Profile; Ember Electricity Data 2024; AfDB Guinea Kaléta and Souapiti project completion reports; World Bank Guinea Power Sector Rehabilitation project documents; China Three Gorges — Souapiti project announcement 2021; OMVG — project progress reports 2023; CLSG Project Coordination Unit; ECOWAS/WAPP — Guinea country data; Rio Tinto / Alcoa CBG mining profiles; Global Energy Monitor Guinea Power Tracker; Africa Energy Portal Guinea Country Profile; IRENA Guinea Renewable Profile 2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Guinea (GIN) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Oil','Solar'];
+const C1=['#0F7B72','#5B3FA0','#F59F00'];
+const GW1=[0.90,0.27,0.03];
+
+const L2=['Hydro','Oil','Solar'];
+const C2=['#0F7B72','#5B3FA0','#F59F00'];
+const D2=[74,25,1];
+const TWh2=D2.map(v=>+(v*4.0/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[1.1,1.6,1.8,1.9,2.1,2.5,3.6,4.0,4.0];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>
