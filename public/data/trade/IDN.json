@@ -1,0 +1,30 @@
+{
+  "country": "IDN",
+  "unit": "GWh",
+  "source": "UN Comtrade+ — HS 2716 Electrical Energy (comtradeplus.un.org)",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "exports": {},
+  "imports": {
+    "Malaysia": [
+      5.4,
+      24.3,
+      1340.6,
+      2059.2,
+      2427.6,
+      2501.7,
+      1066.0,
+      249.3,
+      542.5
+    ]
+  }
+}

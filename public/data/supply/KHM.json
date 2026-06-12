@@ -1,0 +1,98 @@
+{
+  "country": "Cambodia",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Coal": [
+        2130.0,
+        2390.0,
+        3570.0,
+        3060.0,
+        3730.0,
+        2920.0,
+        3460.0,
+        3140.0,
+        7820.0
+      ],
+      "Hydro": [
+        2160.0,
+        2570.0,
+        2710.0,
+        4740.0,
+        4030.0,
+        3860.0,
+        5040.0,
+        5900.0,
+        4840.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        20.0,
+        90.0,
+        290.0,
+        610.0,
+        700.0,
+        820.0
+      ],
+      "Oil": [
+        160.0,
+        480.0,
+        290.0,
+        300.0,
+        730.0,
+        450.0,
+        550.0,
+        350.0,
+        50.0
+      ],
+      "Bioenergy": [
+        40.0,
+        40.0,
+        60.0,
+        60.0,
+        90.0,
+        0.0,
+        50.0,
+        10.0,
+        70.0
+      ],
+      "Other Renewables": [
+        40.0,
+        40.0,
+        60.0,
+        60.0,
+        90.0,
+        0.0,
+        50.0,
+        10.0,
+        70.0
+      ]
+    },
+    "demand": [
+      6040.0,
+      7060.0,
+      8070.0,
+      9750.0,
+      11730.0,
+      11340.0,
+      13100.0,
+      14900.0,
+      16970.0
+    ]
+  }
+}

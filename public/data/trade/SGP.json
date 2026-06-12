@@ -1,0 +1,30 @@
+{
+  "country": "SGP",
+  "unit": "GWh",
+  "source": "UN Comtrade+ — HS 2716 Electrical Energy (comtradeplus.un.org)",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "exports": {
+    "Bangladesh": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      136.7,
+      334.2,
+      265.7,
+      167.7
+    ]
+  },
+  "imports": {}
+}

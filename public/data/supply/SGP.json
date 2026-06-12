@@ -1,0 +1,98 @@
+{
+  "country": "Singapore",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Coal": [
+        600.0,
+        620.0,
+        680.0,
+        690.0,
+        650.0,
+        530.0,
+        670.0,
+        570.0,
+        570.0
+      ],
+      "Gas": [
+        47890.0,
+        49110.0,
+        49720.0,
+        50470.0,
+        51760.0,
+        50840.0,
+        52940.0,
+        52540.0,
+        53060.0
+      ],
+      "Solar": [
+        0.0,
+        90.0,
+        120.0,
+        140.0,
+        190.0,
+        300.0,
+        400.0,
+        670.0,
+        940.0
+      ],
+      "Oil": [
+        330.0,
+        360.0,
+        370.0,
+        320.0,
+        220.0,
+        210.0,
+        560.0,
+        1480.0,
+        1090.0
+      ],
+      "Bioenergy": [
+        1460.0,
+        1410.0,
+        1390.0,
+        1350.0,
+        1320.0,
+        1190.0,
+        1220.0,
+        1660.0,
+        1660.0
+      ],
+      "Other Renewables": [
+        1460.0,
+        1410.0,
+        1390.0,
+        1350.0,
+        1320.0,
+        1190.0,
+        1220.0,
+        1660.0,
+        1660.0
+      ]
+    },
+    "demand": [
+      50280.0,
+      51590.0,
+      52280.0,
+      52970.0,
+      54140.0,
+      53070.0,
+      55790.0,
+      57100.0,
+      57400.0
+    ]
+  }
+}

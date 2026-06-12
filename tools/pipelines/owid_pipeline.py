@@ -49,11 +49,23 @@ OWID_FUEL_MAP = {
 # Countries to process by default — add any ISO3 here
 # Maps ISO3 → display name
 DEFAULT_COUNTRIES: dict[str, str] = {
+    # Central Asia
     'KAZ': 'Kazakhstan',
     'UZB': 'Uzbekistan',
     'KGZ': 'Kyrgyzstan',
     'TJK': 'Tajikistan',
     'TKM': 'Turkmenistan',
+    # ASEAN
+    'BRN': 'Brunei',
+    'KHM': 'Cambodia',
+    'IDN': 'Indonesia',
+    'LAO': 'Laos',
+    'MYS': 'Malaysia',
+    'MMR': 'Myanmar',
+    'PHL': 'Philippines',
+    'SGP': 'Singapore',
+    'THA': 'Thailand',
+    'VNM': 'Vietnam',
 }
 
 

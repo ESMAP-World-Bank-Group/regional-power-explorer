@@ -1,0 +1,87 @@
+{
+  "country": "Laos",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Coal": [
+        2260.0,
+        7960.0,
+        10930.0,
+        12020.0,
+        11410.0,
+        11350.0,
+        11880.0,
+        12180.0,
+        12180.0
+      ],
+      "Hydro": [
+        13900.0,
+        17530.0,
+        20100.0,
+        22330.0,
+        19740.0,
+        28510.0,
+        32900.0,
+        38740.0,
+        40000.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        10.0,
+        20.0,
+        40.0,
+        40.0,
+        70.0,
+        80.0,
+        80.0
+      ],
+      "Bioenergy": [
+        0.0,
+        0.0,
+        30.0,
+        50.0,
+        50.0,
+        60.0,
+        50.0,
+        40.0,
+        40.0
+      ],
+      "Other Renewables": [
+        0.0,
+        0.0,
+        30.0,
+        50.0,
+        50.0,
+        60.0,
+        50.0,
+        40.0,
+        40.0
+      ]
+    },
+    "demand": [
+      6660.0,
+      6700.0,
+      6670.0,
+      7510.0,
+      8470.0,
+      10590.0,
+      11530.0,
+      11950.0,
+      17100.0
+    ]
+  }
+}

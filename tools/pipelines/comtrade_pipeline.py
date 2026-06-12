@@ -40,12 +40,23 @@ YEARS = list(range(2015, 2024))  # 2015-2023
 
 # UN M49 numeric codes for reporter countries
 M49: dict[str, str] = {
+    # Central Asia
     'KAZ': '398',
     'UZB': '860',
     'KGZ': '417',
     'TJK': '762',
     'TKM': '795',
-    # Add other countries here
+    # ASEAN
+    'BRN': '096',
+    'KHM': '116',
+    'IDN': '360',
+    'LAO': '418',
+    'MYS': '458',
+    'MMR': '104',
+    'PHL': '608',
+    'SGP': '702',
+    'THA': '764',
+    'VNM': '704',
 }
 
 # M49 code → ISO3 (for looking up partner names in the output)
@@ -122,40 +133,69 @@ def _fetch_flow(
     return rows
 
 
-MAX_BILATERAL_GWH = 10_000  # single-year per-partner cap; catches unit-entry errors in Comtrade
+MAX_BILATERAL_GWH = 200_000  # single-year per-partner cap; catches unit-entry errors in Comtrade
+# 200 TWh is a safe ceiling: even France→Germany peaks ~80 TWh/year.
+# The 10 TWh ceiling was fine for Central Asia but too low for ASEAN
+# (Laos→Thailand reaches ~36 TWh/year). Genuine unit errors (e.g. kWh
+# reported instead of MWh) would show as 1000× the real value, so the
+# ceiling would need to be 200 PWh to miss them at 200 TWh scale — safe.
 
 
 def _rows_to_gwh(rows: list[dict]) -> dict[str, float]:
     """
     Convert Comtrade rows to {partner_name: GWh}.
 
-    Filters:
+    Comtrade returns multiple rows per (partner, year, flow) due to:
+    - Mode of transport breakdown: motCode=0 is TOTAL, motCode>0 are sub-modes.
+      Summing both would double-count. Rule: if TOTAL rows exist for a partner,
+      use only those; otherwise sum the sub-mode rows.
+    - Exact duplicates: deduplicate on (motCode, qtyUnitCode, qty).
+
+    Other filters:
     - Skip 'World' aggregate rows (partnerCode == 0)
     - Skip partner2 (via-third-country) rows: only keep partner2Code == 0
-    - Group by partnerDesc and sum (handles multiple HS revision rows)
     """
-    totals: dict[str, float] = {}
+    # Step 1: collect valid rows per partner
+    by_partner: dict[str, list[dict]] = {}
     for row in rows:
-        # Skip aggregate rows
         if row.get('partnerCode', 0) == 0:
             continue
-        # Skip via-country flows (keep direct trade only)
         if row.get('partner2Code', 0) != 0:
             continue
         partner = row.get('partnerDesc', '') or row.get('partnerISO', '')
         if not partner:
             continue
-        unit_code = row.get('qtyUnitCode')
-        qty = row.get('qty')
-        if qty is None or unit_code not in QTY_TO_GWH:
+        by_partner.setdefault(partner, []).append(row)
+
+    totals: dict[str, float] = {}
+    for partner, partner_rows in by_partner.items():
+        # Step 2: prefer TOTAL MOT rows (motCode=0) over sub-mode breakdown rows
+        total_mot = [r for r in partner_rows if r.get('motCode', 0) == 0]
+        rows_to_use = total_mot if total_mot else partner_rows
+
+        # Step 3: deduplicate on (motCode, qtyUnitCode, qty) — removes exact copies
+        seen: set[tuple] = set()
+        gwh_sum = 0.0
+        for row in rows_to_use:
+            unit_code = row.get('qtyUnitCode')
+            qty = row.get('qty')
+            if qty is None or unit_code not in QTY_TO_GWH:
+                continue
+            key = (row.get('motCode', 0), unit_code, qty)
+            if key in seen:
+                continue
+            seen.add(key)
+            gwh = round(float(qty) * QTY_TO_GWH[unit_code], 1)
+            if gwh <= 0:
+                continue
+            gwh_sum += gwh
+
+        if gwh_sum <= 0:
             continue
-        gwh = round(float(qty) * QTY_TO_GWH[unit_code], 1)
-        if gwh <= 0:
+        if gwh_sum > MAX_BILATERAL_GWH:
+            print(f'    WARNING: outlier {partner} {gwh_sum:.0f} GWh — skipping (likely unit error)')
             continue
-        if gwh > MAX_BILATERAL_GWH:
-            print(f'    WARNING: outlier {partner} {gwh:.0f} GWh — skipping (likely unit error)')
-            continue
-        totals[partner] = totals.get(partner, 0.0) + gwh
+        totals[partner] = totals.get(partner, 0.0) + gwh_sum
     return totals
 
 
