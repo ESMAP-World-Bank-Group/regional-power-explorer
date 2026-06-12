@@ -16,34 +16,40 @@ const EPM_REGIONS = new Set(['blacksea', 'eapp', 'sapp']);
 
 function useBreadcrumb() {
   const location = useLocation();
-  const [label, setLabel] = useState('');
+  const [crumb, setCrumb] = useState(null);
 
   useEffect(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    if (parts.length === 0) { setLabel(''); return; }
+    if (parts.length === 0) { setCrumb(null); return; }
     if (parts[0] === 'region' && parts[1]) {
       fetch('/data/regions.json')
         .then(r => r.json())
         .then(d => {
           const r = (d.regions || []).find(r => r.id === parts[1]);
-          setLabel(r ? r.name : parts[1]);
+          setCrumb({ type: 'region', label: r ? r.name : parts[1] });
         })
-        .catch(() => setLabel(parts[1]));
+        .catch(() => setCrumb({ type: 'region', label: parts[1] }));
     } else if (parts[0] === 'country' && parts[1]) {
       fetch('/data/regions.json')
         .then(r => r.json())
         .then(d => {
           for (const r of (d.regions || [])) {
+            if (r.type === 'meta') continue;
             const c = r.countries.find(c => c.iso === parts[1]);
-            if (c) { setLabel(`${r.name} / ${c.name}`); return; }
+            if (c) {
+              setCrumb({ type: 'country', regionId: r.id, regionName: r.name, countryName: c.name });
+              return;
+            }
           }
-          setLabel(parts[1]);
+          setCrumb({ type: 'country', regionId: null, regionName: null, countryName: parts[1] });
         })
-        .catch(() => setLabel(parts[1]));
+        .catch(() => setCrumb({ type: 'country', regionId: null, regionName: null, countryName: parts[1] }));
+    } else {
+      setCrumb(null);
     }
   }, [location.pathname]);
 
-  return label;
+  return crumb;
 }
 
 export default function Navbar() {
@@ -152,7 +158,22 @@ export default function Navbar() {
         {crumb && (
           <>
             <span style={{ color: t.panelBorder, fontSize: '0.75rem' }}>›</span>
-            <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{crumb}</span>
+            {crumb.type === 'country' && crumb.regionId ? (
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
+                <Link to={`/region/${crumb.regionId}`} style={{
+                  fontSize: '0.75rem', color: t.muted, textDecoration: 'none', flexShrink: 0,
+                }}
+                  onMouseOver={e => e.currentTarget.style.color = t.lbl}
+                  onMouseOut={e => e.currentTarget.style.color = t.muted}
+                >{crumb.regionName}</Link>
+                <span style={{ color: t.panelBorder, fontSize: '0.75rem', flexShrink: 0 }}>›</span>
+                <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{crumb.countryName}</span>
+              </span>
+            ) : (
+              <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {crumb.type === 'country' ? crumb.countryName : crumb.label}
+              </span>
+            )}
           </>
         )}
       </div>
