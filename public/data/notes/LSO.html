@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesotho Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Lesotho electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">72 MW</div><div class="kpi-lbl">Muela HPP (domestic generation)</div></div>
+  <div class="kpi"><div class="kpi-val">~0.45 TWh</div><div class="kpi-lbl">Total consumption (2023 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">~38%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">>65% imports</div><div class="kpi-lbl">From South Africa (Eskom)</div></div>
+</div>
+<div class="body">
+
+<div class="callout"><strong>Note on 2023 generation data.</strong> OWID reports Lesotho's 2023 domestic electricity generation as 0 TWh — this is a data reporting gap rather than an operational fact. Muela HPP (72 MW) was operating in 2023 and generating electricity. The OWID figure likely reflects a data submission issue from the Lesotho Electricity Company. Historical data (2015–2022: 0.39–0.54 TWh) is used for the generation trend chart below.</div>
+
+<h2>1. Energy context</h2>
+<p>Lesotho is a small, mountainous kingdom (2.2 million population, 30,355 km²) entirely enclosed within South Africa — one of only three countries in the world completely surrounded by another country. Its electricity sector is among the simplest in SAPP: the Lesotho Electricity Company (LEC) manages a distribution network that is largely supplied by Eskom imports, supplemented by the 72 MW Muela hydropower plant (the only significant domestic generator). Lesotho imports over 65% of its electricity from South Africa under a bilateral arrangement with Eskom — a dependency that exposes it to Eskom's load shedding in the same way as Botswana, Namibia, and Eswatini.</p>
+<p>What makes Lesotho's energy context unique is the Lesotho Highlands Water Project (LHWP) — one of Africa's largest infrastructure projects, which has built massive dams (Katse, Mohale, Polihali) in the Maluti Mountains to transfer water to water-scarce South Africa's Vaal River system. The LHWP dams provide the water source for Muela HPP (72 MW, a "by-product" of the water transfer scheme), and deliver substantial royalty income to Lesotho — income that is used partly to cross-subsidise the electricity sector and fund LEC's operations.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation and supply</h3>
+<div class="callout">Lesotho's electricity supply is composed of: (1) Muela HPP domestic generation (~72 MW, ~250 GWh/year); and (2) Eskom imports (~65–70% of total consumption). Total consumption: approximately 450 GWh/year. The charts below reflect installed capacity and the supply mix estimate.</div>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Muela HPP capacity (72 MW)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">72</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Supply mix (total consumption ~450 GWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~450</div><div class="chart-center-lbl">GWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Lesotho: Muela HPP (72 MW domestic hydro) and total supply mix (domestic + Eskom imports). Imports fill >65% of demand. Sources: LEC; LEWA; LHDA; Ember 2024; IEA LSO Profile.</p>
+
+<h3>2.2 The LHWP — water, power, and royalties</h3>
+<table>
+  <tr><th>LHWP Component</th><th>Details</th><th>Relevance to electricity</th></tr>
+  <tr><td><strong>Katse Dam</strong></td><td>185 m height; reservoir 1.95 km³; on Malibamatso River</td><td>Water transferred to South Africa's Vaal system; feeds Muela HPP (via pressure tunnel). Water royalties fund LEC operations.</td></tr>
+  <tr><td><strong>Mohale Dam</strong></td><td>Mohale Reservoir links to Katse via tunnel; supplements transfer volumes</td><td>Additional water transfer revenue; no direct power generation.</td></tr>
+  <tr><td><strong>Polihali Dam (Phase II)</strong></td><td>Under construction (as of 2024); will add 1.4 km³ transfer capacity</td><td>Phase II includes Polihali HPP (~80 MW) — will approximately double Lesotho's domestic generation capacity when complete.</td></tr>
+  <tr><td><strong>Muela HPP</strong></td><td>72 MW; on Muela River (pressurised outflow from Katse tunnel); run-of-river once the tunnel is open</td><td>Lesotho's only significant power station. Output tied to Katse water release schedule (principally driven by South Africa's water demand, not Lesotho's power demand). ~250 GWh/year in normal operation.</td></tr>
+</table>
+
+<h3>2.3 Historical domestic generation</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Lesotho domestic generation (GWh), 2015–2022 (2023 data gap in OWID). Muela HPP output varies with Katse water release schedule. Sources: LEC; LHDA; Ember; IEA.</p>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">LEC — Lesotho Electricity Company <span class="trade-badge">Distribution Utility (SOE)</span></div>
+      <p class="trade-body">LEC is responsible for electricity transmission, distribution, and retail supply in Lesotho. It is not a generation company in the traditional sense — generation from Muela is managed under a separate arrangement through LHDA (Lesotho Highlands Development Authority), and the bulk of supply comes from Eskom. LEC's financial position is cross-subsidised by LHWP water royalties paid by South Africa to the Lesotho government, which then partially flow to LEC. LEC's tariffs are set by LEWA (Lesotho Electricity and Water Authority), the national regulator.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">LHDA — Lesotho Highlands Development Authority <span class="trade-badge trade-badge-grey">LHWP Manager</span></div>
+      <p class="trade-body">LHDA manages the Lesotho Highlands Water Project — the dams, tunnels, and associated infrastructure that transfer water from Lesotho to South Africa. LHDA operates Muela HPP and manages the revenues (water royalties from TCTA — Trans-Caledon Tunnel Authority, South Africa). The royalty income is a critical financial backstop for the Lesotho government and indirectly subsidises LEC. LHDA Phase II (Polihali) is under construction with World Bank/AfDB financing — it will add ~80 MW of hydro generation and increase royalty income.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Eskom dependency — the structural constraint:</strong> Lesotho imports >65% of its electricity from Eskom. Eskom's load shedding directly reduces the volume available for export to Lesotho — LEC must manage the resulting supply gap with minimal flexibility (Muela operates on Katse water release schedules, not LEC dispatch). Unlike Botswana (which has its own coal plant) or Namibia (which has some hydro), Lesotho has essentially no alternative domestic generation to buffer Eskom shortfalls.</li>
+  <li><strong>LHWP Phase II Polihali HPP — the capacity doubling:</strong> The Polihali HPP (~80 MW), under construction as part of LHWP Phase II, will approximately double Lesotho's domestic generation capacity. When commissioned (expected ~2026–2028), it will reduce Lesotho's Eskom import dependence by approximately 250–300 GWh/year. Combined with Muela's 250 GWh, domestic generation could cover ~50–55% of Lesotho's consumption — a substantial improvement in energy security.</li>
+  <li><strong>Solar IPP potential:</strong> Lesotho's highlands have very high solar insolation (5.5–6.0 kWh/m²/day). Several small solar IPP projects have been proposed and are at various stages of development under LEWA's licencing framework. Given Lesotho's small total demand (~450 GWh), even a 20–50 MW solar plant would provide a meaningful share of supply — reducing both Eskom import volumes and the vulnerability to load shedding periods. The main constraint is LEC's creditworthiness as PPA offtaker.</li>
+  <li><strong>38% electrification — the rural gap:</strong> Despite high mountainous terrain limiting grid extension, Lesotho has focused electrification investment on urban areas (Maseru, Mafeteng) and corridor villages. Rural Lesotho — the high mountain areas (Thaba Tseka, Mokhotlong, Qacha's Nek) — has very low electrification and is served by off-grid solar (solar lanterns, small SHS) through NGO and private channels. Grid extension to mountain villages is technically feasible (Lesotho has high-voltage infrastructure for LHWP construction) but economically challenging given low rural load densities.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Lesotho's electricity system is functionally an extension of Eskom's distribution network — over 65% import dependence on a single supplier, with Muela HPP operating on a schedule driven by South Africa's water needs rather than Lesotho's power needs. Energy sovereignty in Lesotho is essentially non-existent under the current configuration.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The Lesotho Highlands Water Project is both the source of Lesotho's energy wealth (Muela HPP, royalty income) and the source of its energy constraint: Muela's generation output is determined by the Katse–Vaal water transfer schedule, over which Lesotho has limited operational control — South Africa's water demand drives Lesotho's power generation.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The Polihali HPP (~80 MW, LHWP Phase II) is the most important energy infrastructure development in Lesotho in a generation: when commissioned (~2026–2028), it will roughly double domestic generation capacity and reduce Eskom import dependence from >65% to approximately 50% — a meaningful improvement in energy security for a country with essentially no alternative leverage.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>LHWP water royalties are the financial foundation of the Lesotho government's energy sector: they provide stable foreign-currency income that cross-subsidises LEC and enables below-cost-recovery tariffs. This "water-for-electricity" trade (selling water rights to South Africa, using the income to buy electricity back from South Africa) is a pragmatic but asymmetric dependency that leaves Lesotho's energy future tied to South Africa's water demand.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Lesotho's highland solar resource (5.5–6.0 kWh/m²/day) is the structurally underutilised hedge against Eskom dependence — 20–50 MW of domestic solar would cost relatively little, produce meaningful supply, and operate independently of both Eskom's load shedding and Katse's water schedule. The absence of such a programme reflects LEC's financial constraints and a regulatory framework that has not yet developed the PPA guarantee structures needed to attract private solar capital.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> LEC Lesotho Annual Report 2023; LEWA — Annual Report 2023; LHDA — LHWP Phase II progress reports; Ember Electricity Data 2024; IEA Lesotho Energy Profile; IRENA Lesotho Country Profile 2024; World Bank — LHWP Phase II financing documents; AfDB Lesotho energy notes; TCTA (Trans-Caledon Tunnel Authority) South Africa — water royalty data; Africa Energy Portal Lesotho Country Profile; Lesotho Times — electricity coverage 2023–2024.
+</div>
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Lesotho (LSO) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro (Muela)'];
+const C1=['#0F7B72'];
+const GW1=[0.072];
+const L2=['Hydro (Muela)','Eskom import'];
+const C2=['#0F7B72','#5A6474'];
+const D2=[35,65];
+const GWh2=[160,290];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: 72 MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:GWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed} GWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022'];
+const gen=[530,520,540,520,390,430,530,480];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:gen,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} GWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

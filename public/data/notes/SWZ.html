@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eswatini Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Eswatini electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~230 MW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">0.87 TWh</div><div class="kpi-lbl">Domestic generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~68%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~50% imports</div><div class="kpi-lbl">Share from Eskom (South Africa)</div></div>
+</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Eswatini (formerly Swaziland) is a small landlocked constitutional monarchy (1.2 million population, 17,364 km²) enclosed within South Africa and Mozambique. Its electricity sector reflects its geographic situation: EEC (Eswatini Electricity Company) imports approximately 50% of total consumption from Eskom (South Africa), with the remainder generated domestically from a mix of hydro, sugarcane bagasse bioenergy, and some coal and solar. Eswatini's most distinctive energy characteristic is its substantial sugarcane bioenergy sector: the sugar industry — anchored by Royal Swazi Sugar Corporation, Illovo Sugar, and RCL Foods — generates significant electricity from bagasse (sugar cane waste), making Eswatini one of SAPP's few members with a meaningful industrial bioenergy base.</p>
+<p>Like Botswana, Lesotho, and Namibia, Eswatini is heavily exposed to Eskom's load shedding crisis: ZAF Stage 6 load shedding flows directly into Eswatini supply curtailments. The EEC has been investing in solar IPPs and demand-side management to reduce this exposure, but the structural dependency on South African imports is difficult to eliminate quickly in a country with limited land for large-scale renewables and a small electricity market (~1.7 TWh total demand).</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Domestic installed capacity (~230 MW)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">230</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Domestic generation (2023, ~0.87 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">0.87</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Eswatini domestic capacity and 2023 generation. Total demand ~1.7 TWh (remaining ~0.8 TWh imported from South Africa/Mozambique). Sources: EEC; ESERA; Ember 2024; IEA SWZ Profile; IRENA.</p>
+
+<ul>
+  <li><strong>Hydro (~45% of domestic generation):</strong> Maguga Dam (24 MW, on Komati River, shared infrastructure with South Africa) and Mnjoli Dam (20 MW, Mbuluzi River), plus smaller run-of-river stations. Total hydro capacity ~65 MW. Hydro output is seasonal and drought-sensitive.</li>
+  <li><strong>Sugarcane bioenergy / bagasse (~24% of domestic generation):</strong> The sugar mills at Simunye (Big Bend) and Mhlume operate co-generation plants burning bagasse during the crushing season (April–November). The Simunye Power Station (45 MW) and Mhlume sugar mill generate electricity from the sugar processing co-product. Bagasse power is seasonal: high output during crushing season, near-zero in off-season. This creates seasonal system management challenges for EEC (importing more from Eskom in the off-season, exporting back in peak crushing season).</li>
+  <li><strong>Coal (~2% of domestic generation):</strong> Small coal-fired generating sets. Eswatini's coal resources are limited; coal generation is a residual category from older plant.</li>
+  <li><strong>Solar (~3% and growing):</strong> Rooftop solar and small IPP projects (commercial/industrial self-generation) are growing. EEC has developed a net metering framework, and commercial rooftop solar is the fastest-growing segment.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Eswatini domestic generation (TWh), 2015–2023. Gradual upward trend, primarily from bagasse expansion and hydro variability. Sources: EEC; Ember; IEA.</p>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EEC — Eswatini Electricity Company <span class="trade-badge">State Utility</span></div>
+      <p class="trade-body">EEC (formerly SEC — Swaziland Electricity Company) is the state-owned vertically-integrated utility responsible for bulk power supply, transmission, and distribution in Eswatini. It manages the Eskom bilateral import arrangement (the largest single source of Eswatini's electricity), the domestic hydro and bioenergy portfolio, and the growing solar IPP PPA portfolio. EEC is relatively stable financially by SAPP standards — Eswatini's tariff regime allows closer-to-cost-recovery pricing than many regional peers — but it faces the same structural challenge as Botswana and Namibia: over-reliance on an Eskom import that is increasingly unreliable.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Eskom dependency — mirroring South Africa's crisis:</strong> Eswatini's electricity supply is directly coupled to Eskom's operational performance. Every Stage 6+ load shedding event in South Africa means reduced volumes from Eswatini's largest supplier, with no short-term alternative of equivalent scale. EEC has been investing in solar IPPs and battery storage to provide some buffer, but the fundamental exposure to Eskom remains a structural constraint for the next several years until domestic renewable capacity is substantially expanded.</li>
+  <li><strong>Bagasse seasonality — an opportunity and a grid management challenge:</strong> The sugarcane bioenergy sector provides relatively cheap and renewable electricity during crushing season — but goes to zero in the off-season. This creates a pronounced seasonal import pattern: Eswatini is nearly self-sufficient (or even a net exporter) in April–November, then switches to heavy Eskom imports in December–March. Managing this swing with grid stability requires EEC to coordinate with SAPP's regional market mechanisms and potentially invest in storage to smooth the seasonal transition.</li>
+  <li><strong>Solar expansion potential:</strong> Eswatini's highlands have good solar insolation (5–5.5 kWh/m²/day). The country's small size and high existing electrification (~68%) mean that a focused utility-scale solar programme of 100–200 MW could substantially reduce import dependence. Several solar IPP projects are in the EEC procurement pipeline. Rooftop commercial solar is growing through private investment. The main constraint is EEC's offtake capacity (its small demand base limits how much IPP capacity it can absorb) and the absence of large-scale storage.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Eswatini's most distinctive electricity sector feature is its sugarcane bioenergy base — the sugar industry generates meaningful renewable electricity from bagasse, making Eswatini a rare SAPP example of agricultural-industrial energy integration. This is a model for other sugar-producing SAPP members (Malawi, Zambia, Zimbabwe) that generate bagasse but do not systematically convert it to power.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Like Botswana, Lesotho, and Namibia, Eswatini is a passive casualty of Eskom's load shedding crisis — importing from a supplier whose output is determined by South Africa's political economy of coal plant maintenance and Eskom debt, which Eswatini has no leverage to influence.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The bagasse seasonal swing (high domestic generation April–November, near-zero December–March) is Eswatini's most distinctive grid management challenge — it creates a bi-annual import surge in the crushing off-season that is predictable but commercially expensive and requires active SAPP market management rather than simple bilateral contracts.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>EEC's financial stability (relative to most SAPP peers) and Eswatini's rule of law make it a credible PPA counterparty for private solar developers — a comparative advantage over Zimbabwe, Malawi, and other SAPP members where utility credit risk blocks IPP investment.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Eswatini's absolute electricity demand (~1.7 TWh/year) is small enough that a relatively modest renewable programme (100–150 MW solar) could meaningfully reduce its Eskom dependency — making it one of the few SAPP members where energy independence is achievable through achievable near-term investment rather than requiring decade-scale infrastructure transformation.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EEC Eswatini Annual Report 2023; ESERA (Eswatini Energy Regulatory Authority) — Annual Report 2023; Ember Electricity Data 2024; IEA Eswatini Energy Profile; IRENA Eswatini Country Profile 2024; Royal Swazi Sugar Corporation / Illovo — annual reports (bioenergy data); World Bank Eswatini Energy Sector notes; SAPP Pool Statistics 2023; Times of Swaziland / Swazi Observer — electricity coverage 2023–2024.
+</div>
+</div>
+<div class="doc-footer">
+  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
+  <span>Eswatini (SWZ) · June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Bioenergy','Solar','Coal'];
+const C1=['#0F7B72','#8A94A6','#F59F00','#5A6474'];
+const GW1=[0.065,0.090,0.025,0.020];
+const L2=['Hydro','Bioenergy','Coal','Solar'];
+const C2=['#0F7B72','#8A94A6','#5A6474','#F59F00'];
+const D2=[46,24,2,3];
+const TWh2=[0.400,0.210,0.020,0.030];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[0.62,0.57,0.63,0.69,0.71,0.73,0.71,0.75,0.87];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:gen,borderColor:'#8A94A6',backgroundColor:'rgba(138,148,166,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#8A94A6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y.toFixed(2)} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>
