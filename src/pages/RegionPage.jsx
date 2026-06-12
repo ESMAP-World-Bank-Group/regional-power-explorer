@@ -1170,9 +1170,15 @@ export default function RegionPage() {
             height: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '0 16px', cursor: 'pointer', flexShrink: 0,
             borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
+            position: 'relative',
           }}>
+            <div style={{
+              position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%)',
+              width: 32, height: 4, borderRadius: 2,
+              backgroundColor: t.muted, opacity: 0.35,
+            }} />
             <span style={{ fontSize: '0.8rem', fontWeight: 600, color: t.lbl }}>{region.name}</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.muted} strokeWidth="2.5" strokeLinecap="round">
               {panelExpanded ? <polyline points="6 15 12 9 18 15"/> : <polyline points="6 9 12 15 18 9"/>}
             </svg>
           </div>
