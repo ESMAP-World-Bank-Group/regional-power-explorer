@@ -250,29 +250,6 @@ export default function LayerPanel({
         })}
       </div>}
 
-      {/* Countries filter */}
-      {countries && countries.length > 0 && (
-        <div style={{ marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-            <span style={{ ...sec, fontSize: '0.44rem' }}>Countries</span>
-            <div style={{ display: 'flex', gap: 3 }}>
-              <button onClick={onSelectAllCountries} style={{ fontSize: '0.42rem', padding: '1px 5px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit', border: `1px solid rgba(128,160,192,0.25)`, backgroundColor: 'transparent', color: t.lblMuted }}>All</button>
-              <button onClick={onDeselectAllCountries} style={{ fontSize: '0.42rem', padding: '1px 5px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit', border: `1px solid rgba(128,160,192,0.25)`, backgroundColor: 'transparent', color: t.lblMuted }}>None</button>
-            </div>
-          </div>
-          {countries.map(c => {
-            const off = countriesOff?.has(c.iso);
-            const color = COUNTRY_ZONE_COLORS[c.iso] || '#888';
-            return (
-              <div key={c.iso} className="layer-row" onClick={() => onToggleCountry(c.iso)}
-                style={{ opacity: (!plantsOn || off) ? 0.22 : 1 }}>
-                <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: 2, backgroundColor: color, marginRight: 6, flexShrink: 0 }} />
-                <span style={{ fontSize: '0.62rem', color: t.lblRow }}>{c.iso}</span>
-              </div>
-            );
-          })}
-        </div>
-      )}
 
       {/* Fuel rows */}
       <div style={{ marginBottom: 8 }}>
