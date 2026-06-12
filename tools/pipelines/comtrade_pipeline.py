@@ -188,18 +188,20 @@ def _build_trade(iso3: str, api_key: str, refresh: bool) -> dict | None:
         print(f'  [{iso3}] no trade data found')
         return None
 
-    # Remove all-zero series, then filter noise:
-    # keep only partners where at least one year exceeds MIN_PARTNER_YEAR_GWH.
-    # Tiny values (< 5 GWh/year peak) are Comtrade re-export/transit artefacts
-    # that have no physical electricity connection (e.g. UZB→Singapore 96 GWh total).
-    MIN_PARTNER_YEAR_GWH = 5.0
+    # Filter noise: keep only partners with ≥100 GWh total across all years,
+    # and exclude Comtrade catch-all groupings that are not real countries.
+    # Rationale: small totals (<100 GWh over 9 years) are re-export/transit
+    # artefacts with no physical connection (e.g. UZB→Singapore 96 GWh,
+    # UZB→China 31 GWh). "Areas, nes" is a UN aggregate code, not a country.
+    MIN_PARTNER_TOTAL_GWH = 100.0
+    _NOT_COUNTRIES = {'areas, nes', 'other asia, nes', 'other europe, nes'}
     exports = {
         p: v for p, v in exports_by_partner.items()
-        if max(v) >= MIN_PARTNER_YEAR_GWH
+        if sum(v) >= MIN_PARTNER_TOTAL_GWH and p.lower() not in _NOT_COUNTRIES
     }
     imports = {
         p: v for p, v in imports_by_partner.items()
-        if max(v) >= MIN_PARTNER_YEAR_GWH
+        if sum(v) >= MIN_PARTNER_TOTAL_GWH and p.lower() not in _NOT_COUNTRIES
     }
 
     total_exp = sum(sum(v) for v in exports.values())
