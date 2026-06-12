@@ -138,12 +138,17 @@ export default function CountryPage() {
   const countryFeatureRef  = useRef(null);
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
   const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
+  const [panelExpanded,   setPanelExpanded]   = useState(false);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => mapRef.current?.resize(), 260);
+  }, [panelExpanded, isMobile]);
 
   // Static data — fetch once
   useEffect(() => {
@@ -967,7 +972,7 @@ export default function CountryPage() {
         <div ref={containerRef} style={{ position: 'absolute', inset: 0, backgroundColor: t.bg }} />
         {isMobile && (
           <button onClick={() => setLayerPanelOpen(o => !o)} style={{
-            position: 'absolute', bottom: 24, left: 12, zIndex: 200,
+            position: 'absolute', bottom: 56, left: 12, zIndex: 200,
             width: 42, height: 42, borderRadius: 21,
             backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -1187,17 +1192,31 @@ export default function CountryPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        maxHeight: '55vh', overflowY: 'auto',
+        height: panelExpanded ? '50vh' : 44,
+        overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
         boxShadow: '0 -4px 20px rgba(0,0,0,0.25)',
-        display: 'flex', flexDirection: 'column',
+        transition: 'height 0.25s ease',
       } : {
         width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         backgroundColor: t.panel,
         borderLeft: `1px solid ${t.panelBorder}`,
         flexShrink: 0, display: 'flex', flexDirection: 'column',
       }}>
+        {isMobile && (
+          <div onClick={() => setPanelExpanded(e => !e)} style={{
+            height: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '0 16px', cursor: 'pointer', flexShrink: 0,
+            borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
+          }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: t.lbl }}>{country.name}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              {panelExpanded ? <polyline points="6 15 12 9 18 15"/> : <polyline points="6 9 12 15 18 9"/>}
+            </svg>
+          </div>
+        )}
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 44px)', padding: '12px 16px 24px' } : { display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
         {/* ── Fixed header ── */}
         <div style={{ padding: '14px 16px 0', flexShrink: 0 }}>
           {/* Breadcrumb */}
@@ -1356,6 +1375,7 @@ export default function CountryPage() {
             </Link>
           </div>
         </div>
+        </div>{/* content wrapper */}
       </div>
     </div>
   );

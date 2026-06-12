@@ -124,12 +124,17 @@ export default function RegionPage() {
   const [corridorCount,   setCorridorCount]   = useState(null);
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
   const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
+  const [panelExpanded,   setPanelExpanded]   = useState(false);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => mapRef.current?.resize(), 260);
+  }, [panelExpanded, isMobile]);
 
   // Static data
   useEffect(() => {
@@ -989,7 +994,7 @@ export default function RegionPage() {
           style={{ width: '100%', height: 'calc(100vh - 46px)', backgroundColor: t.bg }} />
         {isMobile && (
           <button onClick={() => setLayerPanelOpen(o => !o)} style={{
-            position: 'absolute', bottom: 24, left: 12, zIndex: 200,
+            position: 'absolute', bottom: 56, left: 12, zIndex: 200,
             width: 42, height: 42, borderRadius: 21,
             backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -1148,17 +1153,31 @@ export default function RegionPage() {
       {/* Right panel */}
       <div style={isMobile ? {
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-        maxHeight: '55vh', overflowY: 'auto',
-        padding: '14px 16px 24px',
+        height: panelExpanded ? '50vh' : 44,
+        overflow: 'hidden',
         backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
         borderRadius: '12px 12px 0 0',
         boxShadow: '0 -4px 20px rgba(0,0,0,0.25)',
+        transition: 'height 0.25s ease',
       } : {
         width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         padding: '18px 16px',
         backgroundColor: t.panel, borderLeft: `1px solid ${t.panelBorder}`,
         flexShrink: 0,
       }}>
+        {isMobile && (
+          <div onClick={() => setPanelExpanded(e => !e)} style={{
+            height: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '0 16px', cursor: 'pointer', flexShrink: 0,
+            borderBottom: panelExpanded ? `1px solid ${t.panelBorder}` : 'none',
+          }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: t.lbl }}>{region.name}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              {panelExpanded ? <polyline points="6 15 12 9 18 15"/> : <polyline points="6 9 12 15 18 9"/>}
+            </svg>
+          </div>
+        )}
+        <div style={isMobile ? { overflowY: 'auto', height: 'calc(50vh - 44px)', padding: '12px 16px 24px' } : {}}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 16, flexWrap: 'wrap' }}>
           <Link to="/" style={{ fontSize: '0.75rem', color: t.muted }}>World</Link>
           <span style={{ color: t.panelBorder, fontSize: '0.75rem' }}>/</span>
@@ -1226,6 +1245,7 @@ export default function RegionPage() {
             Source: {plantSource.toUpperCase()} · {region.name}
           </p>
         </div>
+        </div>{/* content wrapper */}
       </div>
     </div>
   );
