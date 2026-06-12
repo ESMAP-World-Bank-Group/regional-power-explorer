@@ -122,6 +122,14 @@ export default function RegionPage() {
   const [countriesOff,    setCountriesOff]    = useState(new Set());
   const [plantCount,      setPlantCount]      = useState(null);
   const [corridorCount,   setCorridorCount]   = useState(null);
+  const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
+  const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 700);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   // Static data
   useEffect(() => {
@@ -932,12 +940,22 @@ export default function RegionPage() {
   };
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}
+    <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
       onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
-      <LayerPanel
+      {isMobile && layerPanelOpen && (
+        <div onClick={() => setLayerPanelOpen(false)} style={{
+          position: 'absolute', inset: 0, zIndex: 299, backgroundColor: 'rgba(0,0,0,0.35)',
+        }} />
+      )}
+      <div style={isMobile ? {
+        position: 'absolute', top: 0, left: 0, zIndex: 300, height: '100%',
+        boxShadow: '2px 0 16px rgba(0,0,0,0.3)',
+        display: layerPanelOpen ? 'block' : 'none',
+      } : {}}>
+        <LayerPanel
         theme={theme}
         fuelsOff={fuelsOff} statusOff={statusOff}
         kvsOff={kvsOff}
@@ -964,10 +982,26 @@ export default function RegionPage() {
         onSelectAllCountries={selectAllCountries}
         onDeselectAllCountries={deselectAllCountries}
       />
+      </div>
 
       <div style={{ position: 'relative', flex: 1 }}>
         <div ref={containerRef}
           style={{ width: '100%', height: 'calc(100vh - 46px)', backgroundColor: t.bg }} />
+        {isMobile && (
+          <button onClick={() => setLayerPanelOpen(o => !o)} style={{
+            position: 'absolute', bottom: 24, left: 12, zIndex: 200,
+            width: 42, height: 42, borderRadius: 21,
+            backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)', color: t.lbl,
+          }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </button>
+        )}
         {zonesAvailable && (
           <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', gap: 6, alignItems: 'center' }}>
             {/* Potential Zonings toggle */}
@@ -1106,12 +1140,20 @@ export default function RegionPage() {
         )}
       </div>
 
-      {/* Drag handle */}
-      <div style={{ width: 5, flexShrink: 0, cursor: 'col-resize', backgroundColor: 'transparent' }}
-        onMouseDown={e => { isDrRef.current = true; drStartX.current = e.clientX; drStartW.current = panelWidth; e.preventDefault(); }} />
+      {!isMobile && (
+        <div style={{ width: 5, flexShrink: 0, cursor: 'col-resize', backgroundColor: 'transparent' }}
+          onMouseDown={e => { isDrRef.current = true; drStartX.current = e.clientX; drStartW.current = panelWidth; e.preventDefault(); }} />
+      )}
 
       {/* Right panel */}
-      <div style={{
+      <div style={isMobile ? {
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
+        maxHeight: '55vh', overflowY: 'auto',
+        padding: '14px 16px 24px',
+        backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
+        borderRadius: '12px 12px 0 0',
+        boxShadow: '0 -4px 20px rgba(0,0,0,0.25)',
+      } : {
         width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         padding: '18px 16px',
         backgroundColor: t.panel, borderLeft: `1px solid ${t.panelBorder}`,

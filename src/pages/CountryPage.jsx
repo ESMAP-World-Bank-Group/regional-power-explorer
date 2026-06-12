@@ -136,6 +136,14 @@ export default function CountryPage() {
   const [noteOpen,   setNoteOpen]   = useState(false);
   const mapReadyRef        = useRef(false);
   const countryFeatureRef  = useRef(null);
+  const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
+  const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 700);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   // Static data — fetch once
   useEffect(() => {
@@ -919,12 +927,22 @@ export default function CountryPage() {
   const { country, region } = info;
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 46px)' }}
+    <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
       onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
-      <LayerPanel
+      {isMobile && layerPanelOpen && (
+        <div onClick={() => setLayerPanelOpen(false)} style={{
+          position: 'absolute', inset: 0, zIndex: 299, backgroundColor: 'rgba(0,0,0,0.35)',
+        }} />
+      )}
+      <div style={isMobile ? {
+        position: 'absolute', top: 0, left: 0, zIndex: 300, height: '100%',
+        boxShadow: '2px 0 16px rgba(0,0,0,0.3)',
+        display: layerPanelOpen ? 'block' : 'none',
+      } : {}}>
+        <LayerPanel
         theme={theme}
         fuelsOff={fuelsOff} statusOff={statusOff} kvsOff={kvsOff}
         linesOn={linesOn} plantsOn={plantsOn} subsOn={subsOn}
@@ -943,9 +961,25 @@ export default function CountryPage() {
         onDownloadPlants={handleDownloadPlants}
         onDownloadLines={handleDownloadLines}
       />
+      </div>
 
       <div style={{ flex: 1, position: 'relative', height: 'calc(100vh - 46px)' }}>
         <div ref={containerRef} style={{ position: 'absolute', inset: 0, backgroundColor: t.bg }} />
+        {isMobile && (
+          <button onClick={() => setLayerPanelOpen(o => !o)} style={{
+            position: 'absolute', bottom: 24, left: 12, zIndex: 200,
+            width: 42, height: 42, borderRadius: 21,
+            backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)', color: t.lbl,
+          }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </button>
+        )}
 
         {/* ── Floating zone selector ── */}
         {zonesIndex !== null && (
@@ -1145,12 +1179,20 @@ export default function CountryPage() {
         </>
       )}
 
-      {/* Drag handle */}
-      <div style={{ width: 5, flexShrink: 0, cursor: 'col-resize', backgroundColor: 'transparent' }}
-        onMouseDown={e => { isDrRef.current = true; drStartX.current = e.clientX; drStartW.current = panelWidth; e.preventDefault(); }} />
+      {!isMobile && (
+        <div style={{ width: 5, flexShrink: 0, cursor: 'col-resize', backgroundColor: 'transparent' }}
+          onMouseDown={e => { isDrRef.current = true; drStartX.current = e.clientX; drStartW.current = panelWidth; e.preventDefault(); }} />
+      )}
 
       {/* Right panel */}
-      <div style={{
+      <div style={isMobile ? {
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
+        maxHeight: '55vh', overflowY: 'auto',
+        backgroundColor: t.panel, borderTop: `1px solid ${t.panelBorder}`,
+        borderRadius: '12px 12px 0 0',
+        boxShadow: '0 -4px 20px rgba(0,0,0,0.25)',
+        display: 'flex', flexDirection: 'column',
+      } : {
         width: panelWidth, height: 'calc(100vh - 46px)', overflowY: 'auto',
         backgroundColor: t.panel,
         borderLeft: `1px solid ${t.panelBorder}`,
