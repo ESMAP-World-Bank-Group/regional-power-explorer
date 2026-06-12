@@ -15,6 +15,13 @@ export default function WorldPage() {
   const [regions, setRegions] = useState(null);
   const [metaActive, setMetaActive] = useState(null); // region obj or null
   const [disambig, setDisambig] = useState(null);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 700);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   useEffect(() => {
     fetch('/data/regions.json').then(r => r.json()).then(d => setRegions(d.regions));
@@ -281,7 +288,7 @@ export default function WorldPage() {
       )}
 
       {/* Region legend */}
-      {regions && (
+      {regions && !isMobile && (
         <div style={{
           position: 'absolute', bottom: 70, left: 24,
           backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
@@ -337,25 +344,27 @@ export default function WorldPage() {
         </div>
       )}
 
-      {/* Click hint — top right */}
+      {/* Tap / Click hint — top right */}
       <div style={{
         position: 'absolute', top: 10, right: 12, zIndex: 50,
         backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
-        borderRadius: 6, padding: '6px 10px',
+        borderRadius: 6, padding: isMobile ? '8px 12px' : '6px 10px',
         boxShadow: '0 1px 8px rgba(0,0,0,.18)',
         display: 'flex', alignItems: 'center', gap: 7,
         pointerEvents: 'none',
       }}>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={t.muted}
+        <svg width={isMobile ? 15 : 13} height={isMobile ? 15 : 13} viewBox="0 0 24 24" fill="none" stroke={t.muted}
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
           <path d="M13 13l6 6"/>
         </svg>
         <div>
-          <div style={{ fontSize: '0.62rem', fontWeight: 600, color: t.lbl, lineHeight: 1.2 }}>
-            Click a country or region
+          <div style={{ fontSize: isMobile ? '0.72rem' : '0.62rem', fontWeight: 600, color: t.lbl, lineHeight: 1.2 }}>
+            {isMobile ? 'Tap a country or region' : 'Click a country or region'}
           </div>
-          <div style={{ fontSize: '0.55rem', color: t.muted, lineHeight: 1.3 }}>to explore the power grid</div>
+          <div style={{ fontSize: isMobile ? '0.65rem' : '0.55rem', color: t.muted, lineHeight: 1.3 }}>
+            to explore the power grid
+          </div>
         </div>
       </div>
     </div>
