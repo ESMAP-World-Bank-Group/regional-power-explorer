@@ -15,6 +15,16 @@ const ISO3_TO_ISO2 = {
   ALB:'AL', BIH:'BA', MKD:'MK', MNE:'ME', SRB:'RS', KOS:'XK',
   IND:'IN', PAK:'PK', BGD:'BD', LKA:'LK', NPL:'NP', BTN:'BT', AFG:'AF', MDV:'MV',
   KAZ:'KZ', KGZ:'KG', TJK:'TJ', TKM:'TM', UZB:'UZ',
+  // European Union
+  AUT:'AT', BEL:'BE', HRV:'HR', CYP:'CY', CZE:'CZ', DNK:'DK', EST:'EE',
+  FIN:'FI', FRA:'FR', DEU:'DE', GRC:'GR', HUN:'HU', IRL:'IE', ITA:'IT',
+  LVA:'LV', LTU:'LT', LUX:'LU', MLT:'MT', NLD:'NL', POL:'PL', PRT:'PT',
+  SVK:'SK', SVN:'SI', ESP:'ES', SWE:'SE',
+  // SIEPAC
+  GTM:'GT', HND:'HN', SLV:'SV', NIC:'NI', CRI:'CR', PAN:'PA',
+  // ASEAN (fallback if supply JSON demand field is empty)
+  BRN:'BN', KHM:'KH', IDN:'ID', LAO:'LA', MYS:'MY', MMR:'MM',
+  PHL:'PH', SGP:'SG', THA:'TH', VNM:'VN',
 };
 
 const ENTSOE_ISO3 = new Set(['ROU','BGR','TUR','ALB','BIH','MKD','MNE','SRB','KOS',
