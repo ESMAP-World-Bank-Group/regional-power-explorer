@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kazakhstan Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}.stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}.trade-flag{font-size:26px;flex-shrink:0;margin-top:2px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}.actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Kazakhstani electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~25 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">120 TWh</div><div class="kpi-lbl">Demand (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">6.4%</div><div class="kpi-lbl">Renewables share (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">71%</div><div class="kpi-lbl">Voted YES nuclear (Oct 2024)</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Kazakhstan is Central Asia's largest economy and its only electricity system with significant connections to both Russia and the broader Central Asian grid. Its power sector is a direct inheritance of Soviet industrial strategy: massive coal deposits in the north (Ekibastuz, Karaganda) were developed to fuel a heavy industrial complex, and that structure persists today. Coal accounts for <strong>75% of electricity generation</strong> — making Kazakhstan one of the most coal-intensive large electricity systems in the world. The fleet is ageing, nearly one-third of generation plants are over 30 years old, and chronic underinvestment has left the country running a <strong>structural electricity deficit</strong> covered by Russian imports.</p>
+<p>The picture is changing. A <strong>national nuclear referendum in October 2024</strong> returned 71.12% in favour of building the country's first nuclear plant since the 1999 decommissioning of BN-350. Rosatom was selected in June 2025. A 6.7 GW renewable energy auction pipeline was launched. And a landmark retail market restructuring took effect January 2025. Kazakhstan is simultaneously running coal flat-out to meet growing demand and betting on nuclear, wind and solar to transform the system by the mid-2030s.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">25</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">118</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Installed capacity and generation mix. Sources: KEGOC Annual Report 2024, IEA Kazakhstan Energy Profile, Low Carbon Power — 2024.</p>
+
+<ul>
+  <li><strong>Coal (72% cap / 75% gen):</strong> ~88 TWh in 2024. Dominated by Ekibastuz GRES-1 (4,000 MW, world's largest coal plant by single complex), Ekibastuz GRES-2 (1,000 MW), Zhambyl GRES and a network of older CHP plants. Nearly all coal is domestically mined (Ekibastuz and Karaganda basins). The fleet is large, cheap to run, but deteriorating: major unplanned outages in winter 2022–23 and 2023–24 triggered nationwide supply crises.</li>
+  <li><strong>Gas and CCGT (10% cap / 10% gen):</strong> ~12 TWh in 2024. Concentrated in western Kazakhstan (Aktobe, Atyrau — gas-producing regions). Several CCGT modernisation projects underway (700 MW combined, completion 2028).</li>
+  <li><strong>Hydro (10% cap / 9.5% gen):</strong> ~11 TWh in 2024. Key facilities: Bukhtarma (675 MW), Shulbinsk (702 MW), Kapchagay (434 MW) on the Irtysh and Ili rivers. Mostly run-of-river or reservoir regulation; limited further expansion potential.</li>
+  <li><strong>Wind (4% cap / 3.8% gen):</strong> ~4.5 TWh in 2024. 59 wind plants with 958 MW installed — Kazakhstan has some of the best steppe wind resources globally. TotalEnergies' 1,000 MW Mirny farm (FID April 2026) will more than double current capacity when complete.</li>
+  <li><strong>Solar (4% cap / 1.6% gen):</strong> ~1.9 TWh in 2024. 46 plants totalling ~1,148 MW; predominantly southern Kazakhstan (Zhambyl, Almaty regions). The capacity factor (~19%) reflects high irradiation but seasonal variability in a continental climate.</li>
+</ul>
+<div class="callout">The 2022–23 winter crisis — triggered by ageing plant failures during an unusually cold snap — exposed how thin Kazakhstan's operating reserve margin has become. The government pledged $1.8 billion for repairs and modernisation over two years; the capacity gap nonetheless widened to a record 2.4 TWh import deficit in 2024.</div>
+
+<h3>2.2 Demand — historical trend and end-use</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity demand — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">120</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Demand trend and end-use. Sources: KEGOC, Kazakhstan Statistics Agency, IEA, Enerdata.</p>
+<p>Demand has grown at ~3–4% per year since 2020, driven by an expanding mining and smelting sector, rising residential consumption, and the arrival of large-scale cryptocurrency mining operations (which consumed an estimated 1.5–2 TWh in 2023–24 before regulatory clampdowns). Government forecasts require <strong>26 GW of new generating capacity by 2035</strong> — nearly equivalent to building the entire current system again. The Ministry of Energy targets eliminating the deficit by 2027 and becoming a net electricity exporter thereafter.</p>
+<div class="callout"><strong>Retail tariffs (2025):</strong> Residential ~$0.063/kWh (integrated bill: generation + transmission + distribution + taxes). Industrial ~$0.076/kWh. Average wholesale price ~$62/MWh in 2024, down from $69/MWh in 2023 as coal plant dispatch intensified. Tariffs have been rising: maximum generation tariff ceiling was raised from KZT 8.87 to KZT 11.4/kWh in August 2024 and a 2026–2032 maximum tariff schedule was approved in December 2025.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<p>KEGOC operates the National Power Grid (NPG) across two primary voltage levels (500 kV and 220 kV). A defining structural feature is the <strong>north–south generation/demand split</strong>: the north (Ekibastuz, Pavlodar, Karaganda) produces 72.7% of national electricity but hosts the smaller share of demand; the south (Almaty, Shymkent) is heavily deficit. The 1998 north–south 500 kV backbone line was the Soviet-era solution; capacity bottlenecks on this corridor remain a persistent constraint on renewable integration from the resource-rich south.</p>
+<table>
+  <tr><th>Country / System</th><th>Infrastructure</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Russia</strong></td><td>Multiple 500/220 kV cross-border lines (northern border)</td><td>Active import source — covered Kazakhstan's 2.4 TWh deficit in 2024. Bidirectional capability; Kazakhstan imports in winter peak. Politically sensitive dependency.</td></tr>
+  <tr><td><strong>Kyrgyzstan</strong></td><td>500 kV (Frunzenskaya–south corridor)</td><td>Active; trilateral agreement (KAZ–KGZ–UZB, 2024) facilitates seasonal exchange. Russia transit to Kyrgyzstan via Kazakhstan also permitted.</td></tr>
+  <tr><td><strong>Uzbekistan</strong></td><td>500 kV Chimkent–Zhambyl corridor</td><td>Active, bidirectional. CAPS operational coordination.</td></tr>
+  <tr><td><strong>China</strong></td><td>500 kV Ekibastuz–Jiuquan (proposed)</td><td>Under feasibility study. Would open a major export corridor to China's northwest if built — but no FID.</td></tr>
+</table>
+
+<h3>2.4 Cross-border trade arrangements</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-flag">🇷🇺</div>
+    <div class="trade-content">
+      <div class="trade-title">Russia — the uncomfortable lifeline <span class="trade-badge">Structural</span></div>
+      <p class="trade-body">Kazakhstan imported 2.4 TWh from Russia in 2024 — covering the entire domestic generation deficit. This is Kazakhstan's most strategically uncomfortable energy dependency: a country with the world's largest uranium reserves and globally outstanding wind/solar resources relying on Russian coal-fired electricity to keep the lights on in winter. The government explicitly targets eliminating this import dependency by 2027 through new generation capacity (coal plant upgrades, CCGTs, and renewable auctions). Whether the timeline holds depends on delivery of several large projects simultaneously.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-flag">🤝</div>
+    <div class="trade-content">
+      <div class="trade-title">Central Asia trilateral — seasonal balancing <span class="trade-badge trade-badge-grey">Active</span></div>
+      <p class="trade-body">Kazakhstan, Kyrgyzstan and Uzbekistan signed a 2024 trilateral electricity cooperation agreement formalising seasonal exchange: Kazakhstan provides thermal capacity to Kyrgyzstan and Uzbekistan in winter; Kyrgyz and Tajik hydro surplus flows back in spring-summer. This is the closest Central Asia has come to a functioning power pool arrangement since the Soviet era — still bilateral and protocol-based, but a foundation for the World Bank-backed REMIT regional market programme.</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure</h3>
+<p>Kazakhstan's electricity market is <strong>unbundled</strong> and more developed institutionally than most regional peers, reflecting 25 years of post-Soviet reform. Generation, transmission, distribution and retail supply are legally separate. The transmission natural monopoly (KEGOC) is operated under KREM's regulatory oversight. A <strong>capacity market</strong> has operated since January 2019 — generators receive payments for available capacity in addition to energy prices, a mechanism designed to incentivise investment in new dispatchable capacity.</p>
+<p>The 2024–25 retail reform eliminated non-regulated electricity supply organisations and consolidated retail supply through 21 licensed transmission-affiliated organisations — a move that reduced market fragmentation while increasing regulatory oversight. The regulator (KREM) sets maximum generation tariffs per plant in multi-year schedules (2026–2032 schedule approved December 2025), providing investment certainty while preserving regulated return structures.</p>
+<p>The dominant structural tension: <strong>Samruk-Kazyna</strong>, the sovereign wealth fund, owns both KEGOC (transmission monopoly) and Samruk-Energy (29.8% of generating capacity). This dual role — controlling the grid and competing in the generation market — is a fundamental conflict of interest that the ongoing reform framework has not yet resolved.</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Ownership / notes</th></tr>
+  <tr><td><strong>Ministry of Energy</strong></td><td>Policy — energy strategy, nuclear programme, renewable auctions, tariff policy</td><td>Government</td></tr>
+  <tr><td><strong>KREM</strong></td><td>Regulator — tariff ceilings, market rules, licensing</td><td>State / independent authority</td></tr>
+  <tr><td><strong>Samruk-Kazyna</strong></td><td>Sovereign Welfare Fund — ultimate owner of KEGOC and Samruk-Energy</td><td>State-owned investment holding</td></tr>
+  <tr><td><strong>KEGOC</strong></td><td>TSO — National Power Grid (500/220 kV), dispatch, CAPS participation</td><td>State (Samruk-Kazyna subsidiary)</td></tr>
+  <tr><td><strong>Samruk-Energy JSC</strong></td><td>Dominant state generator — 7,345 MW (Ekibastuz GRES-1&2, Bogatyr coal mine, Aktobe CHP)</td><td>State (Samruk-Kazyna subsidiary)</td></tr>
+  <tr><td><strong>21 distribution companies</strong></td><td>Operate regional MV/LV networks; affiliated retail supply functions</td><td>Mixed state/private ownership by region</td></tr>
+  <tr><td><strong>TotalEnergies (France)</strong></td><td>Developer — 1,000 MW Mirny wind farm + 600 MWh battery (FID April 2026, Zhambyl)</td><td>French multinational; joint venture with Samruk-Kazyna</td></tr>
+  <tr><td><strong>Korea (KEPCO/KOWEPO)</strong></td><td>Balkhash thermal IPP — 1,320 MW (2×660 MW coal), under IGA negotiation</td><td>Korean state utility consortium</td></tr>
+  <tr><td><strong>Kazakhstan NPP JSC</strong></td><td>Nuclear programme entity — counterpart to Rosatom for VVER-1200 project</td><td>State-owned (new entity)</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 920 440" role="img">
+<title>Kazakhstani electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>.nt{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;fill:#fff}.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}</style>
+
+<!-- ROW 1: Ministry + KREM + Samruk-Kazyna -->
+<rect x="20"  y="18" width="155" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="98"  y="44" text-anchor="middle" dominant-baseline="central">Ministry of Energy</text>
+<rect x="210" y="18" width="155" height="52" rx="8" fill="#5B3FA0"/>
+<text class="nt" x="288" y="34" text-anchor="middle" dominant-baseline="central">KREM</text>
+<text class="ns" x="288" y="54" text-anchor="middle" dominant-baseline="central">Regulator · tariffs · licences</text>
+<rect x="400" y="18" width="175" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="488" y="34" text-anchor="middle" dominant-baseline="central">Samruk-Kazyna</text>
+<text class="ns" x="488" y="54" text-anchor="middle" dominant-baseline="central">Sovereign Fund</text>
+<line x1="175" y1="44" x2="208" y2="44" class="arrd"/>
+<line x1="400" y1="44" x2="367" y2="44" class="arrd"/>
+<text class="lbl" x="383" y="37" text-anchor="middle">mandate</text>
+
+<!-- ROW 2: Generators → Market → KEGOC → Distrib → Consumers -->
+<rect x="20"  y="120" width="150" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="95"  y="145" text-anchor="middle" dominant-baseline="central">Generators</text>
+<text class="ns" x="95"  y="163" text-anchor="middle" dominant-baseline="central">Samruk-Energy + IPPs</text>
+<line x1="170" y1="155" x2="192" y2="155" class="arr"/>
+<rect x="193" y="120" width="145" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="266" y="145" text-anchor="middle" dominant-baseline="central">Power market</text>
+<text class="ns" x="266" y="163" text-anchor="middle" dominant-baseline="central">Spot + capacity market</text>
+<line x1="338" y1="155" x2="373" y2="155" class="arr"/>
+<rect x="374" y="120" width="145" height="70" rx="8" fill="#2E75B6"/>
+<text class="nt" x="447" y="145" text-anchor="middle" dominant-baseline="central">KEGOC</text>
+<text class="ns" x="447" y="163" text-anchor="middle" dominant-baseline="central">TSO · NPG · dispatch</text>
+<line x1="519" y1="155" x2="555" y2="155" class="arr"/>
+<rect x="556" y="120" width="145" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="629" y="145" text-anchor="middle" dominant-baseline="central">Distribution</text>
+<text class="ns" x="629" y="163" text-anchor="middle" dominant-baseline="central">21 regional companies</text>
+<line x1="701" y1="155" x2="737" y2="155" class="arr"/>
+<rect x="738" y="120" width="160" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="818" y="145" text-anchor="middle" dominant-baseline="central">Consumers</text>
+<text class="ns" x="818" y="163" text-anchor="middle" dominant-baseline="central">Regulated supply</text>
+<text class="ns" x="818" y="178" text-anchor="middle" dominant-baseline="central">(21 licensed orgs.)</text>
+
+<!-- Samruk-Kazyna ownership arrows (dashed down) -->
+<path d="M488 70 L488 96 L447 96 L447 120" fill="none" class="arrd"/>
+<path d="M450 70 L450 84 L95 84 L95 120" fill="none" class="arrd"/>
+<text class="lbl" x="270" y="80" text-anchor="middle">owns KEGOC &amp; Samruk-Energy</text>
+
+<!-- ROW 3: gen sub-boxes -->
+<line x1="95" y1="190" x2="95" y2="238" stroke="#CBD5E0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<rect x="20"  y="240" width="70" height="72" rx="6" fill="#808890"/>
+<text class="nt" x="55"  y="258" text-anchor="middle" dominant-baseline="central">Coal</text>
+<text class="ns" x="55"  y="274" text-anchor="middle" dominant-baseline="central">Ekibastuz</text>
+<text class="ns" x="55"  y="290" text-anchor="middle" dominant-baseline="central">~18 GW</text>
+<rect x="100" y="240" width="70" height="72" rx="6" fill="#1A7A4A"/>
+<text class="nt" x="135" y="258" text-anchor="middle" dominant-baseline="central">Wind+Solar</text>
+<text class="ns" x="135" y="274" text-anchor="middle" dominant-baseline="central">~2 GW</text>
+<text class="ns" x="135" y="290" text-anchor="middle" dominant-baseline="central">+ growing</text>
+
+<!-- Nuclear box -->
+<rect x="374" y="240" width="145" height="72" rx="8" fill="#4A5568"/>
+<text class="nt" x="447" y="258" text-anchor="middle" dominant-baseline="central">KazNPP / Rosatom</text>
+<text class="ns" x="447" y="274" text-anchor="middle" dominant-baseline="central">2×VVER-1200</text>
+<text class="ns" x="447" y="290" text-anchor="middle" dominant-baseline="central">Ulken · mid-2030s</text>
+<line x1="447" y1="240" x2="447" y2="192" class="arrd"/>
+
+<!-- Russia import box -->
+<rect x="556" y="240" width="145" height="72" rx="8" fill="#4A5568"/>
+<text class="nt" x="629" y="258" text-anchor="middle" dominant-baseline="central">Russia imports</text>
+<text class="ns" x="629" y="274" text-anchor="middle" dominant-baseline="central">2.4 TWh/yr</text>
+<text class="ns" x="629" y="290" text-anchor="middle" dominant-baseline="central">(covers deficit)</text>
+<line x1="629" y1="240" x2="629" y2="192" class="arrd"/>
+
+<!-- Legend -->
+<rect x="20"  y="340" width="10" height="10" rx="2" fill="#5B3FA0"/><text class="lbl" x="34"  y="349">Regulator</text>
+<rect x="110" y="340" width="10" height="10" rx="2" fill="#2E75B6"/><text class="lbl" x="124" y="349">State grid / market</text>
+<rect x="250" y="340" width="10" height="10" rx="2" fill="#0F7B72"/><text class="lbl" x="264" y="349">Generation</text>
+<rect x="344" y="340" width="10" height="10" rx="2" fill="#C0392B"/><text class="lbl" x="358" y="349">Distribution</text>
+<line x1="20"  y1="366" x2="42"  y2="366" stroke="#6B7280" stroke-width="1.4" marker-end="url(#ar)"/>
+<text class="lbl" x="48" y="370">power / commercial</text>
+<line x1="200" y1="366" x2="222" y2="366" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+<text class="lbl" x="228" y="370">ownership / strategic</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 6 — Actor map of the Kazakhstani electricity sector.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 The nuclear return — from referendum to reactor</h3>
+<ul>
+  <li>October 6, 2024: <strong>71.12% of Kazakhstanis voted in favour</strong> of building a nuclear power plant — a legitimacy mandate the government needed given historical concerns (Soviet nuclear testing at Semipalatinsk). The vote was the largest popular endorsement of nuclear energy held anywhere in the world.</li>
+  <li>June 2025: An interagency commission selected <strong>Rosatom (VVER-1200)</strong> over French (EDF EPR-1200), Chinese (CNNC HPR-1000) and Korean (KHNP APR-1400) competitors. The selection carried explicit geopolitical weight: Kazakhstan chose its most immediate large neighbour's technology, deepening the Russian energy relationship in the same decade it is seeking to reduce Russian import dependency in power generation.</li>
+  <li>Project: <strong>two 1,200 MW VVER-1200 units</strong> near Ulken village on the shore of Lake Balkhash. Target commissioning: mid-2030s. At full output (~20 TWh/year), the plant would eliminate Kazakhstan's Russian electricity import dependency and potentially convert the country into a net exporter. Kazakhstan is the world's largest uranium producer — the nuclear plant would be the first large-scale domestic use of its own strategic resource.</li>
+</ul>
+<div class="callout">Kazakhstan's long-term nuclear strategy envisions 3–4 plants by 2050. If all are built, nuclear could supply 20–25% of electricity demand by 2040 — transforming a coal-heavy system into one of Central Asia's lowest-carbon grids.</div>
+
+<h3>4.2 Renewable scale-up — 10 GW by 2030</h3>
+<ul>
+  <li>Target: <strong>15% renewable share by 2030</strong> (from 6.4% in 2024) via 6.7 GW of renewable auctions in 2024–2027. Wind is the highest-potential resource: the northern steppe has Class 7 wind resources across hundreds of thousands of square kilometres.</li>
+  <li><strong>TotalEnergies' Mirny project</strong> (Zhambyl region, FID April 2026): 1,000 MW wind + 600 MWh battery storage — the largest single renewable project in Kazakhstan's history and one of the largest in the post-Soviet space. Demonstrates that international capital can invest at scale once regulatory certainty is established.</li>
+  <li>The June 2024 renewable energy law introduced <strong>mandatory storage for projects above 499 MW</strong> — a requirement that will shape the economics of the next generation of large wind and solar projects but also ensure grid stability as variable RE penetration rises.</li>
+</ul>
+
+<h3>4.3 The deficit paradox — coal country running short</h3>
+<ul>
+  <li>Kazakhstan is simultaneously the largest coal producer in Central Asia and the only country in the region running a chronic electricity deficit. The <strong>2.4 TWh import gap</strong> (covered by Russia in 2024) reflects not a lack of installed capacity but a lack of <em>available</em> capacity: unplanned outages, fuel supply disruptions, and ageing equipment have taken ~20–25% of the fleet offline at any given time during winter peaks.</li>
+  <li>The path to deficit elimination by 2027 requires all of the following simultaneously: ~700 MW of new CCGT capacity (Zhambyl, Aktobe, Atyrau), completion of Ekibastuz GRES-3 unit 1, Balkhash IPP reaching financial close, and the renewable auction pipeline delivering on schedule. Any delay in any component extends the Russian import dependency.</li>
+  <li>Cryptocurrency mining, which grew rapidly in 2021–23 as miners fled Chinese crackdowns, added an estimated 1.5–2 TWh of unscheduled demand. The government imposed licence requirements and consumption limits on mining operations in 2023–24, reducing but not eliminating the sector's load impact.</li>
+</ul>
+
+<h3>4.4 Market reform and the Samruk-Kazyna tension</h3>
+<ul>
+  <li>Kazakhstan has operated a capacity market since January 2019 — one of only two post-Soviet electricity systems (with Russia) to have implemented this mechanism. Generators receive annual capacity payments for certified available MW, creating investment incentives independent of spot energy prices.</li>
+  <li>The unresolved structural issue: Samruk-Kazyna controls both KEGOC (the monopoly grid operator) and Samruk-Energy (generating 33.8% of national output). A sovereign fund that simultaneously sets grid access terms and participates in the generation market creates vertical integration conflicts even in a formally unbundled structure. Separation of these ownership stakes has been discussed but not acted upon.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Coal generates 75% of Kazakhstan's electricity and its dominance will not end quickly — the fleet is large, cheap to operate, and politically entangled with mining employment. But the trajectory is set: no new coal plants are under construction, and nuclear and renewables are the two declared pillars of the next generation of supply.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The October 2024 nuclear referendum (71% YES) and June 2025 Rosatom selection represent Kazakhstan's most consequential energy policy decision in a generation. Two 1,200 MW VVER-1200 units near Ulken will produce ~20 TWh/year when operational in the mid-2030s — enough to eliminate the Russian import dependency and convert Kazakhstan into a net electricity exporter.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The 2.4 TWh Russian import dependency is Kazakhstan's most strategically uncomfortable position — the world's largest uranium producer importing electricity from Russia. The deficit-elimination target (2027) is achievable only if multiple large projects deliver on schedule simultaneously.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The renewable pipeline is real: TotalEnergies' 1 GW Mirny wind farm (FID April 2026) + 6.7 GW in auctions 2024–2027. Kazakhstan's northern steppe has globally outstanding wind resources. The grid absorption constraint — a system built for dispatchable coal — is the binding limit on how fast the transition can go.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Samruk-Kazyna's dual ownership of both the grid operator (KEGOC) and the dominant generator (Samruk-Energy) is a structural conflict of interest that the reform framework has not yet resolved. Until these ownership stakes are separated, the market's competitive signals will remain distorted by the sovereign fund's vertically integrated interests.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+KEGOC Annual Report 2024 &nbsp;·&nbsp; IEA Kazakhstan Energy Profile (2022 &amp; 2024 updates) &nbsp;·&nbsp; Samruk-Energy Annual Report 2024 &nbsp;·&nbsp; Kazakhstan Statistics Agency — Fuel and Energy Balance 2024 &nbsp;·&nbsp; UNCTAD Kazakhstan Energy Sector Report &nbsp;·&nbsp; Agora Energiewende — Kazakhstan Renewables Scenario Analysis 2035 &nbsp;·&nbsp; World Nuclear Association — Uranium and Nuclear Power in Kazakhstan (2025) &nbsp;·&nbsp; World Nuclear News — Rosatom selection June 2025 &nbsp;·&nbsp; The Diplomat — Kazakhstan nuclear referendum (Oct 2024) &nbsp;·&nbsp; TotalEnergies — Mirny wind project (2026) &nbsp;·&nbsp; QazaqGreen energy news 2024–2026 &nbsp;·&nbsp; GlobalPetrolPrices.com tariff data (June 2025) &nbsp;·&nbsp; Times of Central Asia energy coverage &nbsp;·&nbsp; Eurasianet Kazakhstan energy reporting &nbsp;·&nbsp; World Bank REMIT programme documentation (2026)
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Internal note — for discussion purposes</span>
+  <span>Prepared with AI assistance &nbsp;·&nbsp; June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Coal','Gas','Hydro','Solar','Wind'];
+const C1=['#808890','#9A7040','#1E9AF5','#FFD700','#44DAEC'];
+const D1=[72,10,10,4,4];
+const GW1=D1.map(v=>+(v*25/100).toFixed(1));
+
+const L2=['Coal','Gas','Hydro','Wind','Solar'];
+const C2=['#808890','#9A7040','#1E9AF5','#44DAEC','#FFD700'];
+const D2=[75,10,9.5,3.8,1.7];
+const TWh2=D2.map(v=>+(v*118/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} GW (${D1[c.dataIndex]}%)`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2000','2005','2010','2015','2018','2020','2021','2022','2023','2024'];
+const dem=[56,73,82,97,107,104,111,113,115,120];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:45,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Industry &amp; mining','Buildings','Other'];
+const C3=['#1B3A5C','#2E75B6','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[50,35,15],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>

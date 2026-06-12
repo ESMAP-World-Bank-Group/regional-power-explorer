@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tajikistan Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}.stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}.trade-flag{font-size:26px;flex-shrink:0;margin-top:2px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}.actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Tajik electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">5.8 GW</div><div class="kpi-lbl">Installed capacity (99% hydro)</div></div>
+  <div class="kpi"><div class="kpi-val">~20 TWh</div><div class="kpi-lbl">Generation (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">3,780 MW</div><div class="kpi-lbl">Rogun planned (full 2029)</div></div>
+  <div class="kpi"><div class="kpi-val">3 TWh/yr</div><div class="kpi-lbl">CASA-1000 export target</div></div>
+</div>
+
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Tajikistan sits at the head of some of Central Asia's most powerful river systems and has converted nearly all of it into electricity: <strong>99% of installed generation capacity is hydroelectric</strong>. In energy transition terms, the country is already where the rest of the world is trying to get — clean, renewable power as the backbone of the system. The catch is seasonal: snowmelt and glacial discharge peak in spring and summer, while electricity demand peaks in winter for heating. For six to seven months each year, Tajikistan rationes power, with some rural areas receiving only a few hours per day. The fundamental structural solution — more storage in the form of larger reservoirs — is precisely what Rogun dam represents.</p>
+<p>Rogun, the 3,780 MW mega-dam on the Vakhsh river, is the country's most consequential infrastructure project and its defining national ambition. Two units are already running; four more are under construction, with the full plant expected operational by 2029. When complete, Rogun will nearly double Tajikistan's total generation capacity and — combined with the CASA-1000 export corridor to Pakistan — give the country the export revenues needed to fund a comprehensive sector modernisation. The transformation from energy-poor to energy-exporter is within reach; the timing depends on construction progress, financing, and the regional political environment.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">5.8</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">20</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Installed capacity and generation mix. Sources: IEA Tajikistan Country Profile, Low-Carbon Power Data, Statista — 2024.</p>
+
+<ul>
+  <li><strong>Nurek (3,015 MW):</strong> The system's backbone — supplies ~70% of national electricity. Built between 1961 and 1980 (at 300 m, it was the world's tallest dam at completion). At 44 years old it is showing its age: units 5–9 are undergoing rehabilitation (2024–2028) with EBRD and World Bank support, which will increase total capacity to ~3,375 MW on completion. Nurek's reservoir provides seasonal storage that partially buffers the winter deficit.</li>
+  <li><strong>Rogun (operational units: ~1.26 GW):</strong> Units 1 and 2 commissioned in 2018 and 2019. Currently operating at reduced output due to lower hydraulic head as the reservoir fills. Unit 3 scheduled for September 2027. At full capacity (6×630 MW = 3,780 MW), Rogun will be Central Asia's largest power plant and generate <strong>14.5+ TWh/year</strong> — nearly equal to today's entire national output.</li>
+  <li><strong>Sangtuda-1 &amp; -2 (combined ~670 MW):</strong> Two run-of-river IPPs with 20-year PPAs to Barki Tojik. Sangtuda-1 built by Rosatom; Sangtuda-2 by Iran. Both operational. These are Tajikistan's only independent power producers.</li>
+  <li><strong>Thermal backup (~1%):</strong> Small coal and gas capacity exists but contributes negligibly to generation; the system is effectively 100% hydro.</li>
+</ul>
+<div class="callout">The paradox of clean energy poverty: Tajikistan has one of the world's lowest-carbon electricity mixes but one of its worst energy security situations. Winter rationing is an annual institution, affecting school hours, heating, and economic activity. The root cause is not generation capacity per se — it is the mismatch between seasonal availability and seasonal demand.</div>
+
+<h3>2.2 Demand and the seasonal crisis</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">20</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Generation trend and end-use. Sources: IEA, Worldometer, CEIC Data, ASIA-Plus.</p>
+<p>Tajikistan's generation was ~22 TWh in 2023 and dipped to ~20 TWh in 2024, reflecting seasonal hydrological variability. Demand in the 10–11 million population country is modest by international standards but growing with urbanisation. The structural challenge is that <strong>winter demand</strong> (heating, lighting in short daylight) peaks precisely when river inflows are at their annual minimum. In winter 2024–25, rationing started in September — earlier than the usual October — with some regions receiving as little as 2–4 hours of electricity per day.</p>
+<div class="callout"><strong>Retail tariffs (2024):</strong> Residential 35.36 dirams/kWh (~$0.031/kWh). Industrial average 80.90 dirams/kWh. TALCO (aluminium smelter) pays a deeply subsidised 20.77 dirams/kWh. Despite recent increases, residential tariffs cover less than 50% of cost recovery — creating a structural fiscal gap in Barki Tojik's accounts that IMF and World Bank programmes have repeatedly flagged.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<p>Barki Tojik operates the HV grid (220 kV backbone across the main Vakhsh valley corridor). The system has limited interconnection capacity and suffered its most severe isolation event in 2009, when <strong>Uzbekistan disconnected Tajikistan from the CAPS network</strong> following political disputes over water use and the Rogun dam project. For over a decade, Tajikistan was electrically isolated from its neighbours in winter — unable to import to cover the deficit. Reconnection has been a central diplomatic and technical priority since the Uzbek–Tajik political normalisation (2016–2018).</p>
+<table>
+  <tr><th>Country / Project</th><th>Infrastructure</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Uzbekistan</strong></td><td>220 kV (limited; reconnection in progress)</td><td>Disconnected 2009; ADB-financed reconnection project approved 2018. Partial reconnection underway; critical for winter import security under CAPS and REMIT frameworks.</td></tr>
+  <tr><td><strong>Afghanistan</strong></td><td>220 kV; CASA-1000 converter station at Sangtuda</td><td>Ongoing summer exports (even post-Taliban 2021). CASA-1000 Tajik section complete; will formalise flows at scale when full corridor opens (2027).</td></tr>
+  <tr><td><strong>Kyrgyzstan</strong></td><td>500 kV Datka–Khujand line (CASA-1000)</td><td>Completed March 2025. Links Kyrgyz and Tajik systems for summer export routing to Pakistan/Afghanistan via HVDC.</td></tr>
+  <tr><td><strong>China</strong></td><td>No active interconnection</td><td>Studied; would require multi-country corridor. China is Tajikistan's largest trading partner but no electricity integration.</td></tr>
+</table>
+
+<h3>2.4 Cross-border trade: CASA-1000</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-flag">🇵🇰</div>
+    <div class="trade-content">
+      <div class="trade-title">CASA-1000 — the summer export corridor <span class="trade-badge">Commissioning 2027</span></div>
+      <p class="trade-body">The Central Asia–South Asia (CASA-1000) project transmits hydro surplus from Kyrgyzstan and Tajikistan to Afghanistan and Pakistan via a 1,300 MW HVDC corridor. Tajikistan's share of exports: <strong>~3 billion kWh/year</strong> (70% of total CASA-1000 volumes). The Tajikistan section of the line and the Sangtuda converter station are complete; the Pakistan section is expected by August 2026 and Afghanistan's delayed section by December 2026. Full operations targeted January 2027. At $250+ million in annual regional revenue, this is Tajikistan's most important electricity export arrangement since independence.</p>
+      <p class="trade-body">A critical caveat: CASA-1000 is a <em>summer-only</em> corridor — it transmits the spring/summer hydro surplus that Tajikistan cannot store or sell domestically. It does not solve the winter deficit. For that, reconnection to CAPS (via Uzbekistan) remains the essential missing piece.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-flag">🇦🇫</div>
+    <div class="trade-content">
+      <div class="trade-title">Afghanistan — ongoing bilateral exports <span class="trade-badge trade-badge-grey">Active</span></div>
+      <p class="trade-body">Tajikistan has exported electricity to northern Afghanistan continuously — including through the Taliban period since 2021. Afghanistan's power deficit (~250 MW domestic capacity vs. 1,000+ MW import dependency from Central Asian and Iranian neighbours) ensures persistent demand. Payments have been irregular since 2021, creating receivables risk, but the physical flows continue. CASA-1000 will formalise and expand this trade on a commercial basis when operational.</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure</h3>
+<p>Tajikistan's electricity sector is dominated by <strong>Barki Tojik</strong> — a vertically integrated state monopoly controlling the majority of generation (all major dams), the HV transmission grid, and distribution networks serving the main population centres. A formal unbundling process began in 2012, targeting separation into three entities (generation, transmission, distribution) by 2018, but remains <strong>incomplete as of 2026</strong>. The restructuring process stalled over concerns that dividing Barki Tojik could create multiple smaller monopolists without improving efficiency or financial discipline.</p>
+<p>Two independent power producers (Sangtuda-1 and Sangtuda-2) supply electricity under 20-year PPAs with Barki Tojik. The remote Gorno-Badakhshan region (GBAO) operates under a separate concession arrangement. There is <strong>no independent electricity regulator</strong> — tariff setting and market oversight remain within government ministries, with no arms-length institutional separation. IMF and World Bank structural reform conditions under the Policy Coordination Instrument (PCI, approved 2024) target tariff methodology reform and sector restructuring as priorities.</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Ownership / notes</th></tr>
+  <tr><td><strong>Ministry of Energy and Water Resources</strong></td><td>Policy — sector planning, tariff decisions, dam construction oversight</td><td>Government; no independent regulator</td></tr>
+  <tr><td><strong>Barki Tojik</strong></td><td>Vertically integrated utility — generation (Nurek, Baipaza, others), HV transmission, distribution (most of country)</td><td>State-owned monopoly; debt-laden; rehabilitation projects ongoing</td></tr>
+  <tr><td><strong>Nurek HPP (within Barki Tojik)</strong></td><td>3,015–3,375 MW; supplies ~70% of national generation</td><td>State; rehabilitation 2024–2028 (EBRD, World Bank)</td></tr>
+  <tr><td><strong>Rogun HPP JSC</strong></td><td>3,780 MW dam under construction on Vakhsh River</td><td>State; $6.3bn financing: World Bank, AIIB, EBRD, Saudi Fund</td></tr>
+  <tr><td><strong>Sangtuda-1 HPP</strong></td><td>670 MW run-of-river IPP; 20-year PPA with Barki Tojik</td><td>Joint Tajik–Russian company (Rosatom construction); transferred to Tajikistan post-PPA</td></tr>
+  <tr><td><strong>Sangtuda-2 HPP</strong></td><td>220 MW run-of-river IPP; 20-year PPA with Barki Tojik</td><td>Joint Tajik–Iranian company</td></tr>
+  <tr><td><strong>TALCO (Tajik Aluminium Company)</strong></td><td>Largest electricity consumer — ~40% of national consumption at subsidised rates</td><td>State-linked; owes $52.6M to Barki Tojik (2025)</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 920 400" role="img">
+<title>Tajik electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>.nt{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;fill:#fff}.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}</style>
+
+<!-- ROW 1: Ministry (no independent regulator) -->
+<rect x="310" y="18" width="180" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="400" y="34" text-anchor="middle" dominant-baseline="central">Ministry of Energy</text>
+<text class="ns" x="400" y="54" text-anchor="middle" dominant-baseline="central">&amp; Water Resources</text>
+<text class="lbl" x="400" y="84" text-anchor="middle" style="fill:#C0392B;font-size:11px">No independent regulator</text>
+
+<!-- ROW 2: IPPs + Barki Tojik (integrated) + Consumers -->
+<rect x="20"  y="120" width="130" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="85"  y="145" text-anchor="middle" dominant-baseline="central">Sangtuda-1</text>
+<text class="ns" x="85"  y="163" text-anchor="middle" dominant-baseline="central">670 MW · Russia JV</text>
+<rect x="20"  y="205" width="130" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="85"  y="230" text-anchor="middle" dominant-baseline="central">Sangtuda-2</text>
+<text class="ns" x="85"  y="248" text-anchor="middle" dominant-baseline="central">220 MW · Iran JV</text>
+<line x1="150" y1="155" x2="198" y2="185" class="arr"/>
+<line x1="150" y1="240" x2="198" y2="220" class="arr"/>
+
+<rect x="200" y="120" width="180" height="155" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="290" y="160" text-anchor="middle" dominant-baseline="central">Barki Tojik</text>
+<text class="ns" x="290" y="178" text-anchor="middle" dominant-baseline="central">Generation · Transmission</text>
+<text class="ns" x="290" y="196" text-anchor="middle" dominant-baseline="central">· Distribution (monopoly)</text>
+<text class="ns" x="290" y="214" text-anchor="middle" dominant-baseline="central">Nurek ~70% of output</text>
+<text class="ns" x="290" y="232" text-anchor="middle" dominant-baseline="central">Unbundling stalled</text>
+
+<line x1="380" y1="197" x2="418" y2="197" class="arr"/>
+
+<rect x="420" y="120" width="160" height="155" rx="8" fill="#2E75B6"/>
+<text class="nt" x="500" y="160" text-anchor="middle" dominant-baseline="central">HV Grid (220 kV)</text>
+<text class="ns" x="500" y="178" text-anchor="middle" dominant-baseline="central">Barki Tojik operated</text>
+<text class="ns" x="500" y="196" text-anchor="middle" dominant-baseline="central">Vakhsh valley corridor</text>
+
+<line x1="580" y1="197" x2="618" y2="197" class="arr"/>
+<rect x="620" y="120" width="130" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="685" y="145" text-anchor="middle" dominant-baseline="central">Distribution</text>
+<text class="ns" x="685" y="163" text-anchor="middle" dominant-baseline="central">Barki Tojik + GBAO</text>
+<line x1="750" y1="155" x2="788" y2="155" class="arr"/>
+<rect x="790" y="120" width="110" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="845" y="155" text-anchor="middle" dominant-baseline="central">Consumers</text>
+
+<!-- Rogun -->
+<rect x="200" y="295" width="130" height="70" rx="8" fill="#1A7A4A"/>
+<text class="nt" x="265" y="315" text-anchor="middle" dominant-baseline="central">Rogun HPP JSC</text>
+<text class="ns" x="265" y="333" text-anchor="middle" dominant-baseline="central">3,780 MW · 2029</text>
+<text class="ns" x="265" y="349" text-anchor="middle" dominant-baseline="central">$6.3bn intl. financing</text>
+<line x1="265" y1="295" x2="265" y2="278" class="arrd"/>
+
+<!-- TALCO -->
+<rect x="620" y="205" width="130" height="70" rx="8" fill="#B7770D"/>
+<text class="nt" x="685" y="225" text-anchor="middle" dominant-baseline="central">TALCO</text>
+<text class="ns" x="685" y="243" text-anchor="middle" dominant-baseline="central">~40% of natl. demand</text>
+<text class="ns" x="685" y="259" text-anchor="middle" dominant-baseline="central">subsidised · $52M debt</text>
+<line x1="685" y1="205" x2="685" y2="192" class="arrd"/>
+
+<!-- CASA-1000 exports -->
+<rect x="420" y="295" width="160" height="70" rx="8" fill="#4A5568"/>
+<text class="nt" x="500" y="315" text-anchor="middle" dominant-baseline="central">CASA-1000</text>
+<text class="ns" x="500" y="333" text-anchor="middle" dominant-baseline="central">→ AFG · PAK</text>
+<text class="ns" x="500" y="349" text-anchor="middle" dominant-baseline="central">3 TWh/yr · ops 2027</text>
+<line x1="500" y1="295" x2="500" y2="278" class="arrd"/>
+
+<!-- Legend -->
+<line x1="20"  y1="382" x2="42"  y2="382" stroke="#6B7280" stroke-width="1.4" marker-end="url(#ar)"/>
+<text class="lbl" x="48" y="386">power / commercial</text>
+<line x1="200" y1="382" x2="222" y2="382" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+<text class="lbl" x="228" y="386">programme / under construction</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 6 — Actor map of the Tajik electricity sector.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 Rogun — the transformative bet</h3>
+<ul>
+  <li>At 335 m, Rogun will be the world's tallest dam when complete. Two 630 MW units are already operating; unit 3 is scheduled for September 2027 and units 4–6 to follow through 2029. The full 3,780 MW plant will generate <strong>14.5+ TWh per year</strong> — nearly doubling Tajikistan's current total generation.</li>
+  <li>Financing was the decade-long obstacle. A $6.3 billion multilateral package was assembled in 2024–2025: World Bank ($350 million), AIIB ($500 million), EBRD ($100 million), Islamic Development Bank ($150 million), and Saudi Fund contributions. Construction has accelerated significantly since financing closed.</li>
+  <li>The geopolitical dimension: Rogun's reservoir management will determine how much water reaches the Amu Darya downstream into Uzbekistan and Turkmenistan during irrigation season. The historical Uzbek–Tajik dispute over Rogun (the source of the 2009 CAPS disconnection) has moderated significantly — Uzbekistan now explicitly supports Rogun's completion — but the water management protocols remain a live diplomatic file.</li>
+</ul>
+
+<h3>4.2 The TALCO paradox</h3>
+<ul>
+  <li>TALCO (the Tajik Aluminium Company, now Talco) operates one of the world's largest aluminium smelters near Tursunzoda and consumes approximately <strong>40% of Tajikistan's total electricity</strong> at a tariff (~20 dirams/kWh) far below both cost recovery and the residential rate. The cross-subsidy is explicit: cheaper electricity for TALCO keeps the smelter internationally competitive; the cost falls on Barki Tojik.</li>
+  <li>As of January 2025, TALCO owes Barki Tojik <strong>571.5 million somonis ($52.6 million)</strong> in unpaid electricity bills — an amount growing at ~$20 million per year. The debt is tolerated because TALCO is a major employer and a significant source of foreign exchange; but it directly undermines Barki Tojik's ability to fund investment in distribution modernisation and loss reduction.</li>
+  <li>Neither TALCO's tariff nor its debt position can be resolved unilaterally — both are politically managed at the highest levels of government. The IMF's Policy Coordination Instrument (approved February 2024) explicitly identifies TALCO-related cross-subsidies as a priority reform item.</li>
+</ul>
+
+<h3>4.3 Winter rationing and the structural deficit</h3>
+<ul>
+  <li>Winter rationing is an institutional feature of Tajik life, not an emergency response. Every year from late September or October through April, Barki Tojik implements scheduled load shedding — 2–4 hours per day in severe winters, affecting schools, hospitals, and homes. In 2024–25, rationing began unusually early (September) and some rural areas received as little as 2–4 hours daily.</li>
+  <li>The structural solution is additional winter storage capacity — which is precisely what Rogun's larger reservoir provides. When Rogun is full and all 6 units are operational, the stored water can be released through winter months to generate dispatchable peak power. This is why Rogun is not just a capacity addition but a seasonal security project.</li>
+  <li>The interim solution — reconnecting to CAPS via Uzbekistan for winter imports — remains the fastest path to improving winter reliability. The political relationship has normalised; the engineering reconnection and financing (ADB $35 million grant, 2018) are progressing but have not yet delivered the physical interconnection at scale needed to cover winter shortfalls.</li>
+</ul>
+
+<h3>4.4 Barki Tojik — the debt spiral</h3>
+<ul>
+  <li>Barki Tojik operates with tariffs that cover less than 50% of cost recovery, a monopoly structure with no efficiency pressure, and a distribution network suffering 25–30% losses. The utility's financial position — accumulated debt, deferred maintenance, and TALCO's unpaid bills — creates a classic utility death spiral: no revenue to invest, investment shortfall causes more losses, losses reduce revenue further.</li>
+  <li>World Bank and ADB programmes are addressing specific pieces (Nurek rehabilitation, metering, distribution upgrades) but the structural solution requires: cost-reflective tariffs (politically constrained), TALCO normalisation (diplomatically managed), and sector unbundling with an independent regulator (institutionally stalled). All three move slowly.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Tajikistan is 99% hydro — the cleanest generation mix in Central Asia. But clean and secure are different things. The seasonal mismatch between summer river flows and winter heating demand means rationing is annual and structural. Rogun is the engineering solution; reconnecting to CAPS via Uzbekistan is the near-term diplomatic one.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Rogun is the most consequential infrastructure project in Central Asia. When all 6 units run (2029), it adds 3,780 MW and 14.5+ TWh/year — near-doubling total generation. The $6.3 billion multilateral financing package closed in 2024–25 and construction is accelerating. The water-management diplomacy with Uzbekistan is the key remaining variable.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>CASA-1000 creates a new summer export revenue stream: ~3 billion kWh/year to Afghanistan and Pakistan from 2027. This solves the summer surplus problem, not the winter deficit — but the revenue will fund sector recovery if managed well. The Tajikistan and Kyrgyzstan sections are already built; Pakistan by August 2026, Afghanistan December 2026.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>TALCO consumes ~40% of national electricity at below-cost rates and owes $52.6 million to Barki Tojik. The aluminium smelter is simultaneously Tajikistan's largest industrial employer and the largest single obstacle to a financially viable electricity sector. Neither can change without the other — and both require political decisions above the sector level.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>The 2009 CAPS disconnection by Uzbekistan remains Tajikistan's most significant structural vulnerability. It was triggered by a political dispute over Rogun and water use. That dispute has normalised; reconnection is underway. When it is complete, Tajikistan will have winter import security for the first time in 15 years — until Rogun resolves the problem permanently.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+IEA — Cross-Border Electricity Trading for Tajikistan: A Roadmap (2024) &nbsp;·&nbsp; IEA Tajikistan Country Profile &nbsp;·&nbsp; AIIB — Rogun Hydropower Development Project Phase 1 (2024) &nbsp;·&nbsp; World Bank — Power Sector Financial Recovery Project; Financial Assessment of Barki Tojik &nbsp;·&nbsp; ADB — Power Sector Development Program; CAPS reconnection grant (2018) &nbsp;·&nbsp; IMF — Policy Coordination Instrument for Tajikistan (Feb 2024) &nbsp;·&nbsp; EBRD — Nurek rehabilitation financing &nbsp;·&nbsp; Rogun Dam Wikipedia / engineering documentation &nbsp;·&nbsp; CASA-1000 project documents (casa-1000.org) &nbsp;·&nbsp; ASIA-Plus — TALCO and Barki Tojik financial reporting &nbsp;·&nbsp; Eurasianet — Tajikistan energy coverage 2024–2026 &nbsp;·&nbsp; The Diplomat — winter rationing (Oct 2024) &nbsp;·&nbsp; GlobalPetrolPrices.com tariff data (2025) &nbsp;·&nbsp; UNECE Energy Policy Brief: Tajikistan (2025) &nbsp;·&nbsp; Frontiers in Water — Rogun Dam: from conflict to cooperation (2025)
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Internal note — for discussion purposes</span>
+  <span>Prepared with AI assistance &nbsp;·&nbsp; June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Hydro (Nurek)','Hydro (Rogun)','Hydro (other)','Thermal'];
+const C1=['#1E9AF5','#1B3A5C','#44DAEC','#808890'];
+const D1=[52,22,25,1];
+const GW1=D1.map(v=>+(v*5.8/100).toFixed(2));
+
+const L2=['Hydro','Thermal'];
+const C2=['#1E9AF5','#808890'];
+const D2=[99,1];
+const TWh2=D2.map(v=>+(v*20/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} GW (${D1[c.dataIndex]}%)`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2000','2005','2010','2015','2018','2020','2021','2022','2023','2024'];
+const dem=[14,14,16,17,19,18,19,20,22,20];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:10,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['TALCO (aluminium)','Industry','Buildings &amp; households'];
+const C3=['#B7770D','#1B3A5C','#2E75B6'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[40,20,40],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>
