@@ -53,6 +53,13 @@ export default function Navbar() {
   const location = useLocation();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [epmCountryPath, setEpmCountryPath] = useState(null);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 700);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   // Resolve EPM path from ISO: /country/AZE → /region/black_sea/country/Azerbaijan
   useEffect(() => {
@@ -144,15 +151,17 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Center: hint */}
-      <div style={{ flex: 1, textAlign: 'center', pointerEvents: 'none' }}>
-        <span style={{
-          fontStyle: 'italic', fontSize: '0.6rem', letterSpacing: '0.25px',
-          color: t.navHint,
-        }}>
-          Click a region or country to explore &nbsp;·&nbsp; click a legend to filter the map
-        </span>
-      </div>
+      {/* Center: hint — desktop only */}
+      {!isMobile && (
+        <div style={{ flex: 1, textAlign: 'center', pointerEvents: 'none' }}>
+          <span style={{
+            fontStyle: 'italic', fontSize: '0.6rem', letterSpacing: '0.25px',
+            color: t.navHint,
+          }}>
+            Click a region or country to explore &nbsp;·&nbsp; click a legend to filter the map
+          </span>
+        </div>
+      )}
 
       {/* Right: theme toggle | EPM Suite | Data Sources | Contact */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
