@@ -197,12 +197,12 @@ export function fuelColorExpr() {
 export function plantRadiusExpr(scale = 1) {
   return [
     'interpolate', ['linear'], ['get', 'mw'],
-    0,    3.5 * scale,
-    50,   4.5 * scale,
-    200,  7   * scale,
-    500,  10  * scale,
-    1000, 13  * scale,
-    5000, 18  * scale,
+    0,    2.5 * scale,
+    50,   3.5 * scale,
+    200,  5   * scale,
+    500,  7.5 * scale,
+    1000, 10  * scale,
+    5000, 14  * scale,
   ];
 }
 
