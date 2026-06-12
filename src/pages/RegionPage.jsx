@@ -1179,7 +1179,7 @@ export default function RegionPage() {
             }} />
             <span style={{ fontSize: '0.8rem', fontWeight: 600, color: t.lbl }}>{region.name}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.muted} strokeWidth="2.5" strokeLinecap="round">
-              {panelExpanded ? <polyline points="6 15 12 9 18 15"/> : <polyline points="6 9 12 15 18 9"/>}
+              {panelExpanded ? <polyline points="6 9 12 15 18 9"/> : <polyline points="6 15 12 9 18 15"/>}
             </svg>
           </div>
         )}
