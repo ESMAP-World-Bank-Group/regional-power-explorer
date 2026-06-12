@@ -17,7 +17,7 @@ export default function App() {
   const [theme, setTheme] = useState(() => {
     const p = new URLSearchParams(window.location.search).get('theme');
     if (p && THEME_LIST.includes(p)) return p;
-    return window.innerWidth < 700 ? 'paper' : 'ink';
+    return 'paper';
   });
   const t = getT(theme);
 
