@@ -1,0 +1,93 @@
+{
+  "country": "Central African Republic",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        170.0,
+        170.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        150.0,
+        140.0,
+        140.0
+      ]
+    },
+    "demand": [
+      170.0,
+      170.0,
+      150.0,
+      150.0,
+      150.0,
+      150.0,
+      150.0,
+      140.0,
+      140.0
+    ]
+  },
+  "capacity": {
+    "source": "Ember — Yearly Electricity Data (ember-energy.org, CC BY 4.0)",
+    "unit": "MW",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Other Fossil": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "Hydro": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0
+      ],
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        40.0
+      ]
+    }
+  }
+}
