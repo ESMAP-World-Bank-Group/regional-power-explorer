@@ -50,22 +50,31 @@ const PARTNER_COLORS = {
   'turkmenistan': P.tealLight,
 };
 
-// Fallback palette for unmapped partners — visually distinct, deterministic by name
+// Fallback palette for unmapped partners — visually distinct
 const _FALLBACK_PALETTE = [
   '#E15759','#F28E2B','#76B7B2','#59A14F','#EDC948',
   '#B07AA1','#FF9DA7','#9C755F','#BAB0AC','#4E79A7',
   '#F1CE63','#A0CBE8','#FFBE7D','#8CD17D','#B6992D',
   '#499894','#86BCB6','#D4A6C8','#D7B5A6','#79706E',
 ];
-function _strHash(s) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
-  return Math.abs(h);
+
+// Build a per-chart color map guaranteeing all partners get distinct colors.
+// Known partners get their fixed color first; remaining partners are assigned
+// fallback palette slots in order, skipping any already taken.
+function buildPartnerColorMap(partners) {
+  const colorMap = {};
+  const usedColors = new Set();
+  for (const p of partners) {
+    const fixed = PARTNER_COLORS[p.toLowerCase()];
+    if (fixed) { colorMap[p] = fixed; usedColors.add(fixed); }
+  }
+  const available = _FALLBACK_PALETTE.filter(c => !usedColors.has(c));
+  let i = 0;
+  for (const p of partners) {
+    if (!colorMap[p]) { colorMap[p] = available[i % available.length] ?? '#aaa'; i++; }
+  }
+  return colorMap;
 }
-const partnerColor = name => {
-  const key = name.toLowerCase();
-  return PARTNER_COLORS[key] ?? _FALLBACK_PALETTE[_strHash(key) % _FALLBACK_PALETTE.length];
-};
 
 // ── Shared helpers ───────────────────────────────────────────────────────────
 function niceTicks(maxVal) {
@@ -160,7 +169,7 @@ function StackedBarChart({ section, demandKey, hiddenFuels, hoveredYi, onColHove
 }
 
 // ── Trade diverging bar chart ────────────────────────────────────────────────
-function TradeChart({ data, hiddenPartners, hoveredYi, onColHover, t }) {
+function TradeChart({ data, hiddenPartners, hoveredYi, onColHover, t, colorMap }) {
   const W = 300, H = 185, pL = 40, pR = 6, pT = 8, pB = 28;
   const iW = W - pL - pR, iH = H - pT - pB;
 
@@ -247,7 +256,7 @@ function TradeChart({ data, hiddenPartners, hoveredYi, onColHover, t }) {
               const y = zeroY - ((impBase + v) / axisImp) * importH;
               impBase += v;
               return <rect key={`i${p}`} x={x} y={y} width={barW} height={Math.max(h, 0.3)}
-                fill={partnerColor(p)} opacity={hoveredYi === yi ? 1 : 0.88} />;
+                fill={colorMap[p] ?? '#aaa'} opacity={hoveredYi === yi ? 1 : 0.88} />;
             })}
 
             {expPartners.map(p => {
@@ -258,7 +267,7 @@ function TradeChart({ data, hiddenPartners, hoveredYi, onColHover, t }) {
               const y = zeroY + (expBase / axisExp) * exportH;
               expBase += v;
               return <rect key={`e${p}`} x={x} y={y} width={barW} height={Math.max(h, 0.3)}
-                fill={partnerColor(p)} opacity={hoveredYi === yi ? 1 : 0.88} />;
+                fill={colorMap[p] ?? '#aaa'} opacity={hoveredYi === yi ? 1 : 0.88} />;
             })}
 
             {yr % yrStep === 0 && (
@@ -492,6 +501,7 @@ export default function SupplyTab({ iso, theme }) {
     const imp = tradeData.imports || {};
     const exp = tradeData.exports || {};
     const allPartners = [...new Set([...Object.keys(imp), ...Object.keys(exp)])];
+    const colorMap = buildPartnerColorMap(allPartners);
 
     const hoverHandler = makeHoverHandler(setTradeTip, tradeRef);
     const tip = tradeTip;
@@ -513,10 +523,10 @@ export default function SupplyTab({ iso, theme }) {
         chartRef={tradeRef}
         chart={
           <TradeChart data={tradeData} hiddenPartners={hiddenPartners}
-            hoveredYi={tip?.yi ?? null} onColHover={hoverHandler} t={t} />
+            hoveredYi={tip?.yi ?? null} onColHover={hoverHandler} t={t} colorMap={colorMap} />
         }
         legendItems={<>
-          {allPartners.map(p => renderLegendBtn(p, partnerColor(p), p, hiddenPartners.has(p), togglePartner))}
+          {allPartners.map(p => renderLegendBtn(p, colorMap[p], p, hiddenPartners.has(p), togglePartner))}
           {renderLegendBtn('__net__', null, 'Net balance', false, () => {}, true)}
           <div style={{ marginTop: 4, paddingTop: 4, borderTop: `1px solid ${t.panelBorder}` }}>
             <span style={{ fontSize: '0.5rem', color: t.lblMuted, lineHeight: 1.3 }}>↑ imports{'\n'}↓ exports</span>
@@ -535,7 +545,7 @@ export default function SupplyTab({ iso, theme }) {
             )}
             {tipContent.impRows.map(({ p, v }) => (
               <div key={p} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                <div style={{ width: 6, height: 6, borderRadius: 1, flexShrink: 0, backgroundColor: partnerColor(p) }} />
+                <div style={{ width: 6, height: 6, borderRadius: 1, flexShrink: 0, backgroundColor: colorMap[p] }} />
                 <span style={{ fontSize: '0.55rem', color: t.lblMuted, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p}</span>
                 <span style={{ fontSize: '0.58rem', color: t.lbl, flexShrink: 0 }}>{fmt(v)}</span>
               </div>
@@ -545,7 +555,7 @@ export default function SupplyTab({ iso, theme }) {
             )}
             {tipContent.expRows.map(({ p, v }) => (
               <div key={p} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                <div style={{ width: 6, height: 6, borderRadius: 1, flexShrink: 0, backgroundColor: partnerColor(p) }} />
+                <div style={{ width: 6, height: 6, borderRadius: 1, flexShrink: 0, backgroundColor: colorMap[p] }} />
                 <span style={{ fontSize: '0.55rem', color: t.lblMuted, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p}</span>
                 <span style={{ fontSize: '0.58rem', color: t.lbl, flexShrink: 0 }}>{fmt(v)}</span>
               </div>
