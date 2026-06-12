@@ -118,7 +118,7 @@ export default function CountryPage() {
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
-  const [panelWidth,         setPanelWidth]         = useState(340);
+  const [panelWidth,         setPanelWidth]         = useState(380);
   const isDrRef   = useRef(false);
   const drStartX  = useRef(0);
   const drStartW  = useRef(0);

@@ -1,6 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { FUEL_COLORS, getT } from '../../constants';
 
+function downloadBlob(content, filename, type = 'application/octet-stream') {
+  const blob = new Blob([content], { type });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 // ── Chart palette (blue-teal-amber) ──────────────────────────────────────────
 const P = {
   navyDark:  '#0D2B45',
@@ -611,6 +619,43 @@ export default function SupplyTab({ iso, theme }) {
     );
   })();
 
+  // ── Download helpers ─────────────────────────────────────────────────────────
+  const handleDownloadSupply = () => {
+    if (!supplyData) return;
+    const gen = supplyData.generation;
+    if (!gen) return;
+    const fuels = Object.keys(gen.fuels);
+    const header = ['year', ...fuels.map(f => `${f}_gwh`), 'demand_gwh'].join(',');
+    const rows = gen.years.map((yr, i) => [
+      yr,
+      ...fuels.map(f => (gen.fuels[f]?.[i] ?? '').toString()),
+      (gen.demand?.[i] ?? '').toString(),
+    ].join(','));
+    downloadBlob([header, ...rows].join('\n'), `supply_generation_${iso}.csv`, 'text/csv');
+  };
+
+  const handleDownloadTrade = () => {
+    if (!tradeData) return;
+    const { years, imports = {}, exports = {} } = tradeData;
+    const impP = Object.keys(imports);
+    const expP = Object.keys(exports);
+    const allP = [...new Set([...impP, ...expP])];
+    const header = ['year', ...allP.map(p => `imp_${p}_gwh`), ...allP.map(p => `exp_${p}_gwh`), 'net_gwh'].join(',');
+    const rows = years.map((yr, i) => {
+      const impVals = allP.map(p => (imports[p]?.[i] ?? 0));
+      const expVals = allP.map(p => (exports[p]?.[i] ?? 0));
+      const net = impVals.reduce((s, v) => s + v, 0) - expVals.reduce((s, v) => s + v, 0);
+      return [yr, ...impVals, ...expVals, net.toFixed(1)].join(',');
+    });
+    downloadBlob([header, ...rows].join('\n'), `trade_flows_${iso}.csv`, 'text/csv');
+  };
+
+  const dlBtnStyle = {
+    fontSize: '0.52rem', letterSpacing: '0.5px', padding: '4px 9px', borderRadius: 3,
+    cursor: 'pointer', fontFamily: 'inherit', border: `1px solid ${t.panelBorder}`,
+    backgroundColor: 'transparent', color: t.lblMuted,
+  };
+
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <div>
@@ -625,6 +670,22 @@ export default function SupplyTab({ iso, theme }) {
           <p style={{ margin: '6px 0 0', opacity: 0.85 }}><SourceBadge source={tradeData.source} t={t} /></p>
         )}
       </div>
+
+      {(supplyData?.generation || tradeData) && (
+        <div style={{ marginTop: 16, borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12 }}>
+          <span style={{ fontSize: '0.47rem', letterSpacing: '2px', fontWeight: 700, color: t.lblMuted, textTransform: 'uppercase', display: 'block', marginBottom: 7 }}>
+            Export Data
+          </span>
+          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            {supplyData?.generation && (
+              <button style={dlBtnStyle} onClick={handleDownloadSupply}>Generation CSV</button>
+            )}
+            {tradeData && (
+              <button style={dlBtnStyle} onClick={handleDownloadTrade}>Trade flows CSV</button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
