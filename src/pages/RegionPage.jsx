@@ -107,7 +107,7 @@ export default function RegionPage() {
   const [circleScale,     setCircleScale]     = useState(1.0);
   const [plantSource,     setPlantSource]     = useState('gem');
   const [mapReady,        setMapReady]        = useState(false);
-  const [panelWidth,      setPanelWidth]      = useState(320);
+  const [panelWidth,      setPanelWidth]      = useState(340);
   const [selFeature,      setSelFeature]      = useState(null);
   const [activeTab,       setActiveTab]       = useState('overview');
   const [basemap,         setBasemap]         = useState('minimal');
