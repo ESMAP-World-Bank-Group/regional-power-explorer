@@ -18,6 +18,9 @@ data-source/*.csv
 data-source/gem/
 data-source/raw/ENTSOE/
 data-source/raw/ARM/owid_energy.csv
+config/api_tokens.ini
+data-source/raw/OWID/
+data-source/raw/COMTRADE/
 
 # Python
 __pycache__/

@@ -13,10 +13,20 @@ Usage:
   # ENTSO-E only, specific countries:
   python tools/build_all.py --entsoe-only BG RO GR
 
+  # Central Asia only (OWID + Comtrade + enrichments):
+  python tools/build_all.py --ca-only
+
 Pipelines:
-  TUR  — TEİAS XLS -> supply/TUR.json + trade/TUR.json
-  AZE  — SSC XLS + CSV -> supply/AZE.json + trade/AZE.json
-  GEO  — ESCO PDFs + TYNDP xlsx -> supply/GEO.json
+  TUR     — TEİAS XLS -> supply/TUR.json + trade/TUR.json
+  AZE     — SSC XLS + CSV -> supply/AZE.json + trade/AZE.json
+  GEO     — ESCO PDFs + TYNDP xlsx -> supply/GEO.json
+  ARM     — OWID/Ember + IEA/Armstat + ESCO PDFs -> supply/ARM.json + trade/ARM.json
+  OWID    — OWID/Ember CSV -> supply/{ISO3}.json for any country list
+            Default countries: KAZ UZB KGZ TJK TKM
+  UZB     — SIAT JSONs -> enriches supply/UZB.json with capacity (MW)
+            Runs after OWID pipeline.
+  Comtrade — UN Comtrade HS 2716 API -> trade/{ISO3}.json for any country list
+             Requires [api_tokens] comtrade key in config/api_tokens.ini
   ENTSO-E — ENTSO-E API -> supply/{ISO3}.json for 36 countries
              First run ~30-60 min; subsequent runs use cached CSVs (instant).
              Cache: data-source/raw/ENTSOE/  (gitignored)
@@ -26,29 +36,52 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from pipelines import tur_pipeline, aze_pipeline, geo_pipeline, arm_pipeline, entsoe_supply_pipeline
+from pipelines import (
+    tur_pipeline,
+    aze_pipeline,
+    geo_pipeline,
+    arm_pipeline,
+    owid_pipeline,
+    uzb_pipeline,
+    comtrade_pipeline,
+    entsoe_supply_pipeline,
+)
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    no_entsoe   = '--no-entsoe'   in args
-    entsoe_only = '--entsoe-only' in args
+    no_entsoe    = '--no-entsoe'   in args
+    entsoe_only  = '--entsoe-only' in args
+    ca_only      = '--ca-only'     in args
     entsoe_countries = [a for a in args if not a.startswith('--')] or None
 
     if not entsoe_only:
-        print('=== TUR pipeline ===')
-        tur_pipeline.run()
-        print()
-        print('=== AZE pipeline ===')
-        aze_pipeline.run()
-        print()
-        print('=== GEO pipeline ===')
-        geo_pipeline.run()
-        print()
-        print('=== ARM pipeline ===')
-        arm_pipeline.run()
+        if not ca_only:
+            print('=== TUR pipeline ===')
+            tur_pipeline.run()
+            print()
+            print('=== AZE pipeline ===')
+            aze_pipeline.run()
+            print()
+            print('=== GEO pipeline ===')
+            geo_pipeline.run()
+            print()
+            print('=== ARM pipeline ===')
+            arm_pipeline.run()
+            print()
+
+        print('=== OWID pipeline (Central Asia) ===')
+        owid_pipeline.run()
         print()
 
-    if not no_entsoe:
+        print('=== UZB enrichment (SIAT capacity) ===')
+        uzb_pipeline.run()
+        print()
+
+        print('=== Comtrade pipeline (Central Asia) ===')
+        comtrade_pipeline.run()
+        print()
+
+    if not no_entsoe and not ca_only:
         print('=== ENTSO-E pipeline ===')
         entsoe_supply_pipeline.run(iso2_filter=entsoe_countries)
         print()
