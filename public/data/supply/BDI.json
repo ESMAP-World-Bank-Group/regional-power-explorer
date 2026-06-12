@@ -1,0 +1,87 @@
+{
+  "country": "Burundi",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        140.0,
+        140.0,
+        190.0,
+        240.0,
+        260.0,
+        270.0,
+        260.0,
+        260.0,
+        370.0
+      ],
+      "Solar": [
+        0.0,
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Oil": [
+        30.0,
+        20.0,
+        70.0,
+        100.0,
+        120.0,
+        90.0,
+        120.0,
+        120.0,
+        120.0
+      ],
+      "Bioenergy": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Other Renewables": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    },
+    "demand": [
+      280.0,
+      310.0,
+      370.0,
+      450.0,
+      490.0,
+      460.0,
+      490.0,
+      490.0,
+      600.0
+    ]
+  }
+}

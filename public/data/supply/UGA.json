@@ -1,0 +1,87 @@
+{
+  "country": "Uganda",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        3090.0,
+        3300.0,
+        3440.0,
+        3640.0,
+        4040.0,
+        4080.0,
+        4640.0,
+        4980.0,
+        4980.0
+      ],
+      "Solar": [
+        30.0,
+        40.0,
+        60.0,
+        70.0,
+        130.0,
+        140.0,
+        130.0,
+        150.0,
+        150.0
+      ],
+      "Oil": [
+        80.0,
+        70.0,
+        70.0,
+        310.0,
+        140.0,
+        120.0,
+        130.0,
+        150.0,
+        170.0
+      ],
+      "Bioenergy": [
+        350.0,
+        360.0,
+        210.0,
+        280.0,
+        270.0,
+        260.0,
+        370.0,
+        470.0,
+        470.0
+      ],
+      "Other Renewables": [
+        350.0,
+        360.0,
+        210.0,
+        280.0,
+        270.0,
+        260.0,
+        370.0,
+        470.0,
+        470.0
+      ]
+    },
+    "demand": [
+      3480.0,
+      3650.0,
+      3490.0,
+      4100.0,
+      4300.0,
+      4400.0,
+      4900.0,
+      5340.0,
+      5330.0
+    ]
+  }
+}

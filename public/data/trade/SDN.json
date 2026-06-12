@@ -1,0 +1,29 @@
+{
+  "country": "Sudan",
+  "unit": "GWh",
+  "source": "EAPP Secretariat — Annual Interconnection Statistics (net annual flows)",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "exports": {},
+  "imports": {
+    "Egypt": [
+      373.9,
+      492.2,
+      506.7,
+      483.0,
+      259.58
+    ],
+    "Ethiopia": [
+      955.2,
+      1144.7,
+      881.9,
+      485.0,
+      188.01
+    ]
+  }
+}

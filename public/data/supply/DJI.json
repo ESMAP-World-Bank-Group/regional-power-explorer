@@ -1,0 +1,54 @@
+{
+  "country": "Djibouti",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Wind": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "Oil": [
+        180.0,
+        90.0,
+        60.0,
+        50.0,
+        90.0,
+        130.0,
+        130.0,
+        130.0,
+        130.0
+      ]
+    },
+    "demand": [
+      490.0,
+      540.0,
+      570.0,
+      580.0,
+      600.0,
+      630.0,
+      710.0,
+      710.0,
+      710.0
+    ]
+  }
+}

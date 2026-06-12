@@ -1,0 +1,98 @@
+{
+  "country": "Ethiopia",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Hydro": [
+        9580.0,
+        11640.0,
+        12550.0,
+        13650.0,
+        14400.0,
+        14940.0,
+        14910.0,
+        16770.0,
+        17130.0
+      ],
+      "Solar": [
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        20.0,
+        30.0,
+        30.0,
+        40.0,
+        40.0
+      ],
+      "Wind": [
+        760.0,
+        780.0,
+        530.0,
+        530.0,
+        850.0,
+        610.0,
+        820.0,
+        560.0,
+        560.0
+      ],
+      "Oil": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Bioenergy": [
+        30.0,
+        30.0,
+        20.0,
+        30.0,
+        30.0,
+        30.0,
+        20.0,
+        10.0,
+        10.0
+      ],
+      "Other Renewables": [
+        30.0,
+        30.0,
+        20.0,
+        30.0,
+        30.0,
+        30.0,
+        20.0,
+        40.0,
+        40.0
+      ]
+    },
+    "demand": [
+      9690.0,
+      11170.0,
+      11690.0,
+      13230.0,
+      14170.0,
+      13980.0,
+      14120.0,
+      15660.0,
+      15990.0
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "country": "Rwanda",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Coal": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        20.0,
+        30.0,
+        40.0,
+        50.0,
+        170.0
+      ],
+      "Gas": [
+        20.0,
+        100.0,
+        110.0,
+        210.0,
+        210.0,
+        210.0,
+        220.0,
+        210.0,
+        300.0
+      ],
+      "Hydro": [
+        280.0,
+        300.0,
+        280.0,
+        310.0,
+        400.0,
+        530.0,
+        550.0,
+        560.0,
+        500.0
+      ],
+      "Solar": [
+        10.0,
+        20.0,
+        20.0,
+        30.0,
+        30.0,
+        30.0,
+        40.0,
+        40.0,
+        40.0
+      ],
+      "Oil": [
+        200.0,
+        210.0,
+        220.0,
+        240.0,
+        190.0,
+        90.0,
+        150.0,
+        180.0,
+        90.0
+      ]
+    },
+    "demand": [
+      590.0,
+      710.0,
+      720.0,
+      910.0,
+      880.0,
+      910.0,
+      1020.0,
+      1060.0,
+      1200.0
+    ]
+  }
+}

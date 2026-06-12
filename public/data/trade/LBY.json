@@ -1,0 +1,22 @@
+{
+  "country": "Libya",
+  "unit": "GWh",
+  "source": "EAPP Secretariat — Annual Interconnection Statistics (net annual flows)",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "exports": {},
+  "imports": {
+    "Egypt": [
+      683.9,
+      512.2,
+      530.8,
+      660.0,
+      573.61
+    ]
+  }
+}

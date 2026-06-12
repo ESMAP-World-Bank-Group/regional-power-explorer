@@ -1,0 +1,30 @@
+{
+  "country": "Kenya",
+  "unit": "GWh",
+  "source": "EAPP Secretariat — Annual Interconnection Statistics (net annual flows)",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "exports": {
+    "Uganda": [
+      8.5,
+      292.5,
+      324.8,
+      255.0,
+      218.76
+    ]
+  },
+  "imports": {
+    "Ethiopia": [
+      0.0,
+      0.0,
+      7.5,
+      674.0,
+      1320.32
+    ]
+  }
+}

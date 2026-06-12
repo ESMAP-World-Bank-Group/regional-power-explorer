@@ -1,0 +1,54 @@
+{
+  "country": "South Sudan",
+  "generation": {
+    "source": "Our World in Data / Ember — Yearly Electricity Data (github.com/owid/energy-data, CC BY 4.0)",
+    "unit": "GWh",
+    "note": "Values converted from TWh (OWID) to GWh. Demand = electricity_demand column (includes net imports). Hydro = all hydropower (reservoir + run-of-river not distinguished).",
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "fuels": {
+      "Solar": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "Oil": [
+        580.0,
+        520.0,
+        540.0,
+        540.0,
+        550.0,
+        550.0,
+        560.0,
+        500.0,
+        550.0
+      ]
+    },
+    "demand": [
+      580.0,
+      520.0,
+      540.0,
+      540.0,
+      550.0,
+      560.0,
+      570.0,
+      510.0,
+      560.0
+    ]
+  }
+}

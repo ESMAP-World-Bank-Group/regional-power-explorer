@@ -1,0 +1,22 @@
+{
+  "country": "Rwanda",
+  "unit": "GWh",
+  "source": "EAPP Secretariat — Annual Interconnection Statistics (net annual flows)",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "exports": {},
+  "imports": {
+    "Uganda": [
+      0.0,
+      0.0,
+      0.0,
+      93.0,
+      89.77
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "country": "Djibouti",
+  "unit": "GWh",
+  "source": "EAPP Secretariat — Annual Interconnection Statistics (net annual flows)",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "exports": {},
+  "imports": {
+    "Ethiopia": [
+      456.0,
+      554.1,
+      643.2,
+      601.0,
+      588.74
+    ]
+  }
+}
