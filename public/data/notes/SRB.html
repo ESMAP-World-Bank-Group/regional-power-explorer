@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serbia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Serbia</div>
+    <div class="doc-sub">Energy Community member · EPS state monopoly · Lignite-dominant grid transitioning under EU accession pressure</div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">~8.5 GW</div>
+      <div class="kpi-lbl">Installed capacity</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">~60%</div>
+      <div class="kpi-lbl">Coal share of generation</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">~30%</div>
+      <div class="kpi-lbl">Hydro share</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">EU candidate</div>
+      <div class="kpi-lbl">Energy Community member</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <h2>Generation Mix (2024)</h2>
+    <p>Serbia's electricity system is dominated by EPS (Elektroprivreda Srbije), the state-owned vertically integrated utility. In 2024, roughly 60% of generation came from lignite, 30% from hydro, and the remaining 10% from wind, solar, and biomass. The commissioning of the new 350 MW Kostolac B3 lignite unit in December 2024 — Serbia's first new coal plant in decades — underscored the country's continued reliance on domestic lignite despite EU accession obligations.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Generation by source (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#808890"></span>Coal (lignite)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~38 TWh</div>
+            <div class="chart-center-lbl">total</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EPS, Energy Community Secretariat</p>
+      </div>
+      <div>
+        <div class="chart-title">Installed capacity by source (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#808890"></span>Coal (lignite)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Gas/Oil CHP</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar + Wind</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~8.5 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EPS Annual Report 2024; Enerdata</p>
+      </div>
+    </div>
+
+    <h3>Key generation assets</h3>
+    <table>
+      <thead>
+        <tr><th>Asset</th><th>Type</th><th>Capacity (MW)</th><th>Owner</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Nikola Tesla A &amp; B (TENT)</strong></td><td>Lignite</td><td>~1 650 + 1 000</td><td>EPS (state)</td></tr>
+        <tr><td><strong>Kostolac A &amp; B (+ B3)</strong></td><td>Lignite</td><td>~340 + 700 + 350</td><td>EPS (state) + CMEC (China)</td></tr>
+        <tr><td><strong>Kolubara A &amp; B</strong></td><td>Lignite</td><td>~210 + 110</td><td>EPS (state)</td></tr>
+        <tr><td><strong>Đerdap I &amp; II (Iron Gates)</strong></td><td>Hydro (shared RO)</td><td>1 050 + 270 (SRB share)</td><td>EPS / Hidroelektrane Đerdap</td></tr>
+        <tr><td><strong>Bajina Bašta</strong></td><td>Hydro + pumped storage</td><td>370 + 614</td><td>EPS</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Market Structure &amp; Regulation</h2>
+    <p>The Serbian power sector is dominated by EPS, which owns all large generation facilities and serves the bulk of consumers. Nominal liberalisation exists but market competition is limited in practice. Serbia is an EU accession candidate and a founding member of the Energy Community, which obliges it to align with EU energy acquis — including unbundling, third-party access, and environmental standards.</p>
+
+    <ul>
+      <li><strong>Regulator:</strong> AERS (Agency for Energy of the Republic of Serbia) — sets tariffs, licences operators, monitors compliance.</li>
+      <li><strong>TSO:</strong> EMS (Elektromreža Srbije) — nominally unbundled from EPS; ENTSO-E observer member; manages cross-border flows with 5 neighbouring TSOs.</li>
+      <li><strong>DSO:</strong> EPS Distribution — EPS subsidiary serving ~3.5 million customers.</li>
+      <li><strong>Market operator:</strong> SEEPEX (South East European Power Exchange) — day-ahead and intraday, participating in regional market coupling.</li>
+      <li><strong>Kostolac B3 controversy:</strong> The 350 MW Kostolac B3 plant was built with a Chinese Exim Bank loan and constructed by CMEC — a project that collides with Serbia's EU accession trajectory and Energy Community obligations on coal finance.</li>
+    </ul>
+
+    <div class="callout">
+      EPS holds a near-total grip on generation, wholesale, and retail, making it one of the least-liberalised power sectors in the Western Balkans. Unbundling of EPS distribution from supply remains a core Energy Community compliance obligation that Serbia has repeatedly deferred.
+    </div>
+
+    <!-- ACTOR MAP -->
+    <h2>Sector Actor Map</h2>
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif" font-size="11">
+        <rect x="0" y="0" width="760" height="300" fill="#F4F5F7" rx="8"/>
+        <text x="12" y="22" font-size="9.5" fill="#8A94A6" font-weight="600">REGULATION</text>
+        <text x="12" y="82" font-size="9.5" fill="#8A94A6" font-weight="600">TRANSMISSION</text>
+        <text x="12" y="142" font-size="9.5" fill="#8A94A6" font-weight="600">GENERATION</text>
+        <text x="12" y="222" font-size="9.5" fill="#8A94A6" font-weight="600">DISTRIBUTION / MARKET</text>
+        <line x1="0" y1="35" x2="760" y2="35" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="95" x2="760" y2="95" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="165" x2="760" y2="165" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="245" x2="760" y2="245" stroke="#E2E6EA" stroke-width="1"/>
+
+        <!-- AERS -->
+        <rect x="300" y="42" width="160" height="38" rx="5" fill="#1B3A5C"/>
+        <text x="380" y="57" text-anchor="middle" fill="white" font-weight="600" font-size="12">AERS</text>
+        <text x="380" y="72" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Energy Regulator</text>
+
+        <!-- EMS -->
+        <rect x="300" y="103" width="160" height="38" rx="5" fill="#2E75B6"/>
+        <text x="380" y="118" text-anchor="middle" fill="white" font-weight="600" font-size="12">EMS</text>
+        <text x="380" y="133" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">TSO (ENTSO-E observer)</text>
+
+        <!-- EPS — lignite -->
+        <rect x="60" y="173" width="155" height="60" rx="5" fill="#808890" opacity="0.85"/>
+        <text x="137" y="192" text-anchor="middle" fill="white" font-weight="600" font-size="11">EPS — Lignite</text>
+        <text x="137" y="207" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">TENT, Kostolac, Kolubara</text>
+        <text x="137" y="222" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">~4 400 MW</text>
+
+        <!-- EPS — hydro -->
+        <rect x="230" y="173" width="155" height="60" rx="5" fill="#1E9AF5" opacity="0.85"/>
+        <text x="307" y="192" text-anchor="middle" fill="white" font-weight="600" font-size="11">EPS — Hydro</text>
+        <text x="307" y="207" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">Đerdap, Bajina Bašta</text>
+        <text x="307" y="222" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">~3 015 MW</text>
+
+        <!-- IPPs RE -->
+        <rect x="400" y="173" width="155" height="60" rx="5" fill="#44DAEC" opacity="0.8"/>
+        <text x="477" y="192" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">IPPs — RE &amp; Gas</text>
+        <text x="477" y="207" text-anchor="middle" fill="#1B3A5C" font-size="9.5">Wind, Solar, Biomass, CHP</text>
+        <text x="477" y="222" text-anchor="middle" fill="#1B3A5C" font-size="9">~900+ MW</text>
+
+        <!-- Kostolac B3 -->
+        <rect x="570" y="173" width="155" height="60" rx="5" fill="#808890" opacity="0.6"/>
+        <text x="647" y="192" text-anchor="middle" fill="white" font-weight="600" font-size="11">Kostolac B3</text>
+        <text x="647" y="207" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">350 MW lignite (2024)</text>
+        <text x="647" y="222" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">EPS + CMEC (China)</text>
+
+        <!-- EPS Distribution + SEEPEX -->
+        <rect x="200" y="253" width="160" height="30" rx="4" fill="#1B3A5C" opacity="0.8"/>
+        <text x="280" y="272" text-anchor="middle" fill="white" font-size="10" font-weight="600">EPS Distribution (~3.5M customers)</text>
+        <rect x="380" y="253" width="130" height="30" rx="4" fill="#B7770D" opacity="0.8"/>
+        <text x="445" y="272" text-anchor="middle" fill="white" font-size="10" font-weight="600">SEEPEX (day-ahead)</text>
+
+        <!-- Arrows -->
+        <line x1="380" y1="80" x2="380" y2="102" stroke="#1B3A5C" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="137" y1="173" x2="320" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="307" y1="173" x2="360" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="477" y1="173" x2="400" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1B3A5C"/></marker>
+          <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#808890"/></marker>
+        </defs>
+      </svg>
+    </div>
+    <p class="fig-caption">Simplified actor map. EPS dominates all segments; EMS is nominally unbundled TSO.</p>
+
+    <!-- COAL -->
+    <h2>Lignite — The Kolubara &amp; Kostolac Basins</h2>
+    <p>Serbia holds Europe's third-largest lignite reserves. The Kolubara basin, southwest of Belgrade, feeds the TENT (Nikola Tesla) plants — the largest power station in Serbia. The Kostolac basin to the east hosts the Kostolac A and B plants, and the newly commissioned B3 unit. Lignite mining and power production employ tens of thousands directly and anchor entire regional economies.</p>
+
+    <ul>
+      <li><strong>TENT A (1 650 MW) and TENT B (1 000 MW):</strong> Operational but ageing; several units require significant rehabilitation. TENT A units are among the oldest in the system.</li>
+      <li><strong>Kostolac B3 (350 MW):</strong> Completed December 2024 with financing from China Exim Bank and construction by CMEC. This directly contravenes Energy Community obligations on coal subsidies and raises EU accession compatibility questions.</li>
+      <li><strong>Phase-out timeline:</strong> Serbia's Integrated National Energy and Climate Plan (INECP) envisages coal exit by 2050 — far later than EU member states. No binding near-term phase-out schedule exists.</li>
+    </ul>
+
+    <div class="callout">
+      The Kostolac B3 commissioning in late 2024 sends a contradictory signal: Serbia simultaneously negotiates EU accession, participates in the Energy Community, and commissions a new Chinese-financed coal plant. This tension will define Serbia's energy diplomacy through the 2030s.
+    </div>
+
+    <!-- RENEWABLES -->
+    <h2>Renewables — Rapid Deployment</h2>
+    <p>Despite coal's dominance, Serbia added significant renewable capacity in 2024. Total RE capacity reached approximately 3.9 GW — a 22% increase over 2023. Wind, solar, and biomass IPPs have grown rapidly, driven by feed-in premiums and improving project economics.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">RE capacity growth (MW)</div>
+        <canvas id="reGrowthChart" height="190"></canvas>
+        <p class="fig-caption">Indicative trajectory; includes wind, solar, biomass, SHP</p>
+      </div>
+      <div class="stat-note" style="padding-left:10px">
+        <div class="stat-item"><strong>Wind (~900 MW by 2024)</strong>Northern Serbia plains; Čibuk 1 (158 MW) is region's largest wind farm; growing pipeline</div>
+        <div class="stat-item"><strong>Solar (~600 MW by 2024)</strong>Rapidly expanding; utility-scale and rooftop; southern Serbia has high irradiance</div>
+        <div class="stat-item"><strong>Biomass &amp; small hydro</strong>Smaller contributions; biomass growing in agricultural regions</div>
+        <div class="stat-item"><strong>Pumped storage potential</strong>Bajina Bašta (614 MW) already operational; proposals for additional storage to balance growing RE</div>
+      </div>
+    </div>
+
+    <!-- INTERCONNECTIONS -->
+    <h2>Cross-Border Interconnections</h2>
+    <p>Serbia's central position in the Western Balkans makes it a critical transit hub. All interconnections are within the ENTSO-E Continental Europe synchronous area. Serbia interfaces with five neighbouring TSOs and is a key transit corridor for Bulgaria–Western Balkans trade flows.</p>
+
+    <table>
+      <thead>
+        <tr><th>Neighbour</th><th>Approximate NTC</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Romania</strong></td><td>~950 MW</td><td>Cross-Danube; Đerdap shared hydro; ENTSO-E synchronous</td></tr>
+        <tr><td><strong>Bulgaria</strong></td><td>~400 MW</td><td>Transit flows toward Western Balkans; electricity trade</td></tr>
+        <tr><td><strong>Bosnia &amp; Herzegovina</strong></td><td>~1 000 MW</td><td>Major bilateral trade; EPS ↔ EPS RS flows</td></tr>
+        <tr><td><strong>Montenegro</strong></td><td>~600 MW</td><td>CGES interconnection; export/import balance varies</td></tr>
+        <tr><td><strong>North Macedonia</strong></td><td>~400 MW</td><td>North Macedonia net importer; transit through Serbia to BIH</td></tr>
+        <tr><td><strong>Croatia / Hungary</strong></td><td>~700 MW</td><td>Access to CEE markets and ENTSO-E Western grid</td></tr>
+      </tbody>
+    </table>
+
+    <!-- FIVE TAKEAWAYS -->
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div><strong>EPS's vertically integrated monopoly is Serbia's biggest structural energy problem.</strong> It dominates generation, distribution, and supply, suppressing competition and deferring the unbundling obligations Serbia committed to under the Energy Community Treaty over a decade ago.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div><strong>Kostolac B3 — a new Chinese-financed coal plant commissioned in 2024 — directly conflicts with EU accession.</strong> Serbia cannot credibly progress toward EU membership while commissioning new coal under Chinese sovereign debt, and this contradiction will require a political resolution before any accession chapter on energy closes.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>Lignite will not exit quickly.</strong> Serbia's coal reserves are vast, domestic employment is politically powerful, and no binding coal phase-out date exists. The INECP target of 2050 is among the latest in the region — a full two decades after the EU's trajectory.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div><strong>Renewables are growing fast despite institutional inertia.</strong> Wind and solar IPPs added ~22% new capacity in 2024, driven by market economics and improved permitting. Serbia has genuine wind and solar potential that could partially offset coal decline if the regulatory environment improves.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div><strong>Serbia is the Western Balkans' key electricity transit hub.</strong> Its central grid position, shared Danube hydro with Romania, and interconnections with five neighbours make EMS a strategically important TSO for regional power flows — and give Serbia leverage in any future regional market integration.</div>
+      </div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EPS (Elektroprivreda Srbije) — Annual Reports and generation statistics ·
+      EMS (Elektromreža Srbije) — Transmission system data ·
+      Energy Community Secretariat — Serbia Annual Implementation Report 2024 ·
+      IEA — Serbia Energy Profile ·
+      Enerdata — Serbia Energy Market Report 2024 ·
+      Climatescope 2024 — Serbia ·
+      Bankwatch — Energy sector in Serbia ·
+      Low Carbon Power — Serbia Electricity Generation Mix 2025 ·
+      U.S. Commercial Service — Serbia Energy Guide
+    </div>
+
+  </div><!-- /body -->
+
+  <div class="doc-footer">
+    <span>Serbia Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.plugins.legend.display = false;
+
+const FUEL = {
+  coal: '#808890', hydro: '#1E9AF5', solar: '#FFD700',
+  wind: '#44DAEC', gas: '#9A7040', biomass: '#52C860'
+};
+
+const doughnutOpts = {
+  type: 'doughnut',
+  options: {
+    cutout: '62%',
+    animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed/ctx.dataset.data.reduce((a,b)=>a+b,0)*100)}%)` }
+    }},
+    layout: { padding: 4 }
+  }
+};
+
+new Chart(document.getElementById('genMixChart'), {
+  ...doughnutOpts,
+  data: {
+    labels: ['Coal (lignite)', 'Hydro', 'Wind', 'Solar', 'Biomass'],
+    datasets: [{ data: [22.8, 11.4, 2.3, 1.1, 0.4], backgroundColor: [FUEL.coal, FUEL.hydro, FUEL.wind, FUEL.solar, FUEL.biomass], borderWidth: 2, borderColor: '#fff' }]
+  }
+});
+
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Coal (lignite)', 'Hydro', 'Gas/Oil CHP', 'Wind', 'Solar'],
+    datasets: [{ data: [4429, 3015, 297, 900, 500], backgroundColor: [FUEL.coal, FUEL.hydro, FUEL.gas, FUEL.wind, FUEL.solar], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` ${ctx.label}: ${(ctx.parsed/1000).toFixed(1)} GW` }
+    }},
+    layout: { padding: 4 }
+  }
+});
+
+new Chart(document.getElementById('reGrowthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023','2024','2025e'],
+    datasets: [
+      { label: 'Wind (MW)', data: [400, 500, 550, 600, 700, 850, 900, 1200], backgroundColor: FUEL.wind, stack: 'a' },
+      { label: 'Solar (MW)', data: [10, 20, 40, 80, 180, 380, 600, 900], backgroundColor: FUEL.solar, stack: 'a' },
+      { label: 'Biomass/SHP (MW)', data: [200, 220, 250, 280, 300, 330, 380, 400], backgroundColor: FUEL.biomass, stack: 'a' }
+    ]
+  },
+  options: {
+    plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12 } }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      x: { stacked: true, ticks: { font: { size: 10 } }, grid: { display: false } },
+      y: { stacked: true, ticks: { font: { size: 10 }, callback: v => v >= 1000 ? (v/1000).toFixed(1)+'GW' : v+'MW' }, grid: { color: '#E2E6EA' } }
+    },
+    animation: { duration: 800 }
+  }
+});
+</script>
+</body>
+</html>

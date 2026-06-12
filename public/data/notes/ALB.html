@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albania Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Albania</div>
+    <div class="doc-sub">Energy Community member · ~96% renewable electricity · Drin River cascade backbone · Severe drought vulnerability</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~2.8 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~96%</div><div class="kpi-lbl">Renewable generation share</div></div>
+    <div class="kpi"><div class="kpi-val">1 350 MW</div><div class="kpi-lbl">Drin cascade (KESH)</div></div>
+    <div class="kpi"><div class="kpi-val">EU candidate</div><div class="kpi-lbl">Energy Community member</div></div>
+  </div>
+
+  <div class="body">
+
+    <h2>Generation Mix</h2>
+    <p>Albania's electricity system is almost entirely renewable. Large hydropower dominates — approximately 95% of generation in normal rainfall years — with the Drin River cascade forming the backbone of the system. Solar is the fastest-growing new source following the commissioning of the 140 MW Karavasta plant in October 2023, the largest solar facility in the Western Balkans at the time. Installed capacity is now approximately 2.8 GW, with private producers accounting for over 50% of capacity for the first time in 2024.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Large hydro (KESH)</span>
+          <span><span class="lsq" style="background:#6EC8F0"></span>Private hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~2.8 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: KESH, Balkan Green Energy News, Energy Community IR 2024</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>KESH Drin cascade: 1 350 MW</strong>Fierza (584 MW), Komani (600 MW), Vau i Dejës (250 MW) — Albania's largest generation assets and primary balancing resource</div>
+        <div class="stat-item"><strong>Private hydro: ~310 MW</strong>Hundreds of small run-of-river plants; now represent majority of new hydro investment; quality and reliability variable</div>
+        <div class="stat-item"><strong>Karavasta solar: 140 MW</strong>Largest solar plant in Western Balkans at commissioning (Oct 2023); key proof-of-concept for utility-scale solar in Albania</div>
+        <div class="stat-item"><strong>Masdar–KESH JV (Nov 2024)</strong>Joint venture term sheet signed to explore gigawatt-scale RE development; could fundamentally reshape Albania's generation landscape</div>
+        <div class="stat-item"><strong>Only 35% of hydro potential developed</strong>Total theoretical hydro reserve estimated at 4,500 MW / 18 TWh/yr; large upside but environmental and social licence constraints are real</div>
+      </div>
+    </div>
+
+    <h3>Key generation assets</h3>
+    <table>
+      <thead>
+        <tr><th>Asset</th><th>Type</th><th>Capacity (MW)</th><th>Owner</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Fierza HPP</strong></td><td>Hydro (storage)</td><td>584</td><td>KESH (state)</td></tr>
+        <tr><td><strong>Komani HPP</strong></td><td>Hydro (storage)</td><td>600</td><td>KESH (state)</td></tr>
+        <tr><td><strong>Vau i Dejës HPP</strong></td><td>Hydro (run-of-river)</td><td>250</td><td>KESH (state)</td></tr>
+        <tr><td><strong>Karavasta Solar</strong></td><td>Solar PV</td><td>140</td><td>BEI / private (Voltalia + state JV)</td></tr>
+        <tr><td><strong>Private SHPs</strong></td><td>Small hydro (run-of-river)</td><td>~310</td><td>Various private operators</td></tr>
+        <tr><td><strong>Vlora TPP</strong></td><td>Thermal (oil, retired)</td><td>–</td><td>KESH (decommissioned)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Market Structure &amp; Regulation</h2>
+    <p>Albania's power sector is organised around three main state entities with a partially liberalised retail market. Reforms under the Energy Community and EU accession process are ongoing.</p>
+
+    <ul>
+      <li><strong>Regulator:</strong> ERE (Energy Regulatory Authority) — sets tariffs, licences operators, oversees Energy Community compliance.</li>
+      <li><strong>KESH:</strong> Albanian Power Corporation — state-owned generator; operates the Drin cascade and holds the dominant position in wholesale supply.</li>
+      <li><strong>OST:</strong> Transmission System Operator — manages 220/400 kV grid and interconnections; nominally unbundled from KESH.</li>
+      <li><strong>OSHEE:</strong> Distribution and supply operator (state-owned) — serves retail customers; high distribution losses historically (>25%) though improving under reform pressure.</li>
+      <li><strong>Market liberalisation:</strong> Eligible consumers (above a threshold) can access competitive supply; Energy Community obligations require further retail liberalisation and wholesale market development.</li>
+    </ul>
+
+    <div class="callout">
+      Albania's near-100% hydro grid is an environmental advantage but an operational liability. In low-rainfall years, the Drin cascade output can fall by 30–50%, triggering large import requirements and price spikes. The 2017 drought caused emergency imports at significant fiscal cost. Climate change makes this vulnerability structural, not episodic — solar and wind diversification is not optional.
+    </div>
+
+    <!-- ACTOR MAP -->
+    <h2>Sector Actor Map</h2>
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif" font-size="11">
+        <rect x="0" y="0" width="760" height="280" fill="#F4F5F7" rx="8"/>
+        <text x="12" y="22" font-size="9.5" fill="#8A94A6" font-weight="600">REGULATION</text>
+        <text x="12" y="82" font-size="9.5" fill="#8A94A6" font-weight="600">TRANSMISSION</text>
+        <text x="12" y="152" font-size="9.5" fill="#8A94A6" font-weight="600">GENERATION</text>
+        <text x="12" y="232" font-size="9.5" fill="#8A94A6" font-weight="600">DISTRIBUTION / RETAIL</text>
+        <line x1="0" y1="35" x2="760" y2="35" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="95" x2="760" y2="95" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="175" x2="760" y2="175" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="250" x2="760" y2="250" stroke="#E2E6EA" stroke-width="1"/>
+
+        <rect x="300" y="42" width="160" height="38" rx="5" fill="#1B3A5C"/>
+        <text x="380" y="57" text-anchor="middle" fill="white" font-weight="600" font-size="12">ERE</text>
+        <text x="380" y="72" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Energy Regulatory Authority</text>
+
+        <rect x="300" y="103" width="160" height="38" rx="5" fill="#2E75B6"/>
+        <text x="380" y="118" text-anchor="middle" fill="white" font-weight="600" font-size="12">OST</text>
+        <text x="380" y="133" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">TSO (transmission operator)</text>
+
+        <rect x="80" y="183" width="200" height="60" rx="5" fill="#1E9AF5" opacity="0.85"/>
+        <text x="180" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">KESH</text>
+        <text x="180" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">Drin Cascade (Fierza, Komani, Vau i Dejës)</text>
+        <text x="180" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">1 350 MW (state-owned)</text>
+
+        <rect x="295" y="183" width="200" height="60" rx="5" fill="#6EC8F0" opacity="0.85"/>
+        <text x="395" y="200" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">Private SHPs + Solar</text>
+        <text x="395" y="215" text-anchor="middle" fill="#1B3A5C" font-size="9.5">~310 MW hydro + 200+ MW solar PV</text>
+        <text x="395" y="229" text-anchor="middle" fill="#1B3A5C" font-size="9">(Karavasta 140 MW, IPPs)</text>
+
+        <rect x="510" y="183" width="200" height="60" rx="5" fill="#44DAEC" opacity="0.75"/>
+        <text x="610" y="200" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">Masdar–KESH JV (pipeline)</text>
+        <text x="610" y="215" text-anchor="middle" fill="#1B3A5C" font-size="9.5">GW-scale RE development (2024+)</text>
+        <text x="610" y="229" text-anchor="middle" fill="#1B3A5C" font-size="9">Solar + Wind (announced 2024)</text>
+
+        <rect x="200" y="258" width="360" height="16" rx="3" fill="#1B3A5C" opacity="0.8"/>
+        <text x="380" y="270" text-anchor="middle" fill="white" font-size="10" font-weight="600">OSHEE — Distribution + Supply (~1.4M customers; high losses historically)</text>
+
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1B3A5C"/></marker>
+          <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#808890"/></marker>
+        </defs>
+        <line x1="380" y1="80" x2="380" y2="102" stroke="#1B3A5C" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="180" y1="183" x2="340" y2="141" stroke="#1E9AF5" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="395" y1="183" x2="380" y2="141" stroke="#6EC8F0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+      </svg>
+    </div>
+    <p class="fig-caption">KESH dominates large hydro; private sector holds majority of new capacity additions.</p>
+
+    <!-- DROUGHT RISK -->
+    <h2>Drought Vulnerability — The Systemic Risk</h2>
+    <p>Albania's near-total dependence on hydropower makes it uniquely exposed to rainfall variability and climate change. The Drin River basin, which feeds all three KESH cascade reservoirs, is sourced from high Albanian and Macedonian watersheds. Drought years can cut hydro output by 30–50%, forcing large, expensive electricity imports from Greece and Montenegro — and straining the state budget when regulated retail tariffs prevent cost pass-through.</p>
+
+    <ul>
+      <li><strong>2017 drought:</strong> OSHEE faced an €80+ million shortfall from emergency imports at spot prices while selling to consumers at regulated rates. The episode triggered substantial fiscal pressure and accelerated distribution loss reduction efforts.</li>
+      <li><strong>Climate trajectory:</strong> Albania's NECP (October 2024) acknowledges declining average rainfall in key hydropower catchments. The Drin cascade's multi-year storage provides buffer capacity, but declining inflows over decadal timescales represent a structural challenge.</li>
+      <li><strong>Diversification imperative:</strong> The Karavasta solar plant and Masdar JV pipeline are explicitly motivated by the need to reduce hydro dependency, not just add capacity. Even 500–700 MW of firm solar + wind would materially reduce drought-year import exposure.</li>
+    </ul>
+
+    <div class="callout">
+      Albania's green credentials are real — nearly 100% renewable electricity is a genuine distinction — but the lack of generation diversity makes the system brittle. A portfolio of solar and wind would not just add clean capacity; it would be the most important grid resilience investment Albania can make in the 2020s.
+    </div>
+
+    <!-- INTERCONNECTIONS -->
+    <h2>Cross-Border Interconnections</h2>
+    <p>Albania exports electricity to Greece in good hydro years and imports heavily in drought years. The grid connects to four neighbours, all within the ENTSO-E Continental Europe synchronous area.</p>
+
+    <table>
+      <thead>
+        <tr><th>Neighbour</th><th>Direction / Volume</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Greece</strong></td><td>Primary export route (~$263M exports in 2022)</td><td>Most important bilateral trade; Albania's largest electricity revenue source</td></tr>
+        <tr><td><strong>Montenegro</strong></td><td>Bidirectional (~$15M exports 2022)</td><td>Northern interconnection; transit flows; CGES–OST link</td></tr>
+        <tr><td><strong>Kosovo</strong></td><td>Bilateral; new line operational by 2024</td><td>Historically constrained; new interconnector improves regional security</td></tr>
+        <tr><td><strong>North Macedonia</strong></td><td>Smaller bilateral flows</td><td>Eastern connection; mostly transit</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div><strong>Albania is among the greenest electricity systems in Europe — but that is also its greatest vulnerability.</strong> Near-100% renewables is an asset in normal years; in drought years it creates severe supply deficits and import costs that can destabilise state finances. Diversification into solar and wind is not optional — it is the most urgent grid resilience priority.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div><strong>The Drin cascade is the irreplaceable backbone of Albania's power system.</strong> Fierza, Komani, and Vau i Dejës together account for ~48% of installed capacity and a much larger share of actual generation. The multi-year storage capacity in Fierza reservoir provides seasonal flexibility that no other asset can replicate — protecting it and expanding it is a strategic priority.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>The Masdar–KESH joint venture (2024) is potentially transformative.</strong> If the announced gigawatt-scale renewable development materialises, it could shift Albania from a structurally import-vulnerable system to a net green exporter — significantly improving energy security and generating export revenue. Execution risk is real; monitoring project progression is critical.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div><strong>Distribution losses and OSHEE reform remain unfinished business.</strong> Historically above 25% (among Europe's highest), losses are improving but remain a significant economic drag. OSHEE's financial health and reform trajectory will determine whether investment in the distribution grid can keep pace with demand growth and EV uptake.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div><strong>Albania's untapped hydro potential (~65% undeveloped) must be weighed against environmental and social costs.</strong> New large hydro faces serious constraints — EIA requirements, community opposition, river ecology concerns — that did not apply when the Drin cascade was built. Small hydro proliferation has caused real ecosystem damage. Future hydro development, if any, needs rigorous standards that the current permitting regime has not consistently applied.</div>
+      </div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      KESH (Albanian Power Corporation) — Annual Report and capacity data ·
+      ERE (Energy Regulatory Authority of Albania) — annual regulatory reports ·
+      Energy Community Secretariat — Albania Annual Implementation Report 2024 ·
+      Albania National Energy and Climate Plan (NECP), October 2024 ·
+      Bankwatch — Energy sector in Albania ·
+      Balkan Green Energy News — Albania coverage ·
+      Climatescope 2024 — Albania ·
+      U.S. Commercial Service — Albania Energy Sector Guide ·
+      EUKI — Mapping Renewable Energy Sources in Albania, September 2024 ·
+      OEC — Albania electricity trade data (2022)
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+    <span>Albania Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.plugins.legend.display = false;
+
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Large hydro (KESH)', 'Private hydro', 'Solar PV', 'Wind'],
+    datasets: [{ data: [1350, 310, 280, 200], backgroundColor: ['#1E9AF5','#6EC8F0','#FFD700','#44DAEC'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} MW` }
+    }},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

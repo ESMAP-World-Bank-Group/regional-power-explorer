@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kosovo Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Kosovo</div>
+    <div class="doc-sub">Energy Community member · ~90% lignite generation · Oldest coal fleet in Europe · Urgent diversification imperative</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~1 500 MW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~90%</div><div class="kpi-lbl">Lignite share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">Kosovo A+B</div><div class="kpi-lbl">1 330 MW total lignite</div></div>
+    <div class="kpi"><div class="kpi-val">EU candidate</div><div class="kpi-lbl">Energy Community member</div></div>
+  </div>
+
+  <div class="body">
+
+    <h2>Generation Mix (2024)</h2>
+    <p>Kosovo has the most coal-dependent electricity system in the Western Balkans and one of the highest lignite shares of any country in Europe. In 2023–2024, approximately 90–92% of electricity generation came from two ageing lignite power stations — Kosovo A and Kosovo B — with small hydro contributing the remainder. The coal plants sit on the Kosovo lignite basin, among the largest lignite deposits in Europe. As of end-2024, only 14 MW of solar had been installed — making Kosovo's renewable transition the most lagged in the region.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#808890"></span>Lignite (Kosovo A+B)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~1 450 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: KOSTT, Energy Community IR 2024, Wikipedia</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Kosovo A: 650 MW (5 units; 3 operational)</strong>Commissioned 1962–1975; oldest active coal plant in the Balkans. Units 1 and 2 decommissioned; units 3, 4, 5 still operating despite planned closure obligations.</div>
+        <div class="stat-item"><strong>Kosovo B: 680 MW (2 units; both operational)</strong>Commissioned 1983–1984; in better condition than Kosovo A; performs the bulk of reliable generation.</div>
+        <div class="stat-item"><strong>Small hydro: ~85 MW</strong>Several small run-of-river plants; limited storage; White Drin river basin.</div>
+        <div class="stat-item"><strong>Solar: 14 MW (end-2024)</strong>Minimal deployment to date; rapidly growing pipeline of utility-scale projects in permitting.</div>
+        <div class="stat-item"><strong>Kosovo lignite basin</strong>Estimated 12–14 billion tonnes of reserves — one of Europe's largest — giving coal a powerful economic and political constituency regardless of climate commitments.</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Key Actors</h2>
+    <p>Kosovo's energy sector was restructured under international supervision following the 1999 conflict. The vertically integrated KEK was unbundled into separate generation, transmission, and distribution entities during the 2000s, with distribution subsequently privatised.</p>
+
+    <ul>
+      <li><strong>Regulator:</strong> ERO (Energy Regulatory Office) — sets tariffs, issues licences, monitors Energy Community compliance.</li>
+      <li><strong>KEK (Kosovo Energetic Corporation):</strong> State-owned generator; operates Kosovo A and Kosovo B; sole large-scale generator; central to any discussion of energy security or transition.</li>
+      <li><strong>KOSTT:</strong> Transmission System Operator — state-owned; manages Kosovo's 110/220/400 kV grid; operates the electricity market; full ENTSO-E observer since 2016.</li>
+      <li><strong>KEDS:</strong> Kosovo Energy Distribution and Supply — privatised DSO; majority stake held by Çalık Energy (Turkey) and ACREM (Albania); serves ~450,000 customers across most of Kosovo.</li>
+      <li><strong>Elektrosever:</strong> New distribution and supply operator for northern Kosovo (Serb-majority areas), operational from 2024 — a politically sensitive milestone that reduced system distribution losses from ~17% to 15.6%.</li>
+    </ul>
+
+    <div class="callout">
+      Kosovo's electricity sector was built under Yugoslav planning for a resource-rich economy that no longer exists. The lignite plants are ageing, polluting, and maintained on minimal budgets. Kosovo A closure has been "planned" for years but repeatedly deferred because no alternative baseload exists. Without significant investment in gas, renewables, or demand response, Kosovo faces a supply cliff when Kosovo A finally retires.
+    </div>
+
+    <!-- ACTOR MAP -->
+    <h2>Sector Actor Map</h2>
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif" font-size="11">
+        <rect x="0" y="0" width="760" height="280" fill="#F4F5F7" rx="8"/>
+        <text x="12" y="22" font-size="9.5" fill="#8A94A6" font-weight="600">REGULATION</text>
+        <text x="12" y="82" font-size="9.5" fill="#8A94A6" font-weight="600">TRANSMISSION / MARKET</text>
+        <text x="12" y="152" font-size="9.5" fill="#8A94A6" font-weight="600">GENERATION</text>
+        <text x="12" y="232" font-size="9.5" fill="#8A94A6" font-weight="600">DISTRIBUTION / SUPPLY</text>
+        <line x1="0" y1="35" x2="760" y2="35" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="95" x2="760" y2="95" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="175" x2="760" y2="175" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="250" x2="760" y2="250" stroke="#E2E6EA" stroke-width="1"/>
+
+        <rect x="300" y="42" width="160" height="38" rx="5" fill="#1B3A5C"/>
+        <text x="380" y="57" text-anchor="middle" fill="white" font-weight="600" font-size="12">ERO</text>
+        <text x="380" y="72" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Energy Regulatory Office</text>
+
+        <rect x="300" y="103" width="160" height="38" rx="5" fill="#2E75B6"/>
+        <text x="380" y="118" text-anchor="middle" fill="white" font-weight="600" font-size="12">KOSTT</text>
+        <text x="380" y="133" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">TSO + Market Operator</text>
+
+        <!-- KEK Kosovo A -->
+        <rect x="60" y="183" width="175" height="60" rx="5" fill="#808890" opacity="0.7"/>
+        <text x="147" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">KEK — Kosovo A</text>
+        <text x="147" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">650 MW lignite (1962–75)</text>
+        <text x="147" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">3 of 5 units operational; closure pending</text>
+
+        <!-- KEK Kosovo B -->
+        <rect x="250" y="183" width="175" height="60" rx="5" fill="#808890" opacity="0.9"/>
+        <text x="337" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">KEK — Kosovo B</text>
+        <text x="337" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">680 MW lignite (1983–84)</text>
+        <text x="337" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">Both units operational; primary workhorse</text>
+
+        <!-- Hydro + Solar -->
+        <rect x="440" y="183" width="175" height="60" rx="5" fill="#1E9AF5" opacity="0.75"/>
+        <text x="527" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">Hydro + Solar IPPs</text>
+        <text x="527" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">~85 MW SHP + 14 MW solar</text>
+        <text x="527" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">Growing RE pipeline</text>
+
+        <!-- KEDS + Elektrosever -->
+        <rect x="130" y="258" width="200" height="16" rx="3" fill="#1B3A5C" opacity="0.8"/>
+        <text x="230" y="270" text-anchor="middle" fill="white" font-size="10" font-weight="600">KEDS (privatised — Çalık/ACREM)</text>
+        <rect x="345" y="258" width="180" height="16" rx="3" fill="#3A6098" opacity="0.8"/>
+        <text x="435" y="270" text-anchor="middle" fill="white" font-size="10" font-weight="600">Elektrosever (north, 2024)</text>
+
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1B3A5C"/></marker>
+          <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#808890"/></marker>
+        </defs>
+        <line x1="380" y1="80" x2="380" y2="102" stroke="#1B3A5C" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="147" y1="183" x2="330" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="337" y1="183" x2="365" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="527" y1="183" x2="420" y2="141" stroke="#1E9AF5" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+      </svg>
+    </div>
+    <p class="fig-caption">KEK holds ~90% of generation; KEDS (privatised) handles distribution; KOSTT is nominally independent TSO.</p>
+
+    <!-- TRANSITION CHALLENGE -->
+    <h2>The Energy Transition Challenge</h2>
+    <p>Kosovo's energy transition faces unique constraints that set it apart from other Western Balkans countries. The combination of a very poor lignite fleet, minimal RE deployment, lack of gas infrastructure, and serious political complications around the north make this among the most difficult reform situations in the region.</p>
+
+    <h3>Kosovo A closure obligation</h3>
+    <p>Under the Energy Community Treaty, Kosovo committed to decommissioning Kosovo A by specific deadlines — obligations that have been repeatedly extended. Units 1 and 2 are offline but units 3–5 continue to operate. Kosovo A emits at roughly 3–4× the EU LCP limits for SOx and NOx per MWh. The plant's closure without a replacement baseload source would create a supply gap of several hundred MW.</p>
+
+    <h3>New Kosovo Power Plant (NKPP)</h3>
+    <p>Plans for a replacement coal plant — NKPP ("Kosovo e Re") — were pursued through the 2010s with US company ContourGlobal as lead developer. The project collapsed in 2020 when the government terminated the agreement, citing cost escalation and incompatibility with climate commitments. No credible replacement baseload plan has been advanced since.</p>
+
+    <div class="callout">
+      Kosovo's dilemma is stark: Kosovo A must close (legally and technically), but there is no plan for what replaces its baseload contribution. A large-scale gas import (Kosovo has no pipeline connection), aggressive solar + storage buildout, or demand-side management are all theoretically possible but none has advanced to implementation. This supply-security gap is the defining energy policy crisis Kosovo faces in the late 2020s.
+    </div>
+
+    <!-- INTERCONNECTIONS -->
+    <h2>Cross-Border Interconnections</h2>
+    <p>Kosovo is surrounded by five neighbours and has interconnections with all of them, though capacities are limited. KOSTT became a full ENTSO-E observer member in 2016 but Kosovo's disputed sovereignty complicates full membership and bilateral agreements with non-recognising states (notably Serbia).</p>
+
+    <table>
+      <thead>
+        <tr><th>Neighbour</th><th>Approximate NTC</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Albania</strong></td><td>~400 MW</td><td>New interconnector operational by 2024; primary bilateral; significant trade flows</td></tr>
+        <tr><td><strong>North Macedonia</strong></td><td>~400 MW</td><td>Major import source when Kosovo generation falls short</td></tr>
+        <tr><td><strong>Montenegro</strong></td><td>~200 MW</td><td>Bilateral; secondary route</td></tr>
+        <tr><td><strong>Serbia</strong></td><td>~400 MW</td><td>Politically sensitive; operated under technical protocols; sovereignty dispute complicates formal agreements</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div><strong>Kosovo A's eventual closure will create a supply crisis unless a replacement plan is in place.</strong> The plant is among Europe's oldest and most polluting active coal stations. Its closure is legally obligated, technically inevitable, and financially unplanned. Every year of deferral narrows the window for an orderly transition.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div><strong>Kosovo has the resources to become a solar powerhouse but has barely started.</strong> With high solar irradiance, flat terrain in Kosovo Polje, and abundant lignite-adjacent land that could be repurposed, Kosovo has a credible solar + storage future. The 14 MW installed at end-2024 represents a missed decade of deployment.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>The cancellation of the new coal plant (NKPP) in 2020 left a policy vacuum.</strong> ContourGlobal's exit removed the only concrete replacement-baseload plan. No government since has presented a credible alternative. This is not an energy planning failure — it is a governance failure that energy planning alone cannot solve.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div><strong>KEDS privatisation and Elektrosever's launch represent real institutional progress.</strong> Private distribution management has improved commercial performance; Elektrosever's operation in the north (reducing system losses from ~17% to ~15.6% in one year) demonstrates that political normalisation and technical improvements can advance in parallel — slowly.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div><strong>Kosovo's disputed status is an underappreciated energy constraint.</strong> Non-recognition by Serbia (and five EU member states) complicates ENTSO-E membership, bilateral grid agreements, and access to EU energy financing instruments. Any energy security upgrade — whether gas, grid interconnection, or RE investment — must navigate a political context that has no near-term resolution.</div>
+      </div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      KOSTT — Annual reports and market data ·
+      ERO (Energy Regulatory Office of Kosovo) — tariff and licensing decisions ·
+      Energy Community Secretariat — Kosovo Annual Implementation Report 2024 ·
+      Kosovo Energy Strategy 2022–2031 ·
+      IMF — Kosovo Electricity Sector Challenges and Opportunities, 2023 ·
+      Bankwatch — Energy sector in Kosovo ·
+      Wikipedia — Electrical energy in Kosovo ·
+      U.S. Commercial Service — Kosovo Energy Guide ·
+      OECD — Energy Prices and Subsidies in Kosovo (Western Balkans series)
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+    <span>Kosovo Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Kosovo A (lignite)', 'Kosovo B (lignite)', 'Small hydro', 'Solar'],
+    datasets: [{ data: [390, 680, 85, 14], backgroundColor: ['#808890','#606870','#1E9AF5','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} MW` }
+    }},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>
