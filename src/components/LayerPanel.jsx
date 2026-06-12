@@ -134,9 +134,17 @@ export default function LayerPanel({
 
       {/* ── Filter hint ───────────────────────────── */}
       <div style={{
-        fontSize: '0.5rem', color: t.muted, letterSpacing: '0.3px',
+        display: 'flex', alignItems: 'center', gap: 5,
+        fontSize: '0.52rem', color: t.lblMuted, letterSpacing: '0.3px',
         marginBottom: 12, lineHeight: 1.4,
+        padding: '5px 7px', borderRadius: 4,
+        border: `1px solid ${t.panelBorder}`,
+        backgroundColor: 'rgba(74,143,204,0.06)',
       }}>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.6 }}>
+          <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+          <path d="M13 13l6 6"/>
+        </svg>
         Click an item to filter the map
       </div>
 

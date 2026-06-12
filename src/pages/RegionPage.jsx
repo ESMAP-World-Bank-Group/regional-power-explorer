@@ -1084,17 +1084,25 @@ export default function RegionPage() {
           )}
         </div>
 
-        {isMobile && (
-          <div style={{
-            position: 'absolute', top: 10, right: 12, zIndex: 100,
-            backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
-            borderRadius: 6, padding: '8px 12px',
-            boxShadow: '0 1px 6px rgba(0,0,0,.2)',
-          }}>
-            <div style={{ fontSize: '0.72rem', fontWeight: 600, color: t.lbl }}>Tap a country</div>
-            <div style={{ fontSize: '0.65rem', color: t.muted, marginTop: 2 }}>to explore its data</div>
+        <div style={{
+          position: 'absolute', top: 10, right: 12, zIndex: 100,
+          backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+          borderRadius: 6, padding: isMobile ? '8px 12px' : '6px 10px',
+          boxShadow: '0 1px 8px rgba(0,0,0,.18)',
+          display: 'flex', alignItems: 'center', gap: 7,
+          pointerEvents: 'none',
+        }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={t.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+            <path d="M13 13l6 6"/>
+          </svg>
+          <div>
+            <div style={{ fontSize: '0.62rem', fontWeight: 600, color: t.lbl, lineHeight: 1.2 }}>
+              {isMobile ? 'Tap' : 'Click'} a country
+            </div>
+            <div style={{ fontSize: '0.55rem', color: t.muted, lineHeight: 1.3 }}>to explore its data</div>
           </div>
-        )}
+        </div>
 
         {/* Feature detail card */}
         {selFeature && (
