@@ -86,6 +86,39 @@ regions:
       - {iso: TZA, name: Tanzania}
       - {iso: COD, name: DR Congo}
 
+  - id: easa
+    name: EA & SA Pools
+    status: available
+    color: "#5A6FC0"
+    countries:
+      # EAPP
+      - {iso: EGY, name: Egypt}
+      - {iso: LBY, name: Libya}
+      - {iso: SDN, name: Sudan}
+      - {iso: SSD, name: South Sudan}
+      - {iso: ETH, name: Ethiopia}
+      - {iso: DJI, name: Djibouti}
+      - {iso: KEN, name: Kenya}
+      - {iso: TZA, name: Tanzania}
+      - {iso: SOM, name: Somalia}
+      - {iso: UGA, name: Uganda}
+      - {iso: RWA, name: Rwanda}
+      - {iso: BDI, name: Burundi}
+      - {iso: COD, name: DR Congo}
+      - {iso: SOL, name: Somaliland}
+      # SAPP (excl. TZA, COD already listed above)
+      - {iso: ZAF, name: South Africa}
+      - {iso: ZWE, name: Zimbabwe}
+      - {iso: ZMB, name: Zambia}
+      - {iso: BWA, name: Botswana}
+      - {iso: MOZ, name: Mozambique}
+      - {iso: MWI, name: Malawi}
+      - {iso: NAM, name: Namibia}
+      - {iso: LSO, name: Lesotho}
+      - {iso: SWZ, name: Eswatini}
+      - {iso: MDG, name: Madagascar}
+      - {iso: AGO, name: Angola}
+
   - id: panarab
     name: Pan-Arab
     status: available
