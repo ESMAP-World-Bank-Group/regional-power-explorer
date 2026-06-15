@@ -186,6 +186,7 @@ export default function ContactPage() {
                 {status === 'error'
                   ? <span style={{ color: 'rgba(250,82,82,0.8)' }}>Something went wrong — try again or </span>
                   : 'Or '}
+                Maelle Baronnet ·{' '}
                 <a href="mailto:mbaronnet@worldbank.org"
                   style={{ color: 'rgba(74,143,204,0.7)', textDecoration: 'none' }}
                   onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'}
