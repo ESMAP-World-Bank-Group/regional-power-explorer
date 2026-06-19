@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dominican Republic Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Dominican Republic</div>
+    <div class="doc-sub">~5.6 GW installed · Thermal ~65% (oil + gas) · Wind ~900 MW (#1 Caribbean) · Solar ~500 MW growing · Hydro ~11% · CDEEE/ETED · Distribution: EDENORTE + EDESUR + EDEESTE · Power sector subsidy burden · 25% RE target (revised 2030) · ~11 million population · Caribbean's largest electricity market</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~5.6 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~900 MW</div><div class="kpi-lbl">Wind installed (Caribbean's largest fleet)</div></div>
+    <div class="kpi"><div class="kpi-val">~30%</div><div class="kpi-lbl">Estimated RE share (wind+solar+hydro, 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">~30%</div><div class="kpi-lbl">System losses (technical + commercial)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>The Dominican Republic operates the Caribbean's largest electricity system (~5.6 GW installed, ~20 TWh annual generation) and has led the region in renewable energy capacity additions — with <strong>~900 MW of wind</strong> (Caribbean's largest fleet, concentrated on the northwest coast near Pedernales and Monte Cristi) and rapidly growing solar (~500 MW+). However, the Dominican power sector is also the Caribbean's most structurally challenged: electricity tariffs are substantially subsidised, system losses run ~30% (a combination of technical losses and electricity theft), the state accumulates debt to private generators, and the three distribution companies (EDENORTE, EDESUR, EDEESTE) operate at chronic losses. The <strong>CDEEE (Corporación Dominicana de Empresas Eléctricas Estatales)</strong> is the state holding company overseeing generation and transmission (ETED); the private sector (EGE Haina, AES, Energia Capital) operates most generation. Electricity access is near-universal (~99%) but reliability remains poor in many areas.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Heavy fuel oil / coal (thermal)</span>
+          <span><span class="lsq" style="background:#D4A020"></span>Natural gas (CCGT)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (NW coast)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Jimenoa, Tavera, others)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~30%</div>
+            <div class="chart-center-lbl">RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: CDEEE / Organismo Coordinador (OC) DR statistical report 2024; CNE; IDB; World Bank; IRENA Caribbean 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>EGE Haina + AES: dominant private generators</strong>EGE Haina (formerly owned by the state, privatised 2000s, now Consorcio Energético Punta Cana-Macao controlled); AES Dominican Republic (Andres CCGT + DPP barge, Los Mina CCGT); Energia Capital (wind, solar); Generadora San Felipe, Estrella del Norte. The Dominican power market was liberalised in 2001 but remains distorted by state subsidy obligations and debt accumulation. Private generators sell to distribution companies at regulated prices; distribution companies receive below-cost tariffs and accumulate payables.</div>
+        <div class="stat-item"><strong>Wind: Caribbean's dominant fleet</strong>Dominican Republic has ~900 MW of onshore wind (2024) — the largest in the Caribbean by far. Key wind zones: Juancho (Pedernales) — Quilvio Cabrera / Larimar complex (~300 MW); Monte Cristi region — Los Cocos wind farm (~212 MW, EGE Haina, 2011 — was once the Caribbean's largest); Mirabal Sisters (~77 MW). Northeast trade winds at 7-9 m/s provide capacity factors of 35-45% at best sites. New wind projects: Montecristi Norte (~200 MW, under development). DR's wind resource is one of the Caribbean's best — consistent NE trades channelled by mountainous terrain in the northwest.</div>
+        <div class="stat-item"><strong>Power sector subsidy and debt: the chronic crisis</strong>Dominican state subsidises electricity tariffs for households and some commercial users — paying the difference between cost-reflective prices and consumer tariffs. Annual subsidy bill: ~US$700M-1B. Distribution company accumulated debt to generators: ~US$1-2B. Generators resort to requesting arbitration or threatening plant shutdowns when owed payments. The "deuda del sector electrico" (electricity sector debt) is a recurring fiscal crisis managed through periodic restructuring deals. Successive governments have committed to tariff reform; none have implemented it comprehensively.</div>
+        <div class="stat-item"><strong>Solar: rapid utility-scale growth</strong>DR's solar boom: from ~50 MW (2018) to ~500+ MW (2024), driven by CNE (Comisión Nacional de Energía) competitive auctions at US$0.06-0.09/kWh. Punta Cana and Cap Cana hotel zones led early adoption (resort solar + battery systems). Key utility projects: Monte Plata Solar (31.6 MW, AES/IFC, 2014 — DR's first), Nacionales del Sur (100 MW+). Solar irradiance: 1,900-2,100 kWh/m²/year (excellent). IRENA identifies DR as one of SIDS's highest-potential solar markets. Target: 500 MW solar addition 2024-2030.</div>
+        <div class="stat-item"><strong>30% losses: Caribbean's governance challenge</strong>DR's ~30% system losses (technical + non-technical / theft) is one of the highest in Latin America. Non-technical losses (illegal connections, meter manipulation, non-payment) account for ~15-20% of generation — representing electricity delivered but not billed. Distribution company revenue collection rates: 60-70% of billed amounts. The losses create a structural deficit: generators must be paid for electricity that consumers receive free. Successive World Bank distribution rehabilitation loans have reduced losses from 40%+ (early 2000s) — progress has been real but insufficient.</div>
+      </div>
+    </div>
+
+    <h2>The Caribbean RE Leader With a Governance Crisis</h2>
+    <p>The Dominican Republic presents an apparent contradiction: the Caribbean's most advanced RE deployment alongside its most dysfunctional power sector governance:</p>
+    <ul>
+      <li><strong>Why RE has grown despite governance failures:</strong> Private RE developers can contract directly with CDEEE at regulated prices under Law 57-07 (RE Law, 2007) and Law 100-13 (electricity reform). The RE incentive framework (tax exemptions, import duty waivers, priority dispatch) has attracted international capital independently of distribution sector dysfunction. RE generators are paid (if chronically late) because the state needs their capacity; distribution company losses do not directly prevent RE construction.</li>
+      <li><strong>Grid congestion and curtailment:</strong> DR's transmission grid (ETED) has not kept pace with RE additions. The northwest wind corridor (Pedernales-Monte Cristi) has limited transmission to Santo Domingo load centres. Wind curtailment during peak production periods is growing — estimated at 5-10% of potential wind generation in 2024. ETED's investment plan (~US$400M through 2030) includes transmission upgrades to evacuate northwest RE.</li>
+      <li><strong>Haiti border: the electricity security dimension:</strong> DR shares the island of Hispaniola with Haiti. DR has historically supplied electricity to Haitian border communities under bilateral arrangements, but given Haiti's political collapse (2022-2025), formal supply has become irregular. DR's energy security planning must account for potential migration and economic impacts from continuing Haitian instability — including electricity demand shocks from refugee communities.</li>
+    </ul>
+
+    <div class="callout">
+      The Dominican Republic demonstrates that RE deployment and electricity sector governance are separable — you can add 900 MW of wind and 500 MW of solar while the distribution sector loses US$700M/year in subsidies. RE adds to generation capacity; governance determines whether that capacity translates into affordable, reliable electricity for the people of Santo Domingo, Santiago, and the rural south. Solving DR's distribution governance crisis would be worth more for ordinary Dominicans than doubling the RE fleet — but it is also politically harder.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>The Dominican Republic's ~900 MW wind fleet is the Caribbean's most strategically significant RE achievement — proving that large-scale, internationally financed, utility-grade wind development is viable in a small island economy with governance challenges, if the incentive framework is right.</strong> DR attracted international wind capital (EGE Haina, Gamesa, Vestas, IFC equity, IDB loans) without resolving its distribution sector dysfunction, because the RE procurement framework offered bankable long-term PPA revenues from the state at pre-specified prices. This decoupling of generation investment from distribution governance is a replicable model — other Caribbean SIDS with distribution problems can still attract RE generation investment if they structure RE-specific PPA frameworks with international financiers as guarantors.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>DR's ~30% system losses represent approximately 6 TWh/year of electricity consumed but not paid for — equivalent to the annual output of ~500 MW of solar at DR's irradiance — making loss reduction arguably more valuable than any single new generation investment in improving the sector's financial sustainability.</strong> If DR reduces losses from 30% to 15% (achievable in 5 years with serious commercial management, meter replacement, and enforcement), it effectively "creates" 6 TWh of billable electricity without building a single new generator. At US$0.15/kWh average tariff, this would generate ~US$900M/year of additional revenue — eliminating the subsidy burden and creating cash flow for distribution investment. Loss reduction is the highest-return energy investment available in the Dominican Republic.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>DR's northwest wind resource — NE trade winds funnelled by the Cordillera Septentrional into 35-45% capacity factor sites — is one of the Caribbean basin's best onshore wind resources and can sustain 2-3 GW of additional wind capacity beyond current installations, making it the foundation of any credible 50%+ RE scenario by 2030-2035.</strong> The Monte Cristi-Pedernales wind corridor can support 2 GW additional at existing permitting standards; a further 1 GW may be possible with modified buffer zones. Cost: US$1-1.2M/MW for Caribbean onshore wind = US$2-3B total — financeable through IDB Green Bond and CAF/CABEI regional mechanisms at <6% cost of capital with DR government sovereign guarantee.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Tourism's electricity demand — DR hosts ~10 million tourists/year in Punta Cana, Puerto Plata, and other resort areas — is a major driver of RE adoption through corporate sustainability mandates, with hotel groups (Meliá, Barceló, Iberostar) increasingly requiring RE-sourced power as a brand and regulatory requirement that overrides normal tariff cost optimization.</strong> International hotel chains operating in DR's tourism poles have formal ESG commitments requiring verifiable RE sourcing. This drives demand for direct corporate PPAs with DR solar and wind developers — a procurement channel that bypasses the dysfunctional distribution sector. Corporate PPA volume in DR's tourism sector is growing faster than regulated utility RE procurement, and is reshaping investment incentives without government action.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>DR's electricity sector debt crisis — generators owed US$1-2B, distribution companies insolvent on a cash basis — will eventually force a restructuring that either imposes losses on private generators (chilling future RE investment) or requires a major fiscal bailout (politically difficult) or raises tariffs to cost-reflective levels (socially painful but structurally necessary).</strong> The debt spiral has been managed through periodic IMF Stand-By Arrangements and World Bank budget support loans that include electricity sector conditionality. None have achieved lasting resolution because tariff reform has always been partially implemented. The next restructuring — likely triggered by a severe drought (reducing hydro output and increasing thermal costs) or a commodity price spike — will test whether DR's political system can finally implement the tariff reform that every analysis recommends and every government has deferred.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      CDEEE / Organismo Coordinador — DR electricity sector statistics 2024 ·
+      CNE (Comisión Nacional de Energía) — RE registry and reports ·
+      ETED (Empresa de Transmisión Eléctrica Dominicana) — grid data ·
+      IDB — Dominican Republic energy sector analysis ·
+      World Bank — DR distribution rehabilitation project documentation ·
+      IRENA — Caribbean renewable energy 2025 ·
+      EGE Haina — annual report 2024
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Dominican Republic Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Heavy fuel oil / coal (thermal)', 'Natural gas (CCGT)', 'Wind (NW coast)', 'Hydro (Jimenoa, Tavera, others)', 'Solar PV'],
+    datasets: [{ data: [45, 20, 18, 11, 6], backgroundColor: ['#C85020','#D4A020','#6AB0DE','#1B6CA8','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switzerland Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region (observer)</div>
+    <div class="doc-title">Switzerland</div>
+    <div class="doc-sub">~23 GW installed · ~90% low-carbon · Hydro ~60% + Nuclear ~30% · 4 reactors · Swissgrid TSO · Axpo / Alpiq / BKW utilities · Alpine transit hub · Nuclear phase-out reversed 2017 · Energy Strategy 2050</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~23 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~90%</div><div class="kpi-lbl">Low-carbon electricity share</div></div>
+    <div class="kpi"><div class="kpi-val">4 reactors</div><div class="kpi-lbl">Beznau 1&2 (1969/71), Gösgen, Leibstadt</div></div>
+    <div class="kpi"><div class="kpi-val">Alpine hub</div><div class="kpi-lbl">Borders DE, FR, IT, AT, LI — transit country</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Switzerland's electricity system is among Europe's cleanest: approximately <strong>60% hydropower and 30% nuclear power</strong>, leaving less than 10% fossil fuel use (primarily gas, for CHP and peak demand). The Alpine geography provides exceptional hydro resources — run-of-river on the Rhine, Rhône, and Aare rivers, plus high-altitude seasonal reservoirs in the Valais, Graubünden, and Uri cantons. Switzerland borders Germany, France, Italy, Austria, and Liechtenstein, and its <strong>Swissgrid TSO</strong> manages one of Europe's most complex transit corridors, routing power between Northern and Southern European markets. The three dominant utilities — <strong>Axpo</strong> (mainly hydro and nuclear), <strong>Alpiq</strong> (hydro + European trading), and <strong>BKW</strong> (Bern utility; hydro + service business) — are largely cantonal-owned, reflecting Switzerland's federalist structure.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydropower (run-of-river + pumped)</span>
+          <span><span class="lsq" style="background:#7B2D8B"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Other RE (waste, biomass)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Fossil (gas + oil)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~90%</div>
+            <div class="chart-center-lbl">low-carbon 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: SFOE (Swiss Federal Office of Energy) electricity statistics 2024; IEA Switzerland; Swissgrid</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Nuclear fleet: Beznau 1&2 (world's oldest operating)</strong>Beznau 1 (340 MW, 1969) and Beznau 2 (365 MW, 1971) are the oldest operating nuclear reactors on earth; repeatedly life-extended; Axpo operator; both rated for continued operation; Beznau 2 scheduled shutdown ~2031. Gösgen (970 MW, 1979, Alpiq) and Leibstadt (1,190 MW, 1984, Axpo) are newer. Switzerland reversed its 2017 phase-out law in 2024 — new nuclear plants can now be built again under the Energy Act revision.</div>
+        <div class="stat-item"><strong>Nuclear phase-out reversed (2024)</strong>Following the 2011 Fukushima disaster, Swiss parliament voted to phase out nuclear power (2034-2044) and approved Energy Strategy 2050 in 2017. However, 2022-2024 energy security concerns and rising opposition to RE-only scenarios led to a constitutional initiative and 2024 energy act revision lifting the new-plant ban. Switzerland may now build new nuclear — no concrete project announced yet; SMRs (small modular reactors) are being evaluated.</div>
+        <div class="stat-item"><strong>Swissgrid: European transit backbone</strong>Operates 6,700 km of HV transmission; Switzerland is a central transit country for North-South European power flows (French nuclear to Italy; German wind to Austria/Italy); Swissgrid participates in ENTSO-E but Switzerland is not an EU member, creating friction over regulatory alignment; 2022 EU-Swiss electricity market agreement collapse → Switzerland excluded from EU electricity market cooperation, complicating balancing and transit compensation</div>
+        <div class="stat-item"><strong>Alpine seasonal storage</strong>Swiss reservoir hydro can store ~8-9 TWh of seasonal energy (one of Europe's largest reservoirs); Grand Dixence (2,069 MW), Linth-Limmern (1,480 MW), Grimsel complex; stores spring snowmelt for winter dispatch; critical for winter supply security; also used for pumped storage from French and German RE surplus; strategic winter reserve negotiations ongoing with EU</div>
+        <div class="stat-item"><strong>Solar Alpine push (Solarexpress)</strong>Switzerland's 2022 Solarexpress initiative mandated accelerated approval for Alpine solar installations; large tilted bifacial modules placed on high-altitude slopes (1,800m+) generate 50-100% more electricity than lowland sites (snow reflection + higher irradiance); Gondosolar, Mont-Soleil; Alpine solar could add 2+ GW by 2030</div>
+      </div>
+    </div>
+
+    <h2>EU Market Exclusion and Winter Security Risk</h2>
+    <p>Switzerland's energy security situation is uniquely complex due to its non-EU status. The collapse of the EU-Switzerland bilateral electricity market agreement negotiations (ongoing since 2014; formally abandoned 2021 after collapse of broader institutional talks) has material consequences:</p>
+    <ul>
+      <li><strong>CACM exclusion:</strong> Switzerland is not part of the EU's CACM (Capacity Allocation and Congestion Management) regulation, meaning Swiss transmission capacity is not included in EU day-ahead market coupling. Cross-border trade is handled bilaterally — less efficient and more expensive than participating in the single EU electricity market.</li>
+      <li><strong>Winter electricity shortage risk:</strong> Switzerland imports significant electricity in winter when hydro output is low and demand is high. EU market exclusion means Switzerland cannot access European reserve capacity on the same terms as EU members. The Swiss government identified a winter shortage as a credible risk in 2022-23 and launched emergency reserve auctions.</li>
+      <li><strong>Gas peaking:</strong> To cover winter peak demand without EU market access, Switzerland maintains gas-fired peaking capacity and expanded its gas reserve. Three gas turbines (330 MW) were contracted as emergency winter reserves 2022-24 at high cost.</li>
+      <li><strong>Bilateral electricity agreement restart:</strong> EU-Swiss talks on a new bilateral electricity market agreement resumed in 2024-2025 as part of broader EU-Swiss institutional negotiations. A successful agreement would give Switzerland access to EU electricity market coupling and significantly reduce its winter security risk at lower cost.</li>
+    </ul>
+
+    <div class="callout">
+      Switzerland's electricity challenge is paradoxical: a country with 90% clean electricity, exceptional hydro storage, and world-class grid infrastructure is at risk of winter blackouts — not because of any technical deficiency, but because of a diplomatic impasse with its largest neighbor and market. The EU-Swiss energy market relationship is the single most consequential policy variable for Swiss energy security in the 2020s, outweighing any decision about nuclear life extension, Alpine solar, or new transmission lines.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Switzerland's electricity system is technically one of Europe's most secure and cleanest — but its geopolitical exposure (non-EU status, bilateral treaty limbo) creates a systemic vulnerability that no engineering solution can fix.</strong> Winter electricity shortage risk is not caused by an insufficient power system; it's caused by Switzerland's inability to access EU emergency reserve capacity on integrated market terms. The cheapest, most effective fix is political (a bilateral electricity agreement), not technical. This is a rare case where energy security depends entirely on diplomacy rather than investment.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The reversal of Switzerland's nuclear phase-out policy (2024) reflects a broader European trend — energy security fears after Ukraine overriding pre-2022 political consensus on nuclear exit — but Switzerland is unlikely to build new nuclear before 2040 given no concrete project and long lead times.</strong> Even if new nuclear were approved today, the earliest commercial operation would be 2040-2045. In the interim, Switzerland's "nuclear reversal" is more a signal of political anxiety than a credible near-term supply decision. The practical effect is extending existing plants (Beznau 2 to ~2031, Gösgen and Leibstadt likely through 2040s), not building new ones.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Beznau 1 (operational since 1969) is the world's oldest operating commercial nuclear reactor — a fact that illustrates Switzerland's exceptional nuclear operating record but also creates increasing political and safety perception risk as the 60-year mark approaches.</strong> ENSI (Swiss nuclear safety inspectorate) has repeatedly validated Beznau 1's continued operation through rigorous inspection. But the optics of running a 1969 reactor in 2030+ are becoming politically untenable. Axpo's operating revenues from the plant are substantial, but the reputational exposure grows annually. Beznau's eventual retirement (likely 2030-2033) will be a landmark in European energy history.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Switzerland's Alpine seasonal hydro storage — 8-9 TWh of reservoir capacity — is Europe's most undervalued cross-border energy asset, and its commercial structure (cantonal utilities, bilateral contracts, no EU market integration) leaves significant economic value on the table.</strong> If Swiss reservoirs were fully integrated into EU seasonal balancing markets, they could provide 15-20 TWh of intra-seasonal storage services — absorbing spring RE surpluses from Germany and France and delivering them in winter. The economic value of this service, at EU balancing prices, would dwarf current bilateral contract revenues. EU-Swiss market integration is thus not just a Swiss security interest — it's a European efficiency opportunity.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Switzerland's Solarexpress — Alpine bifacial solar at altitude — is one of Europe's most innovative RE supply solutions, but faces the same permitting, grid, and storage challenges that slow Alpine solar everywhere.</strong> High-altitude solar (1,800m+) generates in winter months when lowland European solar is effectively zero — this winter production profile is uniquely valuable for Switzerland's winter supply gap. Grand Dixence's surrounding slopes could host several hundred MW of co-located solar-hydro. The challenge is grid connection (high-voltage lines to remote Alpine locations are costly), landslide/avalanche zoning, and land-use conflicts with farming and tourism. Switzerland's federalist permitting means each canton controls its own Alpine land-use decisions.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      SFOE — Swiss Federal Office of Energy, electricity statistics 2024 ·
+      Swissgrid — Annual report and grid statistics ·
+      Axpo — Annual report 2024 ·
+      ENSI — Swiss Nuclear Safety Inspectorate ·
+      IEA — Switzerland energy data ·
+      Eurostat — Switzerland electricity (observer data) ·
+      ElCom (Swiss electricity regulator) — annual report ·
+      Federal Energy Act amendment 2024 — nuclear new-build provisions
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Switzerland Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower (run-of-river + pumped)', 'Nuclear', 'Solar PV', 'Other RE (waste, biomass)', 'Fossil (gas + oil)'],
+    datasets: [{ data: [58, 29, 6, 3, 4], backgroundColor: ['#1B6CA8','#7B2D8B','#FFD700','#4CAF50','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

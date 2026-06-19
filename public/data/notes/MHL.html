@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall Islands Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Micronesia)</div>
+    <div class="doc-title">Marshall Islands</div>
+    <div class="doc-sub">~25 MW installed · Majuro grid: diesel ~60% + solar ~35% + coconut oil ~5% · MEC (Marshalls Energy Company, state) · 29 atolls, 1,200+ islands across 2M km² · ~42,000 people · COFA (US Compact) renewed 2023 · Tobolar copra-to-biofuel — Pacific's most mature coconut oil diesel blend programme · Bikini/Enewetak nuclear test legacy · Sea-level rise existential threat · 100% RE by 2050 · Kwajalein US military base (Space Fence)</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~35%</div><div class="kpi-lbl">Majuro RE share 2024 (solar + coconut oil)</div></div>
+    <div class="kpi"><div class="kpi-val">67 tests</div><div class="kpi-lbl">US nuclear tests 1946–1958, Bikini + Enewetak</div></div>
+    <div class="kpi"><div class="kpi-val">US$2.3B</div><div class="kpi-lbl">COFA compact funding 2024–2043</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2050 (MEC NDC)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>The Marshall Islands (RMI) is a nation of low-lying coral atolls in the central Pacific — a dispersed archipelago of 29 atolls and 5 isolated islands spanning roughly 2 million km² of ocean, with a total land area of just 181 km² and a maximum elevation of approximately 3 metres. Like Kiribati and Tuvalu, the Marshall Islands faces existential sea-level rise threats. Unlike those countries, the RMI has a third strategic layer defining its energy context: the legacy of 67 US nuclear weapons tests at Bikini and Enewetak Atolls between 1946 and 1958 (including the Castle Bravo 15-megaton hydrogen bomb test in 1954 — the largest US nuclear detonation, which irradiated the crew of the Japanese fishing vessel Lucky Dragon No. 5 and spread fallout across inhabited Marshallese atolls). The nuclear testing legacy — displacement of Bikini and Enewetak communities, radiation illness and cancer compensation claims, contaminated atolls still uninhabitable — shapes the political relationship between RMI and the US, which in turn shapes the energy funding context: the Compact of Free Association (COFA) provides the primary conduit for US development assistance including energy.</p>
+    <p>The <strong>Marshalls Energy Company (MEC)</strong>, a state utility established in 1990, operates the Majuro (capital) grid and manages energy programmes across the outer islands. Majuro's ~13 MW grid is the largest, drawing on diesel/HFO (Majuro Power Plant, ~8 MW effective), approximately 4.5 MW of solar PV (the ENMAR solar farm 2016, ADB 2019 addition), and a coconut oil / diesel blend programme operated through the <strong>Tobolar Copra Processing Authority</strong> — the Pacific's most advanced utility-scale coconut oil (VCO) blending programme, blending up to 20% coconut oil into diesel at MEC's generation sets, producing approximately 5% of Majuro's generation from biofuel. Outer islands (approximately 28 inhabited atolls beyond Majuro and Kwajalein) are served by MEC outer island diesel mini-grids (8-18 hours/day) or solar home systems, with ADB's Pacific Energy programme progressively introducing solar hybrids.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Majuro grid generation mix (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (MEC Power Plant)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (ENMAR + ADB solar farms)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Coconut oil blend (Tobolar VCO programme)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~40%</div>
+            <div class="chart-center-lbl">Majuro RE + biofuel</div>
+          </div>
+        </div>
+        <p class="fig-caption">Majuro grid only. Kwajalein US military base has independent US-military-supplied grid. Outer islands diesel/SHS. Source: MEC 2024; ADB Pacific Energy 2025; IRENA 2025; Tobolar 2024</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Tobolar coconut oil biofuel: the Pacific's most mature VCO-diesel blend programme</strong>The Tobolar Copra Processing Authority processes copra (dried coconut meat) from across the Marshall Islands into coconut oil and copra cake. Since 2008, Tobolar has supplied MEC with refined coconut oil for blending at up to 20% into diesel fuel in MEC's generation sets — a direct copra-to-kilowatt pathway that supports both the copra economy (which employs outer island communities) and MEC's fuel cost. The 2024 blend volume: approximately 350,000 litres of VCO, displacing ~350 tonnes of diesel, reducing fuel cost by approximately 15% on the blended volume (VCO is priced at ~80-90% of diesel for the same energy content). Tobolar's programme has operated through commodity price cycles, cyclone disruptions, and COVID-19 logistics breakdowns — demonstrating the programme's resilience. It is the most operationally mature VCO-diesel utility programme in the Pacific, and its operational data (blend ratios, engine wear, fuel quality protocols, seasonal variation in VCO availability) are a reference dataset for Pacific VCO energy programmes in Vanuatu, Fiji, and elsewhere.</div>
+        <div class="stat-item"><strong>Nuclear testing legacy: energy reparations, trust funds, and Bikini atoll</strong>The US conducted 67 nuclear tests in the Marshall Islands between 1946 and 1958 at Bikini (23 tests including Castle Bravo 1954) and Enewetak (44 tests). The Compact of Free Association, originally signed 1986 and amended 2003, established the Nuclear Claims Tribunal (awarding US$2.3B in compensation to Marshallese claimants — never fully paid) and the Resettlement Fund. In 2024, the US-RMI Compact renewal (COFA III) appropriated US$2.3B over 20 years (2024-2043) for general sector support including energy, health, and education. For the energy sector: US DOI (Department of the Interior) administers compact funds that flow to outer island electrification, MEC capital programmes, and energy efficiency. The nuclear testing legacy adds a moral dimension to energy investment that RMI leaders invoke at climate negotiations: "We were irradiated to test weapons that warm the climate that drowns our islands."</div>
+        <div class="stat-item"><strong>Kwajalein Atoll: US military grid as enclave, not national asset</strong>Kwajalein Atoll hosts the Ronald Reagan Ballistic Missile Defense Test Site (RTS Kwajalein), operated by the US Army. The atoll also hosts the Space Fence — a US Space Force radar system tracking low Earth orbit objects. The US military operates its own power plant (diesel + some solar) supplying the Kwajalein garrison (~4,500 US military and contractor personnel) and the adjacent Ebeye Island (a densely populated Marshallese community of ~15,000 on 0.36 km² — one of the most densely populated places on Earth). Ebeye's electricity is supplied by the Kwajalein Atoll Local Government (KALGOV) utility, reliant on fuel subsidised by the US-RMI strategic relationship. Ebeye's energy poverty and overcrowding are a direct consequence of Kwajalein displacement — Marshallese landowners (iroij) were relocated to Ebeye from Kwajalein main island in the 1940s. Ebeye's 15,000 residents on 0.36 km² create extremely dense electricity demand that strains KALGOV's generation capacity.</div>
+        <div class="stat-item"><strong>ENMAR solar farm and ADB Pacific Energy programme</strong>ADB financed the ENMAR (ENergy Marshalls ARchipelago) programme including a 4 MW solar farm on Majuro (2016 — the RMI's first utility-scale solar), a 1 MW BESS (2019 ADB addition), and outer island solar hybridisation at 12 atolls (2017-2023). The Majuro solar farm operates at approximately 1,700 kWh/kWp/year. MEC's 2024 RE share (Majuro): solar contributes approximately 30% of generation annually; with VCO blending contributing approximately 5-6%. MEC's stated target for Majuro is 100% RE hours during daytime peak solar — already achievable on clear days with curtailment needed during periods of full solar + storage dispatch. The path to 24/7 high-RE operation requires grid-scale BESS expansion (current 1 MW insufficient for overnight solar substitution) — estimated at US$8-12M for 3 MW additional BESS.</div>
+      </div>
+    </div>
+
+    <h2>COFA, US Strategic Relationship, and Energy Financing</h2>
+    <p>The Compact of Free Association gives the Marshall Islands a financing mechanism for energy investment that most Pacific SIDS lack — US DOI funding, US development finance (DFC), and USAID energy programmes all flow through the COFA relationship. COFA III (2024-2043): US$2.3B total appropriation, with energy as a priority sector. However, COFA funds are not a guarantee of energy sector transformation: past COFA funding cycles (1986-2003, 2003-2023) did not produce the utility reform and RE investment that the RMI's 100% RE target by 2050 requires. COFA III has stronger conditionality and sector performance frameworks than previous compacts, and the 2024 renewal included explicit energy transition provisions negotiated by the RMI alongside FSM and Palau.</p>
+    <div class="callout">
+      The Marshall Islands sits at the intersection of three of the most consequential Pacific themes: sea-level rise existential threat (shared with Kiribati and Tuvalu), nuclear testing legacy and its ongoing health and compensation consequences, and the US strategic relationship through COFA — which simultaneously provides the financing mechanism for energy transition and creates the political dependency that shapes how the RMI engages US and non-US donors including China and Japan. Understanding MHL energy must begin with understanding that MEC is not just a utility but a strategic institution in a context shaped by nuclear history, climate vulnerability, and geopolitical competition.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Tobolar's copra-to-biofuel programme is the Pacific's most mature and operationally validated VCO-diesel blending operation, and its 15+ year dataset on blend ratios, engine performance, seasonal VCO availability, and fuel cost economics should be formally documented and shared as a Pacific-wide reference resource before the programme evolves or scales — because operational knowledge of this specificity and longevity is rare in Pacific island energy contexts and often lost when key personnel change.</strong> VCO blending at 20% in diesel generators has no precedent as a sustained utility-scale programme in the Pacific outside Tobolar. Vanuatu's copra oil programme at UNELCO, Fiji's bagasse blend, and the various outer island biofuel pilots across the Pacific all operate at shorter time horizons and smaller scales than Tobolar's 15-year MEC programme. ADB and IRENA should commission a formal Tobolar programme documentation before the transition to post-diesel MEC generation makes the VCO blend less operationally relevant.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Ebeye Island (15,000 people on 0.36 km² at Kwajalein) represents the Pacific's most acute energy poverty-density paradox: extremely high demand density on a tiny footprint, dependent on a US-military-adjacent utility, with electricity access shaped by displacement from Kwajalein rather than by development planning — and Ebeye should be an explicit priority for both KALGOV utility reform and COFA III energy funding, not treated as a US military logistics dependency.</strong> Ebeye's electricity situation — dense demand, aging KALGOV infrastructure, proximity to but exclusion from the well-funded US military Kwajalein grid — is not primarily a technical problem. It is a political and historical problem: Marshallese iroij who own Kwajalein land but live on Ebeye are entitled to land rent from the US military under COFA, but Ebeye's infrastructure investment has not matched land rent receipts. COFA III should explicitly include Ebeye grid modernisation — not as a US DOI charitable gesture but as a COFA obligation arising from Kwajalein displacement.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Marshall Islands' nuclear testing legacy creates a moral and political foundation for energy reparations arguments — the RMI can and should frame its climate finance demands at UNFCCC negotiations as a double injustice: irradiated by the weapons that are warming the climate that is drowning the islands — and this framing is not merely rhetorical, it is a legitimate claim that donor countries (particularly the US) should acknowledge in climate finance commitments beyond COFA III.</strong> Castle Bravo (1954) spread radioactive fallout across inhabited Marshallese atolls, particularly Rongelap (whose residents were evacuated but then returned to a still-contaminated atoll in the 1960s, and re-evacuated in 1985 by Greenpeace's Rainbow Warrior). The health consequences — elevated thyroid cancer rates, "jellyfish babies" (birth defects), inter-generational illness — continue to this day. That the US nuclear programme simultaneously produced the atmospheric CO₂ context (through Cold War industrialisation) and directly contaminated Marshallese communities is a compounded injustice that the UNFCCC loss-and-damage framework should address explicitly.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Majuro's path to 100% RE requires a BESS scale-up from the current ~1 MW (insufficient for overnight solar substitution) to approximately 3-4 MW, combined with phased diesel plant retirement — and ADB's Pacific Energy programme is the appropriate vehicle for this BESS expansion, but the capital approval timeline must be compressed if MEC is to retire its oldest diesel sets by 2028-2030 rather than re-investing in diesel plant overhaul.</strong> MEC's Majuro diesel plant dates from the 1990s; major overhaul decisions (replacing engines, refurbishing generators) are pending within the next 5-7 years. If MEC overhauls rather than retires diesel capacity, it locks in 10-15 more years of diesel dependency. The decision point is now: BESS + solar expansion must be financed and committed before MEC's diesel O&M cycle forces a diesel-investment decision by default. ADB Pacific Energy 2.0 should include this as a priority case with an accelerated preparation timeline.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The Marshall Islands' per-capita nuclear compensation obligation — never fully paid by the US despite the Nuclear Claims Tribunal's US$2.3B award — should be tracked separately from COFA III general sector financing in energy policy discussions, because conflating nuclear reparations and development assistance obscures whether the RMI is receiving justice or charity, and whether the US is meeting its nuclear obligations or substituting compact funding for unmet reparations.</strong> The 2024 COFA III renewal (US$2.3B over 20 years) was politically presented as a major US commitment — but the nuclear claims against the US total US$2.3B just in the Nuclear Claims Tribunal awards, separate from COFA. When RMI energy sector financing is discussed, the question of whether it represents development assistance (which the US gives many countries) or nuclear reparations (which the US owes specifically to RMI) is politically significant for RMI civil society and for the credibility of the US-RMI relationship at climate negotiations.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      MEC (Marshalls Energy Company) — Annual Report 2024 ·
+      Tobolar Copra Processing Authority — VCO programme data 2024 ·
+      ADB — Pacific Energy Programme (ENMAR); Pacific Energy Update 2025 ·
+      IRENA — Pacific energy statistics 2025 ·
+      US DOI — COFA Compact Sector Grant Programme ·
+      COFA III — 2024 Compact of Free Association renewal ·
+      IAEA — Marshall Islands nuclear legacy reports ·
+      UNFCCC — RMI NDC 2022 ·
+      World Bank — Pacific energy access
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Marshall Islands Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (MEC Power Plant)', 'Solar PV (ENMAR + ADB solar farms)', 'Coconut oil blend (Tobolar VCO)'],
+    datasets: [{ data: [60, 35, 5], backgroundColor: ['#8B4513','#FFD700','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Honduras Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Honduras</div>
+    <div class="doc-sub">SIEPAC member · ENEE state utility · 34% losses · $655M IPP debt crisis · Solar + wind expanding · 80% RE target 2038</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~3.5 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">34.3%</div><div class="kpi-lbl">Distribution losses</div></div>
+    <div class="kpi"><div class="kpi-val">$655M</div><div class="kpi-lbl">ENEE debt to private IPPs</div></div>
+    <div class="kpi"><div class="kpi-val">300 MW</div><div class="kpi-lbl">El Cajón HPP (1985)</div></div>
+  </div>
+
+  <div class="body">
+
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Honduras has approximately <strong>3.5 GW</strong> of installed capacity with a diversified renewable portfolio: hydro (~25%), solar (~20%), biomass (~9%), wind (~7%) and geothermal (~1%), alongside fossil fuels (~38%) primarily as backup and peaking capacity. Renewable energy has grown dramatically over the last decade through a private IPP programme — Honduras was an early Central American adopter of wind and utility-scale solar. Despite this, the state utility <strong>ENEE</strong> remains mired in financial crisis, with losses of 34% and debts to private generators exceeding $655 million.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Fossil fuels (oil/diesel)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#5CB85C"></span>Biomass</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind + Geothermal</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~3.5 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: GEM Wiki Honduras; Wikipedia Electricity sector Honduras; ENEE data</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>El Cajón (Francisco Morazán): 300 MW</strong>Comayagua River; largest domestic hydro plant; commissioned 1985; ENEE-owned; rehabilitation plan underway. Total hydro ~849 MW</div>
+        <div class="stat-item"><strong>Solar PV: ~700 MW</strong>Rapid growth 2014–2023; Nacaome solar complex and others; Honduras was an early CA utility-scale solar pioneer</div>
+        <div class="stat-item"><strong>Wind: ~228 MW</strong>Five wind farms operational; Pacific coastal corridor; Cerro de Hula (102 MW) was Central America's first large wind farm (2011)</div>
+        <div class="stat-item"><strong>ENEE losses: 34.3% (April 2025)</strong>Improvement from ~38% — lowest since 2020 — but still among the highest utility losses in Latin America; primarily commercial (non-technical) losses</div>
+        <div class="stat-item"><strong>1.5 GW storage tender (2026)</strong>Largest energy storage procurement in Central American history; intended to firm renewable capacity and allow night dispatch</div>
+      </div>
+    </div>
+
+    <h2>ENEE — A Utility in Crisis</h2>
+    <p>The <strong>Empresa Nacional de Energía Eléctrica (ENEE)</strong> is Honduras's vertically integrated state utility and the central actor in the country's electricity sector crisis. Three decades of mismanagement have produced a deeply dysfunctional institution:</p>
+    <ul>
+      <li><strong>Debt to private generators:</strong> ENEE owes ~$655 million (17.4 billion lempiras) to private IPPs — money it cannot pay because tariff revenues are suppressed below cost-recovery levels. This debt is the primary barrier to new private investment in Honduran renewables.</li>
+      <li><strong>Distribution losses:</strong> 34.3% system losses — a combination of technical losses (ageing infrastructure) and commercial losses (non-payment, theft). Even after recent improvements, Honduras loses one third of electricity produced before it is billed.</li>
+      <li><strong>IMF programme:</strong> Honduras's ENEE crisis is a recurring theme in IMF Article IV consultations; reducing ENEE's fiscal drag is a structural benchmark in the current programme.</li>
+      <li><strong>Privatisation debate:</strong> Multiple administrations have considered partial privatisation of ENEE's generation or distribution assets; political resistance has consistently blocked reform.</li>
+    </ul>
+
+    <div class="callout">
+      Honduras's electricity sector presents a stark paradox: one of Central America's most active private renewable energy investment markets alongside one of its most distressed state utilities. ENEE's financial crisis creates a negative feedback loop — it cannot pay IPPs, IPPs hesitate to invest, ENEE cannot improve service, customers don't pay, losses grow. Breaking this cycle requires tariff reform and institutional restructuring that have so far been politically unachievable.
+    </div>
+
+    <h2>SIEPAC &amp; Regional Position</h2>
+    <p>Honduras is centrally located in the SIEPAC backbone and is structurally a <strong>net importer</strong> in the MER — buying power principally from Guatemala and, in wet years, Costa Rica. ENEE's payment arrears extend to cross-border trade as well, creating periodic tensions with neighbouring system operators.</p>
+    <ul>
+      <li>Honduras is the transit country for power flows between Guatemala (north) and El Salvador, Nicaragua, and beyond — making its grid physically strategic even if commercially strained.</li>
+      <li>The 1.5 GW storage tender (2026) could transform Honduras from a peak importer to a more self-sufficient system if storage enables dispatch of its 850+ MW of existing renewables around the clock.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>ENEE's debt crisis is the single greatest constraint on Honduras's energy transition.</strong> The $655M arrears to private generators have frozen new IPP investment precisely when Honduras needs additional capacity. No amount of renewable energy ambition (80% by 2038) matters if ENEE cannot pay for electricity it already contracted. Debt restructuring or sovereign guarantee support is a prerequisite for the sector to function.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Honduras has already built significant renewable capacity — the problem is system reliability, not generation portfolio.</strong> With solar, wind, biomass, hydro, and geothermal all operational, the generation mix is already over 60% renewable by capacity. The blocking factor is a dysfunctional utility that loses 34% of electricity and cannot fund grid upgrades. Investment in transmission, distribution rehabilitation, and smart metering would deliver more system benefit than incremental generation.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The 1.5 GW storage tender (2026) is the most ambitious energy procurement in Central American history.</strong> If successfully procured and financed, battery storage at this scale would fundamentally change Honduras's power system — allowing existing solar and wind to provide dispatchable evening and morning power, reducing thermal backup dependency, and potentially turning Honduras from an importer to a balanced position on the MER.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Cerro de Hula's success demonstrates Honduras's private renewable energy market potential is real.</strong> When Honduras launched IPP auctions in the 2010s, multiple wind, solar, and biomass projects were delivered on time and on budget by private developers. The investment environment can work — what broke it was ENEE's subsequent payment defaults. Restoring payment credibility would unlock rapid re-engagement by developers who proved the model.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Honduras's geographic position as the SIEPAC transit hub is underutilised.</strong> Sitting between Guatemala and El Salvador, Honduras's grid is the physical backbone of Central American power flows. Upgrading the domestic transmission network — which is ageing and bottlenecked — would increase regional market liquidity, allow Honduras to capture transit revenues, and reduce the cost of regional imbalances that currently require expensive emergency generation.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      GEM Wiki — Energy Profile: Honduras ·
+      Wikipedia — Electricity sector in Honduras; Renewable energy in Honduras ·
+      IMF — Honduras Country Report No. 24/332 (2024); No. 25/131 (2025) ·
+      Strategic Energy Europe — Honduras power sector debt; ENEE payment reforms ·
+      Renewable Energy World — ENEE Francisco Morazán rehabilitation ·
+      Cantech Letter — Why does Honduras have poor electricity? (Sept 2024) ·
+      Harvard ReVista — Honduran Electric Sector Debacle ·
+      IDB — SIEPAC and MER regional integration
+    </div>
+
+  </div>
+  <div class="doc-footer">
+    <span>Honduras Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Fossil fuels (oil/diesel)', 'Hydro', 'Solar PV', 'Biomass', 'Wind + Geothermal'],
+    datasets: [{ data: [1323, 875, 700, 315, 287], backgroundColor: ['#C85020','#1E9AF5','#FFD700','#5CB85C','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

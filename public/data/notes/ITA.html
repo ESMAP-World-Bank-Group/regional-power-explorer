@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Italy Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Italy</div>
+    <div class="doc-sub">~120 GW installed · No nuclear (referenda 1987 + 2011) · Gas ~42% + RE ~44% (2024) · Solar 30+ GW · Wind 12 GW · Geothermal pioneer (Larderello) · Net electricity importer · Terna TSO · Enel/ENI/Edison utilities · Southern grid bottleneck · 65% RE target 2030</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~120 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~44%</div><div class="kpi-lbl">Renewable electricity share (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">~42%</div><div class="kpi-lbl">Natural gas share (declining)</div></div>
+    <div class="kpi"><div class="kpi-val">65%</div><div class="kpi-lbl">RE electricity target 2030 (PNIEC)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Italy is one of Europe's largest electricity consumers (~320 TWh/year) and has no nuclear power — a consequence of two public referenda (1987 after Chernobyl; 2011 after Fukushima) that confirmed popular opposition to nuclear. Natural gas dominates generation (~42%), with a diverse RE portfolio growing rapidly: solar (~30+ GW), wind (~12 GW), hydro (~22 GW Alps and Apennines), geothermal (~900 MW at Larderello, Tuscany — the world's first geothermal power plant, operational 1913), and biomass. Italy is structurally a net electricity importer — drawing 40-50 TWh/year from France (nuclear surplus), Switzerland (Alpine hydro), and Austria — through Alpine interconnectors. The TSO is <strong>Terna</strong>; dominant utilities are <strong>Enel</strong> (Europe's second-largest utility by market cap), <strong>ENI</strong> (pivoting from oil to energy), and <strong>Edison</strong> (EDF subsidiary). The government's updated PNIEC (National Energy and Climate Plan 2024) targets <strong>65% RE electricity by 2030</strong>.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + CHP)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Alps + Apennines)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore + offshore)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass + geothermal + other</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~44%</div>
+            <div class="chart-center-lbl">renewable 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Terna (Italian TSO) statistical data 2024; GSE (Gestore Servizi Energetici); IEA Italy; Ember 2025; ARERA</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Enel: Europe's second-largest utility</strong>Enel Group (Italian state 23% stake via CDP); market cap ~€50B; operations in 30+ countries; manages ~84 GW globally; Italian generation includes hydro (3,400 MW), wind, solar, and geothermal; Enel Green Power (EGP) subsidiary is among world's top 5 RE developers; sold significant international assets 2022-24 to reduce debt; renewables now >90% of new Enel capex</div>
+        <div class="stat-item"><strong>Geothermal: world's first commercial plant</strong>Larderello (Tuscany) — first geothermal power plant in the world (1913); ~900 MW operating geothermal capacity across Tuscany; Enel operator; produces ~6 TWh/year; baseload (continuous, weather-independent); Toscana is the only region in Europe with commercially significant conventional geothermal; PNIEC targets doubling geothermal to 1.8 GW by 2030</div>
+        <div class="stat-item"><strong>Southern Italy: solar potential vs. grid bottleneck</strong>Sicily and southern Italy (Puglia, Basilicata, Calabria) receive 1,600-1,800 kWh/m²/year irradiance — among Europe's highest. But the North-South transmission corridor is heavily congested: northern Italian industrial demand and Alpine imports compete with southern RE for limited grid capacity. Terna's TYRRHENIAN LINK (Campania-Sicily-Sardinia, 1,000 MW HVDC submarine cable, €3.7B, commissioning 2028-31) is the key infrastructure unlock for southern and island RE.</span></div>
+        <div class="stat-item"><strong>Nuclear return debate: Meloni government</strong>PM Meloni's government initiated a nuclear re-evaluation in 2023-24, commissioning a "Piattaforma Nucleare" study. Focus on SMRs (small modular reactors) rather than large conventional plants. Third 1987+2011 referendum risk: any nuclear bill would likely trigger referendum demand from opposition. IAEA consultation ongoing. Earliest SMR deployment: 2035+ even under optimistic assumptions. Nuclear return is politically aspirational, not operationally near-term.</div>
+        <div class="stat-item"><strong>Gas import diversification post-Russia</strong>Italy was Europe's most Russia-gas-dependent large economy (40% Russian gas in 2021). Mattei Plan diversification: expanded Algeria contracts (Enrico Mattei pipeline), new Mozambique LNG import (ENI project), increased Azerbaijani gas (Trans Adriatic Pipeline). Two FSRU LNG terminals: Piombino (2023) and Ravenna (2024). Russian gas share fell from 40% to ~5% by 2024. Italy's Mattei Africa Plan aims to position Italy as Europe's Southern Gas Hub, re-exporting African gas northward.</div>
+      </div>
+    </div>
+
+    <h2>The TYRRHENIAN LINK and Italian RE Geography</h2>
+    <p>Italy's renewable energy challenge is fundamentally a geography problem: the best solar and wind resources are in the south; the biggest industrial loads are in the north; and the peninsula's topography creates transmission chokepoints:</p>
+    <ul>
+      <li><strong>North-South divide:</strong> Northern Italy (Lombardy, Veneto, Piedmont) hosts ~60% of industrial electricity demand; southern Italy (below Rome) and the islands have the best solar, wind, and potential offshore resources. The Apennine mountain spine limits HV transmission capacity between the two zones. Terna operates a complex "zone pricing" system where northern prices (importing from France/Switzerland) often differ significantly from southern prices (exporting RE at near-zero marginal cost).</li>
+      <li><strong>Sardinia isolation:</strong> Sardinia (~1.7 million people, ~10 GW installed capacity) has exceptional wind and solar but is connected to mainland Italy only by ageing submarine cables (SAPEI, 1,000 MW HVDC). Sardinia regularly generates more RE than it can export — leading to wind and solar curtailment. The TYRRHENIAN LINK will provide 1,000 MW of new Sardinia-mainland HVDC capacity, transforming the island from a stranded RE generator into an exporter.</li>
+      <li><strong>Sicily opportunity:</strong> Sicily (5 million people) is connected to the mainland by the Messina cable (600 MW) — severely insufficient for Sicily's growing RE. An ambitious proposal exists for a fixed-link (bridge or tunnel) between Sicily and Calabria for both road/rail and electricity — the "Ponte sullo Stretto" project includes a 2,000+ MW electricity interconnector. Sicily's solar potential (1,800 kWh/m²) and central Mediterranean location make it a candidate for electricity export to Tunisia and Malta.</li>
+      <li><strong>Offshore wind pipeline:</strong> Italy's Adriatic and Tyrrhenian coasts have limited shallow water for bottom-fixed offshore wind, but significant floating wind potential off Sardinia (Mistral wind, >200m depths) and Sicily. Several floating wind projects (ENI, Copenhagen Infrastructure Partners, RWE) are in permitting. Italy's offshore RE incentive auction (CfD mechanism, Decree FER2) is opening offshore to competition for the first time.</li>
+    </ul>
+
+    <div class="callout">
+      Italy's energy transition has a paradox at its core: the country with Europe's best Mediterranean solar resource, world-class geothermal assets, and one of its largest installed RE fleets is still importing 40-50 TWh of electricity per year from French nuclear and Swiss hydro — because its internal grid cannot move RE from where it is generated to where it is consumed. Terna's €18B grid investment plan through 2032 (Italy's largest infrastructure programme since the motorway network) is as consequential for Italy's energy transition as any new power plant. You cannot decarbonise with generation alone.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Italy's two nuclear referenda — 1987 and 2011 — are the defining constraint of its energy system: a country of 60 million with no nuclear power pays structurally higher electricity prices than France, Switzerland, and Austria, and imports the nuclear output it politically rejected.</strong> Italy's industrial electricity prices are among Europe's highest, directly reducing competitiveness of Italian manufacturing vs. French and German competitors. The ~45 TWh Italy imports annually includes significant French nuclear power — Italy effectively purchases nuclear electricity while prohibiting domestic nuclear production. The Meloni government's SMR study will not resolve this paradox before 2035 at the earliest.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Terna's €18B grid investment plan — the largest transmission infrastructure programme in Italian history — is the single most consequential variable in Italy's 65% RE target by 2030, more important than any new solar or wind capacity addition.</strong> Italy already has enough solar and wind installed (or in pipeline) to reach 65% RE in generation terms. The binding constraint is internal transmission — specifically the North-South corridor and island interconnection. Without TYRRHENIAN LINK and associated upgrades, southern and island RE will continue being curtailed. Grid investment timelines (permitting, procurement, construction: 5-7 years minimum) mean that Terna's 2026-2032 investments will determine whether Italy's 2035 clean electricity target is achievable.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Enel's commercial transformation — from an Italian state utility to the world's second-largest RE developer — followed from Italy's nuclear exit: stripped of nuclear baseload, Enel had to internationalise and pivot to renewables to find growth, which it did two decades before most European peers.</strong> Enel's international RE portfolio (Spain, Brazil, Chile, USA, India) and Enel Green Power's world-class development capability are direct products of Italy's 1987 nuclear referendum. Italy lost a generation of nuclear engineers but gained a global RE champion. The strategic question is whether Italy can now use Enel's capabilities to build the domestic RE future that the nuclear exit foreclosed — solar in Sicily, floating wind off Sardinia, geothermal expansion in Tuscany.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Italy's positioning as Europe's Southern Gas Hub — the "Mattei Plan" strategy of importing African LNG and piped gas for re-export northward — is a coherent short-term energy security strategy that risks creating 30-year infrastructure dependencies on fossil fuels at exactly the moment Europe needs to reduce gas consumption.</strong> Expanded Algeria contracts, Mozambique LNG, new pipeline from Libya: these are legitimate energy security moves for the 2024-2030 period. But infrastructure built to import and transit African gas in 2025 will still be operational in 2055. If European gas demand falls 80% by 2050 (as required by net-zero scenarios), Italy's transit infrastructure investments strand. The Mattei Plan maximises Italian geopolitical influence in the near term at the cost of long-term transition flexibility.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Italy's geothermal energy — the world's oldest commercial geothermal sector, producing 6 TWh/year of baseload from Tuscany — is Europe's most underexploited clean energy asset relative to its potential, and PNIEC's target of doubling geothermal capacity by 2030 is among Italy's most achievable and least controversial RE goals.</strong> Larderello geothermal requires no intermittency management, no storage, no grid balancing — it produces at constant output 24/7. The resource is well-characterised, the technology is mature, and Enel has 100+ years of operating experience. Expansion to 1.8 GW requires drilling new wells and constructing binary-cycle plants — far simpler than offshore wind or nuclear. Europe's near-complete dependence on Iceland for geothermal knowledge overlooks Italy's world-class indigenous capability.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Terna — Italian TSO, statistical data and grid development plan 2024-2032 ·
+      GSE (Gestore Servizi Energetici) — RE statistics 2024 ·
+      IEA — Italy energy policy review 2023 ·
+      Enel Group — annual report 2024 ·
+      ARERA (Italian energy regulator) — electricity market data ·
+      Ember — Italy electricity mix 2025 ·
+      Ministry of Environment and Energy Security — PNIEC 2024 update ·
+      Eurostat — Italy electricity statistics
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Italy Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT + CHP)', 'Solar PV', 'Hydro (Alps + Apennines)', 'Wind (onshore + offshore)', 'Biomass + geothermal + other'],
+    datasets: [{ data: [42, 15, 15, 8, 6], backgroundColor: ['#C85020','#FFD700','#1B6CA8','#6AB0DE','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

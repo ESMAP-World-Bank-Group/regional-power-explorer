@@ -1,16 +1,100 @@
-# React + Vite
+# Regional Power Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive web map for exploring **open-access electricity-sector data** — generation
+mix, installed capacity, power plants, grid infrastructure, cross-border trade, electricity
+access, tariffs, and renewable-energy resources — at world, regional, and country level.
 
-Currently, two official plugins are available:
+It is developed by [ESMAP](https://www.esmap.org/) (World Bank). The tool aggregates and
+harmonises data from many open sources so that planners, analysts, and decision-makers can
+get a quick, sourced overview of a country's power system. It can be used to help populate
+inputs for the [Electricity Planning Model (EPM)](https://github.com/ESMAP-World-Bank-Group/EPM),
+but it is a **standalone data-exploration tool** and is not limited to EPM.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> **Scope — what it is and isn't.** The Regional Power Explorer *aggregates and visualises
+> already-published open data*. It is **not** a power-system model, it does **not** run
+> simulations or forecasts of its own, and the figures it shows are **indicative**: coverage
+> and accuracy vary by region. Always cross-check against national statistics before using
+> the data for planning or official purposes. See [Limitations & Disclaimer](#limitations--disclaimer).
 
-## React Compiler
+## Data sources
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+All layers, their sources, versions, update frequency, coverage, and a quality indicator are
+documented in the in-app **Data Sources** page (`/about`). Key sources include ENTSO-E,
+OpenStreetMap, the WRI Global Power Plant Database, Global Energy Monitor, the Global Solar
+Atlas, ERA5, Our World in Data, Ember, and national statistical offices.
 
-## Expanding the ESLint configuration
+Data licences include: OpenStreetMap (ODbL), WRI GPPD (CC BY 4.0), Global Energy Monitor
+(CC BY 4.0), Natural Earth (Public Domain), and others as listed on the Data Sources page.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech stack
+
+- **React 19** + **Vite** (build/dev)
+- **MapLibre GL** for the interactive map
+- **React Router** for navigation
+- Deployed on **Vercel**
+
+## Getting started
+
+```bash
+npm install
+npm run dev        # local dev server (Vite, HMR)
+npm run build      # production build → dist/
+npm run preview    # preview the production build
+npm run lint       # ESLint
+```
+
+## How data flows
+
+```
+data-source/        Raw inputs and pipeline intermediates (git-ignored — kept local, large)
+   │  tools/ scripts fetch, clean, and harmonise
+   ▼
+public/data/        Curated, web-ready data served by the app (committed)
+```
+
+Only the curated, web-ready output under `public/data/` is committed. Heavy raw inputs and
+caches under `data-source/` are git-ignored (see `.gitignore`) and produced/refreshed by the
+scripts in `tools/`.
+
+## Project structure
+
+```
+src/
+  pages/        Route pages (World, Region, Country, About, Contact, …)
+  components/   Reusable UI + map components
+  utils/        Helpers
+  constants.js  Theme + shared constants
+public/data/    Curated data served at runtime
+tools/          Data-pipeline scripts
+config/         Pipeline configuration (API tokens are git-ignored)
+```
+
+## Contributing
+
+Contributions and data-source suggestions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+For new data sources or coverage gaps, open a
+[GitHub Issue](https://github.com/ESMAP-World-Bank-Group/regional-power-explorer/issues).
+
+## Limitations & Disclaimer
+
+- Data shown is **indicative** and aggregated from third-party open sources; coverage and
+  accuracy vary by country and layer. Quality indicators are provided per source on the
+  Data Sources page. Do not use as a sole basis for investment or policy decisions.
+- Estimation methods (e.g. demand projections, capacity-factor derivation, wind-speed
+  height correction) are documented on the Data Sources / Methods page; treat estimated
+  layers accordingly.
+- The boundaries, colours, denominations, and other information shown on any map do **not**
+  imply any judgment on the part of the World Bank Group concerning the legal status of any
+  territory or the endorsement or acceptance of such boundaries.
+- The findings and data presented here are for informational purposes and should not be
+  attributed to the World Bank, its Board of Executive Directors, or the governments they
+  represent.
+
+## License
+
+Code is released under the [MIT License](LICENSE). Aggregated data remains under the licences
+of its respective sources (see the Data Sources page).
+
+---
+
+*Regional Power Explorer · ESMAP · World Bank Group*

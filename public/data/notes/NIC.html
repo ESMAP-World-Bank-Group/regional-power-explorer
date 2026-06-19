@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nicaragua Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Nicaragua</div>
+    <div class="doc-sub">SIEPAC member · MEM / ENATREL state transmission · ~75% renewable generation · Geothermal + wind flagship · Diesel overcapacity · SIEPAC net importer</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~1.9 GW</div><div class="kpi-lbl">Installed capacity (est.)</div></div>
+    <div class="kpi"><div class="kpi-val">~75%</div><div class="kpi-lbl">Renewable generation share</div></div>
+    <div class="kpi"><div class="kpi-val">~200 MW</div><div class="kpi-lbl">Geothermal (Momotombo + SJT)</div></div>
+    <div class="kpi"><div class="kpi-val">~290 MW</div><div class="kpi-lbl">Wind capacity</div></div>
+  </div>
+
+  <div class="body">
+
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Nicaragua has approximately <strong>1.9 GW</strong> of installed capacity, with a distinctive split between a large legacy diesel/HFO fleet (which dominates installed capacity at ~54%) and a growing renewable generation base that contributes approximately <strong>75% of actual electricity output</strong>. The gap between installed capacity share and generation share reflects the low capacity factors of diesel plants, which run primarily as backup. Nicaragua has been one of Central America's most ambitious renewable energy developers, building geothermal, wind, hydro, and biomass capacity over the 2010s to break a historic diesel dependency.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Oil / Diesel (installed)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#E07020"></span>Geothermal</span>
+          <span><span class="lsq" style="background:#5CB85C"></span>Biomass</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~1.9 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Wikipedia Electricity sector in Nicaragua; GEM Wiki; IEA Nicaragua</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Geothermal: ~200 MW</strong>Momotombo (77.5 MW, 1983–2003, Managua dept.) + San Jacinto-Tizate (~120 MW, Chinandega); among the best geothermal resources in CA; 1,500+ MW estimated total potential</div>
+        <div class="stat-item"><strong>Wind: ~290 MW</strong>Amayo I (40 MW) + Amayo II (23 MW) + Blue Power (40 MW) + Eolo (44 MW) + Gecsa (~143 MW); Pacific coastal ridge; among highest wind resources in CA</div>
+        <div class="stat-item"><strong>Biomass: ~270 MW</strong>Sugarcane bagasse cogeneration; seasonal (harvest period); significant baseload contribution</div>
+        <div class="stat-item"><strong>Hydro: ~150 MW</strong>Small-to-medium plants; Larreynaga (17 MW), Centroamérica (50 MW), Carlos Fonseca (50 MW) among key plants</div>
+        <div class="stat-item"><strong>Oil/diesel fleet: ~1,020 MW installed</strong>High installed capacity, low utilisation; oil-fired plants serve as reserve/peakers; historically Nicaragua's backbone, now being progressively displaced by renewables</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Governance</h2>
+    <p>Nicaragua's electricity sector is more state-controlled than Guatemala's liberalised market but has successfully attracted private renewable IPPs through concession arrangements:</p>
+    <ul>
+      <li><strong>MEM (Ministerio de Energía y Minas):</strong> Energy policy, concessions, and planning; created in 2007; close alignment with government economic priorities.</li>
+      <li><strong>ENATREL (Empresa Nacional de Transmisión Eléctrica):</strong> State-owned transmission company; manages national grid and SIEPAC border points with Costa Rica and Honduras.</li>
+      <li><strong>DISNORTE / DISSUR (Union Fenosa / Gas Natural):</strong> Two private distribution companies serving north and south of the country respectively; Spanish-owned; ongoing tariff tensions with regulator.</li>
+      <li><strong>INE (Instituto Nicaragüense de Energía):</strong> Electricity regulator; sets tariffs; technically challenged institution.</li>
+      <li><strong>Albanisa:</strong> Joint venture between state oil company PETRONIC and Venezuelan PDVSA (historically); involved in power generation projects and fuel supply; opaque governance.</li>
+    </ul>
+
+    <div class="callout">
+      Nicaragua's renewable energy transformation is one of the most dramatic in the Western Hemisphere. In 2007, Nicaragua imported expensive oil for ~75% of its electricity; by 2020, renewables were producing ~75% of electricity. This reversal — driven by geothermal, wind, biomass, and hydro IPPs — was achieved despite limited institutional capacity and challenging governance, demonstrating the power of resource endowment when combined with even modest regulatory openness.
+    </div>
+
+    <h2>Geothermal — Nicaragua's Strategic Advantage</h2>
+    <p>Nicaragua's position on the Central American volcanic arc gives it geothermal resources unmatched outside Costa Rica in the region:</p>
+    <ul>
+      <li><strong>Momotombo (77.5 MW):</strong> One of the oldest geothermal plants in the Americas (first unit 1983); sits at the base of the Momotombo volcano on Lake Managua; national landmark and flagship renewable asset.</li>
+      <li><strong>San Jacinto-Tizate (~120 MW):</strong> In Chinandega department; developed by Polaris Energy (now RAM Power); expanded in stages; largest geothermal plant in Central America.</li>
+      <li><strong>Untapped potential: 1,500+ MW</strong> across multiple volcanic fields — if developed, could make Nicaragua a major geothermal electricity exporter to the MER.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Nicaragua's renewable transition is a success story overshadowed by governance challenges.</strong> The move from 75% fossil to 75% renewable generation in ~15 years is an extraordinary achievement. But the same political environment that enabled rapid concession-based development also creates investor risk: opaque Albanisa linkages, regulatory uncertainty, and the post-2018 political crisis that has reduced foreign investment across all sectors including energy.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Nicaragua's geothermal potential (1,500+ MW) is its most underdeveloped strategic resource.</strong> With only ~200 MW developed against 1,500+ MW of estimated potential, geothermal expansion is Nicaragua's highest-value energy opportunity. Geothermal provides firm, 24/7, carbon-free, low-variable-cost baseload — a combination increasingly valuable as the region adds more variable wind and solar. Attracting the specialised capital and expertise needed for geothermal exploration requires improved investor confidence.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The oversized diesel fleet represents a structural inefficiency that inflates system costs.</strong> ~1,020 MW of diesel/HFO capacity sitting at low utilisation factors (~10–15%) incurs fixed O&amp;M costs without proportionate energy value. A systematic decommissioning plan — replacing diesel backup with battery storage and grid-scale wind/solar firming — would reduce system costs and improve the economic case for further renewable investment.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Nicaragua is chronically a SIEPAC net importer — primarily from Costa Rica — despite strong renewable resources.</strong> The combination of growing demand, seasonal hydro weakness, and inadequate peaking capacity means Nicaragua regularly relies on cross-border purchases. Developing 200–300 MW of additional geothermal would likely shift Nicaragua to a net exporter position and reduce its exposure to volatile MER spot prices.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The political risk premium on Nicaragua is now the binding constraint on energy investment.</strong> Post-2018 political developments, the reduced US diplomatic presence, and asset nationalisation risks in other sectors have all raised the perceived investment risk in Nicaragua. Renewable energy — especially geothermal — requires long-horizon, capital-intensive investment that is extremely sensitive to political risk. Until the investment climate improves, Nicaragua's geothermal potential will remain largely latent.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Wikipedia — Electricity sector in Nicaragua ·
+      GEM Wiki — Energy Profile: Nicaragua ·
+      IEA — Nicaragua Countries &amp; Regions ·
+      Climatescope 2024 — Nicaragua ·
+      ThinkGeoEnergy — Nicaragua geothermal potential and utilisation ·
+      Energypedia — Nicaragua Energy Situation ·
+      IADB — Renewable Energy Experiences in Nicaragua ·
+      Alliance for Global Justice — Nicaragua top 25 for renewable energy ·
+      IRENA — Nicaragua Statistical Profile
+    </div>
+
+  </div>
+  <div class="doc-footer">
+    <span>Nicaragua Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Oil / Diesel', 'Wind', 'Geothermal', 'Biomass', 'Hydro', 'Solar PV'],
+    datasets: [{ data: [1020, 290, 200, 270, 150, 70], backgroundColor: ['#C85020','#6AB0DE','#E07020','#5CB85C','#1E9AF5','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

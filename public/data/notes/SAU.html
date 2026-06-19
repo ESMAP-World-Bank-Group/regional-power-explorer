@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saudi Arabia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Saudi Arabia</div>
+    <div class="doc-sub">100.6 GW capacity · 12.3 GW renewable (87% YoY growth) · SEC + ACWA Power · 50% RE target 2030 · 100–130 GW Vision 2030 · NEOM 4 GW hydrogen · Oil displacement</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">100.6 GW</div><div class="kpi-lbl">Total installed capacity (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">12.3 GW</div><div class="kpi-lbl">Renewables (+87% in 2025)</div></div>
+    <div class="kpi"><div class="kpi-val">50%</div><div class="kpi-lbl">RE generation target 2030</div></div>
+    <div class="kpi"><div class="kpi-val">130 GW</div><div class="kpi-lbl">RE capacity target 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Saudi Arabia's electricity system is the Arab world's largest at <strong>100.6 GW total installed capacity</strong>, powered predominantly by natural gas (~60%) and crude/oil (~40%). Renewable energy capacity nearly doubled in 2025, reaching <strong>12.3 GW</strong> — an 87% increase driven by a wave of utility-scale solar PPAs commissioned under Vision 2030's renewable programme. Yet renewable electricity generation still accounts for only ~12% of total production — the capacity-to-generation gap reflecting solar's intermittency relative to Saudi Arabia's extraordinarily high, year-round cooling loads. The 2030 target of <strong>50% renewable generation and 50% gas</strong> — with up to <strong>130 GW of renewable capacity</strong> — requires adding ~120 GW of solar and wind in 4 years, among the most ambitious energy programmes in history.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Oil-fired</span>
+          <span><span class="lsq" style="background:#A0522D"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">100.6 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Semafor (Apr 2026); MEES; Mordor Intelligence; Climate Action Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>SEC (Saudi Electricity Company)</strong>National utility; transmission + distribution monopoly; largest electricity company in MENA; government-owned; purchases from IPPs; customer base of 11M+ connections</div>
+        <div class="stat-item"><strong>ACWA Power: global RE champion</strong>Saudi-based IPP; developer of Neom's NGES (4 GW green hydrogen), Red Sea solar, Sudair (1,500 MW), Dumat al-Jandal wind (400 MW); one of world's largest RE developers by pipeline; 50% Saudi state ownership</div>
+        <div class="stat-item"><strong>Sudair Solar: 1,500 MW</strong>World's largest single solar plant on commissioning (2023); ACWA Power; near Riyadh; competitive tariff $0.0104/kWh at bid stage — among lowest globally</div>
+        <div class="stat-item"><strong>Dumat al-Jandal Wind: 400 MW</strong>Saudi Arabia's first utility-scale wind; northwestern Al-Jouf province; ACWA Power; competitive $0.019/kWh PPA; testing viability of Saudi wind resources</div>
+        <div class="stat-item"><strong>NEOM / NGES: 4 GW green hydrogen</strong>ACWA Power + Air Products + NEOM; 4 GW electrolyser powered by 8.5 GW wind+solar; $8.4B; green ammonia export to Europe; world's largest green hydrogen facility</div>
+      </div>
+    </div>
+
+    <h2>Vision 2030 Energy Programme</h2>
+    <p>Saudi Arabia's electricity transition is formally a component of Vision 2030, Crown Prince Mohammed bin Salman's economic diversification blueprint. Key elements:</p>
+    <ul>
+      <li><strong>Oil displacement:</strong> Saudi Arabia burns ~0.5–1 million barrels of oil per day for electricity generation — oil that could be exported at $70–85/barrel. Every GWh of solar displaces ~$50,000–100,000 of forgone crude export revenue. The economic incentive to replace oil-fired generation with solar is larger than almost any other country.</li>
+      <li><strong>RE Programme tenders:</strong> REPDO (Renewable Energy Project Development Office) runs competitive tenders; Saudi Arabia achieved world-record low solar tariffs at Sudair ($0.0104/kWh). The programme targets 50 GW by 2030 at a minimum, with some scenarios targeting 130 GW.</li>
+      <li><strong>Nuclear ambitions:</strong> Saudi Arabia is actively seeking to build nuclear power plants; negotiations with South Korea, France, US, and China ongoing for initial 2.8 GW project. The "uranium enrichment" issue has complicated US discussions.</li>
+      <li><strong>Interconnections:</strong> Saudi Arabia is fully interconnected with GCC neighbours (GCCIA); discussions for Saudi–Egypt HVDC cable ongoing to create Arab power exchange corridor.</li>
+    </ul>
+
+    <div class="callout">
+      Saudi Arabia's renewable energy story is uniquely shaped by the oil opportunity cost calculus. Unlike most countries where RE competes with cheap domestic gas, Saudi Arabia's alternative is exporting $70+/barrel crude. Every percentage point of oil displaced from the power sector is a direct addition to export revenues. This means even at Saudi Arabia's massive scale, the fiscal arithmetic of solar deployment is extraordinarily favourable — and Vision 2030's RE targets are as much a revenue optimization strategy as an energy transition.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Saudi Arabia's 130 GW renewable target by 2030 is almost certainly unachievable — but even partial delivery would make it a global clean energy giant.</strong> Going from 12.3 GW to 130 GW in four years requires installing ~30 GW/year, compared to China's ~250 GW/year (a country 35× larger). A more realistic 2030 outcome of 40–60 GW would still make Saudi Arabia the world's largest solar market after China, India, and the US — a strategic position with profound implications for global clean energy supply chains and geopolitics.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>ACWA Power's emergence as a global RE developer is one of the most consequential corporate developments in energy.</strong> Built on Saudi state capital and RE project development expertise, ACWA Power now has one of the world's largest RE pipelines spanning 13+ countries. The Sudair $0.0104/kWh record bid demonstrated that Saudi-backed capital can fundamentally reset what RE costs globally. ACWA's model — government-backed balance sheet, massive project scale, world-record tariff bids — is being replicated across MENA, Central Asia, and Sub-Saharan Africa.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The NEOM green hydrogen project is the world's most watched clean energy experiment — and its costs will define whether industrial green hydrogen is commercially viable.</strong> At $8.4B for 4 GW of electrolysis, NGES is far larger than any other green hydrogen project. If it delivers green ammonia at below $500/tonne — competitive with grey ammonia in a carbon-priced world — it proves the concept for others. If costs overrun and timelines slip (as large novel projects tend to), it could set back global green hydrogen investment for years.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Saudi Arabia's electricity demand growth — driven by cooling, desalination, and Vision 2030 industrialisation — may outpace renewable additions even under ambitious targets.</strong> Peak demand could reach 120+ GW by 2030, compared to ~80 GW today. If RE adds 40–60 GW but demand grows by 40 GW simultaneously, the proportional fossil share barely changes. Demand-side management, building energy codes, and district cooling — areas where Saudi Arabia has historically underinvested — are as important as supply additions.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Saudi Arabia's nuclear programme ambitions will define its post-2030 energy mix.</strong> The planned 2.8 GW initial nuclear project — if built — would provide 24/7 baseload that solar and wind cannot, reducing the need for gas peakers in the evening hours. But the enrichment sovereignty issue (Saudi Arabia wants the right to enrich uranium domestically, which the US views as a proliferation risk) has blocked a US-aligned partnership. A Chinese or Russian nuclear partnership would have significant geopolitical implications beyond the energy sector.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Semafor — Saudi Arabia nearly doubles renewables capacity in 2025 (Apr 2026) ·
+      MEES — Saudi Renewables Capacity Set to Double to 12.7 GW in 2025 ·
+      Mordor Intelligence — Saudi Arabia Power Market Size &amp; Share Analysis ·
+      Climate Action Tracker — Saudi Arabia Policies &amp; Action ·
+      Climate Scorecard — Saudi Arabia Vision 2030 Renewable Energy Initiatives ·
+      TotalEnergies — NEOM Green Hydrogen documentation ·
+      US Trade.gov — Saudi Arabia Power Sector Guide
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Saudi Arabia Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Oil-fired', 'Natural gas', 'Solar PV', 'Wind'],
+    datasets: [{ data: [35300, 53000, 11900, 400], backgroundColor: ['#C85020','#A0522D','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

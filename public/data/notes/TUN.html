@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tunisia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Tunisia</div>
+    <div class="doc-sub">5,944 MW · 95% gas-fired · STEG monopoly · 777 MW renewables · Kairouan 100 MW solar · 4,850 MW RE target 2030 · TEREG $2.8B programme · World Bank $430M</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">5,944 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">95%</div><div class="kpi-lbl">Gas generation share</div></div>
+    <div class="kpi"><div class="kpi-val">777 MW</div><div class="kpi-lbl">Renewable installed (Apr 2025)</div></div>
+    <div class="kpi"><div class="kpi-val">4,850 MW</div><div class="kpi-lbl">RE target by 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Tunisia has <strong>5,944 MW</strong> of installed capacity across 25 power plants, generating 19,395 GWh in 2024. Gas accounts for approximately <strong>95% of electricity generation</strong>, supplied almost entirely through imports from Algeria (providing ~75% of Tunisia's gas in 2024) and declining domestic Tunisian production. Renewable capacity stood at only <strong>777 MW</strong> as of April 2025 — predominantly small-scale solar PV, wind (Borj Cedria, Bizerte), and micro-hydro. Tunisia's electricity sector faces a structural cost crisis: heavy reliance on imported gas (at market prices), subsidised consumer tariffs well below cost recovery, and STEG's accumulated financial losses.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + OCGT)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro (micro)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">5,944 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: STEG; GEM Power Sector Transition Tunisia; pv-magazine; World Bank Nov 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>STEG: 92.1% of installed capacity</strong>Société Tunisienne de l'Électricité et du Gaz; state monopoly; 95% of generation; vertically integrated; STEG Énergies Renouvelables (STEG ER) manages RE projects; accumulated financial losses from tariff gap</div>
+        <div class="stat-item"><strong>Kairouan Solar: 100 MW</strong>Tunisia's largest solar project; first to inject into 225 kV HV grid (Dec 2025); first project to exceed 100 MW; milestone for utility-scale PV; STEG ER-operated</div>
+        <div class="stat-item"><strong>TEREG Programme</strong>Tunisian Energy Reform &amp; Green Growth; $2.8B private investment target; 2.8 GW solar + wind by 2028; World Bank $430M programme (approved Nov 2025) supporting TEREG framework</div>
+        <div class="stat-item"><strong>Gas dependency risk</strong>~75% of gas from Algeria in 2024; Hassi R'Mel (Algeria) supplies via Medgaz and Trans-Med; Tunisian domestic gas declining; sovereign FX risk from imported gas priced in USD</div>
+        <div class="stat-item"><strong>Energy Strategy 2023–2035</strong>Targets 8,530 MW renewables by 2035 (4,850 MW by 2030); ambitious relative to 777 MW today; requires 4 GW in 5 years — unprecedented for Tunisia</div>
+      </div>
+    </div>
+
+    <h2>STEG's Financial Crisis &amp; Reform Path</h2>
+    <p>Tunisia's electricity sector cannot finance its transition without addressing STEG's fundamental financial distress:</p>
+    <ul>
+      <li>Consumer electricity tariffs are significantly below the cost of production — particularly as gas must be imported at international market prices while electricity is sold at subsidised domestic rates. STEG's annual losses are partially covered by state transfers and partially accumulated as debt.</li>
+      <li>The TEREG programme (World Bank $430M, Nov 2025) explicitly conditions financing on tariff reform and regulatory improvements — moving Tunisia toward cost-reflective pricing and an independent energy regulator.</li>
+      <li>Tunisia's fiscal crisis (IMF negotiations, sovereign debt restructuring discussions) limits the state's ability to continue subsidising STEG indefinitely, creating pressure for reform that prior periods of political stability had allowed to be deferred.</li>
+      <li>Private investment in renewable energy requires a creditworthy offtaker (STEG) and predictable PPA enforcement — both currently uncertain, which is why the TEREG private investment targets have been slow to materialise.</li>
+    </ul>
+
+    <div class="callout">
+      Tunisia is caught between a clear strategic logic (replace expensive imported gas with cheap domestic solar) and institutional constraints (STEG financial distress, slow procurement, tariff subsidies, unclear RE regulation). The World Bank's $430M TEREG programme is the most significant international energy finance commitment to Tunisia in a decade and could serve as the catalyst for regulatory modernisation. The Kairouan 100 MW plant commissioning in December 2025 is a concrete proof point. Whether it's followed by 4 GW more by 2030 depends on whether STEG reform moves faster than Tunisia's broader fiscal challenges deteriorate.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Tunisia's gas import bill is the engine of its energy crisis and the strongest argument for solar deployment.</strong> Paying for Algerian gas at near-market prices while selling electricity to consumers at subsidised tariffs creates a structural loss that grows with every year of solar delay. Kairouan-level solar costs (~$0.025–0.035/kWh in Tunisia's market) are far below the avoided cost of gas-fired electricity (~$0.08–0.12/kWh). The economics have never been more compelling; the constraint is regulatory and institutional, not economic.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The TEREG programme is Tunisia's best chance for an accelerated energy transition — but depends on tariff reform the government has long avoided.</strong> World Bank conditionality requires Tunisia to move toward cost-reflective tariffs and establish an independent regulator. Both have been promised in multiple prior reform programmes without delivery. The current fiscal pressure — Tunisia cannot afford indefinite STEG subsidies — may finally create the political conditions for implementation.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Tunisia's wind resource (particularly northern coast and northwest) is underexploited and could be its most competitive renewable source.</strong> Capacity factors of 35–40% along the northern coast compare favourably with Moroccan Atlantic wind. Yet only ~350 MW of wind is installed. The combination of good wind, proximity to European markets, and the planned Tunisia–Italy subsea cable (Elmed/HPCM, 600 MW HVDC) creates an export opportunity that would make Tunisian wind internationally competitive.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The Tunisia–Italy Elmed HVDC cable (600 MW) is strategically transformative if realised.</strong> A subsea cable directly connecting Tunisia to the Italian grid would allow Tunisia to export solar and wind electricity to Europe during peak production and import when needed — creating revenue and grid flexibility simultaneously. Project financing discussions are ongoing; the cable would validate Tunisia's place in Europe's clean energy supply chain and create a commercial anchor for the entire TEREG programme.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Tunisia's political context (post-Saied consolidation, IMF programme delays) creates risks for private RE investment that are underappreciated in project pipelines.</strong> Investor confidence in PPA enforcement and regulatory predictability depends on governance stability. The concentration of power since 2021, ongoing negotiations with the IMF, and questions about rule of law in commercial disputes create a risk premium for private capital that will either delay private RE investment or require higher returns — both of which slow the energy transition.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      pv-magazine — Tunisia switches on largest solar project to date (Dec 2025) ·
+      World Bank — Press Release: World Bank approves project to power Tunisia's energy transformation (Nov 2025) ·
+      Ecofin Agency — Tunisia's heavy gas imports stall solar energy growth ·
+      GEM — Power Sector Transition in Tunisia ·
+      Enerdata — Tunisia Energy Information ·
+      US Trade.gov — Tunisia Electrical Power Systems and Renewable Energy ·
+      Yahoo Finance — World Bank backs Tunisian energy sector modernisation with $430M programme
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Tunisia Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT + OCGT)', 'Solar PV', 'Wind', 'Hydro (micro)'],
+    datasets: [{ data: [5167, 430, 330, 17], backgroundColor: ['#C85020','#FFD700','#6AB0DE','#1E9AF5'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

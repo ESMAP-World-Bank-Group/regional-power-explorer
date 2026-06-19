@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federated States of Micronesia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Micronesia)</div>
+    <div class="doc-title">Federated States of Micronesia</div>
+    <div class="doc-sub">~30 MW across 4 states · Four separate utilities: PPUC (Pohnpei) + CPUC (Chuuk) + YSPSC (Yap) + KAJUR (Kosrae) · All diesel historically; solar advancing in Yap and Pohnpei · US Compact of Free Association (COFA renewed 2023) · US$0.45-0.55/kWh tariffs · ~115,000 people · Chuuk: chronic poor service + utility governance crisis · Yap: ADB solar hybrid model success · 70% RE by 2030 target · Sea-level rise threat to low-lying atolls</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">4 states</div><div class="kpi-lbl">4 separate utilities — Pohnpei, Chuuk, Yap, Kosrae</div></div>
+    <div class="kpi"><div class="kpi-val">~30 MW</div><div class="kpi-lbl">Total installed (all four state grids combined)</div></div>
+    <div class="kpi"><div class="kpi-val">US$0.50</div><div class="kpi-lbl">Average tariff per kWh (highest in Pacific)</div></div>
+    <div class="kpi"><div class="kpi-val">COFA 2023</div><div class="kpi-lbl">US Compact renewed — includes energy provisions</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>The Federated States of Micronesia (FSM) is the Pacific's most institutionally fragmented electricity sector: four states — Pohnpei, Chuuk, Yap, and Kosrae — each with constitutional authority over their own infrastructure, each with a separate state-owned utility, and each with independently managed grids separated by thousands of kilometres of Pacific Ocean. Combined installed capacity across all four states is approximately 30 MW; combined peak demand is approximately 18-22 MW. All four states are historically 100% diesel-dependent, though solar RE is advancing at different paces: Yap has the Pacific's most impressive state-level RE achievement (ADB solar hybrid providing ~45% of generation); Pohnpei has 3 MW solar additions; Chuuk and Kosrae remain near-entirely diesel. Average electricity tariffs (~US$0.45-0.55/kWh) are among the Pacific's highest — a direct function of fuel import cost on extremely remote islands. The <strong>US Compact of Free Association (COFA)</strong>, renewed for 20 years in 2023, provides FSM with approximately US$130-150M/year in US grant assistance — the primary source of capital for infrastructure investment including electricity. The 2023 COFA renewal explicitly includes energy development provisions, committing US support for FSM's RE transition.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">FSM combined generation mix (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel (all four states; Chuuk + Kosrae ~100%)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Yap ~45% + Pohnpei ~15%)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Other (hydro, Pohnpei small run-of-river)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~22%</div>
+            <div class="chart-center-lbl">combined RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Note: Combined estimate across all 4 states. Yap is the highest RE state (~45%); Chuuk near-zero. Source: ADB Pacific Energy 2025; IRENA; USAID Pacific; COFA Implementation Unit</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Yap: the FSM RE success story</strong>Yap State (~11,000 people on main Yap islands; additional atolls of Ulithi, Woleai, Fais, and others) has become the FSM's RE leader through the ADB-financed <strong>Yap State Public Service Corporation (YSPSC) Solar Hybrid Project</strong> (3 MW solar + 1.5 MW BESS, Colonia area, commissioned 2018). The project provides approximately 45% of Yap's electricity from solar — one of the Pacific's highest penetration rates for an isolated mini-grid of this scale (~8 MW peak demand). YSPSC's operational learning since 2018: solar + BESS can displace diesel at up to 60% instantaneous penetration without frequency instability; night demand (~5 MW) is met by diesel with BESS stabilisation; solar BESS extends diesel engine life (fewer start cycles). The YSPSC model is now being replicated: Phase 2 (additional 2 MW solar + 1 MW BESS) is under procurement. Yap's outer atolls (Ulithi, Woleai) are served by separate diesel mini-grids with partial solar SHS additions from USAID Pacific programme.</div>
+        <div class="stat-item"><strong>Chuuk: the FSM governance failure</strong>Chuuk State (~50,000 people, FSM's most populous state, headquartered at Weno on Chuuk Lagoon — the lagoon contains some of the world's best WWII wreck diving) has the Pacific's most dysfunctional state utility: Chuuk Public Utilities Corporation (CPUC). CPUC's problems: chronic inability to pay for diesel fuel (billing collection ~50-60%, technically below cost of service); aging diesel plant in poor maintenance condition (frequent forced outages, 8-12 hours/day service common); tariff arrears owed by Chuuk State Government itself (the largest delinquent customer); financial insolvency requiring annual FSM national government emergency support. Solar investment in Chuuk: extremely limited — donors have been reluctant to commit RE capital to CPUC given the governance failure risk of deploying equipment that may be poorly maintained or revenue not captured. A USAID-supported CPUC institutional reform programme (2021-2025) has had limited success. The Chuuk independence referendum movement (periodic calls for Chuuk to leave the FSM federation) creates further investor uncertainty.</div>
+        <div class="stat-item"><strong>Pohnpei: FSM's administrative centre, moderate RE progress</strong>Pohnpei State (~36,000 people; Palikir is the FSM national capital, Kolonia the state commercial centre) is served by the Pohnpei Public Utilities Corporation (PPUC). PPUC has better governance than CPUC: billing collection ~75-80%, functional tariff structure, basic financial reporting. Pohnpei has a small run-of-river hydro resource (Nanpil River, ~300 kW, intermittent) and 3 MW of solar additions (ADB, 2020-2022). Solar penetration: ~15% of annual generation. PPUC's grid peak demand: ~8-10 MW. Additional solar planned (ADB Phase 2, 2 MW + BESS 1 MW, tender 2025). Pohnpei's tropical climate (one of the world's highest annual rainfall sites — Mwand area records 7,600+ mm/year) means solar irradiance is lower than elsewhere in Micronesia — but still commercially viable at current diesel tariffs (~US$0.48/kWh).</div>
+        <div class="stat-item"><strong>COFA 2023: energy provisions and strategic implications</strong>The Compact of Free Association renewal (signed 2023, effective October 2023) provides FSM with ~US$130-150M/year in US federal grants for 20 years (~US$2.6-3.0B total). The 2023 COFA includes a new "Compact Infrastructure Fund" with US$40M/year directed toward infrastructure including energy — a significant increase from the original COFA (2004). COFA energy provisions: FSM must develop energy sector master plans by 2025; US will provide technical assistance for RE procurement; specific US$80M allocation for energy infrastructure over the 20-year Compact. The COFA energy provisions reflect US strategic interest in reducing FSM's energy vulnerability (which creates dependence on China-supplied diesel and makes FSM more susceptible to Chinese infrastructure diplomacy). The geopolitical dimension of COFA energy investment is explicit: US development financing for FSM energy is partly a counter to Chinese Belt and Road infrastructure offers.</div>
+        <div class="stat-item"><strong>Kosrae: FSM's smallest, most isolated state</strong>Kosrae State (~6,500 people, a single volcanic island 3,500 km from Honolulu and 4,000 km from Brisbane) is served by KAJUR (Kosrae Utilities Authority), operating a ~3 MW diesel grid with 8-16 hours/day service. Kosrae has no operational RE beyond minor rooftop solar SHS. KAJUR's governance is relatively functional for FSM but its scale (3 MW, 1,500 connections) makes it economically marginal. The nearest ADB Pacific programme diesel-to-solar project for Kosrae: procurement initiated 2024, 1 MW solar + 500 kWh BESS, expected commissioning 2026. When commissioned, this would provide ~30-35% of Kosrae's electricity from solar — the island's first significant RE addition. Kosrae's extreme isolation means all equipment must arrive by interisland cargo vessel from Pohnpei (~1,000 km, monthly service) — equipment procurement and logistics add ~20-25% to project cost vs. a comparable mainland site.</distant></div>
+      </div>
+    </div>
+
+    <h2>Four Utilities, Four Trajectories</h2>
+    <p>FSM's constitutional design — giving each state authority over its own infrastructure — has produced starkly different electricity outcomes from the same national policy context:</p>
+    <ul>
+      <li><strong>Yap (~45% RE, functional governance):</strong> Small population, YSPSC management continuity, ADB partnership since 2010, functional tariff collection. Model for Micronesia.</li>
+      <li><strong>Pohnpei (~18% RE, improving governance):</strong> Largest economy, better baseline governance, PPUC leadership improvement, RE programme advancing. On track for 30-35% RE by 2028.</li>
+      <li><strong>Kosrae (~3% RE, adequate governance):</strong> Isolated, small, limited resources but functional governance. First solar project incoming 2026.</li>
+      <li><strong>Chuuk (~3% RE, governance failure):</strong> Most populous, worst governance, donor hesitancy. Without CPUC reform, Chuuk cannot absorb RE investment sustainably — donor capital invested in Chuuk without governance preconditions will be wasted.</li>
+    </ul>
+    <p>The four-state divergence creates an uncomfortable policy choice for FSM national government and its COFA-funded donors: should RE investment follow readiness (directing capital to Yap and Pohnpei where it will be well-used) or equity (directing capital to Chuuk where need is highest but absorption capacity is lowest)?</p>
+
+    <div class="callout">
+      FSM's energy sector is four simultaneous stories in one country. Yap is a Pacific RE success; Chuuk is a utility governance failure that undermines donor confidence in the entire FSM energy programme. The COFA 2023 energy provisions create a genuine opportunity to accelerate RE across all four states — but only if the US and ADB explicitly condition Chuuk RE investment on CPUC institutional reform milestones rather than deploying capital that will be poorly maintained and revenue not captured.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Yap's YSPSC solar hybrid project — providing ~45% of Yap's electricity from solar on a ~8 MW peak demand mini-grid since 2018 — is the Pacific's best operational proof-of-concept for solar + BESS at micro-state scale, and its performance data (frequency records, diesel displacement, O&amp;M cost history) should be the reference dataset for every Pacific island considering solar hybrid at 5-15 MW scale, because it answers the operational questions that smaller pilot projects cannot.</strong> At 8 MW peak demand and 45% solar penetration, Yap's grid is large enough to exhibit the real frequency management and dispatch challenges of high-RE mini-grids (variable solar ramps, BESS charging/discharging optimization, diesel engine cycling) without being too large to manage manually during BESS outages. The 6-year operational track record (2018-2024) covers two typhoon seasons, El Niño and La Niña cycles, and a pandemic — giving the data temporal validity that 1-2 year pilot projects cannot provide.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Chuuk's CPUC utility governance failure — where billing collection of ~50-60%, government arrears, and aging plant maintenance have produced chronic 8-12 hour daily outages for FSM's most populous state — demonstrates that RE technology and financing are irrelevant when the institutional prerequisite (a utility capable of operating equipment and collecting revenue) is absent, and that the US, ADB, and WB must make Chuuk RE investment conditional on specific CPUC governance milestones rather than responding to political pressure to deploy capital equitably across all four states.</strong> Governance conditionality is politically uncomfortable in a development context — it appears to punish the population for its government's failures. But unconditional RE investment in Chuuk without addressing CPUC's structural problems (billing, maintenance, government arrears) would produce assets that degrade within 5 years and cannot be sustained without continued donor subsidies. The precedent for this conditionality exists in FSM: ADB conditioned the Yap Phase 2 solar expansion on YSPSC achieving specific O&amp;M performance standards from Phase 1 — a model transferable to Chuuk.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The COFA 2023 energy provisions — US$80M for FSM energy infrastructure over 20 years, with conditionality on master planning and technical assistance — are the most significant external commitment to FSM's energy transition ever made, and FSM's government should use the first 3 years of the new Compact to develop credible state-level energy master plans that reflect the four utilities' different readiness levels and form the basis for sequenced COFA energy investments rather than equal four-state allocation.</strong> An equal four-state energy investment strategy (US$20M per state) would give Chuuk capital it cannot absorb well and underfund Yap and Pohnpei where investment has demonstrated returns. A readiness-sequenced strategy (40% Pohnpei, 30% Yap, 20% Kosrae, 10% Chuuk conditioned on reform) would produce better energy outcomes but requires FSM national government to make a difficult political choice about differential state treatment. The US Embassy in Pohnpei and USAID Pacific have influence over this allocation decision through COFA implementation guidance — they should use it to require readiness-based sequencing.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>FSM's extreme dispersion — four state capitals separated by up to 2,700 km of Pacific Ocean, with each requiring independent logistics, procurement, and O&amp;M for energy infrastructure — creates a structural cost multiplier that makes Pacific standard project costs inapplicable: FSM energy projects consistently cost 30-50% more per MW than comparable Fiji or Samoa projects due to freight, logistics staging, and specialist technician mobilisation from Honolulu or Guam.</strong> This FSM logistics premium — rarely explicitly acknowledged in project appraisals — means that standard Pacific SIDS cost benchmarks underestimate FSM project budgets. ADB and WB project cost estimations for FSM should use a minimum 35% logistics premium on equipment and civil works costs vs. the Fiji/Samoa reference price. Projects that appear marginal at standard Pacific SIDS prices may be economically attractive at FSM-adjusted prices because the high diesel tariff (~US$0.50/kWh) makes the avoided cost higher per kWh than in less remote Pacific states.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>FSM's outer atolls — the Mortlock Islands, Hall Islands, and Western Islands of Chuuk; Ulithi, Woleai, and Fais in Yap; and isolated atolls in Pohnpei and Kosrae states — face the same energy poverty as Pacific SIDS outer islands everywhere, but their COFA-connected status means they can access USAID and US Department of Interior funding windows that non-COFA Pacific states cannot, creating an opportunity for accelerated solar SHS rollout that has not been fully captured because COFA implementation prioritises formal grid infrastructure over off-grid access.</strong> USAID Pacific's "Off-Grid Clean Energy Facility" (OGCEF) has deployed SHS across parts of FSM but reaches only a fraction of outer atoll communities. The US Department of Interior's Office of Insular Affairs provides separate grant funding for US-affiliated territories and freely associated states — a distinct window from COFA that could fund outer atoll SHS at scale if FSM states submitted coordinated outer atoll electrification proposals through the OIA programme.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      PPUC, CPUC, YSPSC, KAJUR — state utility annual reports (variable availability) ·
+      ADB — Pacific Energy Update 2025; Yap solar hybrid project docs ·
+      USAID Pacific — FSM energy programme ·
+      US Compact of Free Association (COFA) — 2023 renewal text ·
+      US Department of Interior — Office of Insular Affairs FSM data ·
+      IRENA — Pacific energy statistics 2025 ·
+      UNFCCC — FSM NDC 2022 ·
+      World Bank — Pacific energy access ·
+      SOPAC/SPC — Micronesia energy data
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Federated States of Micronesia Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel (all four states; Chuuk + Kosrae ~100%)', 'Solar PV (Yap ~45% + Pohnpei ~15%)', 'Other (hydro, Pohnpei small run-of-river)'],
+    datasets: [{ data: [76, 21, 3], backgroundColor: ['#8B4513','#FFD700','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

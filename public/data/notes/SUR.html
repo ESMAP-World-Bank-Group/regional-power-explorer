@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suriname Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Suriname</div>
+    <div class="doc-sub">~540 MW installed · Afobaka hydro 189 MW (Suriname River) + HFO/diesel · EBS utility (state) · TotalEnergies Block 58 offshore (FID 2025-26) · Staatsolie onshore oil · Very low subsidised tariffs · Interior diesel mini-grids · ~620,000 population · Highly subsidised energy economy under fiscal pressure</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~540 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">189 MW</div><div class="kpi-lbl">Afobaka hydro (Brokopondo reservoir)</div></div>
+    <div class="kpi"><div class="kpi-val">Block 58</div><div class="kpi-lbl">TotalEnergies offshore: ~700 MMboe (FID 2025-26)</div></div>
+    <div class="kpi"><div class="kpi-val">~35%</div><div class="kpi-lbl">RE target 2035 (solar + hydro)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Suriname's electricity system is anchored by the <strong>Afobaka Hydroelectric Dam</strong> (189 MW) on the Suriname River — built in the 1960s by Alcoa to power an aluminum smelter (SURALCO) that closed in 2015. Since the smelter's closure, the hydro capacity freed up from industrial use has been redirected to the national grid, making Suriname's coastal electricity ~40% hydro-powered. The remainder of the coastal grid (Paramaribo and its environs, ~400,000 people) runs on heavy fuel oil (HFO) plants operated by <strong>EBS (Energie Bedrijven Suriname)</strong>, the state utility. Interior communities are served by standalone diesel generators and scattered solar home systems. Suriname's electricity tariffs are among the region's most subsidised — household rates equivalent to ~US$0.05-0.08/kWh — creating fiscal pressure that has been worsened by COVID-19 and the high cost of HFO imports. The upcoming transformative event: <strong>TotalEnergies' Block 58 offshore oil development</strong> (Sapakara and Kwaskwasi fields, ~700 MMboe, FID expected 2025-26), which is expected to generate oil revenues comparable to Guyana's Stabroek development and would provide associated gas for domestic power generation.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Afobaka dam, Suriname River)</span>
+          <span><span class="lsq" style="background:#8B4513"></span>Heavy fuel oil (EBS plants, Paramaribo)</span>
+          <span><span class="lsq" style="background:#555"></span>Diesel (interior communities)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (growing)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~40%</div>
+            <div class="chart-center-lbl">hydro 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EBS annual report 2024; Suriname Energy Authority (EAS); WB Suriname energy data; IRENA; IDB project documentation</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Afobaka dam: hydro without the smelter</strong>Brokopondo reservoir / Afobaka dam (Suriname River, central Suriname); 189 MW installed; constructed 1961-64 by Alcoa to power the SURALCO aluminum smelter at Paranam; reservoir flooded ~1,500 km² of tropical forest and displaced ~6,000 Saramaka Maroon people (Inter-American Court of Human Rights judgment, 2007). After SURALCO closed in 2015, EBS acquired the plant; full 189 MW now available for national grid. Hydro generation: ~900 GWh/year. Seasonal variability: Suriname River flow peaks April-May (wet season); lower output January-March.</div>
+        <div class="stat-item"><strong>TotalEnergies Block 58: the coming transformation</strong>TotalEnergies (40% operator) + Apache (40%) + Staatsolie (20%); Sapakara West and Kwaskwasi discoveries — combined ~700 MMboe recoverable; drilling campaign 2020-2022 confirmed commercial viability; FID (Final Investment Decision) expected 2025-26 after oil price uncertainty delayed; first production target: 2028-30; plateau: 200,000+ bbl/day; government revenues: US$500M-1B+/year at US$70/bbl. Associated gas will be available for domestic power generation via a gas-to-shore arrangement similar to Guyana's — potentially replacing all HFO generation on the coastal grid.</div>
+        <div class="stat-item"><strong>EBS: heavily subsidised state utility</strong>Energie Bedrijven Suriname; state monopoly; ~230 MW HFO thermal capacity (Saramacca and Staatsolie plants, Paramaribo North); ~40,000 registered customers; billing and collection historically poor; tariff subsidies equivalent to 2-3% of GDP annually; reform attempts (IMF-conditioned tariff increases) politically contentious; 2021 IMF Stand-By Arrangement (SBA) included electricity sector reform conditionality — partial tariff increases implemented. Without TotalEnergies revenues, Suriname's electricity subsidy burden is fiscally unsustainable at current HFO import prices.</div>
+        <div class="stat-item"><strong>Interior: diesel dependency + gold mining</strong>Suriname's vast interior (80%+ of territory, primarily tropical forest) is home to ~50,000 Maroon and Amerindian communities plus significant informal gold mining (artisanal and small-scale). Interior communities served by EBS diesel mini-grids (expensive, unreliable) and SHS. Gold mining operations (largely illegal, driven by Brazilian garimpeiros) use diesel generators — a major informal energy market outside state data. The interior diesel economy consumes an estimated 50-70 million litres/year of diesel for gold mining alone.</div>
+        <div class="stat-item"><strong>Fiscal crisis and energy reform</strong>Suriname entered debt restructuring in 2020-21 (COVID + commodity price shock + fiscal mismanagement under Bouterse government). IMF SBA required electricity tariff reform, EBS restructuring, and fuel subsidy reduction. New government (Santokhi, elected 2020) implemented partial reforms — but popular resistance limits scope. TotalEnergies revenues, if materialising on schedule, would relieve fiscal pressure and fund energy infrastructure investment — making Block 58 timeline the most consequential variable in Suriname's energy policy outlook.</div>
+      </div>
+    </div>
+
+    <h2>A Guyana Mirror: Oil Revenues and Energy Transformation</h2>
+    <p>Suriname and Guyana share almost identical structural energy challenges and opportunities — both are small Amazonian coastal states with HFO-dependent utilities, interior diesel mini-grids, highly subsidised tariffs, and pending offshore oil windfalls:</p>
+    <ul>
+      <li><strong>The Block 58 timing problem:</strong> TotalEnergies' FID was expected in 2022, then 2023, then 2024, now 2025-26 — repeatedly delayed by oil price volatility, cost inflation in offshore development, and Suriname's fiscal instability (which affects government co-investment capacity via Staatsolie's 20% stake). Each year of delay costs Suriname US$300-500M in foregone revenues. By comparison, Guyana's Stabroek came online in 2019 — five years ahead of Suriname's equivalent. The gap between neighboring Guyana's already-flowing oil revenues and Suriname's still-pending FID is creating a visible divergence in economic development trajectories.</li>
+      <li><strong>Associated gas for power:</strong> Like Guyana's Gas-to-Shore, Block 58's associated gas could feed a new CCGT plant in Suriname — potentially 200-300 MW — replacing all HFO generation on the coastal grid. The gas-to-power project timeline depends entirely on Block 58 FID and first production. Planning is underway (Staatsolie leading); a gas pipeline route from the offshore development to the Paranam industrial zone (near Afobaka) has been identified.</li>
+      <li><strong>Saramaka legacy and forest protection:</strong> The Afobaka reservoir flooded 1,500 km² of Saramaka Maroon territory without adequate consent or compensation — a human rights violation acknowledged by the Inter-American Court. The community impact of Block 58 development and associated gas infrastructure must be managed with explicit free, prior and informed consent (FPIC) processes, informed by the Afobaka precedent. Suriname's credibility as a REDD+ partner (significant REDD+ revenues from Norway) depends on maintaining forest protection standards even as oil development proceeds inland.</li>
+    </ul>
+
+    <div class="callout">
+      Suriname is Guyana's slightly smaller, slightly later twin: both are small Amazonian SIDS with HFO-dependent utilities, highly subsidised tariffs, interior diesel mini-grids, and offshore oil windfalls that will transform their fiscal landscapes. Guyana's Block 1 (Stabroek) revenues are already flowing; Suriname's Block 58 revenues are 3-5 years behind. The lesson from Guyana for Suriname is clear: oil revenues are necessary but not sufficient for electricity sector transformation — institutional capacity (utility management, project procurement, regulatory governance) must be built simultaneously with fiscal capacity, or the electricity sector reforms will lag the oil revenues by a decade.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Suriname's Afobaka hydro — built to power an aluminum smelter that closed in 2015 — is the Caribbean's most striking example of industrial energy infrastructure being repurposed for public electricity service, and its 189 MW is the most valuable single energy asset in Suriname's grid despite the profound environmental and social harm caused by the reservoir's construction.</strong> The Brokopondo reservoir's ecological and human cost (1,500 km² flooded, 6,000 Saramaka displaced, IACHR judgment) is an unresolved justice issue that predates Suriname's independence. The energy asset cannot be undone; its value for current and future Surinamese is real. Managing this dual reality — using the dam while acknowledging its harm and pursuing Saramaka community reparations — is a governance challenge with no clean resolution.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The Block 58 FID timeline is the single most consequential variable for every dimension of Suriname's energy policy for the next decade — more important than any RE target, utility reform, or tariff adjustment — because without offshore oil revenues, Suriname cannot fund EBS recapitalisation, gas-to-power infrastructure, solar rollout, or interior electrification at meaningful scale.</strong> Suriname's government has correctly identified energy sector reform as a priority; its IMF programme has reasonable conditionality. But reform without revenue is politically impossible — tariff increases that hurt consumers cannot be sustained without visible service quality improvement, which requires investment, which requires capital. Block 58 is the capital source. Its delay is an energy policy delay.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Suriname's interior gold mining economy — consuming an estimated 50-70 million litres of diesel/year for artisanal gold processing — is an unacknowledged energy policy issue that represents both a significant source of mercury pollution (often associated with diesel-powered gold separation equipment) and an energy market that could be partially served by solar if regulatory frameworks permitted.</strong> Artisanal and small-scale gold mining (ASGM) in Suriname's interior employs tens of thousands of Brazilian and Surinamese miners and generates ~US$1B/year in informal gold exports. ASGM diesel consumption is almost entirely informal and untaxed. Solar-powered gold processing equipment (solar-diesel hybrid mills) exists commercially and would reduce ASGM diesel costs and mercury emissions. A Suriname ASGM clean energy programme — conditional on mercury-free processing commitments — would achieve energy, environment, and fiscal co-benefits.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Suriname's 35% RE target by 2035 — primarily solar and small hydro additions — is achievable technically and economically but depends critically on EBS tariff reform creating a viable PPA market for private RE developers, without which solar projects cannot obtain bankable revenue streams.</strong> At current subsidised EBS tariffs (~US$0.06/kWh equivalent), new solar projects at US$0.07-0.09/kWh PPA cost cannot be contracted profitably without government subsidy. Tariff reform to US$0.12-0.15/kWh (still below actual cost of HFO generation) would immediately make solar PPAs viable for private developers — potentially unlocking 50-100 MW of utility-scale solar investment without any public capital. The RE target and tariff reform are inseparable; one cannot be achieved without the other.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Suriname's unique ethnic and linguistic diversity — Dutch-speaking creole communities, Maroon forest communities, Amerindian villages, Javanese descendants, Hindustani diaspora — means that energy access and electricity service quality have strong equity dimensions that aggregate national statistics (92% urban access) systematically obscure.</strong> Maroon communities in the interior have dramatically lower electricity access quality than the Surinamese average; some remain entirely off-grid or dependent on EBS diesel mini-grids with 8-12 hours/day service. These are precisely the communities most affected by the Afobaka dam's construction and by the IACHR's unimplemented reparation orders. An energy equity lens — not just access rates but service quality and affordability by community type — is essential for honest assessment of Suriname's electricity sector.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EBS (Energie Bedrijven Suriname) — annual report 2024 ·
+      Suriname Energy Authority (EAS) — energy statistics ·
+      Staatsolie — annual report and Block 58 updates ·
+      TotalEnergies — Suriname Block 58 development ·
+      IMF — Suriname Article IV Consultation 2024 ·
+      World Bank — Suriname energy access project ·
+      IDB — Suriname energy sector ·
+      IRENA — Caribbean energy data 2025 ·
+      IACHR — Saramaka People vs. Suriname judgment (2007)
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Suriname Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro (Afobaka dam)', 'Heavy fuel oil (EBS, Paramaribo)', 'Diesel (interior communities)', 'Solar PV (growing)'],
+    datasets: [{ data: [40, 44, 11, 5], backgroundColor: ['#1B6CA8','#8B4513','#555','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afghanistan Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Afghanistan</div>
+    <div class="doc-sub">DABS state utility · ~250 MW domestic generation · ~800 MW imported · 1,500 MW demand · CASA-1000 transit · Taliban governance · Solar nascent</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~250 MW</div><div class="kpi-lbl">Domestic generation</div></div>
+    <div class="kpi"><div class="kpi-val">~800 MW</div><div class="kpi-lbl">Imported (4 countries)</div></div>
+    <div class="kpi"><div class="kpi-val">~1,500 MW</div><div class="kpi-lbl">Total demand</div></div>
+    <div class="kpi"><div class="kpi-val">~30%</div><div class="kpi-lbl">National electrification rate</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Electricity Supply Overview</h2>
+    <p>Afghanistan generates approximately <strong>250 MW domestically</strong> against a national demand of ~1,500 MW — meeting less than 17% of demand from its own generation. The remainder — roughly <strong>800 MW</strong> — is imported from <strong>Uzbekistan, Tajikistan, Turkmenistan, and Iran</strong> under bilateral energy agreements. This profound import dependency is both a reflection of decades of conflict-destroyed infrastructure and the current Taliban government's limited capacity to develop domestic generation. National electrification stands at approximately <strong>30%</strong> — among the lowest in Asia.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity supply sources (est. 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B3A5C"></span>Uzbekistan import</span>
+          <span><span class="lsq" style="background:#2E75B6"></span>Tajikistan import</span>
+          <span><span class="lsq" style="background:#5B9BD5"></span>Turkmenistan + Iran import</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Domestic hydro</span>
+          <span><span class="lsq" style="background:#C85020"></span>Domestic diesel/thermal</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar (nascent)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~1,050 MW</div>
+            <div class="chart-center-lbl">total supply</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Times of Central Asia; Norton Rose Fulbright Afghanistan Power Sector Guide Nov 2025; REGlobal</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Uzbekistan: largest supplier</strong>Agreements renewed through 2026; supplying 11 provinces including Kabul; Kabul capacity being increased to 1,500 MW under new 2025 agreements</div>
+        <div class="stat-item"><strong>Naglu HPP: ~100 MW</strong>Kabul River; Afghanistan's largest domestic hydro plant; ageing, rehabilitation needed; operated by DABS</div>
+        <div class="stat-item"><strong>Kajaki HPP: ~50 MW</strong>Helmand River; historically important; turbine upgrades partially completed; security constraints limit operation</div>
+        <div class="stat-item"><strong>CASA-1000</strong>Central Asia–South Asia electricity transmission project; 1,300 MW HVDC line from Kyrgyzstan + Tajikistan hydro → Afghanistan → Pakistan; construction ongoing; Afghanistan as transit country for 300 MW domestic offtake</div>
+        <div class="stat-item"><strong>New solar: 40 MW (Balkh + Nangarhar)</strong>Turkish companies; 2025 construction launch; first significant domestic solar capacity; DABS signed 228 MW total new generation agreements</div>
+      </div>
+    </div>
+
+    <h2>DABS &amp; Governance Under the Taliban</h2>
+    <p>The <strong>Da Afghanistan Breshna Sherkat (DABS)</strong> is Afghanistan's national utility, responsible for generation, transmission, and distribution. Operating under Taliban governance since August 2021, the sector has experienced both continuity (import agreements with Central Asian states maintained and expanded) and constraint (Western sanctions limiting technology imports and financing):</p>
+    <ul>
+      <li>DABS has signed agreements for 1,070 MW of new domestic generation projects, with 70% funded by foreign investors — primarily Turkish, Chinese, and Gulf-linked entities operating outside Western sanctions frameworks.</li>
+      <li>Kabul receives power principally from Uzbekistan; supply quality has improved under expanded agreements despite political isolation from Western donors.</li>
+      <li>Electricity tariff collection and payment to importing countries has been a persistent challenge; barter or commodity-linked payment arrangements have been used to maintain imports.</li>
+      <li>Norton Rose Fulbright's November 2025 Afghanistan Power Sector Guide describes a sector where investment opportunities exist but operate in an extremely high-risk environment lacking Western legal frameworks.</li>
+    </ul>
+
+    <div class="callout">
+      Afghanistan's electricity sector is shaped by a fundamental contradiction: the country has exceptional renewable energy resources — among the highest solar irradiance in Asia, significant wind potential, and several large river systems — yet generates only 250 MW domestically in a country of 40+ million. The barriers are not technical or economic but political: four decades of conflict, Taliban governance that excludes most Western finance, and governance so fragile that even functioning plants like Kajaki operate below capacity due to security constraints.
+    </div>
+
+    <h2>CASA-1000 — A Regional Game-Changer in Progress</h2>
+    <p>The <strong>Central Asia–South Asia Electricity Transmission and Trade project (CASA-1000)</strong> is the most significant energy infrastructure investment in Afghanistan's recent history:</p>
+    <ul>
+      <li>A 1,300 km HVDC transmission line carrying Kyrgyz and Tajik summer hydro surplus south through Afghanistan to Pakistan — where demand for cheap, reliable power is acute.</li>
+      <li>Afghanistan benefits both as a transit country (earning transit fees) and as a direct consumer (300 MW domestic offtake at Kabul and Peshawar-adjacent substations).</li>
+      <li>Construction was underway before the August 2021 Taliban takeover; the project has continued under revised arrangements given its strategic importance to all parties.</li>
+      <li>When operational, CASA-1000 would reduce Afghanistan's import bill, provide a reliable additional supply source, and create a precedent for regional electricity trade that bypasses the bilateral fragility of current import arrangements.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Afghanistan's electricity sector is in a stable-but-fragile import dependency — not a development trajectory.</strong> Renewing Uzbek supply agreements each year and adding 40 MW of Turkish solar is a subsistence strategy, not a development path. Transformative change — building the 10+ GW of solar and wind that Afghanistan's geography permits — requires governance stability and financing access that the current Taliban government cannot provide.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>CASA-1000 is the single most important energy project for Afghanistan's near-term supply security.</strong> Adding 300 MW of reliable Central Asian hydro via HVDC at competitive prices would reduce Kabul's blackouts, lower generation costs, and reduce the political vulnerability of bilateral import agreements with individual states. Its completion — despite the political complexity — would be a rare piece of good news for Afghan energy consumers.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Afghanistan's solar potential is extraordinary and largely untapped.</strong> GHI of 5.5–6.5 kWh/m²/day across much of the country — comparable to the best solar sites in the Middle East — combined with near-zero competing land use makes utility-scale solar exceptionally cost-effective. The 40 MW Turkish project barely scratches this surface. If governance conditions improve, Afghanistan could plausibly reach 5–10 GW of solar within a decade.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Electrification at 30% reflects decades of conflict more than resource constraints.</strong> Afghanistan's rural population cannot be grid-electrified in the near term regardless of governance — the distances and terrain are too extreme. Off-grid solar home systems and mini-grids — the same technology that transformed rural Bangladesh and parts of Sub-Saharan Africa — are the realistic pathway for rural electrification. Donor programmes that survived the Taliban takeover (some UN and NGO programmes) have continued this work at small scale.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The Central Asian neighbours (Uzbekistan, Tajikistan) have stronger incentives to maintain electricity supply to Afghanistan than most geopolitical analyses acknowledge.</strong> Afghanistan pays (or barters) for electricity imports; Central Asian states earn hard currency or equivalent. The economic relationship is real and bilateral. This pragmatic energy trade has survived the Taliban takeover and multiple diplomatic crises — suggesting it functions as a floor of engagement that outlasts political turbulence.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Times of Central Asia — Afghanistan generates 250 MW, imports 800 MW ·
+      The Diplomat — Uzbekistan agrees to continue supplying Afghanistan (Nov 2025) ·
+      Norton Rose Fulbright — Afghanistan Power Sector Guide (November 2025) ·
+      REGlobal — Afghanistan Power Sector Update: outlook remains uncertain ·
+      Energy Central — Afghanistan's Renewable Energy Outlook ·
+      Times of Central Asia — Afghanistan extends electricity import agreement with Uzbekistan ·
+      Moore Global Afghanistan — Power Sector Overview ·
+      Tahlilroz — Electricity in Afghanistan: beacon of hope or continuation of dependence?
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Afghanistan Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Uzbekistan import', 'Tajikistan import', 'Turkmenistan + Iran import', 'Domestic hydro', 'Domestic diesel/thermal', 'Solar (nascent)'],
+    datasets: [{ data: [400, 200, 200, 130, 100, 20], backgroundColor: ['#1B3A5C','#2E75B6','#5B9BD5','#1E9AF5','#C85020','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pakistan Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Pakistan</div>
+    <div class="doc-sub">46.6 GW capacity · 34% utilisation · Rs 1.6 trillion circular debt · CPEC coal plants · WAPDA hydro · Tarbela · 88 IPPs · Load shedding crisis</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">46.6 GW</div><div class="kpi-lbl">Installed capacity (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">34%</div><div class="kpi-lbl">Average plant utilisation</div></div>
+    <div class="kpi"><div class="kpi-val">Rs 1.6 T</div><div class="kpi-lbl">Circular debt (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">4,888 MW</div><div class="kpi-lbl">Tarbela HPP (WAPDA)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Pakistan has <strong>46.6 GW</strong> of installed generation capacity — far exceeding actual demand, which it serves at a utilisation rate of only <strong>34%</strong>. The mix comprises: thermal (gas + coal + oil) ~28.8 GW, hydro ~11.5 GW, nuclear 3.6 GW, wind ~1.8 GW, solar ~0.78 GW utility-scale (plus ~2.5 GW net metering), and bagasse ~249 MW. This overcapacity is not a strength — it is the structural root of Pakistan's <strong>circular debt crisis</strong>, as consumers pay for idle capacity through fixed capacity charges embedded in tariffs, creating unaffordable electricity bills that suppress demand, increase losses, and feed more debt.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9A7040"></span>Gas thermal</span>
+          <span><span class="lsq" style="background:#3A3A3A"></span>Coal (incl. CPEC)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Oil / HFO</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro (WAPDA + IPPs)</span>
+          <span><span class="lsq" style="background:#A050D0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind + Solar + Bagasse</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">46.6 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Pakistan Electricity Review 2025; NEPRA; Express Tribune</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Tarbela HPP: 4,888 MW</strong>Indus River, Khyber Pakhtunkhwa; WAPDA-operated; largest hydro plant in Pakistan; Tarbela 4th Extension adds ~1,410 MW more; seasonal river-dependent</div>
+        <div class="stat-item"><strong>Mangla HPP: 1,150 MW</strong>Jhelum River; WAPDA; second-largest hydro; hydropower totals ~11.5 GW across WAPDA + private hydro IPPs</div>
+        <div class="stat-item"><strong>CPEC coal plants</strong>Sahiwal CCPP (1,320 MW), Hub Power (1,320 MW), Jamshoro coal (1,320 MW); Chinese-financed; expensive capacity payments owed in USD; central to circular debt</div>
+        <div class="stat-item"><strong>Nuclear: 3.6 GW</strong>KANUPP-1 (137 MW), Chashma 1–4, KANUPP-2, KANUPP-3 (1,100 MW each); Chinese-built VVER-1000; baseload; expanding</div>
+        <div class="stat-item"><strong>88 operational IPPs: 20.7 GW</strong>Private generators; entitled to capacity payments regardless of dispatch; capacity payments ~60% of total electricity bills</div>
+      </div>
+    </div>
+
+    <h2>The Circular Debt Crisis</h2>
+    <p>Pakistan's <strong>circular debt</strong> — the accumulated unpaid obligations flowing between generators, transmission, distributors (DISCOs), and the government — reached <strong>Rs 2.4 trillion (~$8.6B) in FY2024</strong> before being reduced to Rs 1.614 trillion by August 2025 through government intervention and tariff increases. The mechanism:</p>
+    <ul>
+      <li><strong>DISCOs under-recover:</strong> State distribution companies (10 DISCOs) report losses exceeding 20% of power supplied — a combination of technical losses, theft, and non-collection. Only 40–50% of billing is recovered in the worst-performing DISCOs (KE/tribal areas).</li>
+      <li><strong>Capacity payments cascade:</strong> IPPs receive contractual capacity payments regardless of actual generation. Pakistan pays for ~46 GW at 34% utilisation — effectively paying for 30 GW of idle capacity. These payments are mostly USD-denominated, exposing Pakistan to PKR depreciation.</li>
+      <li><strong>CPEC dimension:</strong> Coal plants financed under CPEC have expensive USD-denominated capacity payments (Return on Equity guaranteed at 17% in USD); Sahiwal and Hub Coal are among the most costly per kWh in the system when dispatched at low capacity factors.</li>
+      <li><strong>IMF conditionality:</strong> Successive IMF programmes have required tariff hikes and DISCOM reform as conditions; politically painful, only partially implemented.</li>
+    </ul>
+
+    <div class="callout">
+      Pakistan has built too much expensive thermal capacity relative to its actual demand and collection ability. The result is a perverse equilibrium: electricity is unaffordable because of idle plant charges, high bills reduce consumption and increase non-payment, which reduces DISCO revenues, which increases circular debt, which requires more tariff hikes, which further reduce affordability. Breaking this cycle requires simultaneous demand growth, DISCOM reform, early IPP contract renegotiation, and targeted subsidy redesign — all politically difficult simultaneously.
+    </div>
+
+    <h2>Sector Structure</h2>
+    <ul>
+      <li><strong>NEPRA (National Electric Power Regulatory Authority):</strong> Regulator; sets tariffs; technically competent but constrained by government interference in pricing decisions.</li>
+      <li><strong>WAPDA (Water and Power Development Authority):</strong> Manages hydro generation and the national transmission grid (NTDC); Pakistan's most capable power institution.</li>
+      <li><strong>NTDC (National Transmission and Despatch Company):</strong> WAPDA subsidiary; operates the 500 kV national grid and dispatch.</li>
+      <li><strong>CPPA-G (Central Power Purchasing Agency):</strong> Single buyer; purchases electricity from all generators and sells to DISCOs; the entity where circular debt accumulates.</li>
+      <li><strong>10 DISCOs:</strong> State distribution companies (LESCO, MEPCO, IESCO, FESCO, QESCO, HESCO, PESCO, SEPCO, TESCO, GEPCO); variable performance; chronic loss-making.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Pakistan's electricity crisis is primarily a financial and institutional crisis, not a capacity crisis.</strong> With 46.6 GW installed against peak demand of ~26–28 GW, Pakistan has ample capacity. The problem is that the system cannot collect enough revenue to pay for capacity it has contracted, creating a debt spiral. Adding more capacity — without fixing the revenue collection problem — makes the crisis worse, not better.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Renegotiating CPEC IPP capacity contracts is the single most important near-term financial action in Pakistan's power sector.</strong> The USD-denominated returns guaranteed to Chinese-financed coal IPPs (Sahiwal, Hub, Jamshoro) are the most expensive obligations in the system. The government has begun renegotiations; success would reduce capacity payments by an estimated Rs 200–300 billion annually, meaningfully shrinking circular debt — but requires delicate China–Pakistan diplomatic management.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>WAPDA's hydropower fleet is Pakistan's most valuable and under-leveraged asset.</strong> Tarbela (4,888 MW), Mangla (1,150 MW), and the Dasu HPP under construction (4,320 MW) — combined with the Indus River's ~60 GW total hydro potential — give Pakistan a natural renewable baseload resource that is far cheaper than CPEC coal. Redirecting investment from thermal capacity to hydro would reduce long-run generation costs and eliminate fuel import dependence for that portion of the fleet.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Distributed rooftop solar (~2.5 GW net metering) is growing fast and bypassing the DISCOM problem — with mixed results.</strong> Affluent urban consumers installing solar and disconnecting from the grid reduce DISCOM revenues while fixed costs remain, shifting the burden onto poorer consumers who cannot afford solar. Net metering is simultaneously a success (affordable clean energy) and a distributional policy challenge requiring a rethink of fixed-charge vs. volumetric tariff structures.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Pakistan's water-energy nexus is the country's most acute long-term energy security risk.</strong> The Indus River system — which supplies both agriculture (90% of water use) and hydropower — is fed by Himalayan glaciers that are projected to lose 36–65% of volume by 2100 under 2°C warming. Reduced glacier melt will eventually reduce Indus flows, threatening both food security and hydro generation simultaneously. No amount of tariff reform or IPP renegotiation addresses this structural risk.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Pakistan Electricity Review 2025 (Renewables First) ·
+      Express Tribune — Pakistan's power capacity hits 46,605 MW ·
+      NEPRA — State of Industry Report ·
+      IEEFA — Expensive underutilised Jamshoro coal plant exposes overcapacity ·
+      PIDE — Circular debt and electricity tariffs ·
+      Pakistan Today — Circular debt reduced to Rs 1.614 trillion (Aug 2025) ·
+      Medium / Shahid H. Raja — Pakistan circular debt explainer ·
+      World Bank — Pakistan Energy Sector Assessment
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Pakistan Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Gas thermal', 'Coal (incl. CPEC)', 'Oil / HFO', 'Hydro', 'Nuclear', 'Wind + Solar + Bagasse'],
+    datasets: [{ data: [12800, 8600, 7366, 11519, 3620, 2695], backgroundColor: ['#9A7040','#3A3A3A','#C85020','#1E9AF5','#A050D0','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

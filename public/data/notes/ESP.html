@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spain Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Spain</div>
+    <div class="doc-sub">142.5 GW installed (2025) · RE 55.5% generation · Wind #1 technology · Solar PV leads on capacity (31.7 GW) · 76.8% emission-free 2024 · Nuclear phase-out 2027–2035 · 81% RE target 2030 · REE · Iberdrola</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">142.5 GW</div><div class="kpi-lbl">Total installed capacity (end 2025)</div></div>
+    <div class="kpi"><div class="kpi-val">55.5%</div><div class="kpi-lbl">Renewable electricity share (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">31.7 GW</div><div class="kpi-lbl">Solar PV — leading technology by capacity</div></div>
+    <div class="kpi"><div class="kpi-val">81%</div><div class="kpi-lbl">RE electricity target 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Spain is Europe's fastest-growing large-scale renewable energy market, reaching <strong>55.5% renewable electricity generation in 2025</strong> (56.6% including estimated self-consumption). Wind leads the generation mix for the third consecutive year at 21.6%, followed by nuclear (19%), solar PV (18.4%), combined cycle gas (16.8%), and hydro (12.4%). In 2025, Spain added <strong>10 GW of new renewable capacity</strong> — the highest annual addition ever — bringing total installed capacity to 142.5 GW (7.3% increase). Solar PV surpassed wind on installed capacity for the first time in 2024 (31.7 GW solar vs. ~30 GW wind), driven by a utility-scale solar boom in Extremadura, Castilla-La Mancha, Aragón, and Murcia. Spain's emission-free electricity share (including nuclear) reached <strong>76.8% in 2024</strong>. The target is <strong>81% renewable by 2030</strong> with 179 GW of renewable capacity.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore)</span>
+          <span><span class="lsq" style="background:#9B59B6"></span>Nuclear (7 reactors, phase-out 2027–35)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#C85020"></span>Combined cycle gas</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Other RE (biomass, CSP, wind offshore)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">55.5%</div>
+            <div class="chart-center-lbl">renewable 2025</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Red Eléctrica de España (REE) — Spanish Electricity System 2025; Ember Spain; Statista; SOFAMEL</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>REE (Red Eléctrica de España) — TSO + data</strong>State-linked TSO; operates 44,000 km of high-voltage grid; transparent real-time data portal (esios.ree.es); publishes annual electricity system reports; Spain is a peninsula — only weak interconnection to France (3 GW) and Portugal (MIBEL market coupling); effectively an electricity island within Europe</div>
+        <div class="stat-item"><strong>Iberdrola — global RE giant, Spanish HQ</strong>World's largest wind energy company (onshore + offshore); 100+ GW global portfolio; heavy investor in UK (Scottish Power), US (Avangrid), Brazil, Mexico; growing offshore wind in Baltic and Atlantic; headquartered in Bilbao; significant Spanish solar and wind owner</div>
+        <div class="stat-item"><strong>Solar boom: 31.7 GW by 2024, +10 GW in 2025</strong>Ground-mounted utility-scale solar dominant; Extremadura, La Mancha, Murcia lead in installed GW; permitting relatively fast vs. northern Europe; strong irradiance (2,000–2,800 kWh/m²/year); Spain becoming Europe's solar manufacturing and project hub</div>
+        <div class="stat-item"><strong>Nuclear phase-out: 2027–2035 (7 reactors)</strong>Government-mandated staged closure of 7 reactors (7.4 GW); Almaraz 1 closing 2027, rest by 2035; RE growth must replace ~80 TWh/year of firm zero-carbon power; raises questions about winter adequacy when solar is low and wind is weak</div>
+        <div class="stat-item"><strong>Iberian Exception (2022–24): gas price decoupling</strong>EU granted Spain and Portugal temporary exemption from full European gas-linked electricity pricing during 2022-24 crisis; capped gas price at €50/MWh for electricity generation; lowered electricity bills significantly but also reduced renewable build incentive; expired 2024</div>
+      </div>
+    </div>
+
+    <h2>The Iberian Peninsula as a Renewable Energy Leader</h2>
+    <p>Spain and Portugal together form one of Europe's most advanced renewable electricity systems — and the most geographically isolated (the Pyrenees and Atlantic limit interconnection):</p>
+    <ul>
+      <li><strong>Best resources in Europe:</strong> Spain has Europe's best solar irradiance (mainland), excellent onshore wind (Galicia, Castilla y León, Navarra), and significant hydropower (Ebro, Tagus, Douro). Portugal complements with exceptional Atlantic wind. Together, the Iberian Peninsula can theoretically generate 100%+ of its electricity from renewables on most days of the year.</li>
+      <li><strong>The interconnection bottleneck:</strong> Only ~3 GW of France-Spain interconnection exists (vs. 100+ GW of Iberian generation potential). This means Iberian RE surplus cannot easily be exported to Central Europe during peak generation periods — driving negative prices, curtailment, and lost economic value. The EU Mid-Continental corridor planning (new France-Spain interconnections) targets 10% interconnection by 2030.</li>
+      <li><strong>Nuclear phase-out risk:</strong> Spain is planning to close all 7 nuclear reactors (7.4 GW) between 2027 and 2035. This removes ~80 TWh/year of firm, zero-carbon generation. The replacement plan relies on RE buildout continuing at 10 GW/year pace — credible in annual average terms but creates winter adequacy concerns when solar is low.</li>
+      <li><strong>Green hydrogen export ambition:</strong> Spain and Portugal are positioning as Europe's primary green hydrogen exporters — via the H2Med "BarMar" pipeline (Barcelona-Marseille, ~2030) planned to carry 2 million tonnes/year of hydrogen to Central Europe. This requires 40+ GW of dedicated electrolysis capacity powered by surplus Iberian solar — a significant but achievable scale-up.</li>
+    </ul>
+
+    <div class="callout">
+      Spain's solar buildout — 31.7 GW installed with 10 GW added in a single year — is the fastest large-scale solar deployment in European history and represents what happens when you combine excellent resources, competitive auctions, and functional permitting. The emerging challenge is no longer generation (Spain will have too much solar midday) but flexibility: storage, demand response, interconnection, and green hydrogen to absorb midday surplus and firm up evening and winter periods. Spain's next decade is about managing abundance, not scarcity.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Spain is demonstrating that 55%+ renewable electricity is achievable in a large economy with nuclear in the mix — and the trajectory toward 80% by 2030 is more credible than for any other major European country except the Nordic states.</strong> The combination of excellent solar and wind resources, functional auction mechanisms, large utilities with execution capability (Iberdrola, Endesa, Repsol RE), and a government committed to RE deployment creates the conditions for continued rapid scaling. The 2025 data (10 GW added) shows deployment accelerating, not decelerating — unusual in European context where grid congestion and supply chain constraints are slowing others.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The nuclear phase-out (2027–2035) is Spain's most consequential energy policy decision — and the adequacy risk it creates in winter is not yet fully addressed in system planning.</strong> 7.4 GW of nuclear provides ~80 TWh of firm generation annually — much of it in winter when solar output is 30-40% of summer peak. RE replacing this in annual average terms is straightforward. Replacing it in terms of firm winter capacity requires either 20–25 GW of battery storage (at current costs ~€30B), demand response, interconnection expansion, or retaining gas backup beyond 2035. Winter adequacy is Spain's unresolved system challenge.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Spain's weak interconnection to France (3 GW) is its most binding energy transition constraint — turning what should be Europe's premier RE exporter into an electricity island with chronic curtailment and negative price events.</strong> With 55% RE today and 80% targeted, Iberian RE surplus during solar midday and windy nights already exceeds local demand + export capacity. The result is curtailment (wasted clean energy) and negative price events that undermine investment economics. Every GW of new France-Spain interconnection is worth more to European energy transition than multiple GW of new generation — it allows Spanish solar to serve German demand and Norwegian hydro to firm Spanish evenings. The EU's failure to build this interconnection faster is a collective governance failure.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Iberdrola's global footprint — world's largest wind energy company — is Spain's most significant contribution to the global energy transition, exceeding even Spain's domestic RE buildout in total impact.</strong> Iberdrola owns and operates 100+ GW globally across 30+ countries. Its offshore wind investments in the UK, US, Baltic, and Atlantic have financed the development of supply chains, ports, and technology that benefit the entire global offshore industry. Spain's energy policy success is partly reflected in Iberdrola's global success — the company's commercial model was enabled by Spain's early RE auction framework in the 1990s-2000s.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The H2Med green hydrogen pipeline (Barcelona–Marseille) is the highest-value European energy infrastructure project not yet under construction — and Spain's most important contribution to European industrial decarbonisation.</strong> If completed by 2030 as planned, H2Med would allow surplus Iberian solar to be converted to hydrogen and piped to France, Germany, and Italy — decarbonising industrial users in the Rhine-Ruhr corridor that cannot electrify directly. The pipeline requires ~€3B investment and political coordination between Spain, Portugal, France, and Germany. The commercial model (who pays for the pipeline and the hydrogen at what price) has not been fully resolved — which is the risk to the 2030 timeline.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Red Eléctrica de España (REE) — Spanish Electricity System 2025 press release ·
+      REE — Renewable energies generated 56% of Spain's electricity mix in 2024 ·
+      REE — Installed capacity 2024 data ·
+      Ember — Spain country electricity data ·
+      SOFAMEL — Spain renewable leadership solar and wind 2025 ·
+      Invest in Spain (ICEX) — Renewable Energy sector guide ·
+      Strategic Energy Europe — Spain renewable solar wind 2024
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Spain Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Wind (onshore)', 'Nuclear (7 reactors, phase-out 2027–35)', 'Solar PV', 'Combined cycle gas', 'Hydropower', 'Other RE (biomass, CSP)'],
+    datasets: [{ data: [21.6, 19, 18.4, 16.8, 12.4, 11.8], backgroundColor: ['#6AB0DE','#9B59B6','#FFD700','#C85020','#1B6CA8','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed.toFixed(1)}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

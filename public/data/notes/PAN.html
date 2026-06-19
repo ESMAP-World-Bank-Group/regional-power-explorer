@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panama Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Panama</div>
+    <div class="doc-sub">SIEPAC southern anchor · ETESA transmission monopoly · 5.1 GW total · 73% renewable (2024) · AES hydro · Panama–Colombia interconnection planned</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~5.1 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">73%</div><div class="kpi-lbl">Renewable generation share (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">1.85 GW</div><div class="kpi-lbl">Hydro installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">6.91 TWh</div><div class="kpi-lbl">Hydro generation (2024)</div></div>
+  </div>
+
+  <div class="body">
+
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Panama is the largest electricity market in Central America by installed capacity, with approximately <strong>5.1 GW total</strong> — nearly double Costa Rica's. Hydropower remains the backbone at <strong>1.85 GW</strong> (36% of capacity), generating <strong>6.91 TWh in 2024</strong> (up from 6.06 TWh in 2023). Renewables accounted for <strong>73% of generation in 2024</strong>, though this share fluctuates significantly with hydrology — swinging between 45% and nearly 70% since 2019. Natural gas capacity has expanded substantially alongside hydro, providing firm dispatchable generation during dry-season hydro shortfalls. Solar and wind are growing but from a smaller base.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9A7040"></span>Natural gas / thermal</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#C85020"></span>Other thermal</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~5.1 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: IRENA Panama 2024; Climatescope 2025; ETESA PDP 2023–37; Enerdata</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>AES Panama — Changuinola: 231 MW</strong>Chiriquí province; AES-operated; largest single hydro plant; run-of-river with daily pondage on the Changuinola River</div>
+        <div class="stat-item"><strong>AES Panama — Estí: 120 MW</strong>Chiriquí River; run-of-river; AES-operated; part of the western hydro cluster alongside Bonyic (32 MW)</div>
+        <div class="stat-item"><strong>Bayano HPP: ~260 MW</strong>Bayano River (AES operated); Panama's oldest large hydro; reservoir-type; important for seasonal storage</div>
+        <div class="stat-item"><strong>Natural gas: ~1.8 GW</strong>Multiple CCGT and open-cycle plants; AES + other operators; Gas Natural Atlántico LNG terminal enables gas imports; dry-season backbone</div>
+        <div class="stat-item"><strong>Solar: ~700 MW</strong>Rapid growth 2020–2024 across Coclé, Herrera, and Los Santos provinces; private IPP driven; continues expanding</div>
+        <div class="stat-item"><strong>ETESA transmission:</strong> State monopoly on ~2,300 km of HV lines; SIEPAC southern terminus; planning 4% demand growth/year through 2037</div>
+      </div>
+    </div>
+
+    <h2>Market Structure</h2>
+    <p>Panama has the most commercially developed electricity market in Central America, with liberalised generation, a state transmission monopoly, and private distribution concessions:</p>
+    <ul>
+      <li><strong>ETESA (Empresa de Transmisión Eléctrica S.A.):</strong> State-owned; sole owner and operator of the national transmission system; manages Panama's SIEPAC border points with Costa Rica; publishes the 15-year Power Development Plan (PDP).</li>
+      <li><strong>ASEP (Autoridad Nacional de los Servicios Públicos):</strong> Multi-sector regulator including electricity; sets distribution tariffs; oversees concessions.</li>
+      <li><strong>CND (Centro Nacional de Despacho):</strong> System operator under ETESA; manages real-time dispatch and economic merit-order.</li>
+      <li><strong>AES Panama:</strong> Largest single generator; operates Changuinola, Estí, Bayano hydro plants plus gas peakers; US-listed AES Corporation subsidiary; has been in Panama since 1999.</li>
+      <li><strong>NATURGY / Gas Natural:</strong> Operates the Bahía Las Minas coastal gas plants; Gas Natural Atlántico operates the LNG regasification terminal at Colón (first in Central America).</li>
+      <li><strong>Distribution:</strong> EDEMET, EDECHI (western region), and Elektra Noreste (Naturgy) — all private concessions serving residential and commercial customers.</li>
+    </ul>
+
+    <div class="callout">
+      Panama's electricity sector is uniquely shaped by the Canal. The Panama Canal is a massive, non-negotiable electricity consumer — its locks, pumps, and locomotive systems demand reliable, continuous power. AES Panama's hydro plants supply much of the Canal's electricity; in severe droughts (as in 2023, when low Gatún Lake levels forced Canal transit restrictions), the energy system and the Canal's water system face linked stress simultaneously.
+    </div>
+
+    <h2>Strategic Crossroads — Colombia Interconnection &amp; Hub Ambitions</h2>
+    <p>Panama occupies the most strategically significant position in the SIEPAC system — it is the southern terminus, and the planned <strong>Panama–Colombia interconnection</strong> would extend regional integration into South America for the first time:</p>
+    <ul>
+      <li>The planned interconnection would traverse the Darién Gap via submarine cable or overland HVDC — technically challenging but strategically transformative: it would link SIEPAC to the Andean electricity market (Colombia, Ecuador, Peru).</li>
+      <li>Colombia's large hydro system and Panama's gas + hydro portfolio would provide natural balancing opportunities; estimated investment exceeds $1 billion.</li>
+      <li>ETESA's PDP 2023–37 explicitly includes the Colombia interconnection as a strategic priority, alongside a second SIEPAC circuit with Costa Rica.</li>
+      <li>As SIEPAC's southern gateway, Panama already earns transit revenues and system fees; the Colombia link would significantly increase this role.</li>
+    </ul>
+
+    <h2>Drought Vulnerability — The Canal Link</h2>
+    <p>Panama's 2023 drought underlined the structural coupling between the electricity system and the Canal:</p>
+    <ul>
+      <li>Low rainfall reduced Gatún Lake levels, forcing the Panama Canal Authority (ACP) to restrict vessel drafts and transit numbers — costing Panama an estimated $200M+ in lost Canal revenue.</li>
+      <li>Simultaneously, lower reservoir levels reduced hydro generation, increasing gas dispatch and electricity costs.</li>
+      <li>Both the Canal and the hydro system draw from the same watershed; climate-driven changes in rainfall patterns threaten both simultaneously.</li>
+      <li>ETESA's expansion plan addresses this by diversifying toward solar (less water-dependent) and maintaining gas capacity as a climate-resilient backup.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Panama's Panama–Colombia interconnection is the most strategically consequential pending energy infrastructure decision in Latin American integration.</strong> Linking SIEPAC to the Andean electricity market would create the first transcontinental power grid in the Americas. The economics are compelling — Colombia's hydro surplus in wet years could balance SIEPAC's drought periods — but Darién's geography, bilateral political alignment, and financing complexity have delayed the project for two decades. The next financing breakthrough will define whether this decade sees completion.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The Canal–electricity coupling is Panama's most distinctive and underappreciated energy security risk.</strong> No other country has its primary export revenue source (Canal tolls) directly linked to the same watershed that powers 36% of its electricity. Climate-driven rainfall variability simultaneously threatens Canal revenues and hydro generation — a dual fiscal and energy shock. Decoupling Panama's electricity system from rainfall dependence through solar, storage, and gas is both an energy and macroeconomic resilience priority.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Panama has Central America's most commercially mature electricity market — and its most complex governance.</strong> With ETESA, ASEP, CND, AES, NATURGY, and multiple distribution concessions, Panama's sector involves more sophisticated institutional actors than any other SIEPAC country. This complexity enables sophisticated PPAs and project financing — but also creates coordination challenges and regulatory disputes that slow new investment.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>AES Panama's dominant position in hydro is a concentration risk the sector needs to manage.</strong> AES operates Changuinola, Estí, Bayano, and several gas plants — giving a single foreign corporate entity disproportionate influence over Panama's generation stack. Diversifying the generator base through new IPP solar and wind entrants is strategically important for both competition and resilience.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Panama's LNG terminal at Colón is a regional asset whose value extends beyond Panama's own market.</strong> The Gas Natural Atlántico LNG terminal — Central America's first — gives Panama the ability to import gas at international spot prices and distribute it to thermal generators. As regional gas demand grows and domestic reserves decline in neighbouring countries, Panama's LNG infrastructure positions it as a potential gas hub for the isthmus — complementing its electricity transit role.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      IRENA — The Energy Sector of Panama: Climate Change Adaptation Challenges (July 2024) ·
+      ETESA — Power Development Plan 2023–2037 ·
+      Climatescope 2025 — Panama ·
+      GEM Wiki — Energy Profile: Panama ·
+      Enerdata — Panama Energy Market Report ·
+      AES Panama — global x local profile ·
+      Business Panama — Energy and Power ·
+      IDB — SIEPAC expansion: IDB advances energy integration in Central America ·
+      Lexology — Q&amp;A: electricity generation and transmission in Panama
+    </div>
+
+  </div>
+  <div class="doc-footer">
+    <span>Panama Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas / thermal', 'Hydro', 'Solar PV', 'Wind', 'Other thermal'],
+    datasets: [{ data: [1800, 1850, 700, 350, 400], backgroundColor: ['#9A7040','#1E9AF5','#FFD700','#6AB0DE','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

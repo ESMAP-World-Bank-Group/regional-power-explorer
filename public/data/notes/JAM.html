@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamaica Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Jamaica</div>
+    <div class="doc-sub">~1,050 MW installed · LNG CCGT + oil ~70% · Wind ~130 MW + Solar ~250 MW growing · JPS utility (80% Marubeni) · OUR regulator · NGAS LNG terminal (New Fortress Energy, 2019) · High consumer prices ~US$0.30-0.38/kWh · 50% RE target 2030 · ~2.8 million population</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~1,050 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~28%</div><div class="kpi-lbl">Renewable share (wind + solar + hydro, 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">~US$0.33</div><div class="kpi-lbl">Average consumer electricity tariff /kWh</div></div>
+    <div class="kpi"><div class="kpi-val">50%</div><div class="kpi-lbl">RE electricity target 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Jamaica is the Caribbean's most advanced energy transition case among the larger island economies, having shifted from heavy fuel oil (HFO) monoculture to a diversified mix including LNG, wind, solar, and small hydro over the past decade. The electricity system is dominated by <strong>JPS (Jamaica Public Service Company)</strong> — 80% owned by Japan's Marubeni Corporation — which operates the grid and most generation under a regulated integrated utility model. The regulator is <strong>OUR (Office of Utilities Regulation)</strong>. LNG-fired generation entered the mix in 2016 when <strong>New Fortress Energy (NFE)</strong> commissioned the NGAS terminal in Old Harbour Bay, supplying JPS's Bogue and Old Harbour gas plants — dramatically reducing fuel costs vs. HFO. Wind (~130 MW, led by the Wigton Wind Farm complex in Manchester parish, one of the Caribbean's largest) and solar (~250 MW and growing quickly) are expanding rapidly. However, Jamaica's electricity prices remain among the Caribbean's highest (~US$0.30-0.38/kWh for households), driven by island isolation, fossil fuel import dependency, and distribution inefficiency.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>LNG / natural gas (CCGT)</span>
+          <span><span class="lsq" style="background:#8B4513"></span>Heavy fuel oil (residual)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Wigton + Content + others)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Small hydro + biomass</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~28%</div>
+            <div class="chart-center-lbl">renewable 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: JPS Integrated Resource Plan 2023; OUR Jamaica; CARILEC; IDB/WB Jamaica energy data; IRENA Caribbean 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>JPS: Japanese-owned Caribbean utility</strong>Jamaica Public Service Company Ltd; 80% Marubeni (Japan); 19.9% Government of Jamaica; regulated integrated utility (generation + transmission + distribution); ~4,500 km distribution lines; ~670,000 customers; IRP 2023 targets 50% RE by 2030 (wind, solar, battery storage); Marubeni's ownership reflects Japanese interest in Caribbean RE pilot markets — Jamaica is a test bed for JPS's regional RE strategy.</div>
+        <div class="stat-item"><strong>New Fortress Energy LNG terminal</strong>NFE's NGAS terminal (Old Harbour, 2019) — a purpose-built Floating Storage Unit (FSU) delivering LNG to shore via pipeline to Old Harbour and Bogue gas plants. Displaced ~60% of JPS's HFO consumption at commissioning. LNG price link (Henry Hub + shipping premium) has been volatile but generally cheaper than HFO. NFE also developing downstream CNG and LNG trucking in Jamaica — positioning as Caribbean energy infrastructure company. Second LNG terminal (Montego Bay) under study for northern coast power supply.</div>
+        <div class="stat-item"><strong>Wigton Wind Farm: Caribbean landmark</strong>Wigton Wind Farm (Manchester parish, Blue Mountains foothills); Phase 1 (2004, 20.7 MW) was the Caribbean's first utility-scale wind farm; expanded to Phase 2 (18 MW) and Phase 3 (24 MW); total Wigton ~63 MW; JPS subsidiary; capacity factor ~35-40%. Additional wind projects: Content Wind (37.4 MW, NFE), Munro/Malvern wind (planned). Jamaica's NE trade winds provide consistent 7-9 m/s resource along ridge lines.</div>
+        <div class="stat-item"><strong>Solar rapid expansion</strong>Utility-scale solar auctions (JSEZA/OUR competitive procurement): Eight Rivers Energy (50 MW, 2020), Westmoreland (49 MW), and multiple <5 MW private rooftop/commercial projects. Net billing programme (2015) enabled prosumer rooftop solar. Solar capacity growing from ~30 MW (2019) to ~250 MW (2024) — the fastest RE segment. Jamaica's 1,900+ kWh/m²/year irradiance provides strong project economics at US$0.08-0.10/kWh PPA pricing.</div>
+        <div class="stat-item"><strong>High electricity prices: structural challenge</strong>Jamaica households pay US$0.30-0.38/kWh — 5-8× US mainland prices. Drivers: HFO import cost (~US$90-120/bbl equiv), island system inefficiency, 20-25% system losses (technical + commercial), and JPS's regulated return. High prices constrain economic competitiveness and push industrial users toward costly self-generation. RE expansion is the primary driver of tariff reduction — JPS's IRP projects household tariffs falling 15-25% by 2030 if 50% RE is achieved.</div>
+      </div>
+    </div>
+
+    <h2>The 50% RE 2030 Challenge</h2>
+    <p>Jamaica's 50% RE target by 2030 requires roughly doubling renewable capacity from current levels in five years — achievable in technology and resource terms, but requiring resolved challenges in grid management and financing:</p>
+    <ul>
+      <li><strong>Battery storage for grid stability:</strong> Jamaica's isolated 60 Hz grid (unlike most Caribbean islands which run at 50 Hz — Jamaica operates at 60 Hz, US standard) has limited inertia. Adding significant variable RE requires Battery Energy Storage Systems (BESS) for frequency regulation. JPS's IRP includes 200+ MW of battery storage by 2030. First utility-scale BESS tender was issued 2024.</li>
+      <li><strong>PPA pricing and off-take:</strong> Jamaica's RE competitive procurement (RFP process managed by OUR) has successfully contracted solar at US$0.085-0.10/kWh — competitive by Caribbean standards. Wind PPAs are slightly higher (~US$0.08-0.09/kWh at Wigton-scale). The challenge is contractor bankability: smaller Caribbean developers need strong PPA terms and government payment guarantees to access international debt financing.</li>
+      <li><strong>Grid upgrade requirements:</strong> JPS's transmission grid (spanning mountainous terrain) has constrained interconnection capacity in some regions. The Blue Mountains and the parish structure create geographic distribution challenges. JPS's grid upgrade plan (~US$150M) is a prerequisite for integrating 500+ MW of additional variable RE.</li>
+      <li><strong>Tourism and bauxite demand:</strong> Jamaica's major electricity consumers — hotels (north coast), bauxite/alumina processing (southern parishes) — have distinct demand profiles. Bauxite processing is electricity-intensive (Jamalco, JISCO) and has been intermittent due to commodity market cycles. If bauxite processing operates at full capacity, it creates a large baseload demand that RE can serve; if curtailed, demand drops unpredictably.</li>
+    </ul>
+
+    <div class="callout">
+      Jamaica's energy transition is the Caribbean's most closely-watched experiment — not because it is furthest along, but because it has the clearest institutional framework (JPS IRP, OUR regulation, competitive RE procurement) and the most international private investment (Marubeni, NFE, IDB financing). If Jamaica reaches 50% RE by 2030, it validates the competitive auction + regulated utility model for island energy transitions. If it misses — due to grid integration challenges, financing gaps, or political interference — it will inform how other SIDS approach their own transitions.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Jamaica's 50% RE target by 2030 is credible but requires battery storage deployment at a pace and scale that no Caribbean nation has yet attempted — making BESS procurement and grid integration the critical path item, not solar or wind resource availability.</strong> Solar and wind resources are ample; JPS has proven it can contract RE cheaply. The binding constraint is the island grid's ability to absorb variable generation without frequency instability. Battery storage is the enabling technology. JPS's 200 MW BESS target by 2030 must be contracted, financed, and commissioned — in a small island procurement market with limited contractor competition.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>New Fortress Energy's LNG terminal was transformative for Jamaica's electricity cost — reducing fuel costs by 20-30% at commissioning — but it has also created a new form of energy dependency: US Henry Hub natural gas price exposure on a single terminal managed by a US private equity-backed company.</strong> NFE's commercial terms (capacity charges + commodity price pass-through) have been controversial; the company's financial health and contract stability matter for Jamaica's energy security. The LNG switch was the right call to reduce HFO dependence — but trading HFO dependency for single-supplier LNG dependency is a half-solution. Jamaica needs competitive LNG supply options and, ultimately, domestic RE that eliminates the import commodity risk entirely.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Jamaica's electricity prices (US$0.30-0.38/kWh) are a direct competitive disadvantage for every export-oriented sector — tourism, business process outsourcing, manufacturing — and represent a structural economic drain equivalent to an implicit tax on productive activity.</strong> A hotel consuming 500,000 kWh/year pays US$150,000-190,000 in electricity — 2-3× the equivalent cost in the Dominican Republic (which has more RE and cheaper gas). Every RE MW added to Jamaica's grid that displaces HFO reduces this competitive disadvantage. The economic case for Jamaica's energy transition is as strong as the environmental case — and should be made primarily in those terms to mobilise private investment.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Marubeni's 80% stake in JPS is the decisive variable in Jamaica's energy transition — because JPS controls the grid and all major generation decisions, meaning that Marubeni's corporate RE investment strategy determines whether Jamaica reaches 50% RE by 2030 more than any government policy.</strong> JPS's IRP is excellent on paper. Its implementation depends on Marubeni committing capital to Jamaica-specific RE projects within JPS, managing the regulatory relationship with OUR, and maintaining service quality during a complex grid transition. Marubeni's global RE track record (particularly in Southeast Asian island grids) is relevant context — the company has comparable experience, suggesting Jamaica's transition is technically manageable if the commercial framework is right.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Jamaica's Wigton Wind Farm — the Caribbean's first utility-scale wind project (2004) — produced a generation of Jamaican wind energy engineers, project developers, and regulatory experience that is now the most valuable human capital asset in the country's energy transition, and which positions Jamaica as a technical knowledge hub for Eastern Caribbean wind development.</strong> Twenty years of Wigton operation means JPS engineers understand Caribbean wind intermittency management; OUR regulators understand wind PPA structuring; Jamaican banks have wind project credit experience. This institutional knowledge cannot be purchased or shortcut. Neighbouring Caribbean nations (Barbados, Belize, smaller OECS islands) look to Jamaica's wind experience as their primary regional reference case.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      JPS — Integrated Resource Plan 2023; annual report 2024 ·
+      OUR (Office of Utilities Regulation) Jamaica — electricity market report ·
+      IRENA — Caribbean renewable energy 2025 ·
+      IDB (Inter-American Development Bank) — Jamaica energy sector ·
+      CARILEC — Caribbean Electric Utility Services Corporation data ·
+      World Bank — Jamaica energy access and efficiency data ·
+      New Fortress Energy — NGAS Jamaica project documentation
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Jamaica Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['LNG / natural gas (CCGT)', 'Heavy fuel oil (residual)', 'Wind', 'Solar PV', 'Small hydro + biomass'],
+    datasets: [{ data: [48, 24, 12, 10, 6], backgroundColor: ['#C85020','#8B4513','#6AB0DE','#FFD700','#1B6CA8'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Germany Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Germany</div>
+    <div class="doc-sub">~250 GW installed · Wind+Solar 45% (2025 — first time leading) · Nuclear exit April 2023 · 80% RE target 2030 · Coal phase-out 2038 · 4 TSOs · Energiewende · 100 GW solar · 70 GW wind</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~250 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">45%</div><div class="kpi-lbl">Wind + Solar share 2025 (first time #1)</div></div>
+    <div class="kpi"><div class="kpi-val">Apr 2023</div><div class="kpi-lbl">Final nuclear reactors closed</div></div>
+    <div class="kpi"><div class="kpi-val">80%</div><div class="kpi-lbl">Renewable electricity target 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Germany's electricity system reached a historic milestone in 2025: <strong>wind and solar became the leading source of net electricity generation for the first time</strong>, with wind at 27% (132 TWh) and solar at 18% (87 TWh net fed-in) — combined 45% of total generation. This followed the <strong>final shutdown of Germany's last three nuclear reactors in April 2023</strong>, ending a policy debate that had lasted decades. Coal fell from 52% of generation historically to <strong>21% in 2025</strong>. Variable renewables exceeded 60% of generation in 2024. Germany's total installed capacity stands at roughly 250 GW — including ~100 GW solar, ~70 GW wind, ~40 GW gas, and declining coal. The target is <strong>80% renewable electricity by 2030</strong> and 100% by 2035.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore + offshore)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#3A3A3A"></span>Coal (lignite + hard)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass / biogas</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro + other</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">45%</div>
+            <div class="chart-center-lbl">wind+solar 2025</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Fraunhofer ISE 2026; IEA Germany 2025; LowCarbonPower.org; Ember Germany</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>4 TSOs: Amprion, TenneT, 50Hertz, TransnetBW</strong>Germany is the only major European country with four TSOs; Amprion (RWE legacy, west), TenneT (Netherlands state, north/south), 50Hertz (Elia/Taqa, east), TransnetBW (EnBW, southwest); coordination via Netzregelverbund; major source of grid expansion delays</div>
+        <div class="stat-item"><strong>Nuclear exit: April 2023</strong>Isar 2, Emsland, Neckarwestheim 2 closed April 15, 2023; ~13 GW of firm zero-carbon generation removed; decision predates Ukraine war but was reconsidered and upheld; Germany now imports nuclear-generated electricity from France and Czech Republic</div>
+        <div class="stat-item"><strong>EEG 2023: 650 GW RE by 2040</strong>Renewable Energies Act mandates solar from 100 GW → 400 GW by 2040; onshore wind from ~70 GW → ~160 GW; offshore wind to ~70 GW; community energy provisions; grid connection guarantees; auctions by technology type</div>
+        <div class="stat-item"><strong>Coal: 21% in 2025 (from 52% peak)</strong>Lignite (RWE, Leag) and hard coal declining; legally mandated phase-out by 2038 (acceleratable to 2030); lignite in Rhenish + Lusatian regions; just transition fund €40B for affected regions; West Germany coal employment was ~100,000 at peak</div>
+        <div class="stat-item"><strong>Bundesnetzagentur: regulator + crisis manager</strong>Federal Network Agency; became public figure during 2022 energy crisis (Müller as "gas tsar"); regulates electricity, gas, telecoms, post; oversees grid access, tariffs, and auction frameworks; published weekly gas storage bulletins during 2022 crisis that became market benchmarks</div>
+      </div>
+    </div>
+
+    <h2>The Energiewende: Results and Tensions</h2>
+    <p>The Energiewende — Germany's energy transition policy launched in the early 2000s — is simultaneously Europe's most ambitious and most debated energy transformation:</p>
+    <ul>
+      <li><strong>What worked:</strong> Solar and wind scaled from near-zero to 170+ GW combined in two decades. Feed-in tariff (EEG) created the global solar industry by guaranteeing markets. German technology exports (turbines, inverters, components) funded global RE deployment. Coal share halved.</li>
+      <li><strong>What struggled:</strong> Electricity prices among Europe's highest for consumers (EEG surcharge 2000–2022). Grid expansion (north-to-south HV lines for wind) took 15+ years vs. planned 3-5. The simultaneous exit of coal and nuclear (no carbon-free firm power) required gas imports that backfired in 2022. Wholesale prices collapsed during surplus periods, stressed conventional generators, and created negative price events.</li>
+      <li><strong>The 2022 inflection:</strong> Russia's gas cutoff after Ukraine invasion exposed Germany's core vulnerability — dependence on Russian pipeline gas for ~55% of supply. Emergency LNG terminals commissioned within months. Gas storage mandatory minimums introduced. The crisis cost German households and industry an estimated €100B+ in higher energy bills.</li>
+      <li><strong>Industry challenge:</strong> High electricity prices and gas insecurity accelerated deindustrialisation in energy-intensive sectors (chemicals, glass, ceramics, steel). BASF, Thyssenkrupp, and Volkswagen all cited energy costs in restructuring decisions 2023-25. Germany risks hollowing out the industrial base the Energiewende was designed to decarbonise.</li>
+    </ul>
+
+    <div class="callout">
+      Germany's simultaneous exits from both nuclear and coal — without sufficient firm zero-carbon capacity to bridge the gap — is the most consequential single energy policy decision in European history. The 2022 gas crisis demonstrated the vulnerability this created. Wind and solar are now leading generation sources, but their variability means Germany remains dependent on gas for system balancing — gas it now imports as LNG rather than via Russian pipelines. The lesson: energy transition sequencing (which technologies exit when) matters as much as the destination.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Germany's Energiewende created the global solar industry — the feed-in tariff guaranteed markets that drove Chinese manufacturers to scale, reducing solar costs by 90% globally — but Germany itself paid among the highest electricity prices in Europe for doing so.</strong> The EEG surcharge (€0.06/kWh at peak) transferred ~€30B/year from German consumers to RE developers. This cross-subsidy was politically sustainable until it wasn't. The lesson for developing countries: feed-in tariff mechanisms designed for early markets must have sunset clauses and transition paths to competitive procurement; otherwise they become permanent consumer cost burdens.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The nuclear exit of April 2023 — politically decided in 2011 after Fukushima, reversed briefly in 2022 after Ukraine, then upheld — will cost Germany an estimated €10–15B in additional carbon costs over the 2023–2030 period compared with keeping the reactors running.</strong> The three reactors that closed in 2023 (4.3 GW combined) produced firm, zero-carbon baseload at marginal cost of ~€10/MWh. Replacing them requires gas at ~€80/MWh or RE with balancing costs. The decision was not irrational (public acceptance of nuclear was genuinely low), but the cost of the decision was real and is now being paid through higher prices and emissions.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Germany's four-TSO structure is the primary institutional bottleneck for grid expansion — and a cautionary tale for countries designing their electricity market governance.</strong> The four TSOs (Amprion, TenneT, 50Hertz, TransnetBW) result from the deregulation of the VEBA/RWE/EnBW/E.ON monopolies in the 1990s. They operate different grid management systems, have different incentive structures, and coordinate imperfectly on long-distance transmission projects. The north-to-south HV lines needed to deliver offshore wind from the North Sea to Bavaria (the SuedLink and SuedOstLink) required 15+ years from planning to partial operation — primarily due to institutional complexity, not engineering difficulty.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Germany's industrial electricity demand — the largest in Europe — is the central challenge of its energy transition: how to decarbonise energy-intensive industries while maintaining their competitiveness against regions with cheaper, abundant clean power.</strong> BASF (chemicals), ArcelorMittal and Thyssenkrupp (steel), Wacker (silicon), Covestro (polymers) all consume 5–20+ TWh/year. Green hydrogen (from electrolysis) is the primary decarbonisation pathway for these industries — but at current German power prices (€80–120/MWh industrial), green hydrogen costs €5–8/kg vs. grey hydrogen at €1.5–2/kg. The economics will not work without either much cheaper electricity or substantial carbon pricing.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Wind and solar leading German generation for the first time in 2025 is a genuine milestone — but the system still needs 40% of generation from gas and coal on annual average, rising to 60%+ in winter low-wind periods.</strong> The challenge is not the annual average (where RE wins) but the residual load — the GW that must be served when wind drops to near-zero and solar is dark. Germany currently covers this with gas peakers and coal. Decarbonising this residual requires hydrogen turbines, long-duration storage, demand response, or nuclear — none of which are available at the scale needed before 2035 at the earliest.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Fraunhofer ISE — German Public Electricity Generation 2025 (press release, Jan 2026) ·
+      IEA — Germany 2025 Energy Policy Review ·
+      LowCarbonPower.org — Germany generation mix 2025 ·
+      Ember — Germany country data ·
+      Business Sweden — Germany energy system upgrades, Dec 2025 ·
+      Watson Farley &amp; Williams — Energy Outlook Germany 2025 ·
+      Wikipedia — Electricity sector in Germany
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Germany Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Wind (onshore + offshore)', 'Solar PV', 'Coal (lignite + hard)', 'Natural gas', 'Biomass / biogas', 'Hydro + other'],
+    datasets: [{ data: [27, 18, 21, 14, 9, 11], backgroundColor: ['#6AB0DE','#FFD700','#3A3A3A','#C85020','#4CAF50','#1B6CA8'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
   .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
@@ -17,42 +17,34 @@
   .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
   .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
-  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
   .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
   .kpi-lbl{font-size:11.5px;color:var(--muted)}
   .body{padding:48px 56px}
   h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
   h2:first-child{margin-top:0}
-  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
   p{margin-bottom:11px}
   ul{padding-left:20px;margin:7px 0 13px}
-  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
   .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
-  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
   .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
   .chart-legend span{display:flex;align-items:center;gap:5px}
   .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
   .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
-  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
   .chart-wrap{position:relative}
   .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
   .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
   .chart-center-lbl{font-size:10px;color:var(--muted)}
   .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
   .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
-  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
-  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
-  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
-  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
-  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
-  .trade-item{display:flex;gap:17px;padding:18px 20px}
-  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
-  .trade-badge-grey{background:#8A94A6}
-  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
-  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
   .five-pts{margin:10px 0}
-  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
   .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
   .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
   .sources strong{color:var(--navy)}
@@ -61,162 +53,94 @@
 </head>
 <body>
 <div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — AIMS (Southeast Asia)</div>
+    <div class="doc-title">Singapore</div>
+    <div class="doc-sub">~10,000 MW installed · Natural gas ~93% + solar ~6% + other ~1% · Liberalised market: SP Group (grid), EMA (regulator), private generators (Senoko, Tuas, YTL) · 5.9 million people, 728 km² · High-income city-state: GDP/capita ~US$84,000 · 2 GW solar target by 2030 (floating + rooftop) · Low Carbon Electricity Imports (LECI): 4 GW from Indonesia/Malaysia/Australia by 2035 · S$25→S$80/tCO₂ carbon tax 2024→2030 · Singapore Green Plan 2030 · Net zero 2050 · Data centre electricity load surge · Tengeh Reservoir 60 MW floating solar (2021)</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~6%</div><div class="kpi-lbl">Solar share 2024 (domestic); natural gas ~93%</div></div>
+    <div class="kpi"><div class="kpi-val">4 GW</div><div class="kpi-lbl">Low-Carbon Electricity Import target by 2035</div></div>
+    <div class="kpi"><div class="kpi-val">S$80/t</div><div class="kpi-lbl">Carbon tax trajectory by 2030 (from S$25 in 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">Net zero</div><div class="kpi-lbl">2050 commitment (Singapore Green Plan 2030)</div></div>
+  </div>
 
-<div class="doc-header">
-  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
-  <div class="doc-title">The Singapore electricity<br>sector</div>
-  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
-</div>
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Singapore — a 728 km² city-state at the southern tip of the Malay Peninsula with 5.9 million people and a GDP per capita of approximately US$84,000 — is the most anomalous entry in this SIDS electricity series. Unlike every other country in these briefing notes, Singapore is not energy-poor, does not face electricity access challenges, and does not have a diesel-dependency problem. It is one of the world's most sophisticated electricity markets, with near-zero outage rates (SAIDI &lt;1 minute/year), a fully liberalised retail market (since 2001), an independent regulator (Energy Market Authority, EMA), and a generation fleet that runs almost entirely on natural gas — the cleanest available fossil fuel, selected deliberately for energy security and emissions reasons when Singapore shifted away from oil in the 1990s.</p>
+    <p>Singapore's inclusion in the SIDS classification reflects its geographic status as a small island developing state, though its development level is categorically different from other SIDS. Its energy challenges are those of a high-income, highly urbanised, land-constrained, resource-import-dependent city-state: how to decarbonise a ~50 TWh/year electricity system that has no wind resource (equatorial doldrums), no hydro (flat, densely built), no geothermal, and severely limited solar land area, in a context of surging data centre load and a carbon tax rising to S$80-100/tCO₂ by 2030. <strong>SP Group</strong> (Singapore Power, state-linked) operates the transmission and distribution network; generation is provided by private companies (Senoko Energy, Tuas Power, YTL PowerSeraya, Sembcorp). The LNG supply chain: Singapore's two LNG terminals (Jurong Island) receive LNG from Qatar, Australia, the US, and spot market, supplying gas-fired combined-cycle power stations (~93% of generation).</p>
 
-<div class="kpi-row">
-  <div class="kpi"><div class="kpi-val">~12.4 GW</div><div class="kpi-lbl">Installed capacity (end-2024)</div></div>
-  <div class="kpi"><div class="kpi-val">~59 TWh</div><div class="kpi-lbl">Generation (2024)</div></div>
-  <div class="kpi"><div class="kpi-val">100%</div><div class="kpi-lbl">Electrification rate</div></div>
-  <div class="kpi"><div class="kpi-val">6 GW LCEI</div><div class="kpi-lbl">Low-carbon import target by 2035</div></div>
-</div>
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Singapore generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT — combined cycle gas turbines)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (floating + rooftop + ground-mounted)</span>
+          <span><span class="lsq" style="background:#555"></span>Other (waste-to-energy, small diesel backup)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~6%</div>
+            <div class="chart-center-lbl">Solar RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Domestic generation only. Does not include Low Carbon Electricity Imports (LECI) from regional grid interconnection (4 GW target by 2035). Source: EMA Singapore Energy Statistics 2024; SP Group 2024; IRENA 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Solar in a land-constrained city-state: floating, rooftop, and the 2 GW target</strong>Singapore's solar programme is a master class in constrained RE deployment. Tengeh Reservoir floating solar (60 MW, 2021 — one of the world's largest freshwater floating solar installations at commissioning) demonstrated large-scale floating solar viability; five reservoirs are under development or assessment. HDB (Housing Development Board) rooftop programme: solar panels on government public housing blocks (~1 million HDB flats) — target 540 MWp by 2030, approximately 200 MWp installed by 2024. Commercial and industrial rooftops: SolarNova programme incentivises private rooftop solar; currently ~800 MWp installed. Total domestic solar 2024: approximately 1.5 GWp, generating ~5-6% of electricity. 2 GWp by 2030 target: achievable if HDB and rooftop programmes continue. Beyond 2 GW, domestic solar potential is essentially exhausted — no more flat land or reservoirs without major land reclamation (which Singapore does regularly, but at high cost and environmental impact).</div>
+        <div class="stat-item"><strong>Low Carbon Electricity Imports (LECI): Singapore's primary decarbonisation pathway</strong>EMA's LECI framework — first conditional approvals 2023-2024 — targets 4 GW of RE electricity imports by 2035 via submarine cables from regional partners. The pipeline: (1) Sun Cable AAPowerLink (Australia-Asia Power Link): 20 GW solar farm in Northern Territory + 4,200 km underwater cable from Darwin to Singapore (Sun Cable recapitalised after 2023 administration with Gina Rinehart and Mike Cannon-Brookes as backers; EMA conditional approval 2023, targeting completion ~2031-2035); (2) LTMS-PIP: 100 MW Lao hydro exported to Singapore via Thailand and Malaysia (operational 2022 — first ASEAN Power Grid RE trade to Singapore; expanding to 1 GW+); (3) Indonesia: Riau Islands and Sumatra solar + wind + cable projects (2 GW+ conditional approvals); (4) Malaysia: solar from Peninsular Malaysia. The LECI programme is Singapore's answer to the post-2025 domestic solar plateau — once the island's rooftops and reservoirs are covered, further domestic RE expansion requires land reclamation or sea-based technology that is expensive and distant. LECI from regional partners is cheaper and faster.</did></div>
+        <div class="stat-item"><strong>Carbon tax: S$5→S$25→S$80-100/tCO₂ trajectory and industrial implications</strong>Singapore introduced carbon tax in 2019 at S$5/tCO₂ (among Asia's first national carbon taxes). Raised to S$25/tCO₂ in January 2024, scheduled to rise to S$45 in 2026 and S$80-100 by 2030. The carbon tax applies to approximately 50 large industrial emitters (Jurong Island petrochemicals, power stations, manufacturing) who emit approximately 80% of Singapore's domestic CO₂. For electricity: the tax directly increases gas-fired generation cost, making solar and LECI imports increasingly cost-competitive. It also makes Singapore one of the most carbon-price-competitive markets in Asia for low-carbon industrial relocation (data centres, clean manufacturing) — attracting businesses from higher-emitting Asian jurisdictions. The S$80-100/tCO₂ trajectory is calibrated to align with EU CBAM levels by 2030, ensuring Singapore-manufactured exports to Europe face no CBAM adjustment disadvantage.</div>
+        <div class="stat-item"><strong>Data centre load: the fastest-growing electricity demand sector in Singapore</strong>Singapore is Southeast Asia's premier data centre hub — home to hyperscaler facilities (Google, Meta, Microsoft, AWS, Equinix, Digital Realty) serving regional cloud computing demand. Data centres consume approximately 7-8% of Singapore's electricity (~3-4 TWh/year in 2024) growing at approximately 10-15%/year as AI workloads (GPU clusters) join standard cloud compute. Singapore imposed a moratorium on new data centre capacity in 2019-2022 due to energy concerns; lifted in 2022 with green data centre requirements (PUE ≤ 1.3; 80% carbon-free energy by 2025). New data centres must demonstrate sourced renewable energy — creating major corporate demand for LECI certificates. Google has invested in SembCorp's Singapore-Indonesia cable; Meta in an Indonesia solar project. By 2030, data centres may reach 10-12% of Singapore's electricity, making them the largest single sector after Jurong Island industrial load.</div>
+      </div>
+    </div>
 
-<div class="body">
+    <h2>Singapore as ASEAN Power Grid Hub</h2>
+    <p>Singapore's LECI programme is driving the most significant multilateral electricity trading framework in Southeast Asia since the original ASEAN Power Grid concept (1997). The LTMS-PIP — 100 MW of Lao hydro delivered to Singapore across 1,700 km and four countries — is the first ASEAN Power Grid trade to reach Singapore and demonstrates that cross-border electricity trade in Southeast Asia is technically and commercially feasible. Singapore's role: as the buyer of premium low-carbon electricity (paying an LGC — Large-scale Generation Certificate — premium above spot price), Singapore provides the revenue signal that makes upstream RE investment in Lao PDR, Indonesia, and Australia financeable. Singapore is acting as the demand anchor for a regional low-carbon electricity market — a role analogous to what Germany played in stimulating European renewable development in the 2000s-2010s.</p>
+    <div class="callout">
+      Singapore's electricity sector is the most technically sophisticated, commercially developed, and policy-innovative in the SIDS universe — but it is also the most geographically constrained and import-dependent. Its decarbonisation pathway is regional rather than domestic: the LECI programme, targeting 4 GW of renewable electricity from Australia, Indonesia, Lao PDR, and Malaysia by 2035, is not just a Singapore energy policy — it is the catalyst for a regional low-carbon electricity market that would benefit every country along the supply chain. Singapore is building a regional RE market with its electricity wallet, which is a form of climate finance that mainstream discussions rarely credit.
+    </div>
 
-<h2>1. Energy context</h2>
-<p>Singapore operates the most liberalised electricity market in Southeast Asia from a resource base that is almost entirely imported — the city-state has no indigenous fossil fuels, negligible hydropower, and severe land constraints on renewables. The entire system runs on <strong>natural gas piped from Indonesia and Malaysia</strong>, supplemented by LNG imports via the Singapore LNG Terminal (operational 2013). This structural dependency on gas imports is the defining characteristic of Singapore's electricity sector and the central driver of its long-term energy strategy.</p>
-<p>The Energy Market Authority (EMA) manages a competitive wholesale market — the <strong>National Electricity Market of Singapore (NEMS)</strong>, established 2003 — in which generators bid into half-hourly auctions and large industrial consumers can choose their retailer. Singapore's residential tariff (~S$0.27–0.30/kWh) is among Southeast Asia's highest, reflecting the full cost of gas imports with no subsidies. As of Q2 2026, the regulated tariff (inclusive of GST) is S$0.297/kWh.</p>
-<p>The government's long-term challenge is the <strong>solar land ceiling</strong>: even with aggressive deployment, Singapore revised its 2030 solar target upward to <strong>3 GWp</strong> (from 2 GWp) and set a forecast ceiling of 5.3 GWp by 2035. The strategic response is the Low-Carbon Energy Imports (LCEI) framework — importing up to <strong>6 GW</strong> of low-carbon power from regional sources by 2035 (target raised from 4 GW), including hydro from the Mekong region and potentially solar from Australia. Net Zero by 2050 is enshrined in the Singapore Green Plan 2030.</p>
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Singapore's LECI programme — targeting 4 GW of low-carbon electricity imports by 2035 — is the most consequential electricity sector development in Southeast Asia this decade, because it creates a bankable revenue stream for large-scale RE investment in Indonesia, Lao PDR, and Australia that these countries' domestic markets cannot provide at the scale and price certainty that cross-border submarine cable projects require, effectively making Singapore's import demand the financial backbone of Southeast Asia's RE transition.</strong> The LECI framework sets a price for low-carbon electricity imports (LGCs) approximately S$0.03-0.06/kWh above spot price — the premium that makes remote RE + cable projects financially viable where they wouldn't be on domestic tariff alone. Indonesia's Riau Island solar + cable projects and Sun Cable's Darwin solar are only financeable because Singapore has committed to buy. This demand anchor role deserves explicit recognition in ASEAN Power Grid and COP finance discussions as a form of regional climate finance mobilisation that multilateral climate finance has not yet credited.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The LTMS-PIP multilateral power trading project — delivering 100 MW of Lao hydro to Singapore across 1,700 km and four countries — is the ASEAN Power Grid's most important proof-of-concept trade and should be scaled from 100 MW to 1,000+ MW as the primary near-term LECI pathway, because it uses existing transmission infrastructure in Thailand and Malaysia (lower capital cost than new submarine cables), engages ASEAN multilateral institutions, and provides revenue to Lao PDR that supports continued investment in its large hydro potential while reducing Lao dependence on China as the dominant hydro financier.</strong> LTMS-PIP reached first electricity delivery in 2022 and has operated continuously, demonstrating that cross-border electricity trade through multiple transmission operators, currencies, and regulatory regimes is manageable. Scaling to 1 GW requires additional Lao hydro capacity (under development), transmission upgrades in Thailand and Malaysia (both being planned), and expanded Singapore import licences under LECI (EMA has pre-approved the scale-up). The cost per MW is substantially lower than submarine cables from Australia or Indonesia and can be mobilised within 3-5 years vs. 8-12 years for AAPowerLink.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Singapore's rising carbon tax (S$25 in 2024 → S$80-100 by 2030) is Southeast Asia's most credible carbon pricing signal and will make Singapore's gas-to-RE transition commercially self-financing — but its full effectiveness requires that carbon tax revenue be recycled into a clean energy transition fund supporting Jurong Island industrial decarbonisation and the upstream supply chain (worker transition, LECI cable co-financing) rather than general fiscal revenue, which would reduce the tax's sectoral impact and its political sustainability.</strong> Singapore's carbon tax currently raises approximately S$1-1.5B/year at S$25/tCO₂; at S$80/tCO₂ it will raise S$4-6B/year. Recycling a significant fraction into a Green Economy Fund (targeted at industrial decarbonisation, clean hydrogen R&amp;D, LECI cable financing, and petrochemical worker reskilling) would create a virtuous cycle: carbon revenue funds the clean transition that reduces carbon exposure and eventually reduces carbon tax obligations. EMA's current Enterprise Sustainability Programme grants represent a start; the allocation should be expanded and explicitly directed at electricity sector decarbonisation.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Singapore's data centre sector — consuming 7-8% of electricity and growing at 10-15%/year driven by AI GPU workloads — requires a dedicated policy framework that goes beyond the current PUE standard to include mandatory renewable energy procurement percentages, mandatory LECI certificate sourcing, and demand response obligations, because without explicit policy the data centre boom will absorb the decarbonisation gains from LECI imports and domestic solar faster than they are deployed.</strong> EMA's 2022 Green Data Centre requirements (PUE ≤ 1.3, 80% carbon-free energy) are good but incomplete: the 80% carbon-free requirement for new data centres relies on LGC procurement that is currently only loosely defined in terms of additionality. If Singapore's data centres collectively consume 10 TWh/year by 2030, they require approximately 8 TWh/year of verified low-carbon electricity — approximately 2-3× Singapore's current total domestic solar generation. Without mandatory LECI certificate sourcing tied to data centre operating licences, data centres will consume certificates without driving new RE capacity, inflating certificate prices for all other corporate buyers without environmental benefit.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Singapore's position as an SIDS at the highest income end of the SIDS spectrum — sharing classification with Tuvalu, Comoros, and Vanuatu — creates an opportunity Singapore has not fully exploited: using its electricity sector policy innovations (LECI, carbon tax, floating solar, data centre green standards) as a demonstration and technical assistance platform for lower-income SIDS in its immediate regional neighbourhood, many of whom (Indonesia, Philippines, Pacific) could benefit from Singapore's grid design, market regulation, and climate finance structuring expertise that the LECI programme has generated.</strong> Singapore already provides technical assistance through multilateral contributions (GCF, AIIB, ADB) and bilateral partnerships. But the electricity sector — where Singapore has genuine technical leadership (market design, carbon pricing, floating solar, data centre standards, LECI structuring) — is underrepresented in Singapore's development cooperation portfolio. An ESMAP-Singapore energy technical assistance programme targeted at Pacific SIDS and lower-income ASEAN neighbours would cost Singapore relatively little (the expertise is in EMA, SP Group, and Singapore's engineering universities) while delivering disproportionate development impact relative to its size as a climate finance donor.</div></div>
+    </div>
 
-<h2>2. The electricity system</h2>
-<h3>2.1 Generation mix</h3>
-<div class="chart-legend" id="leg1"></div>
-<div class="chart-grid-2">
-  <div>
-    <div class="chart-title">Installed capacity (end-2024)</div>
-    <div class="chart-wrap" style="height:185px">
-      <canvas id="c1"></canvas>
-      <div class="chart-center"><div class="chart-center-val">12.4</div><div class="chart-center-lbl">GW total</div></div>
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EMA (Energy Market Authority, Singapore) — Singapore Energy Statistics 2024; LECI programme ·
+      SP Group — Annual Report 2024 ·
+      Singapore government — Singapore Green Plan 2030; NDC 2022; Long-Term Low-Emissions Development Strategy 2050 ·
+      EMA — Carbon Tax Annual Report 2024 ·
+      Sun Cable — AAPowerLink project documentation ·
+      LTMS-PIP — Lao-Thailand-Malaysia-Singapore Power Integration Project, ASEAN 2024 ·
+      IRENA — Singapore energy profile 2025 ·
+      BCA — SolarNova programme 2024 · HDB — Solar programme statistics 2024
     </div>
   </div>
-  <div>
-    <div class="chart-title">Generation mix (2024)</div>
-    <div class="chart-wrap" style="height:185px">
-      <canvas id="c2"></canvas>
-      <div class="chart-center"><div class="chart-center-val">59</div><div class="chart-center-lbl">TWh</div></div>
-    </div>
+  <div class="doc-footer">
+    <span>Singapore Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
   </div>
-</div>
-<p class="fig-caption">Fig. 1–2 — Capacity and generation. Sources: EMA Singapore Energy Statistics 2025, SP Group Annual Report 2024.</p>
-
-<ul>
-  <li><strong>Natural gas (83% capacity / 94% generation):</strong> All dispatchable generation from combined-cycle gas turbines (CCGTs) and open-cycle gas turbines (OCGTs) — 10.4 GW total. Gas supplied via the West Natuna Transportation System (WNTS) from Indonesia's Natuna Sea and the Malaysia-Singapore pipeline, supplemented by LNG regasification at the <strong>Singapore LNG Terminal</strong> (~6 mtpa capacity, Jurong Island). Major generators: <strong>Senoko Energy</strong> (~3.3 GW, Marubeni/Keppel consortium), <strong>YTL PowerSeraya</strong> (~3 GW), <strong>Tuas Power</strong> (~2.6 GW, Vopak/Keppel), <strong>Sembcorp Cogen</strong> (~1.5 GW).</li>
-  <li><strong>Solar (10% capacity / ~2% generation):</strong> ~1.4 GWp installed by mid-2025 (up from 1.2 GWp end-2024). Singapore added 504 MWp in 2025 alone, a new record. Revised 2030 target: <strong>3 GWp</strong>. Deployed on rooftops (~60%), Tengeh Reservoir floating solar (60 MWp, one of the world's largest floating arrays), HDB (public housing) estates, and industrial rooftops. The 118 MWp Sembcorp Jurong Island ground-mounted farm (2025) is Singapore's largest single project.</li>
-  <li><strong>Waste-to-Energy (3% capacity):</strong> Senoko WtE plant (~345 MW), contributing baseload from municipal solid waste incineration. A replacement integrated facility is in long-term planning.</li>
-  <li><strong>Energy storage (2%):</strong> ~200 MW grid-scale battery storage deployed by end-2024, supporting frequency regulation and renewable intermittency management. Growing rapidly as solar penetration increases.</li>
-</ul>
-<div class="callout">Singapore's system is <strong>structurally dependent on gas imports</strong> with no viable domestic alternative at scale. NEMS is the most competitive electricity market in ASEAN, with full retail contestability for all consumers since 2018 (Open Electricity Market). The 2022 LNG price spike drove tariffs to a record ~S$0.39/kWh, exposing acute vulnerability to global gas market volatility.</div>
-
-<h3>2.2 Demand — historical trend and end-use</h3>
-<div class="chart-grid-3">
-  <div style="grid-column:1/3">
-    <div class="chart-title">Electricity generation — historical trend (TWh)</div>
-    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
-  </div>
-  <div>
-    <div class="chart-legend" id="leg2"></div>
-    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
-    <div class="chart-wrap" style="height:140px">
-      <canvas id="c3"></canvas>
-      <div class="chart-center"><div class="chart-center-val">59</div><div class="chart-center-lbl">TWh</div></div>
-    </div>
-  </div>
-</div>
-<p class="fig-caption">Fig. 3–4 — Generation trend (2015–2024, CAGR ~2.1%/yr) and end-use breakdown. Sources: EMA Singapore Energy Statistics 2025.</p>
-<p>Demand growth (~2%/yr) reflects steady GDP expansion, industrialisation on Jurong Island, and a fast-growing data centre sector. The <strong>commercial sector dominates</strong> (offices, data centres, retail malls), followed by industry (chemicals, refining, wafer fabrication) and residential. Data centre power consumption reached an estimated ~3 TWh/yr in 2023 and continues to grow ~15%/yr. Singapore hosts ~80 hyperscale data centres; the government imposed a moratorium on new DC permits (2019–2022) due to grid and sustainability concerns.</p>
-<div class="callout"><strong>Tariffs (Q2 2026):</strong> Residential: S$0.2727/kWh excl. GST; S$0.2972/kWh incl. 9% GST (~USD 0.22/kWh). The energy component (~76% of tariff) directly passes through LNG import costs, revised quarterly. Large contestable customers participate directly in NEMS spot prices. No subsidies at any consumption level.</div>
-
-<h3>2.3 Grid and interconnections</h3>
-<table>
-  <tr><th>Link</th><th>Infrastructure</th><th>Status / Notes</th></tr>
-  <tr><td><strong>Malaysia (Johor)</strong></td><td>Transmission lines (~300 MW active capacity)</td><td>Active. Malaysia commenced 50 MW renewable energy export to Singapore (via ENEGEM, Dec 2024, 2-year agreement). LTMS-PIP Phase 2 raised bilateral capacity to 200 MW (2024). Historically an emergency reserve link, now increasingly used for contracted clean energy trade.</td></tr>
-  <tr><td><strong>LTMS-PIP (Laos–Thailand–Malaysia–Singapore)</strong></td><td>Cross-border trading via cascade AC grids</td><td>Phase 1 pilot (100 MW from Laos Nam Theun 2 hydro) commenced 2022. Phase 2 at 200 MW (2024). First multilateral ASEAN power trade. EMA contracted for 2-year term; proof-of-concept for ASEAN Power Grid integration.</td></tr>
-  <tr><td><strong>LCEI import targets (to 2035)</strong></td><td>Multiple subsea HVDC cables and AC upgrades</td><td>EMA has issued RFPs for up to 6 GW by 2035 from Cambodia, Vietnam, and Indonesia. Each link requires bilateral agreements, grid code harmonisation, and risk allocation. Australia Sun Cable concept entered administration 2023, subsequently restructured; commercial timeline highly uncertain.</td></tr>
-</table>
-
-<h2>3. Sector organisation and actors</h2>
-<div class="trade-box">
-  <div class="trade-item">
-    <div class="trade-content">
-      <div class="trade-title">Energy Market Authority (EMA) <span class="trade-badge">Regulator &amp; Market Operator</span></div>
-      <p class="trade-body">The EMA, under the Ministry of Trade and Industry (MTI), is Singapore's electricity, gas, and district cooling regulator. It issues generation licences, sets transmission and distribution charges, operates the capacity market mechanism (USEP), and conducts market surveillance. The EMA works with the Energy Market Company (EMC), which runs the NEMS half-hourly auction platform. EMA coordinates the LCEI framework and LNG procurement strategy on behalf of national energy security.</p>
-    </div>
-  </div>
-  <div class="trade-divider"></div>
-  <div class="trade-item">
-    <div class="trade-content">
-      <div class="trade-title">SP Group <span class="trade-badge trade-badge-grey">Transmission / Distribution / Retail</span></div>
-      <p class="trade-body">SP Group (Singapore Power), wholly owned by Temasek Holdings, operates the regulated transmission system (SP PowerAssets, all 230 kV lines and below) and the distribution network. SP Group was separated from generation in 2001. SP Services acts as the Market Support Services Licensee (MSSL) and default retailer for non-contestable customers. SP Group is also the Distribution System Operator (DSO), coordinating solar integration, storage, and demand response.</p>
-    </div>
-  </div>
-  <div class="trade-divider"></div>
-  <div class="trade-item">
-    <div class="trade-content">
-      <div class="trade-title">Gencos &amp; Licensed Retailers <span class="trade-badge trade-badge-grey">Generation / Competitive Retail</span></div>
-      <p class="trade-body">Generation is entirely privately owned: <strong>Senoko Energy</strong> (~3.3 GW, Marubeni/Keppel), <strong>YTL PowerSeraya</strong> (~3 GW, Malaysian-owned), <strong>Tuas Power</strong> (~2.6 GW, Vopak/Keppel), <strong>Sembcorp Cogen</strong> (~1.5 GW), and <strong>Keppel Electric</strong> (~1.3 GW). Solar generators (rooftop and utility-scale) participate as intermittent generators. Since the Open Electricity Market (2018), households can choose from 12+ licensed retailers competing on price and green tariff options.</p>
-    </div>
-  </div>
-</div>
-
-<h2>4. Key issues and challenges</h2>
-<ul>
-  <li><strong>Gas supply security and LNG price exposure:</strong> The Indonesia Natuna piped gas contracts are progressively declining and will expire by ~2030. Singapore is increasingly dependent on LNG spot and term contracts. The 2022 LNG price spike (global gas crisis) drove tariffs to record highs (~S$0.39/kWh), exposing acute structural vulnerability. EMA is diversifying LNG supply sources and exploring hydrogen co-firing (20% blend feasibility by 2030) and blue hydrogen with CCS.</li>
-  <li><strong>Solar deployment and the 3 GWp target:</strong> Singapore's 730 km² land area severely constrains solar deployment. The revised 2030 target of 3 GWp (up from 2 GWp) is achievable via aggressive rooftop, reservoir floating solar, and ground-mounted deployment on industrial land. However, a forecast ceiling of 5.3 GWp by 2035 remains well below peak demand (~6 GW). Variable solar also requires growing battery storage and grid flexibility investments.</li>
-  <li><strong>Low-carbon energy imports (6 GW by 2035):</strong> LCEI is the only credible decarbonisation lever at scale given the solar ceiling. EMA has issued RFPs for large-scale imports from Cambodia, Vietnam, and Indonesia. The LTMS-PIP (200 MW current capacity) is a small fraction of the 6 GW target; scaling requires multi-year development of long subsea HVDC cables, political agreements, and grid code harmonisation across multiple ASEAN governments.</li>
-  <li><strong>Data centre load management:</strong> Singapore hosts ~80 hyperscale data centres, with power demand ~3 TWh/yr in 2023 and growing ~15%/yr. The 2019 moratorium was lifted in 2022 with stringent PUE (≤1.3) and sustainability requirements. Future DC growth is being partially redirected to Johor (Malaysia) under the Johor–Singapore Special Economic Zone (SEZ) framework.</li>
-  <li><strong>Net Zero 2050 pathway:</strong> Singapore's updated NDC (2024) maintains net zero by 2050. The electricity pathway relies on LCEI, hydrogen co-firing, and potential CCUS. The carbon tax rises to S$50–80/tCO₂ by 2030 (from S$25 in 2024), creating market signals but at levels still below abatement cost for most options. A credible pathway to net-zero power requires significant breakthroughs in low-carbon hydrogen economics and/or very large LCEI agreements.</li>
-</ul>
-
-<h2>5. Five key takeaways</h2>
-<div class="five-pts">
-  <div class="pt"><div class="pt-n">1</div><div>Singapore runs on imported gas with no viable domestic alternative at scale — energy security is existential, not incidental, and drives all major policy decisions from LNG diversification to the LCEI import framework.</div></div>
-  <div class="pt"><div class="pt-n">2</div><div>NEMS is ASEAN's most liberalised electricity market: competitive generation, full retail choice (since 2018), no generation subsidies — a governance model the region references but has not replicated.</div></div>
-  <div class="pt"><div class="pt-n">3</div><div>The solar land ceiling is real (~5.3 GWp maximum domestically by 2035); the LCEI framework targeting 6 GW of regional low-carbon power by 2035 is the only credible decarbonisation lever at scale.</div></div>
-  <div class="pt"><div class="pt-n">4</div><div>LNG spot price exposure is Singapore's biggest near-term tariff risk; the 2022 crisis (tariffs to S$0.39/kWh) accelerated action on supply diversification, long-term contracts, battery storage, and demand-side flexibility.</div></div>
-  <div class="pt"><div class="pt-n">5</div><div>Singapore's regional grid interconnections are strategically undersized — LTMS-PIP Phase 2 at 200 MW is a fraction of the 6 GW LCEI target; scaling requires long-horizon political and financial commitments across multiple ASEAN governments.</div></div>
-</div>
-
-<div class="sources">
-  <strong>Sources:</strong> EMA Singapore Energy Statistics 2025; SP Group Annual Report 2024; EMA Electricity Tariff Q2 2026; Singapore Green Plan 2030 / Updated NDC 2024; EMA LCEI Framework; LTMS-PIP Phase 2 press release (EMA, 2024); PV Magazine — Singapore 504 MW solar 2025; GlobalData Singapore Solar Forecast 2035; Ember Global Electricity Review 2024; IEA Singapore Energy Policy Review 2022; Bird &amp; Bird — Malaysia-Singapore Electricity Imports 2024.
-</div>
-
-</div>
-<div class="doc-footer">
-  <span>EPM Regional Power Explorer · World Bank ESMAP</span>
-  <span>Singapore (SGP) · June 2026</span>
-</div>
 </div>
 <script>
-const L1=['Gas','Solar','Waste-to-Energy','Storage & Other'];
-const C1=['#808890','#FFD700','#1A7A4A','#B0B0B0'];
-const GW1=[10.4,1.4,0.345,0.255];
-
-const L2=['Gas','Solar','Waste-to-Energy','Other'];
-const C2=['#808890','#FFD700','#1A7A4A','#B0B0B0'];
-const D2=[94,2,3,1];
-const TWh2=D2.map(v=>+(v*59/100).toFixed(1));
-
-const leg1=document.getElementById('leg1');
-L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
-const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
-new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
-new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
-
-const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
-const dem=[48.0,49.5,51.0,52.5,53.5,54.5,55.8,57.0,57.9,59.3];
-const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
-new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
-
-const L3=['Commercial','Industrial','Residential','Transport & Others'];
-const C3=['#2E75B6','#808890','#44DAEC','#B0B0B0'];
-const D3=[43,38,14,5];
-const leg2=document.getElementById('leg2');
-L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
-new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:D3,backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed}%`}}}}});
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT — combined cycle gas turbines)', 'Solar PV (floating + rooftop + ground-mounted)', 'Other (waste-to-energy, small diesel backup)'],
+    datasets: [{ data: [93, 6, 1], backgroundColor: ['#C85020','#FFD700','#555'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
 </script>
 </body>
 </html>

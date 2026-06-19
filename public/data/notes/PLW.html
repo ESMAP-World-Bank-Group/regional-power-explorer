@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palau Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Micronesia)</div>
+    <div class="doc-title">Palau</div>
+    <div class="doc-sub">~35 MW installed · Diesel/HFO ~82% + solar ~15% + other ~3% · PPUC (Palau Public Utilities Corporation, state) · ~18,000 people · US$0.38/kWh retail tariff · World's largest marine sanctuary (Palau National Marine Sanctuary, 500,000 km²) · US Compact of Free Association (renewed 2024) · Taiwan recognition (unique in Micronesia) · 45% RE 2025 target (slipping) · High-end dive/ecotourism economy · All fuel imported, no hydro</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~35 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~18,000</div><div class="kpi-lbl">Population (Pacific's smallest sovereign state)</div></div>
+    <div class="kpi"><div class="kpi-val">US$0.38</div><div class="kpi-lbl">Retail tariff per kWh</div></div>
+    <div class="kpi"><div class="kpi-val">~18%</div><div class="kpi-lbl">RE share 2024 (primarily solar)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Palau is the Pacific's smallest sovereign state by population — approximately 18,000 permanent residents (Ngerulmud is the capital; Koror the commercial centre) — yet operates a surprisingly sophisticated electricity system reflecting its relatively high per-capita income from tourism. The <strong>Palau Public Utilities Corporation (PPUC)</strong> operates a single interconnected grid on Babeldaob (the main island) and Koror, with an installed capacity of approximately 35 MW — a substantial reserve margin for 18,000 people reflecting the island's high per-capita electricity demand from air conditioning, dive resort operations, and the government facilities concentrated in Ngerulmud. Generation is approximately 82% diesel/HFO (PPUC's Aimeliik Power Plant on Babeldaob) and 15% solar (Malakal Solar Farm 3 MW + rooftop solar growing rapidly). Palau has no hydroelectric resource — Babeldaob's terrain is hilly but rivers are small and inconsistent — making solar + battery the only viable large-scale RE technology. The island's extraordinary marine environment (<strong>Palau National Marine Sanctuary</strong> covers ~500,000 km² of Palau's exclusive economic zone, established 2015) creates both a philosophical imperative for clean energy and a tourism brand that benefits commercially from credible sustainability claims.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (Aimeliik Power Plant, Babeldaob)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Malakal Solar Farm + rooftop)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Other (small-scale, emerging)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~18%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: PPUC Annual Report 2024; ADB Pacific Energy 2025; IRENA Pacific 2025; USAID Pacific; COFA data</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>PPUC and the scale paradox</strong>At 35 MW installed and 18,000 people, Palau has roughly 1.9 kW of installed capacity per capita — extraordinarily high for a Pacific SIDS, reflecting: (1) high per-capita AC demand in a hot humid climate; (2) large government sector (PPUC serves Ngerulmud government complex — Palau's "purpose-built capital" housing the national congress, executive, and judiciary); (3) tourism resort demand (Blue Corner Dive Palau, Palau Royal Resort, and 30+ smaller dive operations on Koror). Despite high per-capita capacity, PPUC experiences supply reliability issues because the Aimeliik plant runs aging diesel generators that require periodic forced outage for maintenance — backup capacity is limited. PPUC's tariff (US$0.38/kWh) is partially subsidised (actual diesel cost of service is higher); the Palau government provides a diesel subsidy of ~US$3-5M/year to keep tariffs at current levels.</div>
+        <div class="stat-item"><strong>Palau National Marine Sanctuary: sustainability brand and energy imperative</strong>The Palau National Marine Sanctuary (PNMS) — established 2015 by President Tommy Remengesau — covers 500,000 km² of Palau's EEZ, prohibiting commercial fishing in 80% of Palau's waters. The PNMS is one of the Pacific's most ambitious marine conservation commitments and has become central to Palau's international identity as a conservation leader. The energy-conservation link: Palau's claim to environmental leadership is partially undermined by its ~82% diesel-dependent electricity grid. Dive tourists paying US$100-200+/day for Palau's extraordinary reefs are increasingly asking about the energy source powering their resort's air conditioning. The PNMS brand premium ($350/night resort rates) is contingent on authentic sustainability credentials that high-diesel electricity partially contradicts. Solar + battery on resorts (several Koror hotels have installed rooftop solar, cumulative ~500 kW) aligns the electricity source with the marine sanctuary brand.</div>
+        <div class="stat-item"><strong>US Compact of Free Association: Palau's unique bilateral</strong>Palau's COFA with the US is unique among the three freely associated states (the others are FSM and Marshall Islands) in that: (1) Palau recognises Taiwan (Republic of China) diplomatically — unlike FSM and Marshall Islands which recognise the PRC; (2) Palau's COFA financial terms have been more complex to negotiate (Palau is smaller than FSM/RMI and received a relatively smaller initial grant allocation); (3) Palau's COFA renewal (2024) was delayed longer than FSM's (2023) due to the Taiwan complication in the broader US-China context. The 2024 Palau COFA renewal provides approximately US$900M over 20 years in US economic assistance — a significant uplift from previous Compact terms. Energy is a specific priority in the 2024 renewal, with USAID and OPIC/DFC financing for RE projects explicitly envisioned. Taiwan itself has also financed Palau infrastructure including solar panels for government buildings — a parallel RE assistance channel outside the COFA framework.</div>
+        <div class="stat-item"><strong>Solar trajectory: rooftop commercial, utility next</strong>Palau's solar programme has developed primarily through commercial and government rooftop adoption: Ngerulmud government complex (3 MW rooftop, Taiwan assistance, 2019); Palau International Airport (500 kW, ADB grant, 2021); Malakal Solar Farm (3 MW, utility-scale, PPUC + ADB, 2022); residential rooftop net metering (~500 kW cumulative). Total solar: approximately 5-6 MW operational by end 2024. PPUC's next procurement: 10 MW solar + 8 MW BESS (tender in preparation 2025, ADB + COFA-funded), which would bring Palau to approximately 40% solar — approaching the 45% RE target (delayed from 2025 to 2027-2028). The BESS sizing is critical: 8 MW BESS allows solar to reach ~45% without frequency instability on a ~20 MW peak demand grid. Full RE by 2050 (PPUC's long-term target) would require approximately 25-30 MW solar + 15-20 MW BESS — a US$80-100M investment over 25 years at current technology prices.</div>
+        <div class="stat-item"><strong>Water-energy nexus: desalination on a coral island</strong>Babeldaob has freshwater resources (rivers, springs) — unusual in Micronesia — but water quality and distribution infrastructure are challenged. Koror (where most commercial activity is located) relies partially on desalination for water supply, particularly during dry periods. PPUC operates a seawater reverse osmosis (SWRO) unit at Koror — electricity-intensive (~4 kWh/m³). As Palau's solar programme expands, daytime solar-powered desalination (matching solar generation profile to SWRO demand) would provide both clean water and grid load management — absorbing solar surplus during peak generation hours that would otherwise require curtailment or BESS charging. This water-energy integration opportunity has not been explicitly optimised in PPUC's current planning.</div>
+      </div>
+    </div>
+
+    <h2>The Marine Sanctuary-Energy Coherence Challenge</h2>
+    <p>Palau's environmental leadership — the PNMS, the world-famous "Palau Pledge" requiring tourists to commit to responsible environmental behaviour on entry, the 2015 Climate Change Policy — creates an expectation of energy coherence that 82% diesel generation does not satisfy. The gap between Palau's conservation brand and its energy mix has concrete implications:</p>
+    <ul>
+      <li><strong>Tourism premium risk:</strong> Palau's US$100-200/day dive tourism premium depends partly on "pristine environment" branding. Diesel generator fumes in Koror harbour are inconsistent with this brand; a credible RE transition narrative would reinforce it. Several high-end eco-resorts (Neco Marine, Palau Dive Adventures affiliates) have explicitly installed solar as a marketing differentiator.</li>
+      <li><strong>International credibility:</strong> Palau President Surangel Whipps Jr. has been vocal on climate change at Pacific Forum and UN meetings. An 82% diesel electricity grid is a credibility gap in these forums that Palau's counterparts (particularly Kiribati, Tuvalu — facing existential sea-level rise) notice.</li>
+      <li><strong>Youth emigration risk:</strong> Palau's youth (many educated in the US, Guam, or Japan) increasingly cite the island's environmental quality as a reason to return or stay. Diesel-dependent electricity, visible air quality impacts in Koror, and PPUC supply reliability issues are push factors for educated young Palauans — a demographic Palau can ill afford to lose given its 18,000 population.</li>
+    </ul>
+
+    <div class="callout">
+      Palau is the Pacific's most acute case of the conservation brand-energy gap: a country whose identity is built on environmental stewardship and whose main export (dive tourism) is purchased by environmentally conscious tourists, but which generates 82% of its electricity from diesel. The COFA 2024 renewal's energy provisions, combined with ADB financing, provide the capital to close this gap within 5 years. The question is whether PPUC's procurement capacity and political will can deploy it at the necessary pace.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Palau's marine sanctuary conservation brand — which commands a US$100-200+/day tourism premium — is directly at risk from the credibility gap between the island's environmental leadership rhetoric and its 82% diesel electricity grid, and the RE transition is therefore a tourism industry economic interest as much as an environmental obligation, giving PPUC's solar programme unusual private sector alignment with dive resort operators who benefit commercially from authentic sustainability credentials.</strong> Dive resorts pay PPUC US$0.38/kWh for grid electricity; the same resorts charge guests US$150-200/day premiums partly because Palau's reefs are "pristine" and "protected." The brand coherence argument for solar — close the gap between environmental positioning and energy reality — is the most persuasive commercial case for Palau RE investment because it links the RE transition directly to the hospitality industry's revenue model, not just to fuel cost savings or government policy targets.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Palau's 18,000-person population makes it the Pacific's smallest economy by far, creating system diseconomies (high fixed cost per customer, thin regulatory and procurement capacity, small project scale that inflates per-MW transaction costs) that make standard Pacific SIDS RE project economics inapplicable — Palau projects cost 50-70% more per MW than comparable Fiji or Samoa projects and this premium must be explicitly acknowledged in COFA and ADB cost estimates rather than treated as an implementation efficiency problem.</strong> The Malakal Solar Farm (3 MW, ~US$7M, 2022) cost approximately US$2.3M/MW — 80% above the Fiji / Samoa benchmark of ~US$1.3M/MW for comparable utility solar. The premium reflects: specialist equipment shipping to remote Micronesia, limited local construction capacity, small project scale (fixed legal, procurement, and project management costs spread over 3 MW vs. 10 MW). Any future Palau solar project should budget using the Malakal/Palau premium, not the Pacific average benchmark.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Taiwan's bilateral energy assistance to Palau — including the Ngerulmud government rooftop solar (3 MW, 2019) — is a geopolitical signal as well as a development project, and the US-Taiwan competition for influence in Palau (which is the only Pacific COFA state maintaining Taiwan recognition) creates a useful funding diversification for Palau's RE programme that should be explicitly managed as a multi-donor portfolio rather than sequentially accessing each donor's funding as individual projects.</strong> Palau's diplomatic Taiwan recognition gives it access to Taiwan's International Cooperation and Development Fund (ICDF) for energy projects — a development finance window unavailable to FSM and Marshall Islands (which recognise PRC). The ICDF has financed Ngerulmud solar and has expressed interest in additional Palau RE. Coordinating ICDF (Taiwan), ADB, USAID (COFA), and PPUC own-capital in a multi-donor RE portfolio would give Palau more total capital than any single donor relationship — and reduce dependence on US federal budgeting cycles for COFA energy disbursements.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The Aimeliik diesel plant — Palau's primary generation asset, aging (built 1970s-1990s, repeatedly extended), and requiring major maintenance investment to maintain reliability — represents both an operating cost burden and a stranded asset risk: if Palau's solar + BESS programme accelerates to 60-70% RE by 2030, Aimeliik's required capacity drops significantly, and the government must plan now for how to manage the transition from full Aimeliik operation to partial dispatch without destroying PPUC's financial model by maintaining diesel capacity that is rarely used.</strong> The Aimeliik transition challenge mirrors Dominica's (DOMLEC) and Vanuatu's (UNELCO) situations: the old diesel plant provides essential backup and frequency stabilisation while solar is below ~40% penetration; at 60-70% solar, the same plant sits idle most of the time but must remain available for night/cloudy periods. Managing the diesel transition — from primary to backup, with associated fuel hedging, maintenance cost reallocation, and tariff adjustments — is a financial engineering challenge as important as the solar procurement itself.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Palau's water-energy nexus — with SWRO desalination consuming ~10-15% of Koror's electricity and solar surplus increasingly available at midday — represents an untapped demand management opportunity: scheduling desalination to coincide with peak solar generation would absorb solar surplus that would otherwise be curtailed, reduce BESS cycling (extending battery life), and ensure water security without additional capital investment in dedicated solar-desalination infrastructure.</strong> At Palau's electricity tariff (~US$0.38/kWh), the economic incentive to time-shift desalination to solar hours is significant — effectively free electricity during the solar curtailment window vs. US$0.38/kWh at peak diesel-supply hours. Implementing solar-aligned desalination scheduling requires only software changes to PPUC's SCADA and SWRO control systems — no capital investment. This demand-side management opportunity should be the first PPUC action as solar penetration exceeds 25%, before investing in additional BESS capacity to absorb midday solar surplus.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      PPUC (Palau Public Utilities Corporation) — Annual Report 2024 ·
+      ADB — Pacific Energy Update 2025; Malakal Solar Farm ·
+      USAID Pacific — Palau energy programme ·
+      US Compact of Free Association — Palau 2024 renewal ·
+      Taiwan ICDF — Palau energy assistance ·
+      IRENA — Pacific energy statistics 2025 ·
+      Palau National Marine Sanctuary — establishment legislation 2015 ·
+      UNFCCC — Palau NDC 2022 ·
+      SOPAC/SPC — Micronesia energy data
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Palau Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (Aimeliik Power Plant)', 'Solar PV (Malakal Solar Farm + rooftop)', 'Other (emerging)'],
+    datasets: [{ data: [82, 15, 3], backgroundColor: ['#8B4513','#FFD700','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

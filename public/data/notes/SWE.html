@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweden Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Sweden</div>
+    <div class="doc-sub">~52 GW installed · 99% clean electricity · Hydro 40% + Nuclear 25% + Wind 25% · 17 GW wind (2024) · 2.5 GW new nuclear by 2035 · Net exporter · Vattenfall · Nordpool</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~52 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">99%</div><div class="kpi-lbl">Clean electricity share (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">17 GW</div><div class="kpi-lbl">Wind installed (mid-2024)</div></div>
+    <div class="kpi"><div class="kpi-val">2.5 GW</div><div class="kpi-lbl">New nuclear target by 2035</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Sweden operates one of Europe's cleanest and most stable electricity systems — nearly <strong>99% of generation comes from clean sources</strong> in 2025, with fossil fuels accounting for only ~1% (primarily backup gas). The mix is dominated by a trio: <strong>hydropower (~40%)</strong>, primarily large river systems in the north; <strong>nuclear (~25%)</strong>, from six reactors at Forsmark and Ringhals; and <strong>wind (~25%)</strong>, with 17 GW of onshore capacity and rapid offshore expansion underway. Sweden is a structural net electricity exporter within the Nordic market (Nordpool), with transmission links to Norway, Finland, Denmark, Poland, Lithuania, and Germany.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2025 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#9B59B6"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (nascent)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Fossil (backup gas)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~163 TWh</div>
+            <div class="chart-center-lbl">annual generation</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: IEA Sweden 2024; Energimyndigheten; LowCarbonPower.org 2025; Ember</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Vattenfall — state-owned, Europe-wide</strong>Swedish state utility; largest electricity producer in Sweden; operates major hydro and wind assets; owns heat networks in Germany, Netherlands; acquired European offshore wind projects; corporatised but 100% state-owned</div>
+        <div class="stat-item"><strong>Nuclear: 6 reactors, ageing but extended</strong>Forsmark (3 units), Ringhals (2 units); Ringhals 1 and 2 closed 2019-2020; remaining 6 units approved for long-term operation; government reversed nuclear ban in 2022; new nuclear target 2.5 GW by 2035</div>
+        <div class="stat-item"><strong>Wind: 17 GW onshore → offshore next</strong>Sweden has 17 GW onshore wind (mid-2024), highest in the Nordics; offshore pipeline: 100 GW of proposed projects; Swedish government aiming for large offshore zones in the Baltic and North Sea; Vattenfall and international developers competing</div>
+        <div class="stat-item"><strong>Net exporter — Nordpool integration</strong>Sweden exports electricity to Norway, Finland, Denmark, and Germany through the Nordpool market; price area structure (SE1–SE4) manages internal congestion; high exports in wet years (high hydro) depress Nordic prices</div>
+        <div class="stat-item"><strong>Industry: massive new clean electricity demand</strong>SSAB (green steel), Northvolt (batteries), HYBRIT hydrogen steel, H2 Green Steel — Sweden's industrial decarbonisation wave requires 100–150 TWh of new clean electricity by 2045; electricity demand may double</div>
+      </div>
+    </div>
+
+    <h2>The Electrification Demand Surge</h2>
+    <p>Sweden faces a uniquely ambitious challenge: electrifying not just transport and heating (already advanced) but its core heavy industries. The scale of projected electricity demand growth is unlike anything in Europe:</p>
+    <ul>
+      <li><strong>HYBRIT / SSAB green steel:</strong> Hydrogen-based steel production replacing coking coal; pilot plant operational in Luleå; full SSAB transformation requires ~15 TWh/year of clean electricity — equivalent to adding a major nuclear unit's output.</li>
+      <li><strong>Northvolt battery gigafactory:</strong> Skellefteå; the largest single new electricity consumer in northern Sweden; 2–4 TWh/year of demand; facing financial difficulties in 2024 but strategically important for European battery supply chain.</li>
+      <li><strong>Data centres:</strong> Sweden's cheap, clean electricity and cold climate make it a preferred European data centre location; Google, Meta, Microsoft all expanding; each hyperscale campus adds 0.5–1 TWh/year of demand.</li>
+      <li><strong>Total demand forecast:</strong> Swedish Energy Agency forecasts electricity demand doubling to ~300 TWh by 2045, from ~163 TWh today. This requires adding nuclear, offshore wind, and significantly more grid capacity — especially north-to-south transmission through Norrland.</li>
+    </ul>
+
+    <div class="callout">
+      Sweden's electricity system is the cleanest large economy in Europe — 99% fossil-free in 2025 — yet faces its most complex infrastructure challenge in decades. The north-south transmission bottleneck (Norrland has surplus clean power; southern Sweden and industry have demand) cannot be resolved without either new high-voltage lines (politically and permitting-wise very slow in Sweden) or distributed generation and storage in the south. This internal congestion is Sweden's primary electricity system constraint and the key risk to its industrial decarbonisation ambitions.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Sweden's reversal on nuclear power in 2022 — after 40 years of a phase-out political consensus — reflects a pan-European reassessment of nuclear's role in deep decarbonisation.</strong> The original 1980 referendum decision to phase out nuclear was driven by safety concerns post-Three Mile Island and Chernobyl. By 2022, the security-of-supply concerns post-Ukraine invasion, combined with the electrification demand surge, made maintaining and expanding nuclear the pragmatic choice. Sweden now aims for 2.5 GW of new nuclear by 2035 and is considering SMRs. This policy reversal has been replicated in Finland, France, Poland, the Netherlands, and the UK.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The north-south grid transmission constraint is Sweden's most binding infrastructure bottleneck — more limiting than generation capacity itself.</strong> Sweden's hydro and wind wealth is in Norrland (north), while industrial and population demand centres are in the south (Stockholm, Gothenburg, Malmö). The SE3-SE4 price areas regularly trade at significant premiums over SE1-SE2. Building new high-voltage transmission through Swedish forests and fjälls requires 10–15 years of permitting and political consensus that is currently absent. This internal grid constraint limits Sweden's ability to monetise its clean energy surplus for decarbonising southern industries.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Sweden's offshore wind potential is enormous — 100+ GW in proposed projects — but the regulatory and military exclusion zone constraints mean less than 20 GW is realistically available by 2035.</strong> Swedish military authorities have blocked or limited several offshore wind zones for radar and defence reasons. The concession process is also slower than Denmark's or the UK's. The gap between pipeline (100 GW) and deliverable capacity (20 GW by 2030–35) reflects a planning and permitting problem, not a resource or cost problem.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Vattenfall's European footprint makes it a geopolitically significant energy company — its decisions in Germany (lignite exit, offshore wind) and the Netherlands (offshore wind pause) shape European energy policy beyond Sweden.</strong> As a state-owned company, Vattenfall's strategic choices are partly political. Its 2024 decisions to pause UK offshore wind projects and retreat from the Aberdeen offshore development reflect the broader cost inflation crisis in offshore wind — with implications for UK and European supply chains that go beyond Swedish interests.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Sweden's industrial electrification wave — green steel, batteries, hydrogen — represents the leading edge of what deep industrial decarbonisation looks like in practice, and its success or failure will set expectations for the rest of Europe.</strong> If HYBRIT-model steel and Northvolt-model battery manufacturing succeed at scale in Sweden, they validate the full electrification pathway for hard-to-abate industries. If they fail (as Northvolt's 2024 financial difficulties suggest is a real risk), it will cause a fundamental rethink of industrial decarbonisation timelines across Europe.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      IEA — Sweden Energy Policy Review 2024 ·
+      Energimyndigheten (Swedish Energy Agency) — Sweden's Energy System Overview ·
+      LowCarbonPower.org — Sweden generation mix 2025 ·
+      Ember — Sweden country page ·
+      The Progress Playbook — Wind's growing share of Sweden's fossil-free mix, Dec 2024 ·
+      World Nuclear Association — Nuclear Power in Sweden ·
+      Blackridge Research — Sweden Renewable Energy Market Outlook 2030
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Sweden Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Nuclear', 'Wind', 'Solar PV (nascent)', 'Fossil (backup gas)'],
+    datasets: [{ data: [40, 25, 25, 8, 2], backgroundColor: ['#1B6CA8','#9B59B6','#6AB0DE','#FFD700','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

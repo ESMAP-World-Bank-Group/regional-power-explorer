@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional Power Explorer — Project Status &amp; Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5; --green:#2D7A45; --lgreen:#D4EDDA;
+  --amber:#B8720A; --lamber:#FDF3DC; --red:#C0392B; --lred:#FDECEA;
+  --grey:#F4F5F7; --border:#E2E6EA; --text:#1A2332; --muted:#5A6474; --light:#8A94A6;
+  --white:#FFFFFF; --done:#27AE60; --partial:#E67E22; --missing:#C0392B; --planned:#2E75B6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#EAEEF2;line-height:1.65}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 32px}
+
+/* Header */
+.hdr{background:var(--navy);padding:44px 48px 36px;border-radius:12px;margin-bottom:28px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;right:-80px;top:-80px;width:380px;height:380px;border-radius:50%;background:rgba(46,117,182,.15)}
+.hdr-label{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.hdr-title{font-family:'DM Serif Display',serif;font-size:36px;color:#fff;line-height:1.1;margin-bottom:8px;position:relative;z-index:1}
+.hdr-sub{font-size:13.5px;color:rgba(255,255,255,.5);max-width:680px;line-height:1.6;position:relative;z-index:1}
+.hdr-date{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.3);margin-top:16px}
+
+/* Sections */
+h2{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:var(--navy);margin:36px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--lblue);display:flex;align-items:center;gap:10px}
+h3{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--navy);margin:20px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+p{margin-bottom:9px;font-size:13.5px}
+
+/* Pills */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.pill-done{background:var(--lgreen);color:var(--green)}
+.pill-partial{background:var(--lamber);color:var(--amber)}
+.pill-missing{background:var(--lred);color:var(--red)}
+.pill-planned{background:var(--lblue);color:var(--blue)}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dot-done{background:var(--done)}
+.dot-partial{background:var(--partial)}
+.dot-missing{background:var(--missing)}
+.dot-planned{background:var(--planned)}
+
+/* Coverage matrix */
+.matrix-scroll{overflow-x:auto;margin:10px 0 20px}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:12px}
+thead th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-weight:500;white-space:nowrap;font-size:11.5px}
+thead th:first-child{text-align:left;min-width:180px}
+tbody tr:nth-child(even){background:var(--grey)}
+tbody tr:hover{background:#EAF2FB}
+tbody td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody td:first-child{font-weight:500;color:var(--navy)}
+.c{text-align:center}
+.icon{font-size:14px}
+
+/* Note rows */
+.notes-count{display:flex;align-items:center;gap:4px;font-size:12px}
+
+/* Section callout */
+.callout{background:var(--lblue);border-left:4px solid var(--blue);padding:12px 16px;margin:12px 0;font-size:13px;color:var(--navy);line-height:1.6;border-radius:0 4px 4px 0}
+.callout-warn{background:var(--lamber);border-left-color:var(--amber);color:var(--amber)}
+.callout-danger{background:var(--lred);border-left-color:var(--red);color:var(--red)}
+
+/* Roadmap phases */
+.phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+@media(max-width:700px){.phase-grid{grid-template-columns:1fr}}
+.phase{border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
+.phase-head{padding:12px 16px;font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;display:flex;align-items:center;gap:8px}
+.phase-head.p1{background:var(--lblue);color:var(--navy);border-bottom:1.5px solid var(--border)}
+.phase-head.p2{background:var(--lgreen);color:var(--green);border-bottom:1.5px solid var(--border)}
+.phase-head.p3{background:var(--lamber);color:var(--amber);border-bottom:1.5px solid var(--border)}
+.phase-head.p4{background:var(--lred);color:var(--red);border-bottom:1.5px solid var(--border)}
+.phase-body{padding:14px 16px;background:var(--white)}
+.task{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.task:last-child{border-bottom:none}
+.task-icon{font-size:13px;flex-shrink:0;margin-top:1px}
+.task-text{line-height:1.5}
+.task-text strong{color:var(--navy);display:block;font-size:12.5px;margin-bottom:1px}
+.task-text span{color:var(--muted);font-size:12px}
+
+/* Full-width single phases */
+.phase-full{border:1.5px solid var(--border);border-radius:8px;overflow:hidden;margin:12px 0}
+.task-cols{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.task-col{padding:14px 16px;background:var(--white)}
+.task-col:first-child{border-right:1px solid var(--border)}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0;font-size:12px}
+.legend span{display:flex;align-items:center;gap:5px}
+
+/* Section title badge */
+.s-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--blue);color:#fff;border-radius:50%;font-size:12px;font-weight:600;flex-shrink:0}
+
+/* Country notes grid */
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin:10px 0}
+.nc{padding:5px 8px;border-radius:5px;font-size:11.5px;display:flex;align-items:center;gap:5px;border:1px solid var(--border)}
+.nc.done{background:var(--lgreen);border-color:#B2DFC0}
+.nc.missing{background:var(--lred);border-color:#F5C6C2}
+.nc strong{font-size:11px}
+
+/* Priorities table */
+.prio-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+.prio-table th{background:var(--grey);padding:7px 10px;text-align:left;font-weight:600;font-size:11.5px;border-bottom:2px solid var(--border)}
+.prio-table td{padding:6px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.prio-table tr:hover td{background:#F8FAFE}
+.tag{display:inline-block;padding:1px 6px;border-radius:10px;font-size:10.5px;font-weight:500;white-space:nowrap}
+.tag-q1{background:#DBEAFE;color:#1D4ED8}
+.tag-q2{background:#FEF3C7;color:#92400E}
+.tag-q3{background:#FCE7F3;color:#9D174D}
+.tag-ext{background:#D1FAE5;color:#065F46}
+.tag-int{background:#EDE9FE;color:#4C1D95}
+.tag-str{background:#FFF7ED;color:#9A3412}
+
+/* Status bar */
+.sbar{display:flex;height:10px;border-radius:20px;overflow:hidden;margin:4px 0 6px}
+.sbar div{transition:width .3s}
+
+footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);border-top:1px solid var(--border);margin-top:36px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="hdr-label">Project Status &amp; Development Roadmap</div>
+    <div class="hdr-title">Regional Power Explorer</div>
+    <div class="hdr-sub">Internal tracking document — data coverage by region and data type, pending work, data source verification, and institutional next steps. Not for external distribution.</div>
+    <div class="hdr-date">Last updated: June 2026 · Author: M. Baronnet · EPM / ESMAP · World Bank Group</div>
+  </div>
+
+  <!-- ── SECTION 1: OVERVIEW ── -->
+  <h2><span class="s-num">1</span> Tool Overview</h2>
+  <p>The Regional Power Explorer is an interactive web tool visualising electricity sector data across ~16 regional power pools and interconnected zones, covering 161 countries. It serves EPM teams doing power sector work and is intended to support ESMAP regional engagement. The tool is currently in development (not publicly released).</p>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0">
+    <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:14px 16px">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)">16</div>
+      <div style="font-size:12px;color:var(--muted)">Regions / power pools</div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:14px 16px">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)">~120</div>
+      <div style="font-size:12px;color:var(--muted)">Countries with supply data</div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:14px 16px">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)">165</div>
+      <div style="font-size:12px;color:var(--muted)">Country briefing notes written</div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:14px 16px">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)">9</div>
+      <div style="font-size:12px;color:var(--muted)">Data types in tool</div>
+    </div>
+  </div>
+
+  <h3>Current Data Types in the Tool</h3>
+  <div class="legend">
+    <span><span class="dot dot-done"></span> Fully populated</span>
+    <span><span class="dot dot-partial"></span> Partial / some countries</span>
+    <span><span class="dot dot-missing"></span> Missing / not yet in tool</span>
+    <span><span class="dot dot-planned"></span> Planned</span>
+  </div>
+
+  <div class="matrix-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left">Region</th>
+          <th>Supply<br><span style="font-weight:300;font-size:10px">Ember/OWID</span></th>
+          <th>Plants<br><span style="font-weight:300;font-size:10px">GPPD/GEM</span></th>
+          <th>Grid lines<br><span style="font-weight:300;font-size:10px">OSM/Gridfinder</span></th>
+          <th>Trade<br><span style="font-weight:300;font-size:10px">Comtrade/Ember</span></th>
+          <th>Access<br><span style="font-weight:300;font-size:10px">WB SE4ALL</span></th>
+          <th>Tariffs<br><span style="font-weight:300;font-size:10px">GlobalPetrolPrices</span></th>
+          <th>RE Zones<br><span style="font-weight:300;font-size:10px">Manual/GIS</span></th>
+          <th>Load centers<br><span style="font-weight:300;font-size:10px">UN/GHS</span></th>
+          <th>Notes<br><span style="font-weight:300;font-size:10px">HTML</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Black Sea <span style="color:var(--muted);font-size:11px">(6)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">TUR/GEO</span></td>
+          <td class="c"><span class="pill pill-done">6/6 ✓</span></td>
+        </tr>
+        <tr>
+          <td>Balkans <span style="color:var(--muted);font-size:11px">(6+2)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">8/8 ✓</span></td>
+        </tr>
+        <tr>
+          <td>Central Asia <span style="color:var(--muted);font-size:11px">(5)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">KAZ, KGZ</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">5/5 ✓</span></td>
+        </tr>
+        <tr>
+          <td>WAPP <span style="color:var(--muted);font-size:11px">(16)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~10/16</span></td>
+          <td class="c"><span class="pill pill-partial">~8/16</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">16/16 ✓</span></td>
+        </tr>
+        <tr>
+          <td>SAPP <span style="color:var(--muted);font-size:11px">(11)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~7/11</span></td>
+          <td class="c"><span class="pill pill-partial">ZAF, ZWE</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">11/11 ✓</span></td>
+        </tr>
+        <tr>
+          <td>EAPP <span style="color:var(--muted);font-size:11px">(12)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~7/12</span></td>
+          <td class="c"><span class="pill pill-partial">EGY, ETH, KEN</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">12/12 ✓</span></td>
+        </tr>
+        <tr>
+          <td>CAPP <span style="color:var(--muted);font-size:11px">(9)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~5/9</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">9/9 ✓</span></td>
+        </tr>
+        <tr>
+          <td>South Asia <span style="color:var(--muted);font-size:11px">(8)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">IND, PAK, BGD</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~5/8</span></td>
+          <td class="c"><span class="pill pill-partial">IND, PAK</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">8/8 ✓</span></td>
+        </tr>
+        <tr>
+          <td>ASEAN <span style="color:var(--muted);font-size:11px">(10)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~7/10</span></td>
+          <td class="c"><span class="pill pill-partial">VNM, THA, IDN</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">10/10 ✓</span></td>
+        </tr>
+        <tr>
+          <td>SIEPAC <span style="color:var(--muted);font-size:11px">(6)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">~4/6</span></td>
+          <td class="c"><span class="pill pill-partial">~4/6</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">6/6 ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Pan-Arab</strong> <span style="color:var(--muted);font-size:11px">(15)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-partial">~10/15</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">15/15 ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>EU</strong> <span style="color:var(--muted);font-size:11px">(27)</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">✓ Full</span></td>
+          <td class="c"><span class="pill pill-done">ENTSO-E</span></td>
+          <td class="c"><span class="pill pill-missing">N/A</span></td>
+          <td class="c"><span class="pill pill-partial">~20/27</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">27/27 ✓</span></td>
+        </tr>
+        <tr>
+          <td>SIDS-Caribbean <span style="color:var(--muted);font-size:11px">(16)</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">16/16 ✓</span></td>
+        </tr>
+        <tr>
+          <td>SIDS-Pacific <span style="color:var(--muted);font-size:11px">(13)</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">Sparse</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">13/13 ✓</span></td>
+        </tr>
+        <tr>
+          <td>SIDS-AIMS <span style="color:var(--muted);font-size:11px">(9)</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">Sparse</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-partial">Partial</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-missing">None</span></td>
+          <td class="c"><span class="pill pill-done">9/9 ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout" style="margin-top:4px">
+    <strong>Note coverage: 100% complete.</strong> 165 briefing notes cover all 161 countries in the tool (4 extra notes exist for CHE, COK, GBR, NOR — not yet assigned to a region). Remaining priorities shift to data enrichment (T&amp;D losses, emissions intensity, peak demand) and governance (data source register, boundary verification, ESMAP alignment).
+  </div>
+
+
+  <!-- ── SECTION 2: MISSING DATA TYPES ── -->
+  <h2><span class="s-num">2</span> Missing Data Types — Global View</h2>
+  <p>The table below shows data types not yet in the tool but analytically relevant, with source options and indicative difficulty.</p>
+
+  <table class="prio-table">
+    <thead>
+      <tr>
+        <th style="width:200px">Indicator</th>
+        <th>Why it matters</th>
+        <th>Best open source</th>
+        <th>WB internal source?</th>
+        <th>Difficulty</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>T&amp;D losses (%)</strong></td>
+        <td>Critical for supply efficiency; huge variation Sub-Saharan Africa vs GCC vs EU. Missing distorts apparent consumption.</td>
+        <td>IEA World Energy Balances; Ember; WDI <code>EG.ELC.LOSS.ZS</code></td>
+        <td>WDI API — direct pull possible</td>
+        <td><span class="tag tag-q1">Low</span></td>
+        <td><span class="tag tag-q1">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Peak demand (GW)</strong></td>
+        <td>Reserve margin = installed / peak. Without it, capacity data is incomplete — can't assess adequacy.</td>
+        <td>IRENA stats; national TSO reports; Ember partial</td>
+        <td>Partially in EPM model inputs</td>
+        <td><span class="tag tag-q2">Medium</span></td>
+        <td><span class="tag tag-q1">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Emissions intensity (gCO₂/kWh)</strong></td>
+        <td>Core decarbonisation metric. Allows tracking clean vs dirty grids. Derivable from supply mix but needs EF assumptions.</td>
+        <td>Ember country-level (direct download); OWID</td>
+        <td>World Bank climate data</td>
+        <td><span class="tag tag-q1">Low</span></td>
+        <td><span class="tag tag-q1">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Interconnection capacity (MW)</strong></td>
+        <td>Currently grid <em>lines</em> are shown but not their MW capacity. A 400 kV line could be 500 MW or 2,000 MW.</td>
+        <td>ENTSO-E (EU); PLATTS (partial); national TSO reports</td>
+        <td>No centralised WB source</td>
+        <td><span class="tag tag-q2">Medium</span></td>
+        <td><span class="tag tag-q2">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>Pipeline capacity (GW under construction)</strong></td>
+        <td>GEM database has this field; currently shown in plant layer but not as a dedicated summary view. Key for transition tracking.</td>
+        <td>GEM Tracker (already in use)</td>
+        <td>—</td>
+        <td><span class="tag tag-q1">Low</span></td>
+        <td><span class="tag tag-q1">High</span></td>
+      </tr>
+      <tr>
+        <td><strong>Load profile (demand curve)</strong></td>
+        <td>Hourly or daily demand shape per country. Shows morning/evening peaks, seasonal patterns, AC-driven peaks (Gulf). Essential for storage sizing and RE integration analysis. Must be sourced per country from national TSOs — ENTSO-E is not a universal reference and should not be used as a stand-in for non-EU countries. When no national source is available, mark as <em>Unavailable</em>.</td>
+        <td>National TSO reports (per country); ENTSO-E for EU only; IRENA partial; IEA country profiles</td>
+        <td>Potentially in EPM model inputs for countries with active projects</td>
+        <td><span class="tag tag-q2">Medium</span></td>
+        <td><span class="tag tag-q2">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>RE capacity factor (%)</strong></td>
+        <td>Solar 15% CF in cloudy vs 25% in sunny contexts changes everything. Critical for interpreting capacity numbers.</td>
+        <td>NASA POWER (already in tool via nasaPower.js); IRENA</td>
+        <td>—</td>
+        <td><span class="tag tag-q2">Medium</span></td>
+        <td><span class="tag tag-q2">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>LCOE by technology ($/MWh)</strong></td>
+        <td>Contextualises investment decisions. Highly relevant for Bank project appraisal contexts.</td>
+        <td>IRENA LCOE statistics (annual); BloombergNEF partial</td>
+        <td>Potentially from ESMAP SREP</td>
+        <td><span class="tag tag-q3">Hard</span></td>
+        <td><span class="tag tag-q2">Medium</span></td>
+      </tr>
+      <tr>
+        <td><strong>Household energy spending (%income)</strong></td>
+        <td>Combines tariff + access data into affordability. Key ESMAP metric (Tracking SDG7).</td>
+        <td>SE4ALL Global Tracking Framework; IEA WEO special reports</td>
+        <td>SE4ALL data team; ESMAP</td>
+        <td><span class="tag tag-q3">Hard</span></td>
+        <td><span class="tag tag-q3">Low now</span></td>
+      </tr>
+      <tr>
+        <td><strong>Mini-grid / off-grid coverage</strong></td>
+        <td>Highly relevant for SIDS and Sub-Saharan Africa where national grid ≠ total supply.</td>
+        <td>ESMAP SREP; SEforALL; EMP-Africa</td>
+        <td>ESMAP SREP database (internal?)</td>
+        <td><span class="tag tag-q3">Hard</span></td>
+        <td><span class="tag tag-q2">Medium (SIDS)</span></td>
+      </tr>
+      <tr>
+        <td><strong>Investment flows ($B/yr)</strong></td>
+        <td>BNEF, IRENA, WB private climate finance tracking. Context for transition financing.</td>
+        <td>IRENA RE Finance; BNEF partial; WB climate tracking</td>
+        <td>WB private climate finance DB</td>
+        <td><span class="tag tag-q3">Hard</span></td>
+        <td><span class="tag tag-q3">Low now</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout" style="margin-top:4px">
+    <strong>Quick wins (1–2 days each):</strong> T&amp;D losses from WDI API (<code>EG.ELC.LOSS.ZS</code>), emissions intensity from Ember download, and pipeline/under-construction from GEM (already loaded) are the three highest-value additions that require minimal new data work.
+  </div>
+
+
+  <!-- ── SECTION 3: BRIEFING NOTES STATUS ── -->
+  <h2><span class="s-num">3</span> Briefing Notes Coverage</h2>
+  <p>165 briefing notes are written, covering all 161 countries in the tool (100% coverage). Four additional notes exist for countries not yet in a region: CHE, COK, GBR, NOR.</p>
+
+  <h3>✓ Complete regions (notes written for all countries)</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px">
+    <span class="pill pill-done">Black Sea — 6/6</span>
+    <span class="pill pill-done">Balkans — 8/8</span>
+    <span class="pill pill-done">Central Asia — 5/5</span>
+    <span class="pill pill-done">South Asia — 8/8</span>
+    <span class="pill pill-done">ASEAN — 10/10</span>
+    <span class="pill pill-done">WAPP — 16/16</span>
+    <span class="pill pill-done">SAPP — 11/11</span>
+    <span class="pill pill-done">EAPP — 12/12</span>
+    <span class="pill pill-done">CAPP — 9/9</span>
+    <span class="pill pill-done">SIEPAC — 6/6</span>
+    <span class="pill pill-done">Pan-Arab — 15/15</span>
+    <span class="pill pill-done">EU — 27/27</span>
+    <span class="pill pill-done">SIDS-Caribbean — 16/16</span>
+    <span class="pill pill-done">SIDS-Pacific — 13/13</span>
+    <span class="pill pill-done">SIDS-AIMS — 9/9</span>
+  </div>
+
+  <h3>EU — Notes completed (27 countries, June 2026)</h3>
+  <p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Written in 5 batches by geographic/grid cluster. Listed for reference.</p>
+  <div class="callout" style="margin:0 0 10px">All 27 EU country notes written as of June 2026.</div>
+  <table class="prio-table">
+    <thead><tr><th>Batch</th><th>Countries</th><th>Grid / policy context</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><strong>North Sea / Nordic</strong></td><td>DNK, SWE, NOR, FIN, NLD, BEL, LUX, GBR</td><td>ENTSO-E North; offshore wind leaders; coupling markets</td><td><span class="pill pill-done">✓ Done</span></td></tr>
+      <tr><td><strong>Western Europe</strong></td><td>DEU, FRA, AUT, CHE, IRL, PRT, ESP</td><td>Core EU ETS; Energiewende; nuclear in FRA; Atlantic wind</td><td><span class="pill pill-done">✓ Done</span></td></tr>
+      <tr><td><strong>Central Europe</strong></td><td>POL, CZE, SVK, HUN, SVN, HRV</td><td>Coal exit tensions; V4 alignment; gas dependence</td><td><span class="pill pill-done">✓ Done</span></td></tr>
+      <tr><td><strong>Southern / Med</strong></td><td>ITA, GRC, CYP, MLT</td><td>Med interconnections; Italian gas hub; Cyprus isolation</td><td><span class="pill pill-done">✓ Done</span></td></tr>
+      <tr><td><strong>Baltics</strong></td><td>EST, LVA, LTU</td><td>Desynchronising from BRELL/Russia; BEMIP; Nordic market entry 2025</td><td><span class="pill pill-done">✓ Done</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Per-note data coverage indicator (proposed)</h3>
+  <p>Each country briefing note should display a small <strong>data coverage tag line</strong> near the top — showing what data is available in the tool for that country vs. what is missing. Suggested HTML snippet to add to each note:</p>
+  <div style="background:var(--grey);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text);margin:8px 0;line-height:1.8">
+    &lt;!-- DATA COVERAGE BAR — add near top of each note --&gt;<br>
+    &lt;div class="data-coverage"&gt;<br>
+    &nbsp;&nbsp;&lt;span class="dc-avail"&gt;✓ Supply (Ember)&lt;/span&gt;<br>
+    &nbsp;&nbsp;&lt;span class="dc-avail"&gt;✓ Plants (GPPD/GEM)&lt;/span&gt;<br>
+    &nbsp;&nbsp;&lt;span class="dc-avail"&gt;✓ Grid (OSM)&lt;/span&gt;<br>
+    &nbsp;&nbsp;&lt;span class="dc-partial"&gt;~ Access (SE4ALL 2022)&lt;/span&gt;<br>
+    &nbsp;&nbsp;&lt;span class="dc-missing"&gt;✗ Losses&lt;/span&gt;<br>
+    &nbsp;&nbsp;&lt;span class="dc-missing"&gt;✗ Peak demand&lt;/span&gt;<br>
+    &lt;/div&gt;
+  </div>
+  <p style="font-size:12.5px">This will require adding a short CSS class block to each note's style section. Can be done in bulk with a script after all notes are written.</p>
+
+
+  <!-- ── SECTION 4: ROADMAP ── -->
+  <h2><span class="s-num">4</span> Development Roadmap</h2>
+
+  <!-- 4A -->
+  <h3>4A — Content: Briefing Notes</h3>
+  <div class="phase-grid">
+    <div class="phase">
+      <div class="phase-head p2">✅ Completed: All 165 notes written (June 2026)</div>
+      <div class="phase-body">
+        <div class="task"><div class="task-icon">✓</div><div class="task-text"><strong>EU — 27 notes (5 batches)</strong><span>North Sea/Nordic, Western Europe, Central Europe, Southern Med, Baltics — all done</span></div></div>
+        <div class="task"><div class="task-icon">✓</div><div class="task-text"><strong>SIDS-Caribbean — 16 notes</strong><span>CUB, HTI, JAM, TTO, BRB, GUY, SUR, BLZ, GTM, HND, SLV, NIC, CRI, PAN, DOM, PRI</span></div></div>
+        <div class="task"><div class="task-icon">✓</div><div class="task-text"><strong>SIDS-Pacific — 13 notes</strong><span>PNG, FJI, SLB, VUT, WSM, TON, FSM, PLW, MHL, TUV, NRU, KIR, TLS</span></div></div>
+        <div class="task"><div class="task-icon">✓</div><div class="task-text"><strong>SIDS-AIMS — 9 notes</strong><span>MDV, COM, SYC, MUS, STP, CPV, GNB, SGP, BHR</span></div></div>
+        <div class="task"><div class="task-icon">→</div><div class="task-text"><strong>4 extra notes (not yet in a region)</strong><span>CHE, COK, GBR, NOR — written but not assigned to regions.json; decide whether to add regions or keep as standalone</span></div></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-head p3">↗ Notes — next steps</div>
+      <div class="phase-body">
+        <div class="task"><div class="task-icon">📍</div><div class="task-text"><strong>Add data coverage bar to all 165 notes</strong><span>Bulk-insert the coverage snippet (see Section 3); script-automatable once CSS is standardised</span></div></div>
+        <div class="task"><div class="task-icon">📍</div><div class="task-text"><strong>Decide on CHE, COK, GBR, NOR</strong><span>Add to a "Europe standalone" region in regions.json, or fold into existing regions (e.g. COK → SIDS-Pacific)</span></div></div>
+        <div class="task"><div class="task-icon">🔄</div><div class="task-text"><strong>Periodic note refresh</strong><span>Key notes will become stale as sector changes occur (coal exits, new RE projects, tariff reforms). Flag for annual review — prioritise high-change countries first.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4B -->
+  <h3>4B — Data: Low-hanging fruit (open-source)</h3>
+  <div class="phase-full">
+    <div class="phase-head p2">🍋 Quick additions — open-source, &lt;2 days each</div>
+    <div class="task-cols">
+      <div class="task-col">
+        <div class="task"><div class="task-icon">📊</div><div class="task-text"><strong>T&amp;D losses — WDI API</strong><span>Pull <code>EG.ELC.LOSS.ZS</code> via World Bank Data API for all countries. Clean JSON. Display on country panel and in notes. Source: WB WDI, updated annually.</span></div></div>
+        <div class="task"><div class="task-icon">🌡</div><div class="task-text"><strong>Emissions intensity — Ember</strong><span>Ember publishes country-level gCO₂/kWh as a clean CSV download. Parse into supply data or a standalone emissions.json. 2000–2024 coverage.</span></div></div>
+        <div class="task"><div class="task-icon">🏗</div><div class="task-text"><strong>Pipeline capacity display — GEM</strong><span>GEM data is already loaded (plant layer). Add a "Construction + Planned" summary tab in CapacityChart. Data already in cache; only front-end work needed.</span></div></div>
+      </div>
+      <div class="task-col">
+        <div class="task"><div class="task-icon">⚡</div><div class="task-text"><strong>Peak demand — national TSOs + IRENA</strong><span>IRENA stats portal has peak demand for ~60 countries. Fill remainder from national TSO annual reports (scraping or manual). Store as peak_demand.json.</span></div></div>
+        <div class="task"><div class="task-icon">🗺</div><div class="task-text"><strong>Load centers — expand beyond Black Sea</strong><span>Load center layer exists only for Black Sea. GHS-POP or UN GHSL data available for all regions. Add for WAPP, EAPP, SAPP, South Asia at minimum.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4C -->
+  <h3>4C — Data: World Bank internal sources</h3>
+  <div class="callout callout-warn">
+    These require checking with relevant WB teams before use. Data may be embargoed, project-specific, or subject to client confidentiality. Do not pull from internal databases without clearance.
+  </div>
+  <table class="prio-table">
+    <thead><tr><th>Data</th><th>Potential WB Source</th><th>Action needed</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Peak demand + capacity margins</strong></td>
+        <td>EPM model inputs (epm-dashboard); country power sector assessments</td>
+        <td>Check which EPM model outputs are publishable; could pre-populate peak_demand.json from EPM scenarios</td>
+        <td><span class="tag tag-int">Internal</span></td>
+      </tr>
+      <tr>
+        <td><strong>Electricity tariff data</strong></td>
+        <td>ESMAP tariff tracking; PPIAF affordability work; country PER reports</td>
+        <td>Ask ESMAP if they have a shareable tariff dataset; better than GlobalPetrolPrices for developing countries</td>
+        <td><span class="tag tag-int">Internal</span></td>
+      </tr>
+      <tr>
+        <td><strong>Mini-grid / off-grid systems</strong></td>
+        <td>ESMAP SREP (SE4ALL Rapid Assessment and Gap Analysis); Africa Mini-Grid Market Assessment</td>
+        <td>Contact ESMAP SE4ALL team; check if SREP data is publishable or citable</td>
+        <td><span class="tag tag-int">Internal</span></td>
+      </tr>
+      <tr>
+        <td><strong>Country Power Sector Reform status</strong></td>
+        <td>ESMAP RISE (Regulatory Indicators for Sustainable Energy)</td>
+        <td>RISE is public — pull scores for RE, energy access, efficiency; structured country-level indicators</td>
+        <td><span class="tag tag-ext">Public</span></td>
+      </tr>
+      <tr>
+        <td><strong>WB lending portfolio (active power projects)</strong></td>
+        <td>WB Projects &amp; Operations database (public)</td>
+        <td>Could show active WB investments on map layer; public data, just needs parsing by sector code</td>
+        <td><span class="tag tag-ext">Public</span></td>
+      </tr>
+      <tr>
+        <td><strong>Country power development plans (PDPs)</strong></td>
+        <td>Country teams; region energy units</td>
+        <td>No central database; would need manual curation from country teams; high value but high effort</td>
+        <td><span class="tag tag-int">Internal</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 4D -->
+  <h3>4D — Layout &amp; New Data Type Inclusions</h3>
+  <div class="phase-grid">
+    <div class="phase">
+      <div class="phase-head p3">📐 Layout improvements</div>
+      <div class="phase-body">
+        <div class="task"><div class="task-icon">📊</div><div class="task-text"><strong>Add a "System Health" tab in StatsPanel</strong><span>Shows: installed capacity, peak demand, reserve margin, losses %, access %, emissions intensity — at a glance. Currently scattered across tabs.</span></div></div>
+        <div class="task"><div class="task-icon">📈</div><div class="task-text"><strong>Trend sparklines on supply chart</strong><span>Small 5-year trend arrows next to fuel shares. E.g. "Solar: 8% ↑ from 1% in 2018." More scannable than full time series for quick country comparison.</span></div></div>
+        <div class="task"><div class="task-icon">🔗</div><div class="task-text"><strong>Cross-country comparison view</strong><span>Multi-select 2–4 countries; compare capacity mix, supply, access, tariffs side by side. High value for regional analysis but significant front-end work.</span></div></div>
+        <div class="task"><div class="task-icon">🗒</div><div class="task-text"><strong>Notes panel integration</strong><span>Country briefing notes currently open as popup/iframe. Consider embedding summary key stats directly in the note HTML so it's self-contained without the tool.</span></div></div>
+        <div class="task"><div class="task-icon">📥</div><div class="task-text"><strong>CSV/PNG export per country</strong><span>Export current supply chart as PNG or underlying data as CSV. Frequently requested by task team users who want to put charts in presentations.</span></div></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-head p3">➕ New chart / data types to consider</div>
+      <div class="phase-body">
+        <div class="task"><div class="task-icon">📉</div><div class="task-text"><strong>Losses chart (% over time)</strong><span>Simple bar/line of T&D losses over time per country. Huge variation (1% Netherlands → 40%+ DRC). Trivially important for Bank energy lending context.</span></div></div>
+        <div class="task"><div class="task-icon">🏗</div><div class="task-text"><strong>Pipeline bar (GW under construction)</strong><span>Horizontal stacked bar: Operational | Under construction | Planned. By fuel. Already in GEM data — just UI work. Shows trajectory not just current state.</span></div></div>
+        <div class="task"><div class="task-icon">🌡</div><div class="task-text"><strong>Emissions intensity over time</strong><span>gCO₂/kWh trend 2000–2024. Shows decarbonisation progress or lack thereof. Directly derivable from Ember supply data + emission factors.</span></div></div>
+        <div class="task"><div class="task-icon">💵</div><div class="task-text"><strong>Tariff vs. cost-recovery comparison</strong><span>Show residential tariff vs. estimated LCOE of marginal plant. Simple affordability gap indicator. Requires LCOE estimates (IRENA or EPM model outputs).</span></div></div>
+        <div class="task"><div class="task-icon">🔌</div><div class="task-text"><strong>Plant age histogram</strong><span>Already in cache (region_age_* files). Build a UI panel showing age distribution — how much of the fleet is 20+ years old. Key retirement planning metric.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4E -->
+  <h3>4E — Cleanup, Governance &amp; Institutional Steps</h3>
+  <div class="callout callout-danger">
+    This section covers actions that need to happen before any broader distribution or publication of the tool. Some items involve WB procurement/legal; flag with supervisor before proceeding.
+  </div>
+  <table class="prio-table">
+    <thead><tr><th style="width:220px">Action</th><th>Detail</th><th>Who / How</th><th>Urgency</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>🔐 Data source authorisation review</strong></td>
+        <td>Verify that each data source used (Ember, GPPD, GEM, OSM, GlobalPetrolPrices, OWID, Comtrade, IRENA, NASA POWER, CARTO tiles) is used within its licence terms — attribution required, commercial use restrictions, redistribution rules. Currently metadata.json has a minimal note; need a proper data provenance register.</td>
+        <td>Create a DATA_SOURCES.md with: source name, URL, licence type, attribution text, restrictions, last verification date. Verify each source.</td>
+        <td><span class="tag tag-q1">Before public release</span></td>
+      </tr>
+      <tr>
+        <td><strong>🔒 Confidential data separation</strong></td>
+        <td>If EPM model outputs (scenarios, baselines) are embedded in the tool, they may be client-confidential or embargoed. The current repo structure mixes public open-source data with potential internal data. Need a clear boundary.</td>
+        <td>Audit all data files for anything derived from client EPM models. If any: move to a private /internal/ folder excluded from public build. Consider two-repo structure: public open-source + private WB-internal.</td>
+        <td><span class="tag tag-q1">Immediate</span></td>
+      </tr>
+      <tr>
+        <td><strong>🗺 Boundary verification with WB Map Team</strong></td>
+        <td>Country boundary files (countries_10m.geojson, countries_110m.geojson) and their use with disputed territories (Kosovo, Palestine, Western Sahara, Taiwan etc.) must comply with World Bank official boundary standards and disclaimer requirements.</td>
+        <td>Contact WB Map Design Unit (cartography@worldbank.org or through Geography team). Share current boundary files. Get sign-off or replacement files. Add required WB boundary disclaimer text to About page.</td>
+        <td><span class="tag tag-q1">Before internal distribution</span></td>
+      </tr>
+      <tr>
+        <td><strong>🏛 GitHub under WB organisational account</strong></td>
+        <td>Currently repo is personal (mbaronnet). For an institutionally-used tool, should be under the World Bank GitHub org (worldbank) or a relevant division account. Requires WB IT/GitHub admin involvement.</td>
+        <td>Request transfer to worldbank org or create under <code>worldbank/regional-power-explorer</code>. Follow WB GitHub policy (OSS compliance, LICENSE file, CONTRIBUTING.md). May need approval from supervisor + IT.</td>
+        <td><span class="tag tag-q2">Before wider sharing</span></td>
+      </tr>
+      <tr>
+        <td><strong>⚡ ESMAP alignment conversation</strong></td>
+        <td>Before investing further in the tool, align with ESMAP on: (1) Is this the right product for their portfolio? (2) Could it be embedded in ESMAP Energy Data portal or RISE? (3) What additional data do they have that could improve it? (4) Who is the intended user base — internal task teams only, or public-facing?</td>
+        <td>Schedule 45-min meeting with ESMAP Energy Data team (Elisa Portale / Oliver Knight or equivalent). Share a demo. Come with 3 specific questions: audience, data partnership, potential integration.</td>
+        <td><span class="tag tag-q2">Within 3 months</span></td>
+      </tr>
+      <tr>
+        <td><strong>📝 Licence + disclaimer on tool</strong></td>
+        <td>The tool currently has no public licence, no data disclaimer, and no WB disclaimer for findings/views. All three are required for any WB-branded tool or publication.</td>
+        <td>Add to About page: (1) Creative Commons CC BY 4.0 or WB standard licence. (2) Data disclaimer: "Data is approximate and for analytical purposes only; verify before policy use." (3) Standard WB views disclaimer. Add LICENSE file to repo.</td>
+        <td><span class="tag tag-q1">Before internal distribution</span></td>
+      </tr>
+      <tr>
+        <td><strong>🔐 Repo visibility management</strong></td>
+        <td>If the repo goes public on GitHub, any API keys, internal file paths, or internal references in the code will be visible. Currently using CARTO tiles (require attribution but no key). Check for any hardcoded credentials.</td>
+        <td>Run <code>grep -r "key\|token\|secret\|password\|internal\|confidential" src/ public/</code> before making repo public. Add .gitignore for any local config files with credentials.</td>
+        <td><span class="tag tag-q1">Before public repo</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- ── SECTION 5: PRIORITIES ── -->
+  <h2><span class="s-num">5</span> Suggested Priority Order</h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0">
+    <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;overflow:hidden">
+      <div style="background:#DBEAFE;padding:10px 16px;font-weight:600;font-size:13px;color:#1D4ED8;border-bottom:1px solid var(--border)">🔵 Now (June–September 2026)</div>
+      <div style="padding:14px 16px">
+        <div class="task"><div class="task-icon">1.</div><div class="task-text"><strong>Data source authorisation register</strong><span>Create DATA_SOURCES.md; verify all 10+ sources; quick but must be done before any wider sharing</span></div></div>
+        <div class="task"><div class="task-icon">2.</div><div class="task-text"><strong>T&amp;D losses — WDI API pull</strong><span>Low-hanging fruit; 1-day implementation; high analytical value for developing region notes</span></div></div>
+        <div class="task"><div class="task-icon">3.</div><div class="task-text"><strong>Emissions intensity — Ember CSV</strong><span>1-day data work + 1-day frontend; immediate value for EU and global context</span></div></div>
+        <div class="task"><div class="task-icon">4.</div><div class="task-text"><strong>Boundary check — WB Map Team</strong><span>Email to WB Maps; needed before any internal distribution; non-blocking on other work</span></div></div>
+        <div class="task"><div class="task-icon">5.</div><div class="task-text"><strong>Add data coverage bar to all 165 notes</strong><span>Bulk-insert the coverage snippet (see Section 3); script-automatable once CSS is standardised</span></div></div>
+      </div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;overflow:hidden">
+      <div style="background:#FEF3C7;padding:10px 16px;font-weight:600;font-size:13px;color:#92400E;border-bottom:1px solid var(--border)">🟡 Next (October 2026 – Q1 2027)</div>
+      <div style="padding:14px 16px">
+        <div class="task"><div class="task-icon">6.</div><div class="task-text"><strong>Pipeline GW display (GEM data)</strong><span>Frontend only; GEM data already loaded; shows under-construction + planned capacity by fuel</span></div></div>
+        <div class="task"><div class="task-icon">7.</div><div class="task-text"><strong>ESMAP alignment conversation</strong><span>45-min demo + 3 questions; defines institutional trajectory of the tool</span></div></div>
+        <div class="task"><div class="task-icon">8.</div><div class="task-text"><strong>Peak demand — national TSOs + IRENA</strong><span>IRENA stats has peak demand for ~60 countries; fill remainder from TSO reports; store as peak_demand.json</span></div></div>
+        <div class="task"><div class="task-icon">9.</div><div class="task-text"><strong>GitHub → WB org transfer</strong><span>Coordinate with IT; non-blocking but needed for institutional use; do after licence+disclaimer added</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;margin:0 0 12px">
+    <div style="background:#FCE7F3;padding:10px 16px;font-weight:600;font-size:13px;color:#9D174D;border-bottom:1px solid var(--border)">🔴 Later (2027+, depends on institutional direction)</div>
+    <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <div style="border-right:1px solid var(--border);padding-right:14px">
+        <div class="task"><div class="task-icon">→</div><div class="task-text"><strong>Cross-country comparison view</strong><span>Significant front-end work; highly requested but deprioritised until core data is solid</span></div></div>
+        <div class="task"><div class="task-icon">→</div><div class="task-text"><strong>LCOE by technology</strong><span>Data assembly complex; IRENA + EPM model alignment needed</span></div></div>
+        <div class="task"><div class="task-icon">→</div><div class="task-text"><strong>Mini-grid / off-grid layer</strong><span>Requires ESMAP SREP data access; high value for SIDS and Sub-Saharan Africa but data scattered</span></div></div>
+      </div>
+      <div style="padding-left:14px">
+        <div class="task"><div class="task-icon">→</div><div class="task-text"><strong>Investment flows layer</strong><span>BNEF/IRENA data; complex licensing; defer until institutional direction clear</span></div></div>
+        <div class="task"><div class="task-icon">→</div><div class="task-text"><strong>CSV/PNG export feature</strong><span>Nice to have; modest dev effort but deprioritised vs content completeness</span></div></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SECTION 6: DATA SOURCES REGISTER ── -->
+  <h2><span class="s-num">6</span> Data Sources Register</h2>
+  <p style="font-size:12.5px;color:var(--muted)">Current status — authorisation review pending. Column "Licence confirmed" = whether licence terms have been explicitly verified for this use case (non-commercial, attribution required, no redistribution of raw data).</p>
+
+  <table class="prio-table">
+    <thead><tr><th>Source</th><th>Data provided</th><th>Licence</th><th>Attribution text</th><th>Restrictions</th><th>Confirmed</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Ember</strong></td><td>Supply / generation by fuel, trade, emissions</td><td>CC BY 4.0</td><td>"Ember, Global Electricity Review [year]"</td><td>Attribution required; commercial use OK</td><td><span class="pill pill-partial">Partial</span></td></tr>
+      <tr><td><strong>OWID (Our World in Data)</strong></td><td>Access, per-capita consumption, RE share</td><td>CC BY 4.0</td><td>"Our World in Data, based on [source]"</td><td>Attribution required</td><td><span class="pill pill-partial">Partial</span></td></tr>
+      <tr><td><strong>GPPD v1.3</strong> (WRI)</td><td>Power plant locations, capacity, fuel</td><td>CC BY 4.0</td><td>"Global Power Plant Database, WRI"</td><td>Attribution required; no redistribution of modified version without attribution</td><td><span class="pill pill-missing">Not verified</span></td></tr>
+      <tr><td><strong>GEM 2024–25</strong></td><td>Power plants (construction, planned, retired)</td><td>CC BY 4.0 SA</td><td>"Global Energy Monitor, [tracker name] [year]"</td><td>Attribution + ShareAlike — derivative works must use same licence</td><td><span class="pill pill-missing">Not verified</span></td></tr>
+      <tr><td><strong>OpenStreetMap</strong></td><td>Transmission lines</td><td>ODbL 1.0</td><td>"© OpenStreetMap contributors"</td><td>ShareAlike for database extracts; attribution mandatory</td><td><span class="pill pill-partial">Displayed</span></td></tr>
+      <tr><td><strong>NASA POWER</strong></td><td>Solar irradiance (RE resources tab)</td><td>Public domain (US govt)</td><td>"Powered by NASA POWER Project"</td><td>None (US federal public domain)</td><td><span class="pill pill-done">✓ OK</span></td></tr>
+      <tr><td><strong>CARTO tiles</strong></td><td>Basemap (labeled, dark, light)</td><td>CC BY 3.0 + CARTO ToS</td><td>"© CARTO © OpenStreetMap contributors"</td><td>Non-commercial OK; commercial requires CARTO account</td><td><span class="pill pill-partial">Check ToS</span></td></tr>
+      <tr><td><strong>ESRI World Imagery</strong></td><td>Satellite basemap</td><td>ESRI ToS</td><td>"Tiles © Esri — Source: Esri, Maxar..."</td><td>Non-commercial educational/research use permitted; check ToS for WB institutional use</td><td><span class="pill pill-missing">Not verified</span></td></tr>
+      <tr><td><strong>World Bank WDI</strong></td><td>Access (EG.ELC.ACCS.*), losses (EG.ELC.LOSS.ZS)</td><td>CC BY 4.0</td><td>"World Bank, World Development Indicators"</td><td>Attribution required; open use</td><td><span class="pill pill-done">✓ OK</span></td></tr>
+      <tr><td><strong>GlobalPetrolPrices</strong></td><td>Electricity tariffs (residential/industrial)</td><td>Commercial, no redistribution</td><td>"GlobalPetrolPrices.com [year]"</td><td>⚠️ Data cannot be redistributed. Currently using approximate values — needs verification. Consider switching to IRENA or WB ESMAP tariff data.</td><td><span class="pill pill-missing">⚠️ Risk</span></td></tr>
+      <tr><td><strong>IRENA Statistics</strong></td><td>RE capacity, tariffs, LCOE (future)</td><td>IRENA ToS — free non-commercial</td><td>"IRENA, [publication] [year]"</td><td>Non-commercial research/educational use permitted; no redistribution of raw data</td><td><span class="pill pill-partial">Partial</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-danger" style="margin-top:8px">
+    <strong>⚠️ GlobalPetrolPrices:</strong> The tariff data from GlobalPetrolPrices.com is used under terms that may not permit redistribution or embedding in a web tool. This should be replaced with IRENA tariff data or ESMAP-sourced tariffs before any wider distribution. Flag for legal/procurement review if uncertain.
+  </div>
+
+
+  <footer>
+    Regional Power Explorer — Project Status &amp; Roadmap · Internal document · June 2026 · M. Baronnet · EPM / ESMAP · World Bank Group<br>
+    Not for external distribution. For questions: maelle.baronnet@gmail.com
+  </footer>
+
+</div>
+</body>
+</html>

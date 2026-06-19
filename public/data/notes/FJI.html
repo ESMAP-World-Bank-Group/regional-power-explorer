@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiji Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific</div>
+    <div class="doc-title">Fiji</div>
+    <div class="doc-sub">~475 MW installed · Hydro ~55% (Monasavu 80 MW, Rewa River highlands) + diesel ~33% + solar ~8% + wind ~4% · Energy Fiji Limited / FEA (state) · 100% RE 2030 target · Butoni Wind Farm (10 MW, Sigatoka) · Solar surge 2022-25 · Outer islands: ~100 served by diesel mini-grids or SHS · ~900,000 people · Pacific's most advanced electricity system after Australia/NZ</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~475 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">Monasavu</div><div class="kpi-lbl">80 MW highland hydro — Viti Levu baseload</div></div>
+    <div class="kpi"><div class="kpi-val">~67%</div><div class="kpi-lbl">RE share 2024 (hydro + solar + wind)</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Fiji operates the Pacific's most developed electricity system outside Australia and New Zealand — a ~475 MW grid anchored by the <strong>Monasavu Hydroelectric Scheme</strong> (80 MW, upper Rewa River, Viti Levu highlands), which has provided reliable baseload since 1983. <strong>Energy Fiji Limited (EFL)</strong>, formerly the Fiji Electricity Authority (FEA), is the state utility serving the interconnected Viti Levu grid (where ~75% of Fiji's 900,000 people live), a separate grid on Vanua Levu (the northern island, served from Labasa and Savusavu), and approximately 100 outer islands through diesel mini-grids or solar home system programmes. The main Viti Levu grid has seen rapid RE growth since 2020: utility-scale solar farms at Ba (10 MW), Rakiraki (15 MW), Tavua (10 MW), and Nawailevu (10 MW) have taken solar from negligible to approximately 8% of annual generation; the Butoni Wind Farm (10 MW, Sigatoka, commissioned 2014) contributes ~4%. Combined with Monasavu and smaller run-of-river hydro stations (Wailoa complex near Suva, Nadarivatu 40 MW wind/hydro scheme), Fiji has achieved approximately 67% RE in 2024 — among the Pacific's highest for an interconnected grid. The path to 100% RE by 2030 requires primarily additional solar, battery storage, and possibly additional hydro on Vanua Levu.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Monasavu 80 MW + Wailoa + Nadarivatu)</span>
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (EFL thermal backup plants)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Ba, Rakiraki, Tavua, Nawailevu farms)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Butoni 10 MW + Nadarivatu)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~67%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EFL Annual Report 2024; Fiji Department of Energy; ADB Pacific energy data; IRENA Pacific 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Monasavu: Fiji's energy backbone since 1983</strong>The Monasavu Hydro Scheme (80 MW, Tunidau penstock, commissioned 1983) impounds the upper Rewa River at ~600 m altitude on Viti Levu's interior highlands. The reservoir (Monasavu Dam) provides ~120 GWh/year of firm hydro generation — ~25% of Fiji's total electricity. The scheme's tunnel-and-penstock design means it is not directly vulnerable to tropical cyclone damage (infrastructure is underground), making it Fiji's most resilient generation asset. The Wailoa River development (multiple smaller stations near Suva, total ~80 MW) adds additional highland hydro capacity. Together, Monasavu and Wailoa provide ~50% of Viti Levu's electricity as low-marginal-cost baseload. Nadarivatu (upper Sigatoka River, 40 MW hydro + wind complementary site) adds peak and seasonal capacity. Fiji's hydro resource is essentially fully developed on Viti Levu — future hydro expansion focuses on Vanua Levu where smaller river systems remain undeveloped.</div>
+        <div class="stat-item"><strong>Solar surge 2021-2025: a Pacific leader</strong>EFL's utility-scale solar programme has been one of the Pacific's fastest deployments: Ba Solar Farm (10 MW, ADB financed, 2021), Rakiraki Solar Farm (15 MW, IFC + EFL, 2022), Tavua Solar Farm (10 MW, 2023), Nawailevu (10 MW, 2024). Combined with significant commercial and residential rooftop solar (~15 MW cumulative, net metering active since 2014), Fiji's solar fleet reached approximately 50-55 MW by end 2024 — equivalent to ~12-13% of annual generation. EFL's next solar tenders: 30-50 MW additional utility-scale solar (Viti Levu central corridor) planned for 2025-2026 procurement. Battery storage: EFL operating 10 MW BESS at Vuda (commissioned 2023) for solar firming; additional BESS procurement underway. The solar surge is also supported by growing private industrial solar — Fiji's sugar mills (FSC), timber operations, and resort hotels have installed combined ~10+ MW.</div>
+        <div class="stat-item"><strong>Vanua Levu: Fiji's energy inequality dimension</strong>Vanua Levu (Fiji's second-largest island, ~130,000 people, centred on Labasa in the north and Savusavu in the south) has a separate electricity system served by EFL diesel generators — with dramatically lower RE share than Viti Levu (~15% vs. ~70%). The Labasa grid (~30 MW) relies primarily on HFO generation; Savusavu has a small hydro station (~3 MW) and recent solar additions. The energy inequality between Viti Levu (67% RE, reliable supply) and Vanua Levu (mostly diesel, more frequent outages) mirrors broader development disparities between the two main islands. EFL's Vanua Levu RE programme: Labasa Solar Farm (5 MW, commissioned 2024); additional 10 MW tender for 2025. Longer term: Vanua Levu river hydro potential (multiple sites assessed, 10-20 MW aggregate) could transform the northern island grid to majority RE by 2030.</div>
+        <div class="stat-item"><strong>Outer islands: the Pacific SIDS challenge within Fiji</strong>Fiji comprises 330 islands (of which ~110 are inhabited). The ~35 smaller inhabited islands not served by EFL's main grids are supplied by diesel mini-grids (Government Department of Energy) or solar home systems (GEF/World Bank Pacific Renewable Energy Supply project). Outer island electricity quality is poor: 8-12 hours/day in many communities, high cost (~FJD 1.20-1.80/kWh equivalent vs. ~FJD 0.35/kWh on Viti Levu grid). The ADB-funded "Outer Island Renewable Energy" project has installed solar + battery systems on 22 outer islands (2016-2022). Remaining islands: phased solar hybridisation programme through 2027. The outer island challenge — in scale and structure — resembles the Bahamas Family Islands and Vanuatu's outer island systems.</div>
+        <div class="stat-item"><strong>Sugar industry: FSC bagasse and Fiji's industrial energy</strong>The Fiji Sugar Corporation (FSC), with mills at Lautoka, Ba, Rarawai (Ba), and Labasa, burns bagasse for cogeneration during the crushing season (June-December) — approximately 30-40 GWh/year exported to EFL. FSC's mills are among Fiji's largest electricity consumers as well as generators. The sugar industry's long-term viability is uncertain (global sugar prices, competition, aging infrastructure) — FSC's eventual closure or consolidation would both reduce cogeneration supply and reduce industrial demand. EFL's planning scenarios account for FSC trajectory uncertainty. Tourism resorts (Denarau Island, Mamanuca/Yasawa groups) are increasing in electricity significance as sugar declines — resort solar is growing rapidly.</div>
+      </div>
+    </div>
+
+    <h2>100% RE by 2030: The Remaining Gap</h2>
+    <p>Fiji's path from ~67% RE (2024) to 100% RE (2030 target) requires approximately 33 percentage points of additional clean energy on a system growing at ~3-4%/year:</p>
+    <ul>
+      <li><strong>Solar + storage:</strong> 80-100 MW additional utility-scale solar on Viti Levu, paired with 30-50 MW BESS, would add 15-18% to annual generation. The limiting factor shifts from procurement pace to grid stability management at high solar penetration — EFL is developing grid codes and curtailment management for 40%+ instantaneous solar.</li>
+      <li><strong>Vanua Levu transformation:</strong> Converting Vanua Levu to majority RE (solar + river hydro) would bring the system-wide RE share up by 3-5 percentage points — important for the national 100% target.</li>
+      <li><strong>Hydro reliability risk:</strong> Fiji's hydro is rainfall-dependent; El Niño events (2015-16, 2023-24) reduce Monasavu reservoir levels significantly, increasing diesel backup requirement. The 100% RE target in drought years is more challenging than in average rainfall years — EFL's planning assumes maintaining ~80 MW of diesel/backup capacity for drought contingency even in a 100% RE scenario.</li>
+      <li><strong>Outer islands:</strong> Full outer island solar hybridisation by 2030 is feasible with current programmes but requires sustained implementation capacity at the Department of Energy level.</li>
+    </ul>
+
+    <div class="callout">
+      Fiji is the Pacific's most credible candidate for 100% RE by 2030 among larger island states — not because the technical challenges are trivial, but because the institutional foundation (EFL's competent management, ADB financing pipeline, existing hydro baseload, growing solar fleet) is more developed than in comparable Pacific peers. The drought-year hydro risk is the primary constraint: Fiji may achieve 85-90% RE in average years and need diesel backup in La Niña drought years — a reality that should be planned for explicitly rather than obscured by a round-number target.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Fiji's Monasavu hydro scheme — providing 40 years of reliable, cyclone-resistant baseload from an underground tunnel-and-penstock design — is the Pacific's best demonstration that well-engineered hydro infrastructure in a volcanic island context can provide energy security over a multi-decade timescale that no other single RE technology can match, and its underground configuration is an engineering lesson applicable to future hydro development across Melanesia and the Pacific arc.</strong> Monasavu's underground design (the penstock runs through tunnels, not exposed pipelines) has survived multiple Category 5 cyclones without outage — a reliability record that exposed infrastructure in the Caribbean or Pacific would not have achieved. This resilience premium is an important consideration for Pacific island hydro investment: the incremental cost of underground/tunnel configurations vs. exposed pipelines is typically 15-25% but delivers decades of cyclone-proof operation.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Fiji's rapid utility-scale solar deployment (from ~0 to ~55 MW in 5 years, 2020-2025) demonstrates that Pacific island electricity systems can absorb solar at scale when grid management investment keeps pace — EFL's BESS deployment and grid code development have been critical co-investments that enabled the solar programme without compromising grid frequency stability.</strong> The pairing of solar procurement with simultaneous BESS and grid code investment — not sequential — is the key lesson. Pacific island grids are small (Viti Levu peak demand ~180 MW) and frequency instability from variable solar manifests at lower penetration levels than on larger continental grids. EFL's management of solar intermittency using BESS, demand response, and hydro flexibility demonstrates a replicable operational model for solar integration in Pacific SIDS.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The energy inequality between Viti Levu (67% RE, reliable supply, competitive tariff) and Vanua Levu (mostly diesel, unreliable supply, higher effective cost) is Fiji's most important intra-national energy equity issue and should be explicitly addressed in EFL's capital allocation and EFL's tariff cross-subsidy structure — which currently charges all Fiji customers the same tariff regardless of their island's actual generation cost, implicitly cross-subsidising Vanua Levu from Viti Levu consumers.</strong> The tariff cross-subsidy is economically rational (small system economics make Vanua Levu's true cost of service 2-3× Viti Levu's) but obscures the investment urgency: making Vanua Levu's RE transition visible in EFL's accounts — rather than absorbed in a national average tariff — would create clearer management accountability for closing the gap.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>El Niño-driven drought is Fiji's most significant medium-term energy security risk — reducing Monasavu reservoir levels by 30-50% in severe El Niño years (2015-16, 2023-24), forcing significantly increased diesel backup that spikes fuel import costs and CO₂ emissions — and EFL's 100% RE planning must explicitly dimension the drought-year diesel contingency capacity rather than treating it as an anomaly to be planned away.</strong> In the 2023-24 El Niño, Fiji's hydro generation fell to approximately 55% of Monasavu's average output for 5-6 months. Without the solar additions already installed, this deficit would have required ~40 MW of additional diesel generation for months. With full solar deployment (100+ MW by 2026), drought-year solar partially compensates for hydro deficit during dry-season months (June-October, which partially coincides with El Niño dry periods). But the coincidence of peak El Niño drought with Fiji's winter (lowest solar irradiance) creates a worst-case scenario that still requires diesel contingency.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Fiji's outer island solar hybridisation programme — now covering 22 of ~35 off-grid inhabited islands — represents the Pacific's most advanced implementation of the diesel-to-solar-hybrid transition at the community scale, and its operational O&amp;M model (EFL/Department of Energy shared maintenance, community-level technician training, centralised spare parts logistics) should be documented and shared across the Pacific as the replicable template for ADB and World Bank outer island RE programmes in PNG, Solomon Islands, Vanuatu, Kiribati, and Tuvalu.</strong> The outer island programme's key operational innovation: training community-based solar technicians (one per island, 5-day training programme) who handle routine maintenance while EFL's mobile maintenance team handles major repairs on quarterly visits. This hybrid O&amp;M model dramatically reduces the cost and response time of technical support for isolated systems — an essential element of sustainability that donor-funded solar programmes in the Pacific frequently fail to establish, resulting in systems that degrade within 3-5 years of installation.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Energy Fiji Limited (EFL) — Annual Report 2024 ·
+      Fiji Department of Energy — outer island programme ·
+      ADB — Pacific Energy Update 2025; Fiji solar project docs ·
+      IRENA — Pacific energy statistics 2025 ·
+      World Bank — Pacific Renewable Energy Supply project ·
+      UNFCCC — Fiji NDC 2022 ·
+      IFC — Rakiraki Solar Farm ·
+      SOPAC/SPC — Pacific regional energy data ·
+      Fiji Sugar Corporation — cogeneration annual report
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Fiji Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro (Monasavu + Wailoa + Nadarivatu)', 'Diesel / HFO (EFL thermal backup)', 'Solar PV (Ba, Rakiraki, Tavua, Nawailevu)', 'Wind (Butoni + Nadarivatu)'],
+    datasets: [{ data: [55, 33, 8, 4], backgroundColor: ['#1B6CA8','#8B4513','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

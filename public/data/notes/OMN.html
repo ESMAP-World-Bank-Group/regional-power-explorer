@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oman Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Oman</div>
+    <div class="doc-sub">9.3 GW peak demand · 1,550 MW renewable · 9.46% clean energy share · Ibri II + Manah I &amp; II (1,500 MW solar) · 8.8 GW RE by 2030 · Duqm green hydrogen · OETC RO 250M</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">9.3 GW</div><div class="kpi-lbl">Peak demand (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">1,550 MW</div><div class="kpi-lbl">Renewable installed (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">9.46%</div><div class="kpi-lbl">Clean energy share of grid (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">8.8 GW</div><div class="kpi-lbl">RE pipeline to ~2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Oman's electricity system serves a peak demand of approximately <strong>9.3 GW</strong>, dominated by natural gas-fired generation (the main grid plus industrial complexes in Salalah/Sohar/Duqm). Renewable energy reached <strong>9.46% of grid electricity</strong> in 2025 — significantly below the 16% target for the year — from four operational projects totalling <strong>1,550 MW</strong>: Dhofar Wind I (50 MW), Ibri II Solar (500 MW), Manah I Solar (500 MW), and Manah II Solar (500 MW). Oman has an additional <strong>~7,300 MW of renewable pipeline</strong> under development and planning, targeting approximately 8.8 GW total by ~2030 and a 30% renewable share.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + OCGT)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Ibri II + Manah I&amp;II)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Dhofar I)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~12 GW</div>
+            <div class="chart-center-lbl">total capacity</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Zawya/Omanet; OETC PWP 7-Year Statement 2025–31; Climatescope 2024; Oxford Business Group Oman 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Ibri II Solar: 500 MW</strong>Interior region; ACWA Power; 25-year PPA with OPWP; record tariff at bid; one of Oman's first utility-scale solar; operational ~2022; proving solar viability in Oman's market</div>
+        <div class="stat-item"><strong>Manah I &amp; II Solar: 500+500 MW</strong>Al Dakhiliyah governorate; consortium-developed; co-located design reduces infrastructure cost; total 1,000 MW solar from Manah area; key milestone in Oman's solar scale-up</div>
+        <div class="stat-item"><strong>Dhofar Wind I: 50 MW</strong>Dhofar region; Masdar; Oman's first utility-scale wind; khareef monsoon enables consistent wind resource May–September; proof-of-concept for Omani wind sector</div>
+        <div class="stat-item"><strong>OETC pipeline: 3 wind + 1 solar</strong>OETC awarded grid connections for 1,220 MW wind (3 plants) + 500 MW solar in 2025; RO 250M investment; expected to reduce emissions by 1.9M tonnes/year</div>
+        <div class="stat-item"><strong>Green hydrogen: Khazzan Duqm</strong>ACWA Power + OQ (Oman's energy company); 25 GW electrolyser target; Duqm port for hydrogen/ammonia export; Oman as Gulf hydrogen exporter to Europe</div>
+      </div>
+    </div>
+
+    <h2>OETC Grid Expansion &amp; Integration</h2>
+    <p>The Oman Electricity Transmission Company (OETC) is managing a rapid expansion programme to integrate the growing renewable pipeline:</p>
+    <ul>
+      <li>In 2025, OETC awarded <strong>35 grid projects worth RO 250 million</strong>, including connections for three wind farms (1,220 MW combined) and a 500 MW solar plant. This represents the largest single-year grid investment in Oman's history.</li>
+      <li>Peak demand grew 7% in 2024, reaching 8.6 GW, with further growth expected to 9.3 GW in 2025 and 13 GW by 2029 — requiring major capacity additions to avoid supply shortfalls as gas-fired plants age.</li>
+      <li>Oman's grid integration challenge differs from most: its Governorate of Dhofar (southern region) remains partly isolated from the main interconnected system, requiring separate renewable deployment programmes alongside the main grid expansion.</li>
+      <li>The 7-Year Statement 2025–2031 from OETC/PWP projects a 40% increase in peak load — making renewable additions a necessity for supply adequacy, not just decarbonisation.</li>
+    </ul>
+
+    <div class="callout">
+      Oman is pursuing one of the Gulf's most orderly renewable energy transitions — not the most ambitious (Saudi Arabia's 130 GW) nor the most successful (UAE's Barakah + Al Dhafra), but arguably the most systematically planned. OPWP (Oman Power and Water Procurement Company) runs transparent competitive tenders; OETC plans grid infrastructure years ahead of generation; PWP publishes detailed 7-year forecasts. This institutional rigour puts Oman ahead of most MENA peers in execution quality, even if it lags in headline capacity numbers.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Oman's missed 16% RE target for 2025 (achieved 9.46%) reflects the gap between planned procurement and actual grid delivery timelines.</strong> OPWP tender processes are efficient; the 1,550 MW operational represents projects tendered in 2018–2020 coming online. The 7,300 MW pipeline currently in various development stages represents 2021–2024 tenders that will materialise through 2027–2030. The target-setting process has consistently led the delivery timeline by 2–3 years — suggesting 2030 targets will likely be met in 2032–2033 at current pace.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Oman's Duqm green hydrogen project (25 GW electrolyser target) is the most ambitious industrial hydrogen project in the Gulf after NEOM.</strong> The combination of Oman's exceptional wind resource (Dhofar khareef), high solar irradiance, and Duqm port's deep-water access and industrial zone infrastructure makes it a credible hydrogen export platform. Unlike NEOM (desert solar), Oman's southern coast wind provides a higher capacity factor (35–40%) crucial for electrolyser utilisation economics. First production at commercial scale is targeted for 2028–2030.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Oman's gas depletion trajectory creates a structural imperative for renewable transition that purely aspirational targets do not.</strong> Oman's gas reserves are significantly smaller than Qatar's, UAE's, or Saudi Arabia's; production is declining from mature fields. The power sector — which consumes ~20% of Oman's gas production — faces a long-term gas availability constraint that makes renewable transition existentially necessary, not merely desirable. This structural pressure means Oman's RE targets have stronger underlying necessity than neighbours with effectively unlimited gas.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Oman's recent grid integration of two separate systems (main grid + Dhofar) is a significant infrastructure milestone.</strong> The interconnection of Oman's previously isolated Dhofar grid with the main system — completed in stages — allows the khareef (monsoon) wind energy from Dhofar to serve demand in Muscat, and provides backup capacity across regions. This creates the transmission infrastructure backbone for scaling both Dhofar wind and southern coastal hydrogen production.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Oman's institutional model — OPWP competitive tenders, OETC grid planning, OQ industrial development — is the most replicable Gulf electricity model for developing countries.</strong> Unlike Saudi Arabia's state-directed programme or UAE's sovereign wealth-funded mega-projects, Oman's approach relies on competitive IPP procurement with transparent tariff-setting, a regulated grid company, and industrial co-development. These institutions can be exported and adapted to energy-transition contexts in Sub-Saharan Africa, South Asia, and Southeast Asia — and Oman has increasingly been sharing this expertise through South-South partnerships.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Zawya/Omanet — Oman's clean energy share reaches nearly 10% in 2025 ·
+      OETC/PWP — 7-Year Statement 2025–2031 (Issue 19) ·
+      Oxford Business Group — Oman 2025 Report: Power Surge (integration and investment) ·
+      Oman Observer — 35 projects worth RO 250 million power Oman's grid expansion ·
+      Climatescope 2024 — Oman country profile ·
+      Mordor Intelligence — Oman Power Market Analysis ·
+      Omanet — Oman Boosts Economy with RO 250 Million Grid Expansion
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Oman Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT + OCGT)', 'Solar PV (Ibri II + Manah I&II)', 'Wind (Dhofar I)'],
+    datasets: [{ data: [10450, 1500, 50], backgroundColor: ['#C85020','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

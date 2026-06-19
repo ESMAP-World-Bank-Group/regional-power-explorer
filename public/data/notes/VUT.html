@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vanuatu Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Melanesia)</div>
+    <div class="doc-title">Vanuatu</div>
+    <div class="doc-sub">~65 MW installed · Diesel dominant + hydro (Sarakata 3.6 MW, Santo) + solar + wind · UNELCO (GDF Suez/Engie subsidiary — unique French private concession in the Pacific) + Dept. of Energy outer islands · Copra oil (virgin coconut oil) diesel substitution — Pacific's first large-scale biofuel power · Cyclone Pam 2015 (Cat 5) + Harold 2020 (Cat 4) · ~330,000 people · 85 inhabited islands · 100% RE 2030 target</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~65 MW</div><div class="kpi-lbl">Total installed capacity (Efate + Santo + outer islands)</div></div>
+    <div class="kpi"><div class="kpi-val">UNELCO</div><div class="kpi-lbl">French private utility (Engie) — Port Vila + Luganville</div></div>
+    <div class="kpi"><div class="kpi-val">Copra oil</div><div class="kpi-lbl">VCO diesel substitution — Pacific's first at utility scale</div></div>
+    <div class="kpi"><div class="kpi-value">100% RE</div><div class="kpi-lbl">Target by 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Vanuatu's electricity sector is distinctive in the Pacific for three reasons: a French private utility operates its two main grids, copra oil (virgin coconut oil) is actually used as a diesel fuel substitute at utility scale, and the archipelago's 85 inhabited islands span one of the Pacific's most active volcanic arcs — with both geothermal energy potential and volcanic hazard implications. <strong>UNELCO (Union Electrique du Vanuatu)</strong>, a subsidiary of <strong>Engie</strong> (France's major utility conglomerate, formerly GDF Suez), has operated Port Vila (Efate Island) and Luganville (Santo Island) electricity concessions since the late colonial era — an unusual arrangement persisting into Vanuatu's post-independence period (independence 1980). UNELCO generates from diesel and HFO on both main islands, supplemented by the <strong>Sarakata Hydroelectric Station</strong> (3.6 MW, Sarakata River, Santo, commissioned 1989) and growing solar PV installations on Efate (~10 MW utility-scale). The government's Department of Energy manages outer island diesel mini-grids and a solar home system programme for the remaining ~60 inhabited islands. Vanuatu's total installed capacity is approximately 65 MW; peak demand on Efate (Port Vila) is approximately 25-30 MW. The 100% RE target by 2030 is among the Pacific's most ambitious — requiring transformation of UNELCO's diesel operations and electrification of dozens of outer islands.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix — all grids (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (UNELCO Efate + Santo + outer islands)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (utility-scale Efate + rooftop)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Sarakata 3.6 MW, Santo)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Copra oil / VCO (diesel substitution)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (pilot turbines, Efate)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~30%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: UNELCO annual data; Vanuatu Dept of Energy; ADB Pacific Energy 2025; IRENA Pacific 2025; SOPAC/SPC</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>UNELCO / Engie: a French private utility in the Pacific</strong>UNELCO has operated Port Vila's electricity supply since the New Hebrides colonial era (pre-1980). After Vanuatu's independence, the concession was maintained under negotiated terms; Engie (via its predecessor GDF Suez) acquired full control. UNELCO's Efate concession is commercially profitable — Port Vila's tourism-driven economy generates reliable electricity revenue from hotels, resorts, and commercial districts. UNELCO's tariff (~VT 50-60/kWh, approximately US$0.42-0.50/kWh on Efate) is among the Pacific's highest. The Vanuatu government has periodically contested UNELCO's concession terms, seeking lower tariffs and faster RE integration — creating tension in the regulatory relationship. UNELCO's RE integration: the company has agreed to procure solar under government pressure; the utility-scale solar on Efate (10 MW, commissioned 2023-2024 in phases) was developed under regulatory mandate rather than commercial initiative. UNELCO's concession extends to 2031, at which point renegotiation (or replacement by a state utility) is possible.</div>
+        <div class="stat-item"><strong>Copra oil diesel substitution: Vanuatu's unique RE contribution</strong>Vanuatu is the Pacific's — and arguably the world's — most advanced practitioner of copra oil (virgin coconut oil, VCO) as a diesel fuel substitute in electricity generation. Copra processing (coconuts dried and pressed for oil) is a traditional livelihood in Vanuatu's outer islands; VCO can be used in diesel generators with minor modifications (pre-heating to reduce viscosity). UNELCO has operated VCO-diesel blending at several outer island generators since the mid-2000s, replacing 20-40% of diesel consumption with locally produced VCO. Impact: ~1-2 million litres of diesel displaced annually; income of ~VT 2-3B to copra farmers; reduced dependence on diesel barge delivery for outer islands. The VCO programme has been cited by IRENA and SOPAC as a model for Pacific islands with copra production capacity (Kiribati, Solomon Islands, Tonga, Samoa). The programme's scale is limited by copra production capacity — not by technology or economics — and VCO prices fluctuate with global coconut oil markets.</div>
+        <div class="stat-item"><strong>Cyclone Pam 2015 and Harold 2020: back-to-back extreme events</strong>Cyclone Pam (Category 5, March 2015): direct hit on Efate (Port Vila); 11 deaths; 75,000+ displaced; infrastructure damage US$449M (~65% of GDP). UNELCO's Efate grid was entirely destroyed — poles down, substations flooded, generating plant damaged. Restoration took 3-4 months for most of Port Vila. Cyclone Harold (Category 4, April 2020): struck northern Vanuatu (Espiritu Santo, Pentecost, Ambae, Maewo); 27 deaths in Vanuatu; infrastructure damage estimated US$600M+. Post-Pam rebuild of Efate used partially improved standards; post-Harold reconstruction in Santo is ongoing. The back-to-back cyclone damage — within 5 years — has established cyclone resilience as the central design constraint for all Vanuatu electricity infrastructure, shaping the government's post-2020 solar procurement specifications (Category 5 wind loading), underground cabling requirements for critical circuits, and BESS enclosure structural ratings.</div>
+        <div class="stat-item"><strong>Geothermal: volcanic arc potential and Ambae experience</strong>Vanuatu straddles one of the Pacific's most active volcanic arcs — the New Hebrides arc contains at least 9 active volcanoes, including Yasur (Tanna, continuously active for centuries), Lopevi, Ambrym, and Ambae/Aoba. Geothermal resource potential: SOPAC surveys suggest Efate, Tanna, and Lopevi may have accessible high-temperature resources. Ambae geothermal exploration: conducted 2015-2017, found moderate-temperature resources but the 2018 Ambae eruption (Lake Voui lava lake overflow, entire island evacuated 11,000 people) ended the exploration programme. The Ambae experience — a geothermal exploration site rendered inaccessible by active volcanic eruption — illustrates the challenge of developing geothermal in an actively volcanic context. Tanna (population ~30,000, geothermal potential moderate) is the most accessible candidate; exploration restart planned post-2025.</div>
+        <div class="stat-item"><strong>Outer islands: 60+ inhabited islands off-grid or diesel mini-grid</strong>Vanuatu's approximately 60 inhabited outer islands (beyond Efate and Santo) have electricity supplied by: Department of Energy diesel generators (24 island mini-grids, 8-12 hours/day service); solar home systems (ADB/IRENA Pacific programme, ~5,000 SHS installed 2018-2024); zero electricity (remaining islands). Outer island electricity cost (diesel): approximately US$0.80-1.20/kWh — 2-3× UNELCO's Efate tariff. ADB "Vanuatu Outer Island Renewable Energy Project" (2019-2025): 15 outer island solar hybrids; each typically 20-100 kW solar + 30-200 kWh BESS. VCO substitution on outer island diesel generators is the complementary fuel strategy — reducing diesel consumption per kWh generated in parallel with solar additions. The 100% RE target by 2030 requires both: solar hybridisation completing all remaining outer island diesel mini-grids, and UNELCO's Efate and Santo grids transitioning to primarily solar + hydro.</div>
+      </div>
+    </div>
+
+    <h2>The UNELCO Concession: Governance at the Intersection of Private Interest and Public Mandate</h2>
+    <p>UNELCO's continued operation of Port Vila and Luganville electricity under a French concessionaire raises questions that are relevant far beyond Vanuatu:</p>
+    <ul>
+      <li><strong>RE mandate vs. commercial return:</strong> UNELCO's concession was designed for diesel-based generation; its commercial model (capital investment recovery through regulated tariffs) is compatible with RE investment — but Engie's return expectations for Pacific SIDS projects are higher than MDB lending rates. The government's push for lower tariffs and faster RE is in tension with UNELCO's legitimate capital recovery expectations. Resolution likely requires either a concession renegotiation (2031 opportunity) or a regulatory mandate with specified RE milestones built into the concession terms.</li>
+      <li><strong>Technology transfer and local capacity:</strong> UNELCO employs skilled Ni-Vanuatu technicians but the concessionaire model tends to concentrate management and engineering expertise in the parent company. This creates a "capability gap" — if the concession ends in 2031, there may not be a capable state utility ready to take over. The Vanuatu government should be building state capacity now (through a new Department of Energy technical team, or through a transition plan embedded in the 2031 renegotiation) rather than assuming UNELCO can be replaced without transition risk.</li>
+      <li><strong>Tariff vs. access:</strong> UNELCO's US$0.42-0.50/kWh tariff on Efate is among the Pacific's highest — limiting electricity access for lower-income households even in Port Vila. A lifeline tariff mechanism (first 50 kWh/month subsidised for low-income households) would address energy poverty within the formal grid area without requiring UNELCO tariff reduction for commercial users.</li>
+    </ul>
+
+    <div class="callout">
+      Vanuatu's copra oil diesel substitution programme is the Pacific's most original contribution to the global RE transition toolkit — using an indigenous agricultural product as a fuel substitute in a context where solar was considered too expensive and hydro resources were limited. That this programme was commercially viable (not subsidy-dependent) and farmer-income-generating makes it doubly valuable as a model. The lesson extends beyond Vanuatu: other Pacific islands with copra, jatropha, or algae production capacity should examine VCO substitution as a low-technology, low-capital complement to solar hybridisation rather than a competition to it.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>UNELCO's concession expires in 2031 — and the Vanuatu government has a 5-year window to decide whether to renew (accepting continued private French ownership of the main electricity grids), transition to a state utility (requiring capacity-building investment now), or negotiate a hybrid model (state-owned distribution, private generation) — and this decision should be made explicitly rather than deferring until 2030 when transition risk becomes acute.</strong> The 2031 concession expiry is the most important electricity governance decision in Vanuatu's near-term future. Each of the three options has real consequences: renewal provides continuity and Engie's technical capacity but locks in private ownership for another decade; state takeover creates transition risk but establishes sovereign control; hybrid structures can capture benefits of both but require regulatory sophistication that the Department of Energy does not currently possess. A government-commissioned concession transition study (to be completed by 2026) is the prerequisite for any informed 2031 decision.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Vanuatu's copra oil VCO programme deserves explicit documentation and replication support — through IRENA, SOPAC, and Pacific Community (SPC) technical assistance — because it is the Pacific's most commercially validated biofuel electricity programme and its lessons (optimal VCO blending ratios, generator modification requirements, procurement logistics, farmer price mechanisms) are directly transferable to 15+ Pacific island nations with copra production capacity.</strong> The programme has been operating for 15+ years but is surprisingly poorly documented in the international literature relative to its unique achievements. A comprehensive VCO programme evaluation (co-financed by IRENA Pacific + ADB) would produce a replication guide applicable to Kiribati, Solomon Islands, Tonga, Samoa, Marshall Islands, and Federated States of Micronesia — all of which have copra sectors and diesel-dependent electricity. The analysis should include: optimal substitution rates, diesel engine modification requirements, VCO price risk management, and community copra cooperative governance models.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Cyclone Pam (2015) and Harold (2020) — two Category 4-5 cyclones within 5 years — have permanently changed Vanuatu's infrastructure design standards, and the post-Harold solar procurement specifications (Category 5 structural loading, underground critical cabling, BESS enclosure ratings) represent the Pacific's most advanced cyclone-resilient RE standards and should be adopted as minimum requirements across all Pacific SIDS solar procurement.</strong> Pre-Pam solar installations on Efate were largely destroyed by the cyclone (panel frames buckled, panels thrown; BESS containers shifted). Post-Pam replacements were built to higher standards; post-Harold designs incorporated lessons from both events. Vanuatu's hard-won knowledge of cyclone-resilient RE design — encoded in revised procurement specifications — is more valuable than any individual RE project, and should be systematically shared with Fiji, Solomon Islands, Tonga, and Samoa before the next major Pacific cyclone season rather than rediscovered after each event.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Vanuatu's geothermal potential — across multiple active volcanic islands including Tanna, Lopevi, and (pre-eruption) Ambae — offers the Pacific arc's most geographically distributed geothermal resource, where a successful 5 MW geothermal plant on Tanna would transform that island's electricity (currently entirely diesel, ~8 hours/day) and validate the technology for the dozen other Pacific arc volcanic islands with similar resources in Vanuatu, Solomon Islands, PNG, and Tonga.</strong> Tanna Island (~30,000 people, home to Yasur volcano — one of the world's most accessible active volcanoes, a major tourist attraction) has documented moderate-temperature geothermal resources and is the Pacific's most promising community-scale geothermal pilot site outside Nevis and Dominica. A 5 MW geothermal plant on Tanna would provide the island with 100% RE electricity and a landmark clean energy narrative aligned with Yasur's "volcano tourism" brand. The IDA/ESMAP geothermal exploration funding model (exploration risk capital → commercial PPA) used in Dominica and Nevis is directly applicable to Tanna.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Vanuatu's outer island solar hybridisation programme — delivered through ADB "Outer Island Renewable Energy" with the Department of Energy — faces the same O&amp;M sustainability challenge as all Pacific outer island solar programmes: the technical capacity to maintain solar + battery systems on remote islands is chronically insufficient, and the VCO diesel substitution programme's superior sustainability (maintained by local copra farmers with minimal external technical support) suggests that outer island RE programmes should deliberately incorporate the highest possible proportion of VCO fuel substitution alongside solar, minimising the technical complexity that strains local maintenance capacity.</strong> The maintenance sustainability problem is Pacific-wide: ADB, WB, and bilateral donors have installed thousands of solar systems on Pacific outer islands since 2000; a significant fraction are non-operational or underperforming within 5 years due to battery replacement needs, inverter failures, or routine maintenance not performed. VCO-diesel blending has demonstrably better sustainability because: generators are already familiar technology to local mechanics; copra oil production is a local economic activity that motivates maintenance; fuel blending is a simpler technical operation than solar panel cleaning, inverter servicing, and battery health monitoring. The optimal outer island RE system may be: solar + BESS + VCO backup diesel — not solar + BESS alone.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      UNELCO (Union Electrique du Vanuatu) — annual data (limited public disclosure) ·
+      Vanuatu Department of Energy — outer island programme ·
+      ADB — Vanuatu Outer Island Renewable Energy project ·
+      IRENA — Pacific energy statistics 2025; VCO case study ·
+      SOPAC/SPC — Melanesia energy and geothermal data ·
+      Engie — Pacific operations disclosure ·
+      NOAA — Cyclone Pam 2015 and Harold 2020 reports ·
+      UNFCCC — Vanuatu NDC 2022 ·
+      World Bank — Pacific energy access programme
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Vanuatu Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (UNELCO Efate + Santo + outer islands)', 'Solar PV (utility Efate + rooftop)', 'Hydro (Sarakata 3.6 MW, Santo)', 'Copra oil / VCO (diesel substitution)', 'Wind (pilot turbines, Efate)'],
+    datasets: [{ data: [63, 18, 8, 7, 4], backgroundColor: ['#8B4513','#FFD700','#1B6CA8','#4CAF50','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

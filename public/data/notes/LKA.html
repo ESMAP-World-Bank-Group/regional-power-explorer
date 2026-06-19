@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sri Lanka Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Sri Lanka</div>
+    <div class="doc-sub">CEB state utility · 4,636 MW · Norochcholai 900 MW coal · Rooftop solar boom 1,433 MW · Adani wind cancelled · 2022 crisis · 70% RE by 2030</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">4,636 MW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">1,433 MW</div><div class="kpi-lbl">Rooftop solar (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">42.5%</div><div class="kpi-lbl">Hydropower share</div></div>
+    <div class="kpi"><div class="kpi-val">70%</div><div class="kpi-lbl">RE target by 2030</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Sri Lanka has <strong>4,636 MW</strong> of installed capacity, split roughly between thermal (47.5% — coal + oil), hydropower (42.5%), and grid-scale solar/wind + rooftop (10%). The defining feature of 2024 was the extraordinary rooftop solar boom: installed rooftop PV capacity more than doubled, from 632 MW to <strong>1,433 MW</strong> in a single year, driven by households and businesses investing in solar following the 2022 economic crisis and its electricity supply disruptions. This grassroots solar expansion is reshaping the daily load curve and creating grid management challenges even as it reduces fuel import dependency.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#3A3A3A"></span>Coal (Norochcholai)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Oil / HFO thermal</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar (rooftop + ground)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">4,636 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: World Bank PADHI01242; PUCSL Q1 2024 RE Report; CEB LTGEP 2025–44</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Norochcholai Coal: 900 MW</strong>Lakvijaya Power Station; China-financed (CDB); three 300 MW units; Sri Lanka's largest plant; coal imported from South Africa/Indonesia; frequent breakdowns historically</div>
+        <div class="stat-item"><strong>Hydro: ~1,970 MW</strong>Mahaweli cascade (Victoria 210 MW, Randenigala 122 MW, Rantambe 49 MW, Kotmale 201 MW) + Samanalawewa 120 MW + many smaller plants; seasonal variation; drought risk</div>
+        <div class="stat-item"><strong>Rooftop solar: 1,433 MW (2024)</strong>Largest single-year PV addition in South Asian history by %; post-crisis household investment; net metering; creating midday surplus and curtailment challenges</div>
+        <div class="stat-item"><strong>Adani wind cancelled (Nov 2024)</strong>484 MW at Mannar/Pooneryn; $442M; PPA revoked after US DoJ indicted Adani; Adani withdrew Feb 2025; tender relaunched for same sites</div>
+        <div class="stat-item"><strong>CEB LTGEP 2025–2044</strong>Plans predominantly renewable additions: solar, wind, mini-hydro, biomass; 70% RE target by 2030 requires ~2.5 GW of new RE within 4 years</div>
+      </div>
+    </div>
+
+    <h2>The 2022 Crisis &amp; Its Energy Legacy</h2>
+    <p>Sri Lanka's <strong>2022 economic crisis</strong> — the worst since independence — was partly an energy crisis. Foreign exchange shortages prevented fuel imports; power cuts of 7–13 hours daily paralysed industry and households; CEB's accumulated losses reached ~$1.7 billion (3.1% of public debt) from below-cost tariffs. The crisis forced several structural changes:</p>
+    <ul>
+      <li><strong>Tariff reform:</strong> Electricity prices were raised sharply for the first time in years — a painful but necessary correction that reduced CEB's fiscal drain.</li>
+      <li><strong>Rooftop solar surge:</strong> Fear of recurrence drove mass investment in household and commercial solar as an energy security hedge — the 1,433 MW of rooftop solar in 2024 is a direct legacy of 2022 blackouts.</li>
+      <li><strong>IPP opaqueness scrutiny:</strong> A post-crisis review of how overpriced power contracts with private generators had contributed to CEB's losses led to greater scrutiny of new PPA terms — directly relevant to the Adani wind controversy.</li>
+      <li><strong>IMF programme:</strong> Sri Lanka's IMF programme (2023) includes energy sector conditionality around tariff cost-recovery and CEB financial reform.</li>
+    </ul>
+
+    <div class="callout">
+      The Adani wind saga encapsulates Sri Lanka's post-crisis energy governance dilemma: it needs 484 MW of clean wind power urgently to meet its 2030 RE target and reduce fossil fuel imports — but the PPA was approved at nearly double the rate local developers offered ($0.083 vs $0.048/kWh). The US indictment gave the government a face-saving reason to cancel a contract it should not have approved at those terms. The deeper question — how to attract credible wind developers at competitive prices without the secrecy that fuelled the 2022 crisis — remains unresolved.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Sri Lanka's rooftop solar boom is the most significant bottom-up energy transition in South Asia.</strong> 1,433 MW of rooftop solar installed in a single year — in a country of 22 million with 4,636 MW total capacity — represents a transformation driven by households responding to energy insecurity, not government planning. Managing this distributed generation (net metering, grid stability, curtailment during midday surplus) is now a critical CEB operational challenge that its systems and regulations were not designed for.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The 70% RE by 2030 target is ambitious but technically achievable if procurement is rapid and transparent.</strong> Sri Lanka has excellent wind resources in the northern coast (Mannar/Pooneryn) and good solar irradiance year-round. The 484 MW Adani site is being retendered; if won by a competent developer at market tariffs, it could commission by 2028. The bottleneck is not resource or technology but procurement process speed and CEB's ability to manage variable RE integration.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Norochcholai coal plant is both a liability and an unavoidable reality for the next decade.</strong> The 900 MW plant — Sri Lanka's largest generator — cannot be retired without replacement, and its fuel costs (imported coal, USD-denominated) are a major contributor to CEB's financial volatility. A managed retirement plan linked to renewable additions and the planned India subsea cable (if realised) would reduce exposure; unplanned early retirement without replacement capacity would risk supply security.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>CEB's financial reform is the enabling condition for everything else.</strong> Without cost-reflective tariffs and a sustainable CEB balance sheet, no new RE procurement is credible (developers need a counterparty that can pay), no grid upgrade investment can be funded, and Sri Lanka remains dependent on government fiscal transfers to keep the lights on. The IMF programme's CEB conditionality and the 2022 tariff reforms moved in the right direction — maintaining that trajectory under political pressure is the key governance test.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>An India–Sri Lanka submarine power cable would be a strategic game-changer if realised.</strong> A proposed HVDC subsea cable linking southern India's grid to Sri Lanka would give Sri Lanka access to India's large and increasingly renewable power market — importing surplus solar/wind from Tamil Nadu in real time, exporting when Sri Lanka has surplus hydro, and providing a reliability backstop that eliminates the worst-case blackout risk. The technical feasibility is proven (similar cables exist in Europe); the stumbling block is financing and political alignment between the two governments.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      World Bank — Assessment Sri Lanka Power Sector (PADHI01242) ·
+      CEB — Long Term Generation Expansion Plan 2025–2044 ·
+      PUCSL — Renewable Generation Report Q1 2024 ·
+      Energy for Growth Hub — Power contract secrecy and Sri Lanka's 2022 crisis ·
+      Tamil Guardian — Sri Lanka and Adani Mannar wind project ·
+      Business and Human Rights Centre — Adani Mannar project Sri Lanka ·
+      Deccan Herald — Sri Lanka appoints committee to review Adani wind projects ·
+      U.S. Commercial Service — Sri Lanka Energy Guide ·
+      Wikipedia — Electricity sector in Sri Lanka
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Sri Lanka Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro', 'Coal (Norochcholai)', 'Oil / HFO thermal', 'Solar (rooftop + ground)', 'Wind'],
+    datasets: [{ data: [1970, 900, 1304, 352, 110], backgroundColor: ['#1E9AF5','#3A3A3A','#C85020','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

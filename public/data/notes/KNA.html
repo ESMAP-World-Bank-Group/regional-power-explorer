@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>St. Kitts and Nevis Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean / OECS</div>
+    <div class="doc-title">St. Kitts &amp; Nevis</div>
+    <div class="doc-sub">~150 MW installed (two islands) · St. Kitts: SKELEC (state) — diesel + ~35 MW solar (former sugar cane fields) · Nevis: NEVLEC + West Indies Power geothermal (10 MW Phase 1 operational) · 100% RE 2030 target · Sugar industry closed 2005 · ~55,000 people · World's smallest sovereign federation · Nevis geothermal could export to St. Kitts and beyond</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~150 MW</div><div class="kpi-lbl">Total installed capacity (St. Kitts + Nevis)</div></div>
+    <div class="kpi"><div class="kpi-val">10 MW</div><div class="kpi-lbl">Nevis geothermal Phase 1 (West Indies Power)</div></div>
+    <div class="kpi"><div class="kpi-val">~35 MW</div><div class="kpi-lbl">St. Kitts solar (former sugar cane fields)</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target 2030 (St. Kitts + Nevis separately)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>St. Kitts and Nevis — the world's smallest sovereign federation (55,000 people, two islands separated by a 3 km channel) — manages electricity through two entirely separate utilities reflecting the federation's constitutional structure: <strong>SKELEC (St. Kitts Electricity Company)</strong> on St. Kitts and <strong>NEVLEC (Nevis Electricity Company)</strong> on Nevis, each under different island administrations. Both have committed to 100% RE by 2030; both are making rapid but different progress. <strong>St. Kitts</strong> has deployed approximately 35 MW of utility-scale solar on former sugar cane fields — after the St. Kitts Sugar Manufacturing Corporation closed in 2005, ending 300+ years of continuous sugar production on the island and freeing flat, cleared agricultural land ideal for solar farms. The former cane fields now host the Needsmust Solar Farm and additional installations, making St. Kitts one of the Caribbean's highest per-capita solar deployment stories. <strong>Nevis</strong> is pursuing a different pathway: geothermal energy from Nevis Peak volcano. <strong>West Indies Power (WIP)</strong> has commissioned Phase 1 (~10 MW) of a geothermal plant at the southwestern flank of Nevis Peak — operational since approximately 2022-2023 — supplying approximately 40-50% of Nevis' electricity needs. Phase 2 (additional 25-35 MW) would make Nevis fully geothermal and potentially enable export to St. Kitts via a short submarine cable (~3 km).</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Combined generation mix — St. Kitts &amp; Nevis (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (SKELEC St. Kitts + NEVLEC Nevis backup)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (St. Kitts — Needsmust + former cane fields)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Geothermal (Nevis — West Indies Power Phase 1)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (St. Kitts pilot)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~40%</div>
+            <div class="chart-center-lbl">combined RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: SKELEC 2024; NEVLEC 2024; West Indies Power; IRENA Caribbean 2025; IDB; OECS energy statistics</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>St. Kitts: solar on former sugar fields</strong>The closure of the St. Kitts Sugar Manufacturing Corporation (SSMC) in July 2005 — after the government concluded sugar production was permanently uneconomic — left approximately 3,500 hectares of flat, irrigated, cleared agricultural land in the Basseterre Valley. This land, with excellent solar irradiance (~1,950 kWh/m²/year) and minimal shading, has become the foundation of St. Kitts' solar programme. Needsmust Solar Farm (20 MW, operational 2021) uses former cane fields; additional 15 MW solar farms commissioned 2022-2024. SKELEC net metering programme: ~2 MW rooftop solar. The former-sugar-to-solar transition is one of the Caribbean's most striking land use repurposing stories — an industry that defined Kittitian history for three centuries replaced by the island's energy future within two decades. SKELEC battery storage: 5 MW BESS (Basseterre, operational 2023) for solar intermittency management.</div>
+        <div class="stat-item"><strong>Nevis Peak geothermal: West Indies Power and Phase 2</strong>Nevis Peak (985 m) is a dormant stratovolcano with documented geothermal surface features (hot springs at Cades Bay, Jessup, and Bath). Geothermal exploration: IDA-funded 2010-2014; confirmed viable resource at ~2,000m depth; estimated resource 35-50 MW. West Indies Power Holdings Ltd. (WIP, US-registered, IFC equity partner): awarded concession 2013; exploration, confirmation drilling, and plant construction 2014-2022; Phase 1 (~10 MW binary cycle plant) commissioned 2022-2023. Plant location: southwest Nevis, Cades Bay area. Phase 1 provides ~40-50% of NEVLEC's electricity needs. Phase 2 (additional 25-35 MW): FID expected 2025-2026; would provide 100% Nevis electricity from geothermal with ~15-20 MW surplus for export. Nevis-St. Kitts cable (~3 km, ~20 MW capacity): feasibility completed 2023; cost ~US$15M; pending finance and political agreement between NIA (Nevis Island Administration) and SKN federal government.</div>
+        <div class="stat-item"><strong>Federation politics and energy governance</strong>St. Kitts and Nevis is a federation where Nevis has substantial autonomy (Nevis Island Administration controls Nevis' infrastructure); this creates a dual governance structure for energy that has both advantages (Nevis can pursue geothermal independently without St. Kitts federal approval for NEVLEC decisions) and complications (the Nevis-St. Kitts cable requires inter-island agreement on pricing, grid codes, and revenue sharing that federal-island political dynamics can complicate). The NIA controls Nevis energy policy; the St. Kitts federal government controls SKELEC. A dispute over the electricity export price from Nevis (geothermal) to St. Kitts (replacing diesel) has delayed the cable financing — Nevis seeks European electricity export prices; St. Kitts seeks Caribbean avoided-cost pricing. This gap (~2× difference in price) is the primary negotiating obstacle.</div>
+        <div class="stat-item"><strong>CBI programme: energy financing link</strong>St. Kitts and Nevis' Citizenship by Investment Programme — one of the world's oldest (established 1984) and most reputable — generates approximately US$100-200M/year in government revenue. CBI funds have contributed to solar infrastructure (Needsmust Solar Farm development partly CBI-co-funded), geothermal exploration (NIA CBI co-investment in WIP), and grid resilience upgrades. St. Kitts is among the few OECS states where domestic fiscal resources (CBI revenue) can meaningfully co-invest in energy infrastructure alongside MDB loans — reducing debt service burden and shortening project timelines. The sustainability of CBI revenue remains a medium-term uncertainty given EU/UK scrutiny of CBI programmes.</div>
+        <div class="stat-item"><strong>Tourism demand: Park Hyatt, Four Seasons, and the cricket ground</strong>St. Kitts' tourism economy — anchored by the Park Hyatt (350 rooms) at Christophe Harbour and the Four Seasons Nevis (196 rooms) — generates high per-capita electricity demand from air conditioning, water heating, and pools. The Warner Park Cricket Ground (12,000 capacity, ICC venue) is a major event consumer. Nevis' Four Seasons has installed rooftop solar (~200 kW) and solar water heating — the island's largest single-property RE installation. Hotel sector demand (~35% of total electricity) has been partially the driver of SKELEC's solar programme: hotels seek RE for sustainability certifications; SKELEC's solar additions reduce the tariff fuel surcharge that hotels pay, creating alignment between SKELEC revenue and hotel cost objectives.</div>
+      </div>
+    </div>
+
+    <h2>Two Islands, Two RE Pathways</h2>
+    <p>St. Kitts and Nevis' energy story is uniquely dual — not just because they are two islands but because they are pursuing fundamentally different RE technologies:</p>
+    <ul>
+      <li><strong>St. Kitts: solar-first.</strong> Former sugar land → utility-scale solar → battery storage. A land-based RE transition leveraging an agricultural legacy, achievable with commercially mature technology and standard MDB financing. Progress: ~35 MW solar, ~40% RE share, 100% target by 2030 requiring additional 40-50 MW solar + storage.</li>
+      <li><strong>Nevis: geothermal-first.</strong> Volcanic island → deep geothermal drilling → binary cycle plant. A higher-risk, higher-reward pathway: geothermal provides 24/7 baseload that solar cannot; capital cost was 3-4× per MW but fuel cost is near-zero thereafter; development required 10+ years and IDA/IFC risk capital. Phase 1 success validates the pathway; Phase 2 would make Nevis 100% renewable and create export capacity.</li>
+      <li><strong>The integration opportunity:</strong> A Nevis-St. Kitts cable would allow each island to specialise — Nevis (baseload geothermal) + St. Kitts (variable solar) — creating a complementary grid that requires less battery storage than either island would need operating independently. This integration logic is compelling technically; the political economy of implementing it across a federated state with constitutional island autonomy is the challenge.</li>
+    </ul>
+
+    <div class="callout">
+      St. Kitts and Nevis is the Caribbean's clearest demonstration that different RE technologies are optimal for different island geographies within the same country: solar suits the flat former agricultural land of St. Kitts; geothermal suits the volcanic terrain of Nevis. The federation's constitutional structure — which gives each island separate energy governance — has enabled this differentiated approach but is also creating friction around the inter-island cable that would make both pathways more efficient together than either is alone. Resolving the cable pricing dispute is the highest-value near-term action in SKN energy policy.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>St. Kitts' repurposing of former sugar cane fields for solar farms — deploying 35 MW on flat, cleared, pre-irrigated land within 20 years of the sugar industry's closure — is the Caribbean's most successful agricultural land repurposing for energy and a template for other Caribbean states where declining agricultural sectors (banana, citrus, sugar) are releasing land that is well-suited for solar.</strong> The key enabling conditions for the St. Kitts sugar-to-solar transition: cleared flat land (minimising site preparation cost), existing access roads (sugar transport infrastructure), grid proximity (SKELEC lines ran through sugar zones), and a government willing to redirect former sugar subsidies toward solar project support. This combination is replicable in St. Lucia (bananas), Barbados (sugar), Jamaica (sugar), and Trinidad (former oil palm).</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Nevis' West Indies Power geothermal project — the only commercially operational geothermal plant in the English-speaking Eastern Caribbean — provides the region's first live demonstration that deep geothermal development is technically and commercially feasible at Eastern Caribbean island scale, and its Phase 2 FID is the most consequential near-term investment decision for the entire OECS RE agenda because it will determine whether geothermal is replicated across the island arc or remains a Nevis-specific experiment.</strong> If Phase 2 is developed successfully and delivers 35 MW at expected cost and capacity factor, it will validate the geothermal pathway for Dominica (150-200 MW), St. Vincent (Soufrière geothermal, under exploration), Montserrat (70 MW potential), and potentially St. Lucia. If Phase 2 is delayed or cost-overruns materialise, it will set back geothermal investment interest across the region by 5-10 years. The Phase 2 FID is a regional energy decision, not just a Nevis one.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Nevis-St. Kitts submarine cable pricing dispute — with Nevis seeking European export prices and St. Kitts seeking Caribbean avoided-cost prices — represents a microcosm of the broader challenge of pricing cross-border RE electricity in the Caribbean, where no established regional power market exists and bilateral negotiations default to each party's best alternative rather than joint optimisation of the shared system.</strong> A Nevis-St. Kitts cable at any price between the two negotiating positions would reduce the combined system's battery storage requirements and diesel backup costs — creating joint value that exceeds the pricing dispute's scale. A Caribbean Development Bank-mediated arbitration of the pricing formula (using the avoided cost of diesel on St. Kitts as the floor and the avoided cost of solar + storage as the ceiling) would likely produce a price acceptable to both parties and unlock the cable investment. This model could be the template for future inter-island RE pricing across the OECS.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>St. Kitts and Nevis' combination of geothermal and solar — two technologies with complementary generation profiles (geothermal: 24/7 baseload; solar: daytime variable) — produces a system with lower storage requirements and higher reliability than either technology alone, making the inter-island cable a battery substitute that is far cheaper per unit of storage equivalent than lithium-ion BESS at the ~20 MW scale.</strong> A 20 MW inter-island cable allowing geothermal export from Nevis to St. Kitts during night/low-solar periods is economically equivalent to ~200 MWh of battery storage on St. Kitts — at an estimated cable cost of US$15M vs. ~US$50-60M for equivalent BESS capacity. The cable is a long-duration storage substitute, not just a transmission link. This framing — cable as storage — has not been explicitly used in the SKN cable negotiations but would shift the value calculation substantially in favour of proceeding.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>St. Kitts and Nevis' 100% RE target — arguably the most achievable in the OECS given the combination of mature solar deployment on St. Kitts and operating geothermal on Nevis — is at risk of being delayed not by technology or finance but by inter-island governance: the cable that would allow each island to complete its RE transition more efficiently than operating independently requires political agreement that the federation's constitutional structure makes structurally difficult to reach.</strong> The federation's design (Nevis has near-unilateral authority over its own infrastructure; St. Kitts federal government sets SKELEC policy) was not designed with inter-island RE integration in mind. A constitutional amendment or new federal energy compact that creates a joint energy authority with binding pricing arbitration would resolve this structural barrier — but constitutional change in a small federation is politically very challenging to initiate. The CDB, as a shared creditor to both islands, is the most credible neutral party to broker the pricing agreement without requiring constitutional change.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      SKELEC (St. Kitts Electricity Company) — Annual Report 2024 ·
+      NEVLEC (Nevis Electricity Company) — Annual Report 2024 ·
+      West Indies Power — Nevis geothermal project updates ·
+      IFC — West Indies Power equity investment documentation ·
+      IDA/World Bank — SKN geothermal exploration funding ·
+      IDB — St. Kitts solar programme ·
+      IRENA — Caribbean energy statistics 2025 ·
+      OECS — energy statistics 2024 ·
+      UNFCCC — St. Kitts and Nevis NDC 2022
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>St. Kitts &amp; Nevis Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (SKELEC + NEVLEC backup)', 'Solar PV (St. Kitts — Needsmust + cane fields)', 'Geothermal (Nevis — West Indies Power Ph.1)', 'Wind (St. Kitts pilot)'],
+    datasets: [{ data: [58, 28, 11, 3], backgroundColor: ['#8B4513','#FFD700','#C85020','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

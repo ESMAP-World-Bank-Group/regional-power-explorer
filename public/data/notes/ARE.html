@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAE Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">United Arab Emirates</div>
+    <div class="doc-sub">~56 GW capacity · Barakah nuclear 5,600 MW (25%) · 6.7 GW solar · Al Dhafra 2 GW + MBR Solar Park · DEWA + EWEC · 32.3 GW solar by 2035 · Gas dominant</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~56 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">5,600 MW</div><div class="kpi-lbl">Barakah nuclear (4 units)</div></div>
+    <div class="kpi"><div class="kpi-val">25%</div><div class="kpi-lbl">Nuclear share of UAE electricity</div></div>
+    <div class="kpi"><div class="kpi-val">6.7 GW</div><div class="kpi-lbl">Solar PV capacity (2025)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>The UAE operates approximately <strong>56 GW</strong> of installed electricity capacity, structured across two largely separate emirate grids: Abu Dhabi (EWEC/TRANSCO) and Dubai (DEWA), with Sharjah and other emirates on the TRANSCO grid. Natural gas dominates at ~<strong>44.4 GW</strong>, but the UAE has made the most dramatic clean energy transition in the Gulf. The <strong>Barakah nuclear plant</strong> (5,600 MW, 4×APR-1400 units, fully operational by 2024) generates ~40 TWh/year — approximately <strong>25% of all UAE electricity</strong>, making the UAE the only Arab country operating a civil nuclear power programme. Solar PV reached <strong>6.7 GW</strong> in 2025, led by the Mohammed bin Rashid Al Maktoum Solar Park (3,427 MW in Dubai) and the Al Dhafra Solar PV Plant (2,100 MW in Abu Dhabi, world's largest single-site solar plant at completion).</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#5CB85C"></span>Nuclear (Barakah)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind + other RE</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~56 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Inspenet/IAEA (Barakah); GlobalData/pv-magazine (solar); The National (2024 data); Mordor Intelligence</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Barakah Nuclear: 5,600 MW (4 × APR-1400)</strong>Al Dhafra region, Abu Dhabi; Korean technology (KEPCO-led); Unit 1 operational 2020, Unit 4 2024; ~40 TWh/year; 25% of UAE electricity; ENEC operator; first Arab civil nuclear programme</div>
+        <div class="stat-item"><strong>Al Dhafra Solar: 2,100 MW</strong>Abu Dhabi; world's largest single-site solar PV plant on commissioning; MASDAR/EWEC; record tariff $0.01353/kWh at bid (2020 award); operational 2022-23; EPC by JV</div>
+        <div class="stat-item"><strong>MBR Solar Park: 3,427 MW</strong>Mohammed bin Rashid Al Maktoum Solar Park, Dubai; DEWA flagship; multiple phases (Phase I–V); 800 MW added 2025; CSP + PV hybrid; targets 5,000 MW by 2030</div>
+        <div class="stat-item"><strong>DEWA (Dubai): utility monopoly</strong>Dubai Electricity and Water Authority; 14 GW capacity; 100% govt-owned; IPO 2022 ($6.1B); one of world's most efficient utilities; clean energy target: 100% by 2050</div>
+        <div class="stat-item"><strong>EWEC (Abu Dhabi): wholesale market</strong>Emirates Water and Electricity Company; Abu Dhabi offtaker for IWPP model; MASDAR subsidiary; coordinates with TRANSCO grid; 55% clean energy target for Abu Dhabi 2025</div>
+      </div>
+    </div>
+
+    <h2>The Nuclear Pivot</h2>
+    <p>The UAE's Barakah nuclear plant is the defining energy achievement of any GCC state in the past two decades. Commissioning four 1,400 MW Korean APR-1400 reactors — the first commercial nuclear power plants in the Arab world — required:</p>
+    <ul>
+      <li>A sovereign decision (2008) to pursue nuclear power under IAEA safeguards and the 123 Agreement with the US (foregoing domestic uranium enrichment).</li>
+      <li>A turnkey contract with KEPCO (Korea Electric Power Corporation) and its consortium, delivering at approximately $24B total cost for 5,600 MW.</li>
+      <li>15+ years of workforce development, regulatory capacity building (FANR — Federal Authority for Nuclear Regulation), and operational training in partnership with EDF and KEPCO.</li>
+      <li>The result: 25% of UAE electricity from zero-carbon baseload — a structural transformation of the power system that no solar programme alone could replicate (due to solar's intermittency).</li>
+    </ul>
+
+    <div class="callout">
+      The UAE has achieved what Saudi Arabia, Egypt, Turkey, and Jordan have only announced: an operational civil nuclear power programme. Barakah's four units generate the equivalent of removing 12 million cars from the road annually. Combined with the Al Dhafra and MBR solar complexes, the UAE now has more clean energy infrastructure than all other Arab countries combined — a fact that shapes its energy diplomacy, its COP28 presidency (2023), and its emerging position as an exporter of clean energy finance and expertise.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>The UAE's combination of nuclear baseload + utility-scale solar is the most complete clean energy system in the Arab world.</strong> Barakah provides 24/7 zero-carbon electricity; Al Dhafra and MBR provide daytime solar at the world's lowest tariffs; gas remains the balancing fuel for evening and peak demand. This three-tier system is the template for any Gulf country serious about decarbonisation — and the UAE has already spent 15 years and $30B+ building it.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The 32.3 GW solar target by 2035 requires the UAE to install ~25 GW of new solar in 9 years — ambitious but within reach given DEWA and MASDAR's proven procurement capability.</strong> The MBR Solar Park's expansion to 5,000 MW by 2030 and ongoing Abu Dhabi tenders are well-established pathways. The binding constraint is grid integration — managing 25+ GW of solar in a system where peak cooling demand occurs at night or early morning, requiring significant battery storage and demand-side response programmes.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The UAE's record solar tariffs ($0.01353/kWh at Al Dhafra) reflect the intersection of sovereign credit, zero-land cost, and world-class irradiance — not a transferable global benchmark.</strong> When Abu Dhabi provides land for free, guarantees a creditworthy EWEC offtaker, and benefits from $2,300+/year of GHI, the all-in cost of solar approaches theoretical minimums. Projects in emerging markets with currency risk, land costs, and weaker offtakers will always be more expensive. Contextualising UAE solar tariffs is essential to avoid misleading cost comparisons in less favourable settings.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>MASDAR's international RE investment platform positions the UAE as a capital exporter in the global energy transition.</strong> Beyond domestic deployment, MASDAR (majority-owned by Mubadala, ADNOC, and TAQA) has invested in or developed RE projects in 40+ countries — from the UK offshore wind sector to Central Asian solar. This makes the UAE not just a clean energy deployer but a financial intermediary in the global transition, earning returns while advancing UAE soft power through clean energy partnerships.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The UAE's desalination dependency creates a unique energy-water nexus challenge as RE share grows.</strong> ~70% of UAE freshwater comes from desalinated seawater; desalination plants are among the largest electricity consumers. As the grid shifts toward solar (daytime peak) and gas/nuclear (evening/night), desalination operations must increasingly flex to match generation profiles — shifting reverse osmosis loads to solar hours and using thermal storage. This energy-water integration challenge will require smart grid infrastructure at a scale the UAE has not yet deployed.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Inspenet/IAEA — Barakah nuclear: 25% of UAE electricity ·
+      The National — UAE power generation from solar PV and nuclear surged in 2024 (Mar 2025) ·
+      pv-magazine / pvknowhow — UAE solar capacity expands by 800 MW in 2025 ·
+      GlobalData — UAE solar capacity to reach 32.3 GW by 2035 ·
+      Gulf News — Abu Dhabi targets 55% clean energy in 2025 ·
+      Mordor Intelligence — UAE Power Market Size &amp; Share Analysis ·
+      DEWA — MBR Solar Park project documentation
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>UAE Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas', 'Nuclear (Barakah)', 'Solar PV', 'Wind + other RE'],
+    datasets: [{ data: [44400, 5600, 6700, 300], backgroundColor: ['#C85020','#5CB85C','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

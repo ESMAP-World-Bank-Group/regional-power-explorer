@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiribati Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Micronesia/Polynesia)</div>
+    <div class="doc-title">Kiribati</div>
+    <div class="doc-sub">~25 MW installed · South Tarawa: diesel ~50% + solar ~35% + wind ~15% (Te Mautari wind + solar) · PUB (Public Utilities Board, state) · 33 atolls across 3.5 million km² of Pacific · ~120,000 people · Existential sea-level rise threat — government purchased land in Fiji · China security cooperation 2019 · 100% RE by 2030 (South Tarawa) · Phoenix Islands Protected Area (UNESCO, world's largest marine park) · Copra economy · Fisheries EEZ revenues</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">33 atolls</div><div class="kpi-lbl">Across 3.5M km² — widest country in Pacific</div></div>
+    <div class="kpi"><div class="kpi-val">~50%</div><div class="kpi-lbl">South Tarawa RE share 2024 (solar + wind)</div></div>
+    <div class="kpi"><div class="kpi-val">Fiji land</div><div class="kpi-lbl">Government purchased land in Fiji for potential relocation</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030 (South Tarawa grid)</div></div>
+  </div>
+
+  <div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Kiribati — a nation of 33 coral atolls spread across 3.5 million km² of the equatorial Pacific in three island groups (Gilbert Islands, Phoenix Islands, Line Islands) — faces the most fundamental existential threat of any energy planning context in this briefing series: the islands themselves may become uninhabitable within 50-100 years due to sea-level rise. Yet the energy sector continues to invest, the population requires electricity now, and Kiribati's energy transition has real near-term impact regardless of the long-term climate scenario. The main grid, on <strong>South Tarawa atoll</strong> (the capital Bairiki area, population ~60,000 — more than half of Kiribati's ~120,000 people concentrated on an atoll of 15 km² and average elevation 3 metres), is operated by the <strong>Public Utilities Board (PUB)</strong>. PUB's South Tarawa system (approximately 10-12 MW installed) now derives approximately 50% from RE — a remarkable achievement for a diesel-dominated system 5 years ago: the <strong>Te Mautari Ltd.</strong> wind turbines (six Vestas turbines, ~2.5 MW, 2009) and the expanding solar farm programme (approximately 3.5 MW, ADB 2019-2024) together supply half of South Tarawa's electricity, with diesel/HFO filling the balance. The 33 outer islands of Kiribati are served by isolated diesel mini-grids (8-16 hours/day service) or solar home systems.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">South Tarawa grid generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (PUB Betio Power Station)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (ADB solar farms, South Tarawa)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Te Mautari Ltd. Vestas turbines, Betio)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~50%</div>
+            <div class="chart-center-lbl">South Tarawa RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Note: South Tarawa grid only. Outer islands (Gilbert outer group, Phoenix, Line Islands) are diesel/off-grid. Source: PUB 2024; ADB Pacific Energy 2025; IRENA Pacific 2025; Te Mautari Ltd</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Sea-level rise: energy planning in an existential context</strong>South Tarawa's average elevation is approximately 2-3 metres above sea level; the highest point on any Kiribati atoll is approximately 3 metres. IPCC projections indicate 0.3-1.0 m of sea-level rise by 2100 under various emissions scenarios — potentially rendering much of South Tarawa uninhabitable by mid-century without significant coastal protection investment. The Kiribati government has responded on multiple fronts: purchasing 20 km² of land on Vanua Levu (Fiji's second island) as a potential relocation site (purchased 2014, Fiji gave formal residence-pathway agreement); pursuing "migration with dignity" policy (training I-Kiribati for skilled migration to New Zealand, Australia, Fiji); investing in coastal protection (seawalls, mangrove restoration). For electricity planning: standard 20-25 year asset life for solar panels and grid infrastructure may overlap with periods of significant saltwater intrusion and storm surge on South Tarawa — raising questions about whether infrastructure investments should be sized for 2030-horizon or 2050-horizon scenarios. PUB has not formally addressed this asset life question in its capital planning.</div>
+        <div class="stat-item"><strong>Te Mautari wind farm: 15 years of Pacific island wind operation</strong>Te Mautari Ltd. (a joint venture originally involving the Kiribati government and renewable energy investors) commissioned six Vestas V27 wind turbines (total 2.5 MW) on Betio (western South Tarawa) in 2009 — making Kiribati one of the Pacific's wind energy pioneers. 15 years of operation have demonstrated: (1) trade wind consistency on Betio (7-8 m/s annual average — excellent); (2) saltwater/high humidity accelerates turbine corrosion — O&amp;M cost is higher than temperate-climate benchmarks; (3) blades require more frequent inspection and replacement than standard maintenance schedules; (4) the V27 turbine model (1993 technology vintage) requires replacement parts from Vestas' legacy supply chain. Te Mautari's 15-year operational track record is a unique Pacific island wind data set that should inform wind turbine specifications (salt-resistant coatings, corrosion-protected bearings, simplified blade replacement protocols) for future Pacific island wind procurement.</div>
+        <div class="stat-item"><strong>Solar expansion: ADB-financed rapid deployment 2019-2024</strong>ADB's South Tarawa solar programme: Phase 1 (1 MW, 2019); Phase 2 (1.5 MW, 2021); Phase 3 (1 MW, 2024). Combined: 3.5 MW of utility-scale solar on South Tarawa's limited flat land (the atoll is 15 km² with roads, settlements, and mangroves occupying most usable land — solar siting is genuinely constrained). Rooftop solar: ~200 kW on government buildings and commercial properties. BESS: PUB operates a 1 MW BESS (ADB Phase 2, 2021) for solar firming. South Tarawa's solar capacity factor: approximately 1,600-1,700 kWh/kWp/year — lower than drier Pacific sites but commercially viable given PUB's diesel tariff (effective ~US$0.60/kWh including subsidy). To reach 100% RE by 2030, South Tarawa needs approximately 3-4 MW additional solar + 2 MW additional BESS — feasible with ADB Phase 4 financing (under preparation). Land availability for additional utility solar is the primary physical constraint.</did></div>
+        <div class="stat-item"><strong>China geopolitics: security agreement and energy implications</strong>Kiribati switched diplomatic recognition from Taiwan to the People's Republic of China in September 2019 (same day as Solomon Islands — coordinated PRC diplomatic campaign). In 2019-2020, PRC offered infrastructure financing including energy projects. The Kiribati-China relationship became contentious: a proposal to rehabilitate a WWII airstrip on Kanton Island (Phoenix Islands) as a potential dual-use facility alarmed Australia and the US. President Maamau's government has maintained the China relationship while navigating Western donor pressure — a balancing act with energy implications: Chinese solar panel supplies, Chinese infrastructure financing, and Chinese diplomatic engagement are all active. Meanwhile, ADB (a US-Japanese-majority-governed institution) remains Kiribati's largest energy donor — creating occasional tension between donor preference and diplomatic relationship management.</div>
+        <div class="stat-item"><strong>Outer islands: 32 islands each with independent diesel dependency</strong>Kiribati's outer Gilbert Group (16 atolls beyond South Tarawa), Phoenix Islands (8 atolls — mostly uninhabited except Kanton), and Line Islands (8 atolls, including Christmas Island / Kiritimati — largest atoll in the world by land area, ~5,000 people and major tuna fishing base) each have isolated diesel mini-grids or solar home systems. Kiritimati (Christmas Island): the outlier — a relatively well-resourced outer island with a PUB diesel plant (~2 MW), growing solar (~500 kW ADB 2022), and tourism (diving, sportfishing, Christmas Island birding). Gilbert outer islands: diesel mini-grids, 8-12 hours/day service, ADB outer island solar hybrid programme (5 atolls completed 2022-2024, 15 remaining). Phoenix and Line Islands: minimal population, predominantly SHS. The geographic dispersion of Kiribati's islands — spanning 35° of longitude, crossing the International Date Line — is the Pacific's most extreme multi-island logistics challenge.</div>
+      </div>
+    </div>
+
+    <h2>Energy Planning Under Existential Climate Threat</h2>
+    <p>Kiribati's energy planning context is unique globally: the country is planning electricity infrastructure with a 20-25 year asset life on land that may not exist in its current form in 50 years. This creates profound planning paradoxes:</p>
+    <ul>
+      <li><strong>The investment paradox:</strong> Investing in 20-year solar panels on South Tarawa makes financial sense today (avoided diesel cost exceeds capital cost). But if 20-25% of South Tarawa's residential area is inundated or uninhabitable by 2045-2050, the electricity demand that justifies the investment may not materialise. PUB's current planning does not model demand scenarios that explicitly account for population reduction due to sea-level rise displacement.</li>
+      <li><strong>Coastal infrastructure risk:</strong> Solar farms and substations on South Tarawa are at risk from storm surge, saltwater intrusion into foundations, and wave overwash events that are already occurring and will worsen with sea-level rise. Elevated equipment mounting (0.5-1 m above current ground level), salt-resistant enclosures, and drainage infrastructure are essential design requirements that add 10-15% to project cost but substantially extend effective asset life under worsening conditions.</li>
+      <li><strong>"Migration with dignity" and energy access:</strong> If I-Kiribati are to migrate "with dignity" — with skills and resources rather than as desperate climate refugees — then maintaining good electricity access (schools, hospitals, communications) is essential for building the human capital that enables dignified migration. Paradoxically, the case for energy investment in Kiribati may be strongest precisely because it must be made under a time horizon of assured change: every year of good electricity service enables education, economic development, and skill-building that makes future migration more voluntary and dignified.</li>
+    </ul>
+
+    <div class="callout">
+      Kiribati's energy sector is planning for a future that climate change may not permit — installing solar panels on atolls that the IPCC says may be largely uninhabitable within the lifetimes of panels now being commissioned. And yet the investment is right: South Tarawa's 60,000 people need electricity now, the avoided diesel cost is real, and the human capital built by reliable electricity access prepares I-Kiribati for whatever future comes. Energy investment in Kiribati is simultaneously practical and existential, short-term rational and long-term uncertain — one of the most morally complex infrastructure investment decisions in the Pacific.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Kiribati's South Tarawa grid achieving ~50% RE from solar and wind — on an atoll of 15 km² at 2-3 m average elevation, in an extremely remote location with high logistics costs — demonstrates that RE transition is possible even under the most physically constrained and logistically challenging conditions in the Pacific, and this achievement should register in Pacific energy policy debates as evidence that geography and isolation are not insurmountable barriers when MDB financing, donor technical assistance, and utility capacity-building are sustained over a multi-year period.</strong> PUB five years ago (2019) was a near-100% diesel utility; it is now 50% RE and targeting 100% by 2030. This trajectory was achieved without any hydro resource, on extremely limited land (3.5 MW of utility solar on an atoll of 15 km² is a remarkable density achievement), and with logistics costs 3-4× the Pacific norm. The pace is proof that RE transition in extreme SIDS contexts is primarily a function of sustained financing and technical assistance, not geography.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Kiribati's purchase of land in Fiji as a potential relocation site for climate migrants — an unprecedented act of anticipatory climate adaptation by a sovereign government — should trigger explicit energy planning for what Kiribati's electricity needs look like in a "migration with dignity" scenario: not just planning for South Tarawa's current 60,000 residents, but understanding how electricity infrastructure investment now enables or constrains future migration pathways for I-Kiribati communities.</strong> A "migration with dignity" scenario for Kiribati is not just a cultural and political project — it requires I-Kiribati to have skills (nursing, trades, technology), documentation (passports, educational credentials stored digitally), and economic resources (savings, business skills) that are only built in communities with reliable electricity for schools, hospitals, and communications. Every solar farm and BESS that reduces South Tarawa's blackouts for the next 15-20 years is also enabling the human capital development that makes dignified migration possible. Energy investment and climate migration are not separate planning domains for Kiribati.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Te Mautari's 15-year wind turbine operational track record — with measured performance data, corrosion maintenance costs, and saltwater climate degradation patterns — is the Pacific's most valuable long-run operational dataset for island wind energy and should be comprehensively documented and shared through ADB and IRENA Pacific programmes before the V27 turbines are retired, as the operational knowledge embedded in PUB and Te Mautari staff is the primary asset being lost when this equipment is replaced.</strong> Te Mautari's turbines will require replacement within 5-10 years (V27 design life nominally 20 years, now at 15+ years with tropical corrosion accelerating aging). When replaced, the decision about what comes next (newer wind turbines vs. additional solar + BESS) should be informed by the 15-year operational cost data. More importantly: the Pacific-specific wind turbine operational knowledge accumulated by PUB and Te Mautari staff (corrosion management, spare parts logistics, grid integration under low-inertia conditions) should be documented as an institutional learning asset before staff turnover or retirement disperses it.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Kiribati's geographic dispersion — 33 atolls spanning 35° of longitude — means that outer island electrification is fundamentally about solar home systems and small solar mini-grids at community scale, not grid extension, and that the most impactful outer island energy investment is not in South Tarawa (already 50% RE) but in the remaining 28 outer Gilbert Island atolls where diesel mini-grid reliability is poor and solar hybrid systems would provide the most dramatic quality-of-life improvement per dollar invested.</strong> ADB's outer island solar hybrid programme (5 of 16 outer Gilbert atolls completed 2022-2024) should be accelerated using COFA-equivalent Pacific development financing — but Kiribati is not in COFA and must rely on ADB, Australia DFAT, and WB. Each completed outer atoll solar hybrid reduces diesel consumption by ~50%, improves supply reliability from 10-12 hours to 18-20 hours, and reduces PUB's fuel logistics cost for that island. At ~US$1-2M per island solar hybrid, electrifying all remaining 11 outer Gilbert atolls would cost ~US$15-20M — a modest investment relative to its energy access impact.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Kiribati's Phoenix Islands Protected Area (PIPA) — the world's largest UNESCO marine World Heritage site, covering 408,000 km² — is Kiribati's most significant international asset after its fisheries EEZ, and the energy supply for Kanton Island (the only inhabited Phoenix Island, ~25 residents plus research station) should be 100% solar as a symbolic alignment between PIPA's conservation mandate and the energy source powering the people who manage it.</strong> Kanton Island has a PUB diesel generator (~20 kW, barge-resupplied from Tarawa once or twice yearly) that is the only electricity supply for the island's weather station, fisheries patrol base, and visiting researchers. Converting Kanton to 100% solar + battery would cost approximately US$150,000 — a trivial amount relative to the PIPA's conservation significance — eliminate all diesel barge resupply risk (every diesel delivery involves oil spill risk in a pristine marine reserve), and create a coherent narrative between the world's largest marine protected area and its zero-carbon energy supply. ADB has the PIPA solar project in its outer island programme pipeline; it should be prioritised on symbolic and environmental grounds.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      PUB (Public Utilities Board, Kiribati) — Annual Report 2024 ·
+      Te Mautari Ltd. — wind operational data ·
+      ADB — Pacific Energy Update 2025; South Tarawa solar programme ·
+      IRENA — Pacific energy statistics 2025 ·
+      IPCC AR6 — Pacific sea-level rise projections ·
+      UNFCCC — Kiribati NDC 2022 ·
+      Government of Kiribati — "Migration with Dignity" policy ·
+      UNESCO — Phoenix Islands Protected Area ·
+      World Bank — Pacific energy access; Kiribati climate adaptation
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Kiribati Electricity Sector — Briefing Note</span>
+    <span>June 2026 · For internal analytical use · ESMAP/WB</span>
+  </div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (PUB Betio Power Station)', 'Solar PV (ADB solar farms, South Tarawa)', 'Wind (Te Mautari Vestas turbines, Betio)'],
+    datasets: [{ data: [50, 35, 15], backgroundColor: ['#8B4513','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>
