@@ -21,7 +21,7 @@ const OPEN_DATA = [
   {
     category: 'Solar & Wind Profiles',
     rows: [
-      { name: 'Renewables.ninja',  res: 'Hourly',  desc: 'Simulated PV and wind capacity factors at any location',   url: 'https://www.renewables.ninja' },
+      { name: 'Renewables.ninja',   res: 'Hourly',  desc: 'Simulated PV and wind capacity factors at any location',   url: 'https://www.renewables.ninja' },
       { name: 'Global Wind Atlas', res: '—',       desc: 'Wind resource maps and data',                              url: 'https://globalwindatlas.info' },
       { name: 'atlite',            res: 'Hourly',  desc: 'Python library for weather-derived power profiles (ERA5)', url: 'https://atlite.readthedocs.io' },
       { name: 'Sterl et al. 2022', res: '—',       desc: 'PV and wind supply regions across Africa',                url: 'https://doi.org/10.1038/s41560-021-00922-4' },
@@ -48,6 +48,23 @@ const OPEN_DATA = [
 ];
 
 const SOURCES = [
+  {
+    category: 'Electricity Demand',
+    rows: [
+      {
+        layer:   'Annual demand · demand trend · peak demand',
+        source:  'Country supply data files (national sources, Ember, OWID)',
+        abbr:    'National / Ember / WDI',
+        version: 'Per country',
+        updated: '2022–2025',
+        freq:    'Annual',
+        coverage:'Most countries; source varies by country — see badge in Load tab',
+        quality: 'Variable — source reliability differs by country. Official TSO data where available; cross-validated estimates elsewhere.',
+        method:  'Primary: per-country supply JSON (sources: ENTSO-E, OWID/Ember, national TSOs). Fallback when no file: WB WDI EG.USE.ELEC.KH.PC × SP.POP.TOTL → national TWh total. Projection: OLS linear trend extrapolated +10 years. Peak demand: from supply data when available; otherwise estimated assuming load factor LF = 55% on annual hours basis.',
+        url:     'https://data.worldbank.org',
+      },
+    ],
+  },
   {
     category: 'Generation & Trade Statistics',
     rows: [
@@ -195,6 +212,7 @@ const SOURCES = [
         freq:    'On demand (API)',
         coverage:'Global',
         quality: 'Good — ESMAP/World Bank product. Point query REST API.',
+        method:  'Point query: Global Solar Atlas REST API returns GHI, DNI, PVOUT and monthly profiles at a coordinate. Map grid overlay: NASA POWER ALLSKY_SFC_SW_DWN climatology, annual mean × 365 = kWh/m²/yr, 1°×1° grid cells.',
         url:     'https://globalsolaratlas.info',
       },
       {
@@ -206,6 +224,7 @@ const SOURCES = [
         freq:    'On demand (API)',
         coverage:'Global',
         quality: 'Good — ERA5 reanalysis, 0.25° resolution. Hellman correction to 100m applied.',
+        method:  'NASA POWER WS50M climatology (wind speed at 50m AGL). Corrected to 100m using Hellman power law: v₁₀₀ = v₅₀ × (100/50)^α, α = 0.143 (open terrain). Grid cells 0.5°×0.5°.',
         url:     'https://open-meteo.com',
       },
       {
@@ -367,6 +386,16 @@ export default function AboutPage() {
                       <td style={{ ...td, color: t.lblMuted, lineHeight: 1.5 }}>
                         {qualityChip(row.quality, t)}
                         {row.quality}
+                        {row.method && (
+                          <div style={{
+                            marginTop: 5, paddingTop: 5,
+                            borderTop: `1px solid ${t.panelBorder}`,
+                            fontSize: '0.52rem', fontStyle: 'italic', lineHeight: 1.55,
+                            color: t.lblMuted,
+                          }}>
+                            {row.method}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -452,6 +481,33 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ── Limitations & Disclaimer ── */}
+        <div style={{ marginTop: 48 }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+            Limitations &amp; Disclaimer
+          </h2>
+          <p style={{ fontSize: '0.72rem', color: t.muted, maxWidth: 620, lineHeight: 1.65, marginBottom: 16 }}>
+            This tool aggregates third-party open data for analytical reference. Figures should be
+            cross-checked against authoritative national sources before use in policy, planning, or
+            investment decisions.
+          </p>
+          <ul style={{ paddingLeft: 18, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[
+              'Data is indicative only. Figures reflect the reference year of each source and may be 1–3 years behind current conditions.',
+              'Coverage varies significantly by country. SIDS and fragile states have the most data gaps — supply data is often partial, grid data sparse, and tariff figures may be absent.',
+              'Power plant databases (GPPD v1.3, GEM) typically omit plants below ~1 MW and may not reflect recent commissioning or decommissioning.',
+              'Electricity tariff data sourced from GlobalPetrolPrices.com is indicative only and may not reflect current regulated rates. Licence terms are under review.',
+              'Load profiles are available only for countries with ENTSO-E hourly data. For all other countries the Load tab shows no intraday profile.',
+              'Country boundaries are sourced from Natural Earth (110m resolution) for reference purposes only. Boundaries and names shown do not imply official endorsement or acceptance by the World Bank Group of any territorial delimitation.',
+              'The findings, interpretations, and conclusions expressed in this tool are those of the author(s) and do not necessarily reflect the views of the World Bank, its Board of Executive Directors, or the governments they represent.',
+            ].map((item, i) => (
+              <li key={i} style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Footer */}
