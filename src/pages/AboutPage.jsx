@@ -60,7 +60,7 @@ const SOURCES = [
         freq:    'Annual',
         coverage:'Most countries; source varies by country — see badge in Load tab',
         quality: 'Variable — source reliability differs by country. Official TSO data where available; cross-validated estimates elsewhere.',
-        method:  'Primary: per-country supply JSON (sources: ENTSO-E, OWID/Ember, national TSOs). Fallback when no file: WB WDI EG.USE.ELEC.KH.PC × SP.POP.TOTL → national TWh total. Projection: OLS linear trend extrapolated +10 years. Peak demand: from supply data when available; otherwise estimated assuming load factor LF = 55% on annual hours basis.',
+        anchor:  '#method-demand',
         url:     'https://data.worldbank.org',
       },
     ],
@@ -212,7 +212,7 @@ const SOURCES = [
         freq:    'On demand (API)',
         coverage:'Global',
         quality: 'Good — ESMAP/World Bank product. Point query REST API.',
-        method:  'Point query: Global Solar Atlas REST API returns GHI, DNI, PVOUT and monthly profiles at a coordinate. Map grid overlay: NASA POWER ALLSKY_SFC_SW_DWN climatology, annual mean × 365 = kWh/m²/yr, 1°×1° grid cells.',
+        anchor:  '#method-solar',
         url:     'https://globalsolaratlas.info',
       },
       {
@@ -224,7 +224,7 @@ const SOURCES = [
         freq:    'On demand (API)',
         coverage:'Global',
         quality: 'Good — ERA5 reanalysis, 0.25° resolution. Hellman correction to 100m applied.',
-        method:  'NASA POWER WS50M climatology (wind speed at 50m AGL). Corrected to 100m using Hellman power law: v₁₀₀ = v₅₀ × (100/50)^α, α = 0.143 (open terrain). Grid cells 0.5°×0.5°.',
+        anchor:  '#method-wind',
         url:     'https://open-meteo.com',
       },
       {
@@ -386,14 +386,12 @@ export default function AboutPage() {
                       <td style={{ ...td, color: t.lblMuted, lineHeight: 1.5 }}>
                         {qualityChip(row.quality, t)}
                         {row.quality}
-                        {row.method && (
-                          <div style={{
-                            marginTop: 5, paddingTop: 5,
-                            borderTop: `1px solid ${t.panelBorder}`,
-                            fontSize: '0.52rem', fontStyle: 'italic', lineHeight: 1.55,
-                            color: t.lblMuted,
-                          }}>
-                            {row.method}
+                        {row.anchor && (
+                          <div style={{ marginTop: 5 }}>
+                            <a href={row.anchor}
+                              style={{ fontSize: '0.52rem', color: 'rgba(74,143,204,0.85)', textDecoration: 'none' }}>
+                              ↗ See methodology
+                            </a>
                           </div>
                         )}
                       </td>
@@ -481,6 +479,174 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ── Methodology & Estimations ── */}
+        <div style={{ marginTop: 48 }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+            Methodology &amp; Estimations
+          </h2>
+          <p style={{ fontSize: '0.72rem', color: t.muted, maxWidth: 660, lineHeight: 1.65, marginBottom: 32 }}>
+            Some indicators displayed in the tool are not directly sourced but derived or estimated.
+            This section documents the methods used so that results can be correctly interpreted.
+          </p>
+
+          {/* §1 Electricity Demand */}
+          <div id="method-demand" style={{ marginBottom: 40 }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+              Electricity Demand
+            </h3>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
+              Annual demand is displayed in TWh/year in the Load tab. Data is sourced in the following priority order:
+            </p>
+            <ol style={{ paddingLeft: 18, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <li style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
+                <strong style={{ color: t.lbl }}>National supply data file</strong> — per-country JSON with official figures
+                from ENTSO-E, national TSOs, Ember, or OWID. Each file indicates its source; the Load tab displays
+                an <em>Official</em> or <em>Estimated</em> badge accordingly.
+              </li>
+              <li style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
+                <strong style={{ color: t.lbl }}>WB WDI fallback</strong> — when no supply file exists, national
+                demand is derived from two World Bank WDI indicators:
+              </li>
+            </ol>
+            <div style={{
+              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
+              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
+              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 20,
+            }}>
+              {'E_national [TWh] = kWh_capita × Population / 1 000 000 000'}<br />
+              {'  where  kWh_capita  = WDI indicator EG.USE.ELEC.KH.PC'}<br />
+              {'         Population  = WDI indicator SP.POP.TOTL'}
+            </div>
+
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
+              <strong style={{ color: t.lbl }}>Demand projection.</strong> When at least 3 years of data are
+              available, an OLS (ordinary least squares) linear trend is fitted and extrapolated 10 years forward.
+              The projected series is shown as a dashed line labelled "Linear extrap." It is a mechanical trend
+              extension — not a scenario forecast. Actual demand will differ based on economic growth, efficiency,
+              and structural change.
+            </p>
+            <div style={{
+              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
+              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
+              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 20,
+            }}>
+              {'E(t) = m·t + b     (OLS fit on historical series)'}<br />
+              {'  m, b  estimated by minimising Σ(E_obs - E_fit)²'}<br />
+              {'  projected for t = last_year + 1  to  last_year + 10'}
+            </div>
+
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
+              <strong style={{ color: t.lbl }}>Peak demand estimation.</strong> When peak demand is not directly
+              available in the data, it is estimated from annual consumption using an assumed load factor (LF).
+              Results are flagged with a ~ prefix and labelled "est. LF = 55%".
+            </p>
+            <div style={{
+              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
+              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
+              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 10,
+            }}>
+              {'P_peak [GW] = E_annual [TWh] × 1000 / (8760 h × LF)'}<br />
+              {'  LF = 0.55  (assumed; typical range for developing-country grids: 0.40–0.75)'}
+            </div>
+            <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', lineHeight: 1.6 }}>
+              The load factor assumption is a rough approximation. For countries with strong seasonal
+              variation or high AC penetration, actual LF may be significantly lower.
+            </p>
+          </div>
+
+          {/* §2 Solar */}
+          <div id="method-solar" style={{ marginBottom: 40 }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+              Solar Irradiance Resources
+            </h3>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
+              The RE Resources tab shows solar potential using two complementary approaches:
+            </p>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 10, maxWidth: 660 }}>
+              <strong style={{ color: t.lbl }}>Point query</strong> — a single coordinate query to the{' '}
+              <a href="https://globalsolaratlas.info" target="_blank" rel="noopener noreferrer"
+                style={{ color: 'rgba(74,143,204,0.85)', textDecoration: 'none' }}>
+                Global Solar Atlas REST API
+              </a>{' '}
+              (ESMAP / World Bank). Returns GHI, DNI, PVOUT, and a 12-month irradiance profile for the selected location.
+            </p>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
+              <strong style={{ color: t.lbl }}>Map grid overlay</strong> — fetched from the NASA POWER
+              climatology API at 1°×1° resolution. The raw value is the average daily irradiance
+              (kWh/m²/day); it is converted to an annual total:
+            </p>
+            <div style={{
+              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
+              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
+              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 10,
+            }}>
+              {'GHI_annual [kWh/m²/yr] = daily_mean [kWh/m²/day] × 365'}<br />
+              {'  Parameter : ALLSKY_SFC_SW_DWN  (NASA POWER RE community)'}<br />
+              {'  Resolution: 1° × 1° grid cells  (~111 km at the equator)'}
+            </div>
+            <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', lineHeight: 1.6 }}>
+              Grid values are long-term climatological means and do not reflect inter-annual variability.
+              For detailed site assessment, use the point query or dedicated solar resource tools.
+            </p>
+          </div>
+
+          {/* §3 Wind */}
+          <div id="method-wind" style={{ marginBottom: 40 }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+              Wind Speed at 100 m
+            </h3>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
+              Modern wind turbines typically have hub heights of 80–140 m. Wind speed increases with
+              altitude, so the 50 m data from NASA POWER must be corrected before comparing to turbine
+              specifications. The tool uses the <strong style={{ color: t.lbl }}>Hellman power law</strong>,
+              the standard engineering approximation for wind shear over open terrain:
+            </p>
+            <div style={{
+              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
+              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
+              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 20,
+            }}>
+              {'v₁₀₀ = v₅₀ × (100 / 50)^α'}<br />
+              {'     = v₅₀ × 2^0.143'}<br />
+              {'     ≈ v₅₀ × 1.082'}<br />
+              <br />
+              {'  v₅₀  = NASA POWER WS50M  (wind speed at 50m AGL, climatological mean)'}<br />
+              {'  α    = 0.143  (Hellman exponent for open terrain, IEC standard)'}<br />
+              {'  Grid : 0.5° × 0.5° cells  (~55 km at the equator)'}
+            </div>
+            <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', lineHeight: 1.6 }}>
+              The Hellman exponent α = 0.143 assumes flat, open terrain. In practice α varies with
+              surface roughness: lower over water (~0.10), higher in forested or urban areas (~0.25–0.40).
+              Results should be treated as a regional screening tool, not a site-specific wind assessment.
+            </p>
+          </div>
+
+          {/* §4 Load profile */}
+          <div id="method-load-profile" style={{ marginBottom: 8 }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+              Daily Load Profile
+            </h3>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, maxWidth: 660 }}>
+              Hourly demand shape data is available only for countries with ENTSO-E metered data
+              (EU member states and a set of neighbouring TSOs: Türkiye, Georgia, Armenia, Azerbaijan,
+              Balkans, and North Africa HVDC partners). For these, the Load tab displays a typical
+              European weekday profile — a 24-hour shape normalised to a peak index of 100, derived
+              from ENTSO-E historical averages. The shape reflects a characteristic mid-morning plateau
+              and an evening peak around 18–20h.
+            </p>
+            <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginTop: 10, maxWidth: 660 }}>
+              For all other countries, no hourly profile is available and the panel shows
+              "No load profile available for this country." National TSO reports or IRENA country profiles
+              are the best alternative sources for countries outside the ENTSO-E zone.
+            </p>
+          </div>
         </div>
 
         {/* ── Limitations & Disclaimer ── */}
