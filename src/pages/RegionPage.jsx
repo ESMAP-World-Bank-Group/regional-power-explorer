@@ -1212,6 +1212,18 @@ export default function RegionPage() {
             })()}
           </div>
         )}
+
+        {/* ── Map disclaimer ── */}
+        <div style={{
+          position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 50, pointerEvents: 'none',
+          backgroundColor: t.isDark ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.72)',
+          borderRadius: 4, padding: '2px 10px',
+          fontSize: '0.47rem', color: t.lblMuted, textAlign: 'center',
+          whiteSpace: 'nowrap', letterSpacing: '0.3px',
+        }}>
+          Indicative data · Work in progress · Boundaries for reference only · Not an official WBG product
+        </div>
       </div>
 
       {!isMobile && (

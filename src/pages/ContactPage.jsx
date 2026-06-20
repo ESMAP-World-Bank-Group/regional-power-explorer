@@ -83,38 +83,24 @@ export default function ContactPage() {
         <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
           About
         </h1>
-        <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 32 }}>
-          A{' '}<ExternalLink href="https://www.worldbank.org">World Bank</ExternalLink>{' '}
-          tool for exploring power sector data across multiple regions.
-          It aggregates open-access data on power plants, transmission lines, renewable energy resources,
-          and country profiles — providing an overview and understanding of regional power systems,
-          and supporting data access for power system planning and cross-border analysis.
+        <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 24 }}>
+          An open tool for exploring power-sector data across regions — generation mix, installed
+          capacity, power plants, grid infrastructure, renewable energy resources, and country profiles.
+          Developed in the framework of{' '}
+          <ExternalLink href="https://www.esmap.org">ESMAP</ExternalLink>
+          {' '}/ World Bank energy planning activities.
         </p>
 
-        {/* GitHub — main repo */}
-        <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
-          target="_blank" rel="noopener noreferrer"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 18,
-            padding: '22px 24px', borderRadius: 8, marginBottom: 32,
-            border: `1px solid ${t.panelBorder}`,
-            backgroundColor: t.panel,
-            textDecoration: 'none', transition: 'border-color 0.15s',
-          }}
-          onMouseOver={e => e.currentTarget.style.borderColor = 'rgba(74,143,204,0.45)'}
-          onMouseOut={e => e.currentTarget.style.borderColor = t.panelBorder}
-        >
-          <div style={{ color: 'rgba(74,143,204,0.7)', flexShrink: 0 }}>
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-            </svg>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: t.text, marginBottom: 4 }}>Regional Explorer</div>
-            <div style={{ fontSize: '0.6rem', color: t.muted }}>github.com/ESMAP-World-Bank-Group/regional-power-explorer</div>
-          </div>
-        </a>
+        <div style={{ marginBottom: 32 }}>
+          <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer/issues"
+            target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: '0.65rem', color: 'rgba(74,143,204,0.7)', textDecoration: 'none' }}
+            onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'}
+            onMouseOut={e => e.currentTarget.style.textDecoration = 'none'}
+          >
+            Report an issue or suggest a feature ↗
+          </a>
+        </div>
 
         <hr style={divider} />
 

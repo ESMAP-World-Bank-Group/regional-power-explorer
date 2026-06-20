@@ -4,7 +4,7 @@ An interactive web map for exploring **open-access electricity-sector data** —
 mix, installed capacity, power plants, grid infrastructure, cross-border trade, electricity
 access, tariffs, and renewable-energy resources — at world, regional, and country level.
 
-It is developed by [ESMAP](https://www.esmap.org/) (World Bank). The tool aggregates and
+It is developed in the framework of [ESMAP](https://www.esmap.org/) / World Bank energy planning activities. The tool aggregates and
 harmonises data from many open sources so that planners, analysts, and decision-makers can
 get a quick, sourced overview of a country's power system. It can be used to help populate
 inputs for the [Electricity Planning Model (EPM)](https://github.com/ESMAP-World-Bank-Group/EPM),
@@ -97,4 +97,4 @@ of its respective sources (see the Data Sources page).
 
 ---
 
-*Regional Power Explorer · ESMAP · World Bank Group*
+*Indicative data · not an official WBG product*

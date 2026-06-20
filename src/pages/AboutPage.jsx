@@ -678,13 +678,8 @@ export default function AboutPage() {
 
         {/* Footer */}
         <p style={{ fontSize: '0.55rem', color: t.lblMuted, marginTop: 32, lineHeight: 1.7 }}>
-          Regional Explorer · World Bank ·{' '}
-          <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
-            target="_blank" rel="noopener noreferrer"
-            style={{ color: 'rgba(74,143,204,0.7)', textDecoration: 'none' }}>
-            GitHub
-          </a>
-          {' '}· Data licences: OSM (ODbL), GPPD (CC BY 4.0), GEM (CC BY 4.0), Natural Earth (Public Domain)
+          Regional Power Explorer · Indicative data · not an official WBG product ·{' '}
+          Data licences: OSM (ODbL), GPPD (CC BY 4.0), GEM (CC BY 4.0), Natural Earth (Public Domain)
         </p>
       </div>
     </div>
