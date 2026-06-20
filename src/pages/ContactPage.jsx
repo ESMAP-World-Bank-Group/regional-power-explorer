@@ -91,6 +91,22 @@ export default function ContactPage() {
           {' '}/ World Bank.
         </p>
 
+        {/* Data note → Limitations */}
+        <div style={{
+          marginBottom: 24, padding: '12px 14px', borderRadius: 8,
+          border: `1px solid ${t.panelBorder}`,
+          borderLeft: '3px solid rgba(252,196,25,0.8)',
+          background: t.isDark ? 'rgba(252,196,25,0.045)' : 'rgba(252,196,25,0.05)',
+          fontSize: '0.68rem', color: t.muted, lineHeight: 1.6,
+        }}>
+          <span aria-hidden="true" style={{ marginRight: 6 }}>⚠</span>
+          Data figures are aggregated and derived from open and public sources, which may not
+          always be up to date.{' '}
+          <Link to="/about#limitations" style={{ color: 'rgba(74,143,204,0.88)', textDecoration: 'none', fontWeight: 600 }}>
+            See Limitations &amp; Disclaimer
+          </Link>{' '}on the Data Sources page.
+        </div>
+
         <div style={{ marginBottom: 32 }}>
           <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer/issues"
             target="_blank" rel="noopener noreferrer"

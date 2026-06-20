@@ -1,51 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 
-const OPEN_DATA = [
-  {
-    category: 'Electricity Demand',
-    rows: [
-      { name: 'Our World in Data',   res: 'Yearly',         desc: 'Historical electricity consumption by country',          url: 'https://ourworldindata.org/energy' },
-      { name: 'ENTSO-E Transparency',res: 'Monthly / hourly',desc: 'Load profiles for European countries (hourly, SFTP)',    url: 'https://transparency.entsoe.eu' },
-      { name: 'SYNDE (GEGIS)',        res: 'Hourly',         desc: 'Modelled demand under SSP scenarios',                    url: 'https://github.com/Open-Poen/SYNDE' },
-    ],
-  },
-  {
-    category: 'Existing Generation Capacity',
-    rows: [
-      { name: 'PowerPlantMatching', res: 'Europe', desc: 'Matched plant database, CSV download', url: 'https://github.com/FRESNA/powerplantmatching' },
-    ],
-  },
-  {
-    category: 'Solar & Wind Profiles',
-    rows: [
-      { name: 'Renewables.ninja',   res: 'Hourly',  desc: 'Simulated PV and wind capacity factors at any location',   url: 'https://www.renewables.ninja' },
-      { name: 'Global Wind Atlas', res: '—',       desc: 'Wind resource maps and data',                              url: 'https://globalwindatlas.info' },
-      { name: 'atlite',            res: 'Hourly',  desc: 'Python library for weather-derived power profiles (ERA5)', url: 'https://atlite.readthedocs.io' },
-      { name: 'Sterl et al. 2022', res: '—',       desc: 'PV and wind supply regions across Africa',                url: 'https://doi.org/10.1038/s41560-021-00922-4' },
-    ],
-  },
-  {
-    category: 'Hydropower',
-    rows: [
-      { name: 'EIA',                    res: 'Yearly',   desc: 'Historical hydro generation by country',                   url: 'https://www.eia.gov/international/data/world' },
-      { name: 'GRDC',                   res: 'Monthly',  desc: 'Global river discharge and runoff data',                   url: 'https://grdc.bafg.de' },
-      { name: 'FAO AQUASTAT',           res: '—',        desc: 'Geo-referenced database of dams and reservoirs',           url: 'https://www.fao.org/aquastat' },
-      { name: 'Global Dam Watch',       res: '—',        desc: 'GRanD/FHReD: existing + future reservoir database',        url: 'https://globaldamwatch.org' },
-    ],
-  },
-  {
-    category: 'Comprehensive / Multi-category',
-    rows: [
-      { name: 'Ember',           res: '85+ geographies', desc: 'Global power data: generation, emissions, demand',         url: 'https://ember-energy.org/data' },
-      { name: 'PyPSA-Earth',     res: 'Global',          desc: 'Open global electricity model with full data workflow',    url: 'https://pypsa-earth.readthedocs.io' },
-      { name: 'ENERGYDATA.INFO', res: 'Global',          desc: 'World Bank open data platform for the energy sector',     url: 'https://energydata.info' },
-      { name: 'OSeMOSYS Global', res: 'Global',          desc: 'Global energy system data (Brinkerink et al. 2021)',       url: 'https://doi.org/10.1038/s41597-021-01033-9' },
-    ],
-  },
-];
 
 const SOURCES = [
   {
@@ -276,6 +233,43 @@ function qualityChip(text, t) {
   );
 }
 
+// Styled formula card: accent rail + label chip + equation, with the
+// variable legend visually separated below a divider.
+function Formula({ t, label, eq, note }) {
+  const eqLines = Array.isArray(eq) ? eq : [eq];
+  return (
+    <div style={{
+      background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.025)',
+      border: `1px solid ${t.panelBorder}`,
+      borderLeft: '3px solid rgba(74,143,204,0.75)',
+      borderRadius: 8, padding: '14px 18px', marginBottom: 20,
+    }}>
+      {label && (
+        <span style={{
+          display: 'inline-block', fontSize: '0.5rem', letterSpacing: '1.5px',
+          fontWeight: 700, textTransform: 'uppercase', color: 'rgba(74,143,204,0.85)',
+          marginBottom: 12,
+        }}>{label}</span>
+      )}
+      <div style={{
+        fontFamily: "'DM Mono', monospace", fontSize: '0.74rem',
+        color: t.text, lineHeight: 1.7, whiteSpace: 'pre',
+      }}>
+        {eqLines.map((l, i) => <div key={i}>{l}</div>)}
+      </div>
+      {note && note.length > 0 && (
+        <div style={{
+          marginTop: 12, paddingTop: 10, borderTop: `1px solid ${t.panelBorder}`,
+          fontFamily: "'DM Mono', monospace", fontSize: '0.58rem',
+          color: t.lblMuted, lineHeight: 1.9, whiteSpace: 'pre',
+        }}>
+          {note.map((l, i) => <div key={i}>{l}</div>)}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AboutPage() {
   const { theme } = useTheme();
   const t = getT(theme);
@@ -283,6 +277,15 @@ export default function AboutPage() {
   useEffect(() => {
     fetch('/data/metadata.json').then(r => r.ok ? r.json() : null).then(d => d && setMeta(d)).catch(() => {});
   }, []);
+
+  // Scroll to a section when navigated to with a hash (e.g. /about#limitations).
+  const location = useLocation();
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+    }
+  }, [location]);
 
   const th = {
     fontSize: '0.5rem', letterSpacing: '1.5px', fontWeight: 700,
@@ -324,8 +327,10 @@ export default function AboutPage() {
           </h1>
           <p style={{ fontSize: '0.75rem', color: t.muted, maxWidth: 620, lineHeight: 1.65 }}>
             The Regional Explorer aggregates open-access data from multiple sources.
-            Coverage and accuracy vary by region. All data should be treated as indicative
-            and cross-checked against national statistics for planning purposes.
+            Coverage and accuracy vary by region. Figures are indicative — a good basis
+            for an overview and for data collection; cross-check the key ones with national
+            sources where they inform decisions. See <Link to="/about#limitations"
+            style={{ color: 'rgba(74,143,204,0.85)', textDecoration: 'none' }}>Limitations &amp; Disclaimer</Link>.
           </p>
           {meta && (
             <div style={{
@@ -420,67 +425,6 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* ── Additional Open Data Sources ── */}
-        <div style={{ marginTop: 48 }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
-            Additional Open Data Sources
-          </h2>
-          <p style={{ fontSize: '0.72rem', color: t.muted, maxWidth: 600, lineHeight: 1.65, marginBottom: 6 }}>
-            A curated list of open data sources useful for populating EPM inputs. Not currently integrated
-            in the explorer — listed here for reference.
-          </p>
-          <div style={{
-            padding: '8px 12px', borderRadius: 5, marginBottom: 24,
-            backgroundColor: 'rgba(252,196,25,0.08)',
-            border: '1px solid rgba(252,196,25,0.25)',
-            fontSize: '0.6rem', color: t.muted, lineHeight: 1.55,
-          }}>
-            Work in progress — suggestions welcome via{' '}
-            <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer/issues"
-              target="_blank" rel="noopener noreferrer"
-              style={{ color: 'rgba(74,143,204,0.8)', textDecoration: 'none' }}>
-              GitHub Issues
-            </a>.
-          </div>
-
-          {OPEN_DATA.map(({ category, rows }) => (
-            <div key={category}>
-              <span style={sec}>{category}</span>
-              <div style={{
-                borderRadius: 6, overflow: 'hidden',
-                border: `1px solid ${t.panelBorder}`, marginBottom: 8,
-              }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ backgroundColor: t.panel }}>
-                      <th style={th}>Source</th>
-                      <th style={th}>Resolution / Coverage</th>
-                      <th style={{ ...th, whiteSpace: 'normal', minWidth: 220 }}>Description</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((row, i) => (
-                      <tr key={i} style={{
-                        backgroundColor: i % 2 === 0 ? 'transparent'
-                          : (t.isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.015)'),
-                      }}>
-                        <td style={{ ...td, color: t.lbl, fontWeight: 500, whiteSpace: 'nowrap' }}>
-                          <a href={row.url} target="_blank" rel="noopener noreferrer"
-                            style={{ color: 'rgba(74,143,204,0.85)', textDecoration: 'none' }}>
-                            {row.name}
-                          </a>
-                        </td>
-                        <td style={{ ...td, whiteSpace: 'nowrap' }}>{row.res}</td>
-                        <td style={{ ...td, color: t.lblMuted, lineHeight: 1.5 }}>{row.desc}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* ── Methodology & Estimations ── */}
         <div style={{ marginTop: 48 }}>
           <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
@@ -510,16 +454,12 @@ export default function AboutPage() {
                 demand is derived from two World Bank WDI indicators:
               </li>
             </ol>
-            <div style={{
-              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
-              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
-              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 20,
-            }}>
-              {'E_national [TWh] = kWh_capita × Population / 1 000 000 000'}<br />
-              {'  where  kWh_capita  = WDI indicator EG.USE.ELEC.KH.PC'}<br />
-              {'         Population  = WDI indicator SP.POP.TOTL'}
-            </div>
+            <Formula t={t} label="National demand · WDI fallback"
+              eq="E_national [TWh] = kWh_capita × Population / 1 000 000 000"
+              note={[
+                'kWh_capita = WDI indicator EG.USE.ELEC.KH.PC',
+                'Population = WDI indicator SP.POP.TOTL',
+              ]} />
 
             <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
               <strong style={{ color: t.lbl }}>Demand projection.</strong> When at least 3 years of data are
@@ -528,31 +468,21 @@ export default function AboutPage() {
               extension — not a scenario forecast. Actual demand will differ based on economic growth, efficiency,
               and structural change.
             </p>
-            <div style={{
-              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
-              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
-              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 20,
-            }}>
-              {'E(t) = m·t + b     (OLS fit on historical series)'}<br />
-              {'  m, b  estimated by minimising Σ(E_obs - E_fit)²'}<br />
-              {'  projected for t = last_year + 1  to  last_year + 10'}
-            </div>
+            <Formula t={t} label="Demand projection · linear trend"
+              eq="E(t) = m·t + b     (OLS fit on historical series)"
+              note={[
+                'm, b  estimated by minimising Σ(E_obs − E_fit)²',
+                'projected for t = last_year + 1 … last_year + 10',
+              ]} />
 
             <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, marginBottom: 14, maxWidth: 660 }}>
               <strong style={{ color: t.lbl }}>Peak demand estimation.</strong> When peak demand is not directly
               available in the data, it is estimated from annual consumption using an assumed load factor (LF).
               Results are flagged with a ~ prefix and labelled "est. LF = 55%".
             </p>
-            <div style={{
-              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
-              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
-              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 10,
-            }}>
-              {'P_peak [GW] = E_annual [TWh] × 1000 / (8760 h × LF)'}<br />
-              {'  LF = 0.55  (assumed; typical range for developing-country grids: 0.40–0.75)'}
-            </div>
+            <Formula t={t} label="Peak demand · load factor"
+              eq="P_peak [GW] = E_annual [TWh] × 1000 / (8760 h × LF)"
+              note={['LF = 0.55  (assumed; typical developing-grid range 0.40–0.75)']} />
             <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', lineHeight: 1.6 }}>
               The load factor assumption is a rough approximation. For countries with strong seasonal
               variation or high AC penetration, actual LF may be significantly lower.
@@ -580,16 +510,12 @@ export default function AboutPage() {
               climatology API at 1°×1° resolution. The raw value is the average daily irradiance
               (kWh/m²/day); it is converted to an annual total:
             </p>
-            <div style={{
-              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
-              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
-              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 10,
-            }}>
-              {'GHI_annual [kWh/m²/yr] = daily_mean [kWh/m²/day] × 365'}<br />
-              {'  Parameter : ALLSKY_SFC_SW_DWN  (NASA POWER RE community)'}<br />
-              {'  Resolution: 1° × 1° grid cells  (~111 km at the equator)'}
-            </div>
+            <Formula t={t} label="Solar irradiance · annual GHI"
+              eq="GHI_annual [kWh/m²/yr] = daily_mean [kWh/m²/day] × 365"
+              note={[
+                'Parameter : ALLSKY_SFC_SW_DWN  (NASA POWER RE community)',
+                'Resolution: 1° × 1° grid cells  (~111 km at the equator)',
+              ]} />
             <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', lineHeight: 1.6 }}>
               Grid values are long-term climatological means and do not reflect inter-annual variability.
               For detailed site assessment, use the point query or dedicated solar resource tools.
@@ -607,20 +533,17 @@ export default function AboutPage() {
               specifications. The tool uses the <strong style={{ color: t.lbl }}>Hellman power law</strong>,
               the standard engineering approximation for wind shear over open terrain:
             </p>
-            <div style={{
-              background: t.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${t.panelBorder}`, borderRadius: 6,
-              padding: '14px 18px', fontFamily: "'DM Mono', monospace",
-              fontSize: '0.6rem', color: t.lbl, lineHeight: 2, marginBottom: 20,
-            }}>
-              {'v₁₀₀ = v₅₀ × (100 / 50)^α'}<br />
-              {'     = v₅₀ × 2^0.143'}<br />
-              {'     ≈ v₅₀ × 1.082'}<br />
-              <br />
-              {'  v₅₀  = NASA POWER WS50M  (wind speed at 50m AGL, climatological mean)'}<br />
-              {'  α    = 0.143  (Hellman exponent for open terrain, IEC standard)'}<br />
-              {'  Grid : 0.5° × 0.5° cells  (~55 km at the equator)'}
-            </div>
+            <Formula t={t} label="Wind shear · Hellman power law"
+              eq={[
+                'v₁₀₀ = v₅₀ × (100 / 50)^α',
+                '     = v₅₀ × 2^0.143',
+                '     ≈ v₅₀ × 1.082',
+              ]}
+              note={[
+                'v₅₀ = NASA POWER WS50M  (wind speed at 50m AGL, climatological mean)',
+                'α   = 0.143  (Hellman exponent for open terrain, IEC standard)',
+                'Grid : 0.5° × 0.5° cells  (~55 km at the equator)',
+              ]} />
             <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', lineHeight: 1.6 }}>
               The Hellman exponent α = 0.143 assumes flat, open terrain. In practice α varies with
               surface roughness: lower over water (~0.10), higher in forested or urban areas (~0.25–0.40).
@@ -650,26 +573,40 @@ export default function AboutPage() {
         </div>
 
         {/* ── Limitations & Disclaimer ── */}
-        <div style={{ marginTop: 48 }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+        <div id="limitations" style={{
+          marginTop: 48,
+          border: `1px solid ${t.panelBorder}`,
+          borderLeft: '3px solid rgba(252,196,25,0.8)',
+          borderRadius: 10,
+          background: t.isDark ? 'rgba(252,196,25,0.045)' : 'rgba(252,196,25,0.05)',
+          padding: '20px 24px',
+        }}>
+          <h2 style={{
+            fontSize: '1.05rem', fontWeight: 700, color: t.text, marginBottom: 8,
+            display: 'flex', alignItems: 'center', gap: 8,
+          }}>
+            <span aria-hidden="true" style={{ fontSize: '1rem' }}>⚠</span>
             Limitations &amp; Disclaimer
           </h2>
-          <p style={{ fontSize: '0.72rem', color: t.muted, maxWidth: 620, lineHeight: 1.65, marginBottom: 16 }}>
-            This tool aggregates third-party open data for analytical reference. Figures should be
-            cross-checked against authoritative national sources before use in policy, planning, or
-            investment decisions.
+          <p style={{ fontSize: '0.72rem', color: t.muted, maxWidth: 640, lineHeight: 1.65, marginBottom: 18 }}>
+            This tool aggregates third-party open data for analytical reference. It offers a good
+            overview and a solid basis for data collection; where the figures inform planning or
+            investment decisions, cross-check the key ones with the relevant national authorities
+            where feasible.
           </p>
-          <ul style={{ paddingLeft: 18, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <ul style={{ listStyle: 'none', paddingLeft: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
             {[
               'Data is indicative only. Figures reflect the reference year of each source and may be 1–3 years behind current conditions.',
               'Coverage varies significantly by country. SIDS and fragile states have the most data gaps — supply data is often partial, grid data sparse, and tariff figures may be absent.',
               'Power plant databases (GPPD v1.3, GEM) typically omit plants below ~1 MW and may not reflect recent commissioning or decommissioning.',
+              'Grid and infrastructure layers from OpenStreetMap are community-maintained: coverage and currency vary by region — some areas are richly mapped and current, others sparse or several years out of date.',
               'Electricity tariff data sourced from GlobalPetrolPrices.com is indicative only and may not reflect current regulated rates. Licence terms are under review.',
               'Load profiles are available only for countries with ENTSO-E hourly data. For all other countries the Load tab shows no intraday profile.',
               'Country boundaries are sourced from Natural Earth (110m resolution) for reference purposes only. Boundaries and names shown do not imply official endorsement or acceptance by the World Bank Group of any territorial delimitation.',
               'The findings, interpretations, and conclusions expressed in this tool are those of the author(s) and do not necessarily reflect the views of the World Bank, its Board of Executive Directors, or the governments they represent.',
             ].map((item, i) => (
-              <li key={i} style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
+              <li key={i} style={{ position: 'relative', paddingLeft: 18, fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
+                <span style={{ position: 'absolute', left: 0, top: 7, width: 6, height: 6, borderRadius: '50%', backgroundColor: 'rgba(252,196,25,0.75)' }} />
                 {item}
               </li>
             ))}
