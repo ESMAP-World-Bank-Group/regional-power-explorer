@@ -86,9 +86,9 @@ export default function ContactPage() {
         <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 24 }}>
           An open tool for exploring power-sector data across regions — generation mix, installed
           capacity, power plants, grid infrastructure, renewable energy resources, and country profiles.
-          Developed in the framework of{' '}
+          Developed with the support of{' '}
           <ExternalLink href="https://www.esmap.org">ESMAP</ExternalLink>
-          {' '}/ World Bank energy planning activities.
+          {' '}/ World Bank.
         </p>
 
         <div style={{ marginBottom: 32 }}>
