@@ -16,12 +16,14 @@ dist-ssr
 data-source/cache/
 data-source/*.csv
 data-source/gem/
-data-source/raw/ENTSOE/
-data-source/raw/ARM/owid_energy.csv
 config/api_tokens.ini
-data-source/raw/OWID/
-data-source/raw/COMTRADE/
-data-source/raw/EMBER/
+
+# Raw source inputs — kept out of the public repo. Raw downloads (national
+# reports, energy balances, API dumps…) belong in the private data store;
+# only the processed data served by the app is committed.
+# NOTE: AZE/GEO/TUR/EAPP were committed earlier and stay tracked — untracking
+# them is a separate data-governance decision (see roadmap N2).
+data-source/raw/
 
 # Python
 __pycache__/
