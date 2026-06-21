@@ -327,10 +327,7 @@ export default function AboutPage() {
           </h1>
           <p style={{ fontSize: '0.75rem', color: t.muted, maxWidth: 620, lineHeight: 1.65 }}>
             The Regional Explorer aggregates open-access data from multiple sources.
-            Coverage and accuracy vary by region. Figures are indicative — a good basis
-            for an overview and for data collection; cross-check the key ones with national
-            sources where they inform decisions. See <Link to="/about#limitations"
-            style={{ color: 'rgba(74,143,204,0.85)', textDecoration: 'none' }}>Limitations &amp; Disclaimer</Link>.
+            Coverage and accuracy vary by region; all figures are indicative.
           </p>
           {meta && (
             <div style={{
@@ -589,10 +586,10 @@ export default function AboutPage() {
             Limitations &amp; Disclaimer
           </h2>
           <p style={{ fontSize: '0.72rem', color: t.muted, maxWidth: 640, lineHeight: 1.65, marginBottom: 18 }}>
-            This tool aggregates third-party open data for analytical reference. It offers a good
-            overview and a solid basis for data collection; where the figures inform planning or
-            investment decisions, cross-check the key ones with the relevant national authorities
-            where feasible.
+            This tool aggregates third-party open data for analytical reference. Figures are
+            indicative — a good basis for an overview and for data collection; where they inform
+            planning or investment decisions, cross-check the key ones against the relevant
+            national sources where feasible.
           </p>
           <ul style={{ listStyle: 'none', paddingLeft: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
             {[
