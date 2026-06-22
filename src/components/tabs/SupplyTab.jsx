@@ -108,24 +108,42 @@ const _REL_STYLE = {
   low:    { color: '#B84040', label: 'Partial'   },
 };
 
-function SourceBadge({ source, t }) {
-  const { short, rel, note } = getSourceMeta(source);
+// ── Full chart caption: what the chart shows + source + reliability ───────────
+// Shown under every country chart so the reader always knows what is plotted,
+// where the numbers come from, and how reliable they are.
+function ChartCaption({ about, source, t }) {
+  const { rel, note } = getSourceMeta(source);
   const rs = rel ? _REL_STYLE[rel] : null;
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-      <span style={{ fontSize: '0.46rem', color: t.lblMuted, fontStyle: 'italic' }}>{short}</span>
-      {rs && (
-        <span title={note || rs.label} style={{
-          display: 'inline-flex', alignItems: 'center', gap: 2,
-          fontSize: '0.38rem', padding: '1px 4px', borderRadius: 3,
-          background: `${rs.color}18`, color: rs.color,
-          fontWeight: 700, letterSpacing: '0.3px', cursor: 'default',
-        }}>
-          <span style={{ fontSize: '0.45rem', lineHeight: 1 }}>●</span>
-          {rs.label}
-        </span>
+    <div style={{ marginTop: 7, paddingTop: 6, borderTop: `1px dotted ${t.panelBorder}` }}>
+      {about && (
+        <p style={{ margin: '0 0 4px', fontSize: '0.54rem', lineHeight: 1.5, color: t.lblMuted }}>
+          {about}
+        </p>
       )}
-    </span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: '0.5rem', color: t.lblMuted }}>
+          <span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.44rem', color: t.lblMuted, opacity: 0.8 }}>Source </span>
+          <span style={{ fontStyle: 'italic' }}>{source || 'Not specified'}</span>
+        </span>
+        {rs && (
+          <span title={note || rs.label} style={{
+            display: 'inline-flex', alignItems: 'center', gap: 2,
+            fontSize: '0.4rem', padding: '1px 5px', borderRadius: 3,
+            background: `${rs.color}18`, color: rs.color,
+            fontWeight: 700, letterSpacing: '0.3px', cursor: 'default', flexShrink: 0,
+          }}>
+            <span style={{ fontSize: '0.46rem', lineHeight: 1 }}>●</span>
+            {rs.label}
+          </span>
+        )}
+      </div>
+      {rs && note && (
+        <p style={{ margin: '3px 0 0', fontSize: '0.47rem', lineHeight: 1.4, color: t.lblMuted, fontStyle: 'italic', opacity: 0.85 }}>
+          Reliability: {note}.
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -541,7 +559,13 @@ export default function SupplyTab({ iso, theme }) {
           ))}
         />
 
-        <p style={{ margin: '6px 0 0', opacity: 0.85 }}><SourceBadge source={section.source} t={t} /></p>
+        <ChartCaption
+          about={view === 'capacity'
+            ? `Installed power generation capacity by fuel type (${section.unit}). Click a legend item to filter it out; hover a year for the breakdown.`
+            : `Electricity generated each year by fuel type (${section.unit})${hasDemand ? `; the dashed line is electricity demand (${demandLabel.toLowerCase()})` : ''}. Click a legend item to filter it out; hover a year for the breakdown.`}
+          source={section.source}
+          t={t}
+        />
       </>
     );
   })();
@@ -549,7 +573,30 @@ export default function SupplyTab({ iso, theme }) {
   // ── Trade section ───────────────────────────────────────────────────────────
   const tradeSection = (() => {
     if (tradeLoading) return <p style={{ fontSize: '0.7rem', color: t.lblMuted }}>Loading…</p>;
-    if (!tradeData)   return <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>No trade data available.</p>;
+    if (!tradeData)   return <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>No cross-border trade data loaded yet for this country.</p>;
+
+    // Explicit "no chart" states (isolated grids, jointly-reported zones, …)
+    if (tradeData.status) {
+      const badge = tradeData.status === 'none'   ? 'No interconnection'
+                  : tradeData.status === 'merged' ? 'Reported jointly'
+                  : 'Not available';
+      return (
+        <div style={{ fontSize: '0.62rem', lineHeight: 1.55, color: t.lblMuted }}>
+          <span style={{
+            display: 'inline-block', fontSize: '0.42rem', fontWeight: 700,
+            letterSpacing: '0.5px', textTransform: 'uppercase', padding: '2px 6px',
+            borderRadius: 3, marginBottom: 6,
+            background: t.isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)', color: t.lblMuted,
+          }}>{badge}</span>
+          <p style={{ margin: 0 }}>{tradeData.note}</p>
+          {tradeData.source && (
+            <p style={{ margin: '5px 0 0', fontSize: '0.5rem', fontStyle: 'italic', opacity: 0.8 }}>
+              Source: {tradeData.source}
+            </p>
+          )}
+        </div>
+      );
+    }
 
     const imp = tradeData.imports || {};
     const exp = tradeData.exports || {};
@@ -571,7 +618,7 @@ export default function SupplyTab({ iso, theme }) {
       return { yr, impRows, expRows, totalImp, totalExp, net: totalImp - totalExp };
     })() : null;
 
-    return (
+    const chart = (
       <ChartWithLegend
         chartRef={tradeRef}
         chart={
@@ -616,6 +663,17 @@ export default function SupplyTab({ iso, theme }) {
           </>
         ), null)}
       />
+    );
+
+    return (
+      <>
+        {chart}
+        <ChartCaption
+          about="Annual cross-border physical electricity flows by partner country (GWh). Bars above the axis are imports, below are exports; the dashed line is the net balance (imports − exports). Click a partner to filter it out; hover a year for detail."
+          source={tradeData.source}
+          t={t}
+        />
+      </>
     );
   })();
 
@@ -666,9 +724,6 @@ export default function SupplyTab({ iso, theme }) {
           Cross-border Flows
         </span>
         {tradeSection}
-        {tradeData && (
-          <p style={{ margin: '6px 0 0', opacity: 0.85 }}><SourceBadge source={tradeData.source} t={t} /></p>
-        )}
       </div>
 
       {(supplyData?.generation || tradeData) && (

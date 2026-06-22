@@ -96,6 +96,19 @@ AREA_OVERRIDES = {
     'SE': 'SE_3',    # Sweden has 4 zones; SE_3 (Stockholm) is representative
 }
 
+# Cross-border flows need an area that has neighbours defined in entsoe-py's
+# NEIGHBOURS map. Same as AREA_OVERRIDES, EXCEPT Italy: the aggregated 'IT'
+# domain exposes all 7 national borders, so it gives complete trade — whereas
+# the IT_NORD generation proxy would drop Italy's southern/island borders
+# (Greece, Montenegro, Malta). DE/DK/NO/SE country domains have no neighbours,
+# so they must keep their bidding-zone override (one zone's borders only).
+TRADE_AREA_OVERRIDES = {
+    'DE': 'DE_LU',
+    'DK': 'DK_1',
+    'NO': 'NO_1',
+    'SE': 'SE_3',
+}
+
 # ── ENTSO-E production type → our fuel category ──────────────────────────────
 FUEL_MAP = {
     'Fossil Gas':                      'Gas',
@@ -328,12 +341,25 @@ AREA_TO_NAME = {
 }
 
 
+# Bidding-zone code prefixes that all map to a single country (e.g. all the
+# IT_SICI / IT_SARD / IT_CNOR zones are just "Italy" as a trade partner).
+_ZONE_PREFIX_TO_NAME = {
+    'IT_': 'Italy',   'DE_': 'Germany',  'DK_': 'Denmark',
+    'NO_': 'Norway',  'SE_': 'Sweden',   'UA_': 'Ukraine',
+    'RU_': 'Russia',
+}
+
+
 def _norm_partner(raw):
     """Normalise an ENTSO-E area code/name to a display name."""
     s = str(raw).strip()
     # Direct lookup (ISO2 or zone code)
     if s in AREA_TO_NAME:
         return AREA_TO_NAME[s]
+    # Bidding-zone codes (IT_SICI, NO_2, DK_1, …) collapse to their country
+    for pref, name in _ZONE_PREFIX_TO_NAME.items():
+        if s.startswith(pref):
+            return name
     # Some entsoe-py versions return full country names already
     return s
 
@@ -357,7 +383,7 @@ def _fetch_xborder_year(client, iso2, year, direction, refresh):
 
     start      = pd.Timestamp(f'{year}-01-01', tz=TZ)
     end        = pd.Timestamp(f'{year+1}-01-01', tz=TZ)
-    code       = AREA_OVERRIDES.get(iso2, iso2)
+    code       = TRADE_AREA_OVERRIDES.get(iso2, iso2)
     export_dir = (direction == 'exp')
     df = client.query_physical_crossborder_allborders(
         code, start=start, end=end, export=export_dir
