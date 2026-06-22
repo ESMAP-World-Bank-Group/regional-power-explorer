@@ -88,6 +88,13 @@ M49: dict[str, str] = {
     'SGP': '702',
     'THA': '764',
     'VNM': '704',
+    # SIEPAC (Central America — MER regional market, all interconnected)
+    'GTM': '320',
+    'HND': '340',
+    'SLV': '222',
+    'NIC': '558',
+    'CRI': '188',
+    'PAN': '591',
 }
 
 # M49 code → ISO3 (for looking up partner names in the output)
