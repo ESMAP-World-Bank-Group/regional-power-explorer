@@ -98,8 +98,10 @@ function getSourceMeta(src) {
   if (s.includes('owid') || s.includes('ember'))  return { short: 'OWID/Ember',       rel: 'medium', note: 'Cross-validated estimates; small countries may be approximate' };
   if (s.includes('comtrade'))                     return { short: 'Comtrade HS 2716', rel: 'medium', note: 'Customs declarations; coverage varies by country' };
   if (s.includes('wdi') || s.includes('world bank')) return { short: 'WB WDI',        rel: 'medium', note: 'Derived from per-capita electricity use × population' };
+  // Unknown source: assume it is a named official/national source — show it
+  // as-is with no reliability flag (don't claim "Estimated" unless we know it).
   const short = src.split('—')[0].split('(')[0].trim();
-  return { short: short.length > 28 ? short.slice(0, 25) + '…' : short, rel: 'medium', note: '' };
+  return { short: short.length > 28 ? short.slice(0, 25) + '…' : short, rel: null, note: '' };
 }
 
 const _REL_STYLE = {
@@ -108,42 +110,30 @@ const _REL_STYLE = {
   low:    { color: '#B84040', label: 'Partial'   },
 };
 
-// ── Full chart caption: what the chart shows + source + reliability ───────────
-// Shown under every country chart so the reader always knows what is plotted,
-// where the numbers come from, and how reliable they are.
-function ChartCaption({ about, source, t }) {
+// ── Chart caption: just the source, plus a caveat only when one is worth noting.
+// Charts are meant to be self-explanatory; for official sources we show only
+// "Source: …". For less-reliable sources (e.g. Comtrade customs data) we add a
+// short flag so the reader knows to treat the numbers with care.
+function ChartCaption({ source, t }) {
   const { rel, note } = getSourceMeta(source);
-  const rs = rel ? _REL_STYLE[rel] : null;
+  const flag = (rel && rel !== 'high') ? _REL_STYLE[rel] : null;  // only when not fully reliable
   return (
-    <div style={{ marginTop: 7, paddingTop: 6, borderTop: `1px dotted ${t.panelBorder}` }}>
-      {about && (
-        <p style={{ margin: '0 0 4px', fontSize: '0.54rem', lineHeight: 1.5, color: t.lblMuted }}>
-          {about}
-        </p>
-      )}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.5rem', color: t.lblMuted }}>
-          <span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.44rem', color: t.lblMuted, opacity: 0.8 }}>Source </span>
-          <span style={{ fontStyle: 'italic' }}>{source || 'Not specified'}</span>
+    <p style={{ margin: '6px 0 0', fontSize: '0.5rem', color: t.lblMuted, lineHeight: 1.45 }}>
+      <span style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.44rem', opacity: 0.8 }}>Source </span>
+      <span style={{ fontStyle: 'italic' }}>{source || 'Not specified'}</span>
+      {flag && (
+        <span title={note} style={{
+          marginLeft: 6, display: 'inline-flex', alignItems: 'center', gap: 2,
+          fontSize: '0.4rem', padding: '1px 5px', borderRadius: 3,
+          background: `${flag.color}18`, color: flag.color, fontWeight: 700, letterSpacing: '0.3px',
+        }}>
+          <span style={{ fontSize: '0.46rem', lineHeight: 1 }}>●</span>{flag.label}
         </span>
-        {rs && (
-          <span title={note || rs.label} style={{
-            display: 'inline-flex', alignItems: 'center', gap: 2,
-            fontSize: '0.4rem', padding: '1px 5px', borderRadius: 3,
-            background: `${rs.color}18`, color: rs.color,
-            fontWeight: 700, letterSpacing: '0.3px', cursor: 'default', flexShrink: 0,
-          }}>
-            <span style={{ fontSize: '0.46rem', lineHeight: 1 }}>●</span>
-            {rs.label}
-          </span>
-        )}
-      </div>
-      {rs && note && (
-        <p style={{ margin: '3px 0 0', fontSize: '0.47rem', lineHeight: 1.4, color: t.lblMuted, fontStyle: 'italic', opacity: 0.85 }}>
-          Reliability: {note}.
-        </p>
       )}
-    </div>
+      {flag && note && (
+        <span style={{ display: 'block', marginTop: 2, fontStyle: 'italic', opacity: 0.85, fontSize: '0.46rem' }}>{note}.</span>
+      )}
+    </p>
   );
 }
 
@@ -559,13 +549,7 @@ export default function SupplyTab({ iso, theme }) {
           ))}
         />
 
-        <ChartCaption
-          about={view === 'capacity'
-            ? `Installed power generation capacity by fuel type (${section.unit}). Click a legend item to filter it out; hover a year for the breakdown.`
-            : `Electricity generated each year by fuel type (${section.unit})${hasDemand ? `; the dashed line is electricity demand (${demandLabel.toLowerCase()})` : ''}. Click a legend item to filter it out; hover a year for the breakdown.`}
-          source={section.source}
-          t={t}
-        />
+        <ChartCaption source={section.source} t={t} />
       </>
     );
   })();
@@ -668,11 +652,7 @@ export default function SupplyTab({ iso, theme }) {
     return (
       <>
         {chart}
-        <ChartCaption
-          about="Annual cross-border physical electricity flows by partner country (GWh). Bars above the axis are imports, below are exports; the dashed line is the net balance (imports − exports). Click a partner to filter it out; hover a year for detail."
-          source={tradeData.source}
-          t={t}
-        />
+        <ChartCaption source={tradeData.source} t={t} />
       </>
     );
   })();

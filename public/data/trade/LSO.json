@@ -1,0 +1,41 @@
+{
+  "country": "LSO",
+  "unit": "GWh",
+  "source": "UN Comtrade+ — HS 2716 Electrical Energy (comtradeplus.un.org)",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "exports": {},
+  "imports": {
+    "Mozambique": [
+      0.0,
+      0.0,
+      216.8,
+      120.5,
+      134.9,
+      36.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "South Africa": [
+      0.0,
+      0.0,
+      416.9,
+      393.2,
+      0.0,
+      434.9,
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

@@ -75,6 +75,8 @@ M49: dict[str, str] = {
     'MWI': '454',
     'AGO': '024',
     'MDG': '450',
+    'TZA': '834',
+    'COD': '180',
     # ASEAN
     'BRN': '096',
     'KHM': '116',
@@ -90,6 +92,13 @@ M49: dict[str, str] = {
 
 # M49 code → ISO3 (for looking up partner names in the output)
 M49_TO_ISO3: dict[str, str] = {v: k for k, v in M49.items()}
+
+# Comtrade pseudo-partners that are not real countries — drop them.
+_PSEUDO_PARTNERS = {
+    'World', 'Special Categories', 'Areas, nes', 'Other Asia, nes',
+    'Other Africa, nes', 'Other Europe, nes', 'Bunkers', 'Free Zones',
+    'Neutral Zone', 'Antarctica', 'Br. Antarctic Terr.',
+}
 
 # Comtrade quantity unit codes → GWh conversion factor
 # 3   = "1000 kWh" (= MWh = 0.001 GWh) — most common for HS 2716
@@ -170,7 +179,7 @@ MAX_BILATERAL_GWH = 200_000  # single-year per-partner cap; catches unit-entry e
 # ceiling would need to be 200 PWh to miss them at 200 TWh scale — safe.
 
 
-def _rows_to_gwh(rows: list[dict]) -> dict[str, float]:
+def _rows_to_gwh(rows: list[dict], reporter_code: str | None = None) -> dict[str, float]:
     """
     Convert Comtrade rows to {partner_name: GWh}.
 
@@ -183,7 +192,10 @@ def _rows_to_gwh(rows: list[dict]) -> dict[str, float]:
     Other filters:
     - Skip 'World' aggregate rows (partnerCode == 0)
     - Skip partner2 (via-third-country) rows: only keep partner2Code == 0
+    - Skip the reporter itself (self-reference rows)
+    - Skip non-country pseudo-partners (Special Categories, Areas nes, …)
     """
+    rep = int(reporter_code) if reporter_code else None
     # Step 1: collect valid rows per partner
     by_partner: dict[str, list[dict]] = {}
     for row in rows:
@@ -191,8 +203,10 @@ def _rows_to_gwh(rows: list[dict]) -> dict[str, float]:
             continue
         if row.get('partner2Code', 0) != 0:
             continue
+        if rep is not None and int(row.get('partnerCode', 0)) == rep:
+            continue
         partner = row.get('partnerDesc', '') or row.get('partnerISO', '')
-        if not partner:
+        if not partner or partner in _PSEUDO_PARTNERS:
             continue
         by_partner.setdefault(partner, []).append(row)
 
@@ -238,8 +252,8 @@ def _build_trade(iso3: str, api_key: str, refresh: bool) -> dict | None:
         exp_rows = _fetch_flow(iso3, yr, 'X', api_key, refresh)
         imp_rows = _fetch_flow(iso3, yr, 'M', api_key, refresh)
 
-        exp_gwh = _rows_to_gwh(exp_rows)
-        imp_gwh = _rows_to_gwh(imp_rows)
+        exp_gwh = _rows_to_gwh(exp_rows, M49[iso3])
+        imp_gwh = _rows_to_gwh(imp_rows, M49[iso3])
 
         # Collect all partners seen so far
         for partner in exp_gwh:
@@ -272,6 +286,11 @@ def _build_trade(iso3: str, api_key: str, refresh: bool) -> dict | None:
         p: v for p, v in imports_by_partner.items()
         if sum(v) >= MIN_PARTNER_TOTAL_GWH and p.lower() not in _NOT_COUNTRIES
     }
+
+    # Everything fell below the noise floor → no usable data, don't write a file.
+    if not exports and not imports:
+        print(f'  [{iso3}] no trade data above {MIN_PARTNER_TOTAL_GWH:.0f} GWh floor')
+        return None
 
     total_exp = sum(sum(v) for v in exports.values())
     total_imp = sum(sum(v) for v in imports.values())
