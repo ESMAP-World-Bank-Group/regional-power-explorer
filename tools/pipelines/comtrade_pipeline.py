@@ -95,6 +95,21 @@ M49: dict[str, str] = {
     'NIC': '558',
     'CRI': '188',
     'PAN': '591',
+    # Pan-Arab (Maghreb / Mashreq-EIJLLPST / GCC-GCCIA)
+    'MAR': '504',
+    'DZA': '012',
+    'TUN': '788',
+    'JOR': '400',
+    'LBN': '422',
+    'SYR': '760',
+    'IRQ': '368',
+    'SAU': '682',
+    'OMN': '512',
+    'ARE': '784',
+    'QAT': '634',
+    'BHR': '048',
+    'KWT': '414',
+    'PSE': '275',
 }
 
 # M49 code → ISO3 (for looking up partner names in the output)
