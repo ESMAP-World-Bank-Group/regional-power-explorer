@@ -1,0 +1,41 @@
+{
+  "country": "MLI",
+  "unit": "GWh",
+  "source": "UN Comtrade+ — HS 2716 Electrical Energy (comtradeplus.un.org)",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "exports": {},
+  "imports": {
+    "Mauritania": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      123.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Côte d'Ivoire": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1270.3,
+      8320.4,
+      398.9,
+      0.0,
+      254.0
+    ]
+  }
+}
