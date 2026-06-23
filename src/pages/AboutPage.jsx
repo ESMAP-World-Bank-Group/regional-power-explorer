@@ -610,6 +610,29 @@ export default function AboutPage() {
           </ul>
         </div>
 
+        {/* Development status & coverage roadmap — discreet link */}
+        <a
+          href="/PROJECT_STATUS.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10, marginTop: 24,
+            padding: '11px 15px', borderRadius: 8, textDecoration: 'none',
+            border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel,
+          }}
+        >
+          <span aria-hidden="true" style={{ fontSize: '0.95rem' }}>🧭</span>
+          <span style={{ flex: 1 }}>
+            <span style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: t.text }}>
+              Development status &amp; coverage roadmap
+            </span>
+            <span style={{ display: 'block', fontSize: '0.6rem', color: t.muted, marginTop: 2, lineHeight: 1.5 }}>
+              Data currently in the tool by region, and what is being added next.
+            </span>
+          </span>
+          <span aria-hidden="true" style={{ fontSize: '0.7rem', color: t.muted }}>↗</span>
+        </a>
+
         {/* Footer */}
         <p style={{ fontSize: '0.55rem', color: t.lblMuted, marginTop: 32, lineHeight: 1.7 }}>
           Regional Power Explorer · Indicative data · not an official WBG product ·{' '}

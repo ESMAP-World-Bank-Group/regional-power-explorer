@@ -40,3 +40,6 @@ __pycache__/
 *.njsproj
 *.sln
 *.sw?
+
+# Full internal project status (local only — public sanitized copy lives in public/)
+docs/PROJECT_STATUS_internal.html

@@ -124,7 +124,7 @@ footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);bord
   <div class="hdr">
     <div class="hdr-label">Project Status &amp; Development Roadmap</div>
     <div class="hdr-title">Regional Power Explorer</div>
-    <div class="hdr-sub">Internal tracking document — data coverage by region and data type, pending work, data source verification, and institutional next steps. Not for external distribution.</div>
+    <div class="hdr-sub">Data coverage by region and data type, recent additions, and the planned roadmap of data still to come.</div>
     <div class="hdr-date">Last updated: June 2026 · Author: M. Baronnet · EPM / ESMAP · World Bank Group</div>
   </div>
 
@@ -277,7 +277,7 @@ footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);bord
           <td class="c"><span class="pill pill-done">✓ Full</span></td>
           <td class="c"><span class="pill pill-done">✓ Full</span></td>
           <td class="c"><span class="pill pill-done">✓ Full</span></td>
-          <td class="c"><span class="pill pill-partial">9/10</span></td>
+          <td class="c"><span class="pill pill-partial">8/10</span></td>
           <td class="c"><span class="pill pill-done">✓ Full</span></td>
           <td class="c"><span class="pill pill-partial">~7/10</span></td>
           <td class="c"><span class="pill pill-partial">VNM, THA, IDN</span></td>
@@ -576,7 +576,7 @@ footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);bord
   <!-- 4C -->
   <h3>4C — Data: World Bank internal sources</h3>
   <div class="callout callout-warn">
-    These require checking with relevant WB teams before use. Data may be embargoed, project-specific, or subject to client confidentiality. Do not pull from internal databases without clearance.
+    Some of these are institutional or licensed datasets whose availability and terms of use vary; each would need a permission or licensing check before being added.
   </div>
   <table class="prio-table">
     <thead><tr><th>Data</th><th>Potential WB Source</th><th>Action needed</th><th>Type</th></tr></thead>
@@ -645,62 +645,10 @@ footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);bord
     </div>
   </div>
 
-  <!-- 4E -->
-  <h3>4E — Cleanup, Governance &amp; Institutional Steps</h3>
-  <div class="callout callout-danger">
-    This section covers actions that need to happen before any broader distribution or publication of the tool. Some items involve WB procurement/legal; flag with supervisor before proceeding.
-  </div>
-  <table class="prio-table">
-    <thead><tr><th style="width:220px">Action</th><th>Detail</th><th>Who / How</th><th>Urgency</th></tr></thead>
-    <tbody>
-      <tr>
-        <td><strong>🔐 Data source authorisation review</strong></td>
-        <td>Verify that each data source used (Ember, GPPD, GEM, OSM, GlobalPetrolPrices, OWID, Comtrade, IRENA, NASA POWER, CARTO tiles) is used within its licence terms — attribution required, commercial use restrictions, redistribution rules. Currently metadata.json has a minimal note; need a proper data provenance register.</td>
-        <td>Create a DATA_SOURCES.md with: source name, URL, licence type, attribution text, restrictions, last verification date. Verify each source.</td>
-        <td><span class="tag tag-q1">Before public release</span></td>
-      </tr>
-      <tr>
-        <td><strong>🔒 Confidential data separation</strong></td>
-        <td>If EPM model outputs (scenarios, baselines) are embedded in the tool, they may be client-confidential or embargoed. The current repo structure mixes public open-source data with potential internal data. Need a clear boundary.</td>
-        <td>Audit all data files for anything derived from client EPM models. If any: move to a private /internal/ folder excluded from public build. Consider two-repo structure: public open-source + private WB-internal.</td>
-        <td><span class="tag tag-q1">Immediate</span></td>
-      </tr>
-      <tr>
-        <td><strong>🗺 Boundary verification with WB Map Team</strong></td>
-        <td>Country boundary files (countries_10m.geojson, countries_110m.geojson) and their use with disputed territories (Kosovo, Palestine, Western Sahara, Taiwan etc.) must comply with World Bank official boundary standards and disclaimer requirements.</td>
-        <td>Contact WB Map Design Unit (cartography@worldbank.org or through Geography team). Share current boundary files. Get sign-off or replacement files. Add required WB boundary disclaimer text to About page.</td>
-        <td><span class="tag tag-q1">Before internal distribution</span></td>
-      </tr>
-      <tr>
-        <td><strong>🏛 GitHub under WB organisational account</strong></td>
-        <td>Currently repo is personal (mbaronnet). For an institutionally-used tool, should be under the World Bank GitHub org (worldbank) or a relevant division account. Requires WB IT/GitHub admin involvement.</td>
-        <td>Request transfer to worldbank org or create under <code>worldbank/regional-power-explorer</code>. Follow WB GitHub policy (OSS compliance, LICENSE file, CONTRIBUTING.md). May need approval from supervisor + IT.</td>
-        <td><span class="tag tag-q2">Before wider sharing</span></td>
-      </tr>
-      <tr>
-        <td><strong>⚡ ESMAP alignment conversation</strong></td>
-        <td>Before investing further in the tool, align with ESMAP on: (1) Is this the right product for their portfolio? (2) Could it be embedded in ESMAP Energy Data portal or RISE? (3) What additional data do they have that could improve it? (4) Who is the intended user base — internal task teams only, or public-facing?</td>
-        <td>Schedule 45-min meeting with ESMAP Energy Data team (Elisa Portale / Oliver Knight or equivalent). Share a demo. Come with 3 specific questions: audience, data partnership, potential integration.</td>
-        <td><span class="tag tag-q2">Within 3 months</span></td>
-      </tr>
-      <tr>
-        <td><strong>📝 Licence + disclaimer on tool</strong></td>
-        <td>The tool currently has no public licence, no data disclaimer, and no WB disclaimer for findings/views. All three are required for any WB-branded tool or publication.</td>
-        <td>Add to About page: (1) Creative Commons CC BY 4.0 or WB standard licence. (2) Data disclaimer: "Data is approximate and for analytical purposes only; verify before policy use." (3) Standard WB views disclaimer. Add LICENSE file to repo.</td>
-        <td><span class="tag tag-q1">Before internal distribution</span></td>
-      </tr>
-      <tr>
-        <td><strong>🔐 Repo visibility management</strong></td>
-        <td>If the repo goes public on GitHub, any API keys, internal file paths, or internal references in the code will be visible. Currently using CARTO tiles (require attribution but no key). Check for any hardcoded credentials.</td>
-        <td>Run <code>grep -r "key\|token\|secret\|password\|internal\|confidential" src/ public/</code> before making repo public. Add .gitignore for any local config files with credentials.</td>
-        <td><span class="tag tag-q1">Before public repo</span></td>
-      </tr>
-    </tbody>
-  </table>
 
   <!-- 4F — TRADE -->
   <h3>4F — Trade &amp; Cross-Border Integration</h3>
-  <p>Trade is the single most important indicator for a regional power tool — it is what makes a "pool" a pool. Coverage is currently <strong>77 / 161 countries</strong> with bilateral import/export flows (GWh by partner, by year), shown as a diverging bar chart with a net-balance line on each country's Supply &amp; Trade tab. A further <strong>11 countries are documented as having no cross-border flows</strong> — isolated island/national grids (Cyprus, Madagascar, Cabo Verde, Brunei, Angola) or systems with no integrated grid (South Sudan, Somalia, Somaliland, Yemen), plus jointly-reported zones (Luxembourg in DE-LU, Kosovo in the Serbian block) — shown as a clear note rather than a blank chart. Sources are mixed by nature and must always be labelled: ENTSO-E physical flows (high), regional secretariat statistics (high), national TSO data (high), and UN Comtrade HS 2716 customs declarations (medium — patchy, often zero-filled).</p>
+  <p>Trade is the single most important indicator for a regional power tool — it is what makes a "pool" a pool. Coverage is currently <strong>76 / 161 countries</strong> with bilateral import/export flows (GWh by partner, by year), shown as a diverging bar chart with a net-balance line on each country's Supply &amp; Trade tab. A further <strong>12 countries are documented as having no cross-border flows</strong> — isolated island/archipelago grids (Cyprus, Madagascar, Cabo Verde, Brunei, Philippines, Angola) or systems with no integrated grid (South Sudan, Somalia, Somaliland, Yemen), plus jointly-reported zones (Luxembourg in DE-LU, Kosovo in the Serbian block) — shown as a clear note rather than a blank chart. Sources are mixed by nature and must always be labelled: ENTSO-E physical flows (high), regional secretariat statistics (high), national TSO data (high), and UN Comtrade HS 2716 customs declarations (medium — patchy, often zero-filled).</p>
 
   <div class="callout">
     <strong>Every country chart now states what it shows, its source, and a reliability tag (Official / Estimated / Partial)</strong> directly beneath it — applied to both the supply and the trade charts so the reader never has to guess the provenance of a number.
@@ -752,20 +700,16 @@ footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);bord
     <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;overflow:hidden">
       <div style="background:#DBEAFE;padding:10px 16px;font-weight:600;font-size:13px;color:#1D4ED8;border-bottom:1px solid var(--border)">🔵 Now (June–September 2026)</div>
       <div style="padding:14px 16px">
-        <div class="task"><div class="task-icon">1.</div><div class="task-text"><strong>Data source authorisation register</strong><span>Create DATA_SOURCES.md; verify all 10+ sources; quick but must be done before any wider sharing</span></div></div>
-        <div class="task"><div class="task-icon">2.</div><div class="task-text"><strong>T&amp;D losses — WDI API pull</strong><span>Low-hanging fruit; 1-day implementation; high analytical value for developing region notes</span></div></div>
-        <div class="task"><div class="task-icon">3.</div><div class="task-text"><strong>Emissions intensity — Ember CSV</strong><span>1-day data work + 1-day frontend; immediate value for EU and global context</span></div></div>
-        <div class="task"><div class="task-icon">4.</div><div class="task-text"><strong>Boundary check — WB Map Team</strong><span>Email to WB Maps; needed before any internal distribution; non-blocking on other work</span></div></div>
-        <div class="task"><div class="task-icon">5.</div><div class="task-text"><strong>Add data coverage bar to all 165 notes</strong><span>Bulk-insert the coverage snippet (see Section 3); script-automatable once CSS is standardised</span></div></div>
+        <div class="task"><div class="task-icon">1.</div><div class="task-text"><strong>T&amp;D losses — WDI API pull</strong><span>Low-hanging fruit; 1-day implementation; high analytical value for developing region notes</span></div></div>
+        <div class="task"><div class="task-icon">2.</div><div class="task-text"><strong>Emissions intensity — Ember CSV</strong><span>1-day data work + 1-day frontend; immediate value for EU and global context</span></div></div>
+        <div class="task"><div class="task-icon">3.</div><div class="task-text"><strong>Add data coverage bar to all 165 notes</strong><span>Bulk-insert the coverage snippet (see Section 3); script-automatable once CSS is standardised</span></div></div>
       </div>
     </div>
     <div style="background:var(--white);border:1.5px solid var(--border);border-radius:8px;overflow:hidden">
       <div style="background:#FEF3C7;padding:10px 16px;font-weight:600;font-size:13px;color:#92400E;border-bottom:1px solid var(--border)">🟡 Next (October 2026 – Q1 2027)</div>
       <div style="padding:14px 16px">
-        <div class="task"><div class="task-icon">6.</div><div class="task-text"><strong>Pipeline GW display (GEM data)</strong><span>Frontend only; GEM data already loaded; shows under-construction + planned capacity by fuel</span></div></div>
-        <div class="task"><div class="task-icon">7.</div><div class="task-text"><strong>ESMAP alignment conversation</strong><span>45-min demo + 3 questions; defines institutional trajectory of the tool</span></div></div>
-        <div class="task"><div class="task-icon">8.</div><div class="task-text"><strong>Peak demand — national TSOs + IRENA</strong><span>IRENA stats has peak demand for ~60 countries; fill remainder from TSO reports; store as peak_demand.json</span></div></div>
-        <div class="task"><div class="task-icon">9.</div><div class="task-text"><strong>GitHub → WB org transfer</strong><span>Coordinate with IT; non-blocking but needed for institutional use; do after licence+disclaimer added</span></div></div>
+        <div class="task"><div class="task-icon">4.</div><div class="task-text"><strong>Pipeline GW display (GEM data)</strong><span>Frontend only; GEM data already loaded; shows under-construction + planned capacity by fuel</span></div></div>
+        <div class="task"><div class="task-icon">5.</div><div class="task-text"><strong>Peak demand — national TSOs + IRENA</strong><span>IRENA stats has peak demand for ~60 countries; fill remainder from TSO reports; store as peak_demand.json</span></div></div>
       </div>
     </div>
   </div>
@@ -802,19 +746,18 @@ footer{text-align:center;padding:28px 0;font-size:11.5px;color:var(--light);bord
       <tr><td><strong>CARTO tiles</strong></td><td>Basemap (labeled, dark, light)</td><td>CC BY 3.0 + CARTO ToS</td><td>"© CARTO © OpenStreetMap contributors"</td><td>Non-commercial OK; commercial requires CARTO account</td><td><span class="pill pill-partial">Check ToS</span></td></tr>
       <tr><td><strong>ESRI World Imagery</strong></td><td>Satellite basemap</td><td>ESRI ToS</td><td>"Tiles © Esri — Source: Esri, Maxar..."</td><td>Non-commercial educational/research use permitted; check ToS for WB institutional use</td><td><span class="pill pill-missing">Not verified</span></td></tr>
       <tr><td><strong>World Bank WDI</strong></td><td>Access (EG.ELC.ACCS.*), losses (EG.ELC.LOSS.ZS)</td><td>CC BY 4.0</td><td>"World Bank, World Development Indicators"</td><td>Attribution required; open use</td><td><span class="pill pill-done">✓ OK</span></td></tr>
-      <tr><td><strong>GlobalPetrolPrices</strong></td><td>Electricity tariffs (residential/industrial)</td><td>Commercial, no redistribution</td><td>"GlobalPetrolPrices.com [year]"</td><td>⚠️ Data cannot be redistributed. Currently using approximate values — needs verification. Consider switching to IRENA or WB ESMAP tariff data.</td><td><span class="pill pill-missing">⚠️ Risk</span></td></tr>
+      <tr><td><strong>GlobalPetrolPrices</strong></td><td>Electricity tariffs (residential/industrial)</td><td>Commercial, no redistribution</td><td>"GlobalPetrolPrices.com [year]"</td><td>Indicative values; licence terms under review. May be replaced with IRENA or other tariff data.</td><td><span class="pill pill-partial">Under review</span></td></tr>
       <tr><td><strong>IRENA Statistics</strong></td><td>RE capacity, tariffs, LCOE (future)</td><td>IRENA ToS — free non-commercial</td><td>"IRENA, [publication] [year]"</td><td>Non-commercial research/educational use permitted; no redistribution of raw data</td><td><span class="pill pill-partial">Partial</span></td></tr>
     </tbody>
   </table>
 
   <div class="callout callout-danger" style="margin-top:8px">
-    <strong>⚠️ GlobalPetrolPrices:</strong> The tariff data from GlobalPetrolPrices.com is used under terms that may not permit redistribution or embedding in a web tool. This should be replaced with IRENA tariff data or ESMAP-sourced tariffs before any wider distribution. Flag for legal/procurement review if uncertain.
+    <strong>Tariffs:</strong> Electricity tariff figures (GlobalPetrolPrices.com) are indicative only; licence terms are under review and the source may be replaced with IRENA or other tariff data.
   </div>
 
 
   <footer>
-    Regional Power Explorer — Project Status &amp; Roadmap · Internal document · June 2026 · M. Baronnet · EPM / ESMAP · World Bank Group<br>
-    Not for external distribution. For questions: maelle.baronnet@gmail.com
+    Regional Power Explorer — Data Coverage &amp; Roadmap · June 2026 · EPM / ESMAP · World Bank Group
   </footer>
 
 </div>

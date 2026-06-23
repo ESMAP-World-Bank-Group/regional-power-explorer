@@ -123,6 +123,7 @@ export default function RegionPage() {
   const [countriesOff,    setCountriesOff]    = useState(new Set());
   const [plantCount,      setPlantCount]      = useState(null);
   const [corridorCount,   setCorridorCount]   = useState(null);
+  const [tradeSnapshot,   setTradeSnapshot]   = useState(null);
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
   const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
   const [sheetHeight,     setSheetHeight]     = useState(96);
@@ -243,6 +244,33 @@ export default function RegionPage() {
         setCorridorCount(seen.size);
       }).catch(() => {});
   }, [regionId, zoningConfigs]);
+
+  // R1 — cross-border integration snapshot (built from per-country trade files)
+  useEffect(() => {
+    if (!region) return;
+    setTradeSnapshot(null);
+    let cancelled = false;
+    const isos = region.countries.map(c => c.iso);
+    Promise.all(isos.map(iso =>
+      fetch(`/data/trade/${iso}.json`).then(r => (r.ok ? r.json() : null)).catch(() => null),
+    )).then(results => {
+      if (cancelled) return;
+      let withData = 0, isolated = 0, netExp = 0, netImp = 0;
+      for (const d of results) {
+        if (!d) continue;                       // no file → data gap (not counted)
+        if (d.status) { isolated++; continue; }  // documented "none"/"merged"
+        const imp = d.imports || {}, exp = d.exports || {};
+        if (Object.keys(imp).length === 0 && Object.keys(exp).length === 0) continue;
+        withData++;
+        // Net position over the whole series (more stable than a single year)
+        const sImp = Object.values(imp).reduce((s, a) => s + a.reduce((x, y) => x + (y || 0), 0), 0);
+        const sExp = Object.values(exp).reduce((s, a) => s + a.reduce((x, y) => x + (y || 0), 0), 0);
+        if (sExp >= sImp) netExp++; else netImp++;
+      }
+      setTradeSnapshot({ withData, isolated, total: isos.length, netExp, netImp });
+    });
+    return () => { cancelled = true; };
+  }, [region]);
 
   // Country filter — reapply all plant filters when countriesOff changes
   useEffect(() => {
@@ -1307,7 +1335,7 @@ export default function RegionPage() {
           })}
         </div>
 
-        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} corridorCount={corridorCount} />}
+        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} corridorCount={corridorCount} tradeSnapshot={tradeSnapshot} />}
         {activeTab === 'countries' && <StatsPanel    capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} fleetAge={fleetAge} access={access} />}
 
         {/* Export section */}
