@@ -4,6 +4,13 @@ import { getT, FUEL_COLORS, COUNTRY_ZONE_COLORS } from '../constants';
 // ── helpers ───────────────────────────────────────────────────────────────────
 const num = v => (Number.isFinite(v) ? v : 0);   // defensive: never NaN/Infinity
 
+function downloadBlob(content, filename, type = 'text/csv') {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: filename });
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
 function niceTicks(maxVal) {
   if (!Number.isFinite(maxVal) || maxVal <= 0) return [0];
   const raw = maxVal / 4;
@@ -302,6 +309,34 @@ export default function RegionSupplyTrade({ region, theme }) {
   const supplySec = aggregateSupply(supplies, view);
   const net = aggregateNetTrade(tradeByIso, members);
 
+  // ── exports (match the charts above) ──────────────────────────────────────
+  const slug = (region.id || region.name || 'region').toString().toLowerCase().replace(/\s+/g, '_');
+  const exportSupply = (key) => {
+    const sec = aggregateSupply(supplies, key);
+    if (!sec) return;
+    const fuels = Object.keys(sec.fuels);
+    const header = ['year', ...fuels.map(f => f.replace(/,/g, ' ')), ...(sec.demand ? ['demand'] : [])].join(',');
+    const rows = sec.years.map((y, i) =>
+      [y, ...fuels.map(f => num(sec.fuels[f][i]).toFixed(1)), ...(sec.demand ? [num(sec.demand[i]).toFixed(1)] : [])].join(','));
+    downloadBlob([header, ...rows].join('\n'), `region_${slug}_${key}_${sec.unit.toLowerCase()}.csv`);
+  };
+  const exportNetTrade = () => {
+    if (!net) return;
+    const isos = net.rows.map(r => r.iso);
+    const header = ['year', ...isos.map(i => `${i}_net_gwh`), 'region_net_gwh'].join(',');
+    const rows = net.years.map(Y => {
+      const vals = net.rows.map(r => num(r.net[Y]).toFixed(1));
+      const tot = net.rows.reduce((s, r) => s + num(r.net[Y]), 0);
+      return [Y, ...vals, tot.toFixed(1)].join(',');
+    });
+    downloadBlob([header, ...rows].join('\n'), `region_${slug}_net_trade_gwh.csv`);
+  };
+  const dlBtn = {
+    fontSize: '0.52rem', letterSpacing: '0.5px', padding: '4px 9px', borderRadius: 3,
+    cursor: 'pointer', fontFamily: 'inherit', border: `1px solid ${t.panelBorder}`,
+    backgroundColor: 'transparent', color: t.lblMuted,
+  };
+
   const toggleBtn = (v, lbl) => (
     <button key={v} onClick={() => setView(v)} style={{
       fontSize: '0.47rem', letterSpacing: '0.5px', textTransform: 'uppercase',
@@ -386,6 +421,18 @@ export default function RegionSupplyTrade({ region, theme }) {
           <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>No trade data available for this region.</p>
         )}
       </div>
+
+      {/* ── Export the data behind these charts ── */}
+      {(supplySec || net) && (
+        <div style={{ marginTop: 16, borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12 }}>
+          <span style={secStyle(t)}>Export Data</span>
+          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            {aggregateSupply(supplies, 'generation') && <button style={dlBtn} onClick={() => exportSupply('generation')}>Generation CSV</button>}
+            {aggregateSupply(supplies, 'capacity') && <button style={dlBtn} onClick={() => exportSupply('capacity')}>Capacity CSV</button>}
+            {net && <button style={dlBtn} onClick={exportNetTrade}>Net trade CSV</button>}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
