@@ -110,6 +110,14 @@ M49: dict[str, str] = {
     'BHR': '048',
     'KWT': '414',
     'PSE': '275',
+    # South Asia (Maldives excluded — isolated island system)
+    'IND': '356',
+    'PAK': '586',
+    'BGD': '050',
+    'LKA': '144',
+    'NPL': '524',
+    'BTN': '064',
+    'AFG': '004',
 }
 
 # M49 code → ISO3 (for looking up partner names in the output)

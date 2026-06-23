@@ -1,0 +1,30 @@
+{
+  "country": "PAK",
+  "unit": "GWh",
+  "source": "UN Comtrade+ — HS 2716 Electrical Energy (comtradeplus.un.org)",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023
+  ],
+  "exports": {},
+  "imports": {
+    "Iran": [
+      0.2,
+      1139.6,
+      180.4,
+      432.2,
+      441.9,
+      538.3,
+      615.2,
+      713.1,
+      184.6
+    ]
+  }
+}
