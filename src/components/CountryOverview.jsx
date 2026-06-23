@@ -22,7 +22,7 @@ function accessColor(val) {
   return val < 30 ? '#B83838' : val < 75 ? '#D4A820' : '#4A9E6A';
 }
 
-export default function CountryOverview({ iso, region, capacity, fleetAge, tariffs, access, theme, source = 'osm' }) {
+export default function CountryOverview({ iso, capacity, fleetAge, tariffs, access, theme, source = 'osm' }) {
   const t = getT(theme);
   const sec = {
     fontSize: '0.5rem', letterSpacing: '2px', fontWeight: 700,
@@ -36,12 +36,6 @@ export default function CountryOverview({ iso, region, capacity, fleetAge, tarif
   const reMW   = fuelEntries.filter(([f]) => RE_FUELS.has(f)).reduce((s, [, v]) => s + v, 0);
   const reShare = totalMW > 0 ? Math.round((reMW / totalMW) * 100) : null;
   const maxFuelMW = fuelEntries[0]?.[1] || 1;
-
-  // Region rank by total capacity
-  const regionRanked = region.countries
-    .map(c => ({ iso: c.iso, total: Object.values(capacity?.countries?.[c.iso] || {}).reduce((s, v) => s + v, 0) }))
-    .sort((a, b) => b.total - a.total);
-  const rank = regionRanked.findIndex(c => c.iso === iso) + 1;
 
   const tariffData  = tariffs?.countries?.[iso];
   const ageData     = fleetAge?.countries?.[iso];
@@ -62,13 +56,6 @@ export default function CountryOverview({ iso, region, capacity, fleetAge, tarif
           accent="#3887C4"
           t={t}
         />
-        {rank > 0 && (
-          <KpiCard
-            label="Region Rank"
-            value={`#${rank} of ${region.countries.length}`}
-            t={t}
-          />
-        )}
         {accessData && (
           <KpiCard
             label="Elec. Access"
