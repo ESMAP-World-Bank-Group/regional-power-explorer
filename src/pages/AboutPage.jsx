@@ -37,13 +37,13 @@ const SOURCES = [
         url:     'https://transparency.entsoe.eu',
       },
       {
-        layer:   'Generation mix · installed capacity · electricity trade (Turkey)',
+        layer:   'Generation mix · installed capacity · electricity trade (Turkiye)',
         source:  'Turkish Electricity Transmission Company',
         abbr:    'TEİAŞ',
         version: '—',
         updated: '2024',
         freq:    'Annual',
-        coverage:'Turkey',
+        coverage:'Turkiye',
         quality: 'Good — official national statistics. Files 9, 26, 63 from TEİAŞ statistical yearbook.',
         url:     'https://www.teias.gov.tr',
       },
@@ -555,7 +555,7 @@ export default function AboutPage() {
             </h3>
             <p style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.7, maxWidth: 660 }}>
               Hourly demand shape data is available only for countries with ENTSO-E metered data
-              (EU member states and a set of neighbouring TSOs: Türkiye, Georgia, Armenia, Azerbaijan,
+              (EU member states and a set of neighbouring TSOs: Turkiye, Georgia, Armenia, Azerbaijan,
               Balkans, and North Africa HVDC partners). For these, the Load tab displays a typical
               European weekday profile — a 24-hour shape normalised to a peak index of 100, derived
               from ENTSO-E historical averages. The shape reflects a characteristic mid-morning plateau
