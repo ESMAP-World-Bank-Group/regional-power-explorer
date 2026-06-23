@@ -122,7 +122,6 @@ export default function RegionPage() {
   const [selectedSlug,    setSelectedSlug]    = useState(null);
   const [countriesOff,    setCountriesOff]    = useState(new Set());
   const [plantCount,      setPlantCount]      = useState(null);
-  const [corridorCount,   setCorridorCount]   = useState(null);
   const [tradeSnapshot,   setTradeSnapshot]   = useState(null);
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
   const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
@@ -191,7 +190,7 @@ export default function RegionPage() {
     setMapMode('countries'); setZonesAvailable(false);
     setCorrExistOn(false); setCorrCommOn(false); setCorrCandOn(false);
     setZoningConfigs([]); setSelectedSlug(null);
-    setCountriesOff(new Set()); setPlantCount(null); setCorridorCount(null);
+    setCountriesOff(new Set()); setPlantCount(null);
     fetch(`/data/zones/${regionId}_configs.json`)
       .then(r => r.ok ? r.json() : null)
       .then(cfgs => {
@@ -227,24 +226,6 @@ export default function RegionPage() {
       .then(r => r.json()).then(d => setPlantCount(d.features.length)).catch(() => {});
   }, [regionId, plantSource]);
 
-  // Corridor count for overview stats (deduplicated by endpoint pair)
-  useEffect(() => {
-    if (!zoningConfigs.length) return;
-    fetch(`/data/zones/${regionId}_${zoningConfigs[0].slug}_corridors.geojson`)
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (!data) return;
-        const seen = new Set();
-        for (const f of data.features) {
-          const c = f.geometry.coordinates;
-          const a = `${c[0][0].toFixed(3)},${c[0][1].toFixed(3)}`;
-          const b = `${c[c.length-1][0].toFixed(3)},${c[c.length-1][1].toFixed(3)}`;
-          seen.add([a,b].sort().join('|'));
-        }
-        setCorridorCount(seen.size);
-      }).catch(() => {});
-  }, [regionId, zoningConfigs]);
-
   // R1 — cross-border integration snapshot (built from per-country trade files)
   useEffect(() => {
     if (!region) return;
@@ -255,7 +236,7 @@ export default function RegionPage() {
       fetch(`/data/trade/${iso}.json`).then(r => (r.ok ? r.json() : null)).catch(() => null),
     )).then(results => {
       if (cancelled) return;
-      let withData = 0, isolated = 0, netExp = 0, netImp = 0;
+      let withData = 0, isolated = 0, netExp = 0, netImp = 0, tradedGwh = 0;
       for (const d of results) {
         if (!d) continue;                       // no file → data gap (not counted)
         if (d.status) { isolated++; continue; }  // documented "none"/"merged"
@@ -266,8 +247,12 @@ export default function RegionPage() {
         const sImp = Object.values(imp).reduce((s, a) => s + a.reduce((x, y) => x + (y || 0), 0), 0);
         const sExp = Object.values(exp).reduce((s, a) => s + a.reduce((x, y) => x + (y || 0), 0), 0);
         if (sExp >= sImp) netExp++; else netImp++;
+        // Volume traded: sum each member's latest-year imports (each cross-border
+        // inflow counted once → avoids double-counting intra-region pairs).
+        const li = (d.years?.length || 1) - 1;
+        tradedGwh += Object.values(imp).reduce((s, a) => s + (a[li] || 0), 0);
       }
-      setTradeSnapshot({ withData, isolated, total: isos.length, netExp, netImp });
+      setTradeSnapshot({ withData, isolated, total: isos.length, netExp, netImp, tradedGwh });
     });
     return () => { cancelled = true; };
   }, [region]);
@@ -1335,7 +1320,7 @@ export default function RegionPage() {
           })}
         </div>
 
-        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} corridorCount={corridorCount} tradeSnapshot={tradeSnapshot} />}
+        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} tradeSnapshot={tradeSnapshot} />}
         {activeTab === 'countries' && <StatsPanel    capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} fleetAge={fleetAge} access={access} />}
 
         {/* Export section */}

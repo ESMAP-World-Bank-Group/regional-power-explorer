@@ -35,7 +35,7 @@ function KpiCard({ label, value, accent, t }) {
   );
 }
 
-export default function CapacityChart({ capacity, region, theme, source = 'osm', tariffs, access, plantCount, corridorCount, tradeSnapshot }) {
+export default function CapacityChart({ capacity, region, theme, source = 'osm', tariffs, access, plantCount, tradeSnapshot }) {
   const t = getT(theme);
   const sec = {
     fontSize: '0.5rem', letterSpacing: '2px', fontWeight: 700,
@@ -101,18 +101,32 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
         <KpiCard label="Countries"      value={region.countries.length} t={t} />
         {plantCount != null && <KpiCard label="Gen. Units"    value={plantCount} t={t} />}
         <KpiCard label="Fuel Types"     value={fuelsWithData.length} t={t} />
-        {corridorCount != null && <KpiCard label="NTC Corridors" value={corridorCount} t={t} />}
       </div>
 
       {/* ── Cross-border integration snapshot (R1) ─────────────── */}
       {tradeSnapshot && (tradeSnapshot.withData > 0 || tradeSnapshot.isolated > 0) && (
         <div style={{ marginBottom: 16 }}>
           <span style={sec}>Cross-border Integration</span>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
             <KpiCard label="With Trade Data" value={`${tradeSnapshot.withData}/${tradeSnapshot.total}`} t={t} />
+            {tradeSnapshot.tradedGwh > 0 && (
+              <KpiCard
+                label="Electricity Traded"
+                value={tradeSnapshot.tradedGwh >= 1000
+                  ? `${(tradeSnapshot.tradedGwh / 1000).toFixed(1)} TWh`
+                  : `${Math.round(tradeSnapshot.tradedGwh)} GWh`}
+                accent="#3887C4"
+                t={t}
+              />
+            )}
             <KpiCard label="Net Exporters" value={tradeSnapshot.netExp} accent="#2D7A45" t={t} />
             <KpiCard label="Net Importers" value={tradeSnapshot.netImp} accent="#B8720A" t={t} />
           </div>
+          {tradeSnapshot.tradedGwh > 0 && (
+            <p style={{ fontSize: '0.5rem', color: t.lblMuted, marginTop: 6, fontStyle: 'italic', lineHeight: 1.5 }}>
+              Electricity traded = cross-border imports of member countries, latest available year.
+            </p>
+          )}
           {tradeSnapshot.isolated > 0 && (
             <p style={{ fontSize: '0.6rem', color: t.lblMuted, marginTop: 6, lineHeight: 1.5 }}>
               {tradeSnapshot.isolated} isolated system{tradeSnapshot.isolated > 1 ? 's' : ''} with no cross-border interconnection.
