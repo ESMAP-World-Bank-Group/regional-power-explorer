@@ -66,6 +66,30 @@ export default function ContactPage() {
           {' '}/ World Bank.
         </p>
 
+        {/* GitHub repository — prominent */}
+        <a
+          href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24,
+            padding: '14px 16px', borderRadius: 8, textDecoration: 'none',
+            border: '1px solid rgba(74,143,204,0.35)',
+            borderLeft: '3px solid rgba(74,143,204,0.85)',
+            background: t.isDark ? 'rgba(74,143,204,0.07)' : 'rgba(74,143,204,0.06)',
+          }}
+        >
+          <span style={{ flex: 1 }}>
+            <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: t.text }}>
+              Source code on GitHub
+            </span>
+            <span style={{ display: 'block', fontSize: '0.65rem', color: t.muted, marginTop: 3, lineHeight: 1.5 }}>
+              ESMAP-World-Bank-Group / regional-power-explorer
+            </span>
+          </span>
+          <span aria-hidden="true" style={{ fontSize: '0.85rem', color: 'rgba(74,143,204,0.9)', fontWeight: 700 }}>↗</span>
+        </a>
+
         {/* Data note → Limitations */}
         <div style={{
           marginBottom: 24, padding: '12px 14px', borderRadius: 8,
@@ -160,28 +184,6 @@ export default function ContactPage() {
         </div>
 
         <hr style={divider} />
-
-        {/* GitHub repository */}
-        <a
-          href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10,
-            padding: '11px 15px', borderRadius: 8, textDecoration: 'none',
-            border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel,
-          }}
-        >
-          <span style={{ flex: 1 }}>
-            <span style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: t.text }}>
-              Source code on GitHub
-            </span>
-            <span style={{ display: 'block', fontSize: '0.6rem', color: t.muted, marginTop: 2, lineHeight: 1.5 }}>
-              ESMAP-World-Bank-Group / regional-power-explorer
-            </span>
-          </span>
-          <span aria-hidden="true" style={{ fontSize: '0.7rem', color: t.muted }}>↗</span>
-        </a>
 
         {/* Development status & coverage roadmap */}
         <a

@@ -3,6 +3,31 @@ import { getT } from '../../constants';
 
 const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+// Useful external RE-resource tools (sites we rely on / recommend)
+const RE_LINKS = [
+  ['Renewables.ninja', 'https://renewables.ninja', 'Hourly solar PV & wind output simulation, point-based'],
+  ['Global Solar Atlas', 'https://globalsolaratlas.info', 'Solar resource & PV potential maps — ESMAP / World Bank'],
+  ['Global Wind Atlas', 'https://globalwindatlas.info', 'Wind resource at several hub heights — DTU / World Bank'],
+  ['NASA POWER', 'https://power.larc.nasa.gov', 'Solar & meteorological data, global API'],
+  ['PVGIS', 'https://re.jrc.ec.europa.eu/pvg_tools/en/', 'PV performance & radiation — EU JRC'],
+];
+
+function LinkList({ items, t }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      {items.map(([name, href, desc]) => (
+        <a key={href} href={href} target="_blank" rel="noopener noreferrer"
+          style={{ textDecoration: 'none', display: 'block' }}>
+          <span style={{ fontSize: '0.62rem', fontWeight: 600, color: 'rgba(74,143,204,0.9)' }}>
+            {name} <span aria-hidden="true" style={{ fontWeight: 400 }}>↗</span>
+          </span>
+          <span style={{ display: 'block', fontSize: '0.5rem', color: t.lblMuted, lineHeight: 1.4, marginTop: 1 }}>{desc}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function downloadBlob(content, filename, type = 'application/octet-stream') {
   const blob = new Blob([content], { type });
   const url  = URL.createObjectURL(blob);
@@ -272,6 +297,12 @@ export default function REResourcesTab({ center, theme }) {
         {!wind && !loading && (
           <p style={{ fontSize: '0.62rem', color: t.muted, fontStyle: 'italic' }}>No wind data available.</p>
         )}
+      </div>
+
+      {/* ── Explore further — tools we use ────── */}
+      <div style={{ borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12, marginTop: 14 }}>
+        <span style={sec}>Explore further</span>
+        <LinkList items={RE_LINKS} t={t} />
       </div>
     </div>
   );

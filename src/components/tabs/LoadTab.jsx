@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { getT } from '../../constants';
 
+// Useful external electricity-demand data sources
+const DEMAND_LINKS = [
+  ['Ember', 'https://ember-energy.org/data/', 'Electricity demand & generation by country, yearly'],
+  ['Our World in Data', 'https://ourworldindata.org/electricity-mix', 'Electricity consumption, totals & per capita'],
+  ['ENTSO-E Transparency', 'https://transparency.entsoe.eu', 'Hourly actual load & forecasts — Europe'],
+  ['IEA — Electricity', 'https://www.iea.org/data-and-statistics', 'Global electricity statistics & demand'],
+];
+
 const ISO3_TO_ISO2 = {
   TUR:'TR', ROU:'RO', BGR:'BG', GEO:'GE', ARM:'AM', AZE:'AZ',
   SEN:'SN', GMB:'GM', GNB:'GW', GIN:'GN', SLE:'SL', LBR:'LR', CIV:'CI', GHA:'GH',
@@ -397,6 +405,21 @@ export default function LoadTab({ iso, theme }) {
             No load profile available for this country.
           </p>
         )}
+      </div>
+
+      {/* ── Explore further — demand data sources ────── */}
+      <div style={{ borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12, marginTop: 14 }}>
+        <span style={sec}>Explore further</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {DEMAND_LINKS.map(([name, href, desc]) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
+              <span style={{ fontSize: '0.62rem', fontWeight: 600, color: 'rgba(74,143,204,0.9)' }}>
+                {name} <span aria-hidden="true" style={{ fontWeight: 400 }}>↗</span>
+              </span>
+              <span style={{ display: 'block', fontSize: '0.5rem', color: t.lblMuted, lineHeight: 1.4, marginTop: 1 }}>{desc}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
