@@ -103,6 +103,13 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
         <KpiCard label="Fuel Types"     value={fuelsWithData.length} t={t} />
       </div>
 
+      {/* ── Reference years (data vintage) ─────────────────────── */}
+      <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', margin: '-8px 0 16px', lineHeight: 1.5 }}>
+        Reference years — installed capacity: {source === 'gppd' ? 'GPPD 2021' : 'GEM 2024–25'}
+        {tradeSnapshot?.tradeYear ? ` · electricity traded: ${tradeSnapshot.tradeYear}` : ''}
+        {access ? ' · access: 2022' : ''}
+      </p>
+
       {/* ── Cross-border integration snapshot (R1) ─────────────── */}
       {tradeSnapshot && (tradeSnapshot.withData > 0 || tradeSnapshot.isolated > 0) && (
         <div style={{ marginBottom: 16 }}>
@@ -111,7 +118,7 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
             <KpiCard label="With Trade Data" value={`${tradeSnapshot.withData}/${tradeSnapshot.total}`} t={t} />
             {tradeSnapshot.tradedGwh > 0 && (
               <KpiCard
-                label="Electricity Traded"
+                label={`Electricity Traded${tradeSnapshot.tradeYear ? ` · ${tradeSnapshot.tradeYear}` : ''}`}
                 value={tradeSnapshot.tradedGwh >= 1000
                   ? `${(tradeSnapshot.tradedGwh / 1000).toFixed(1)} TWh`
                   : `${Math.round(tradeSnapshot.tradedGwh)} GWh`}

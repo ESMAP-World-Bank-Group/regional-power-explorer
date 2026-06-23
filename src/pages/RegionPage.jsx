@@ -10,6 +10,7 @@ import {
 import LayerPanel from '../components/LayerPanel';
 import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
+import RegionSupplyTrade from '../components/RegionSupplyTrade';
 import MetaRegionPage from './MetaRegionPage';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -236,7 +237,7 @@ export default function RegionPage() {
       fetch(`/data/trade/${iso}.json`).then(r => (r.ok ? r.json() : null)).catch(() => null),
     )).then(results => {
       if (cancelled) return;
-      let withData = 0, isolated = 0, netExp = 0, netImp = 0, tradedGwh = 0;
+      let withData = 0, isolated = 0, netExp = 0, netImp = 0, tradedGwh = 0, tradeYear = null;
       for (const d of results) {
         if (!d) continue;                       // no file → data gap (not counted)
         if (d.status) { isolated++; continue; }  // documented "none"/"merged"
@@ -251,8 +252,10 @@ export default function RegionPage() {
         // inflow counted once → avoids double-counting intra-region pairs).
         const li = (d.years?.length || 1) - 1;
         tradedGwh += Object.values(imp).reduce((s, a) => s + (a[li] || 0), 0);
+        const yr = d.years?.[li];
+        if (yr && (tradeYear === null || yr > tradeYear)) tradeYear = yr;
       }
-      setTradeSnapshot({ withData, isolated, total: isos.length, netExp, netImp, tradedGwh });
+      setTradeSnapshot({ withData, isolated, total: isos.length, netExp, netImp, tradedGwh, tradeYear });
     });
     return () => { cancelled = true; };
   }, [region]);
@@ -1304,7 +1307,7 @@ export default function RegionPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
-          {['Overview', 'Countries'].map(tab => {
+          {['Overview', 'Supply & Trade', 'Countries'].map(tab => {
             const active = activeTab === tab.toLowerCase();
             return (
               <button key={tab} onClick={() => { setActiveTab(tab.toLowerCase()); track('tab_change', { tab: tab.toLowerCase(), region: regionId }); }} style={{
@@ -1320,8 +1323,9 @@ export default function RegionPage() {
           })}
         </div>
 
-        {activeTab === 'overview'  && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} tradeSnapshot={tradeSnapshot} />}
-        {activeTab === 'countries' && <StatsPanel    capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} fleetAge={fleetAge} access={access} />}
+        {activeTab === 'overview'        && <CapacityChart capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} access={access} plantCount={plantCount} tradeSnapshot={tradeSnapshot} />}
+        {activeTab === 'supply & trade'  && <RegionSupplyTrade region={region} theme={theme} />}
+        {activeTab === 'countries'       && <StatsPanel    capacity={capacity} region={region} theme={theme} source={plantSource} tariffs={tariffs} fleetAge={fleetAge} access={access} />}
 
         {/* Export section */}
         <div style={{ marginTop: 20, borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12 }}>
