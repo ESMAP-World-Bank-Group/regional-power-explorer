@@ -1307,7 +1307,7 @@ export default function RegionPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
-          {['Overview', 'Supply & Trade', 'Countries'].map(tab => {
+          {['Overview', 'Countries', 'Supply & Trade'].map(tab => {
             const active = activeTab === tab.toLowerCase();
             return (
               <button key={tab} onClick={() => { setActiveTab(tab.toLowerCase()); track('tab_change', { tab: tab.toLowerCase(), region: regionId }); }} style={{

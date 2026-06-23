@@ -314,6 +314,21 @@ def _build_trade(iso3: str, api_key: str, refresh: bool) -> dict | None:
         print(f'  [{iso3}] no trade data above {MIN_PARTNER_TOTAL_GWH:.0f} GWh floor')
         return None
 
+    # Guard against egregious unit errors: a single year that dwarfs the rest of
+    # its series (>15x the next-highest) AND exceeds 10 TWh is almost always a
+    # Comtrade unit glitch (kWh entered as MWh, etc.), not a real flow → drop it.
+    def _despike(series_map):
+        for part, arr in series_map.items():
+            ranked = sorted(arr, reverse=True)
+            top = ranked[0] if ranked else 0
+            second = ranked[1] if len(ranked) > 1 else 0
+            if top > 10_000 and top > 15 * max(second, 1):
+                i = arr.index(top)
+                print(f'    GUARD {iso3} {part} {YEARS[i]}: {top:.0f} GWh looks like a unit error -> 0')
+                arr[i] = 0.0
+    _despike(exports)
+    _despike(imports)
+
     total_exp = sum(sum(v) for v in exports.values())
     total_imp = sum(sum(v) for v in imports.values())
     print(f'  [{iso3}] exports to {len(exports)} partners ({total_exp:.0f} GWh total)  '
