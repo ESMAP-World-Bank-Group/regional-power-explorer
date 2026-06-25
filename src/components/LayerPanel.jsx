@@ -79,7 +79,7 @@ export default function LayerPanel({
   linesOn, plantsOn, subsOn,
   loadCentersOn, lcMinPop, lcCircleScale,
   minMw, circleScale,
-  plantSource, gppdAvailable, gemAvailable, regionId,
+  plantSource, gppdAvailable, gemAvailable, regionId, iso,
   presentFuels,
   basemap, onBasemap, satLabels, onSatLabels,
   onToggleFuel, onToggleStatus,
@@ -244,11 +244,11 @@ export default function LayerPanel({
             })}
           </div>
           {(() => {
-            const rel = sourceReliability(regionId, plantSource);
+            const rel = sourceReliability(regionId, plantSource, iso);
             return rel ? (
-              <p style={{ fontSize: '0.44rem', color: t.lblMuted, fontStyle: 'italic', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 3 }}>
-                <span style={{ color: rel.color, fontSize: '0.5rem', lineHeight: 1 }}>●</span>
-                {plantSource.toUpperCase()} here: {rel.label} <span style={{ opacity: 0.7 }}>(indicative)</span>
+              <p style={{ fontSize: '0.44rem', color: t.lblMuted, fontStyle: 'italic', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 3, lineHeight: 1.3 }}>
+                <span style={{ color: rel.color, fontSize: '0.5rem', lineHeight: 1, flexShrink: 0 }}>●</span>
+                <span>~{rel.pct}% of capacity · {rel.label}</span>
               </p>
             ) : null;
           })()}

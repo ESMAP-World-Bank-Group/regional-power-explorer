@@ -1037,7 +1037,7 @@ export default function CountryPage() {
         fuelsOff={fuelsOff} statusOff={statusOff} kvsOff={kvsOff}
         linesOn={linesOn} plantsOn={plantsOn} subsOn={subsOn}
         minMw={minMw} circleScale={circleScale}
-        plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={region.id}
+        plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={region.id} iso={iso}
         presentFuels={presentFuels}
         basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus} onToggleKv={toggleKv}
