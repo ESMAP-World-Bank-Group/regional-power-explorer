@@ -145,7 +145,7 @@ export default function CountryPage() {
   const [noteOpen,   setNoteOpen]   = useState(false);
   const noteIframeRef = useRef(null);
   const [editOpen,   setEditOpen]   = useState(false);
-  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '', name: '', email: '' });
+  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '', firstName: '', lastName: '', email: '' });
   const [editStatus, setEditStatus] = useState('idle');
 
   // Open the "suggest an edit" form, pre-filling any text the user highlighted in
@@ -153,7 +153,7 @@ export default function CountryPage() {
   const openEditSuggestion = () => {
     let passage = '';
     try { passage = noteIframeRef.current?.contentWindow?.getSelection?.().toString().trim() || ''; } catch { /* guard */ }
-    setEditForm({ passage, suggestion: '', name: '', email: '' });
+    setEditForm({ passage, suggestion: '', firstName: '', lastName: '', email: '' });
     setEditStatus('idle');
     setEditOpen(true);
   };
@@ -169,7 +169,9 @@ export default function CountryPage() {
           type: 'brief-edit',
           country: country?.name || '', iso,
           passage: editForm.passage, suggestion: editForm.suggestion,
-          name: editForm.name, email: editForm.email,
+          name: `${editForm.firstName} ${editForm.lastName}`.trim(),
+          firstName: editForm.firstName, lastName: editForm.lastName,
+          email: editForm.email,
           url: window.location.href,
           source: 'Regional Power Explorer',
         }),
@@ -1350,14 +1352,16 @@ export default function CountryPage() {
 
                 <div style={{ display: 'flex', gap: 10 }}>
                   <div style={{ flex: 1 }}>
-                    <label style={EDIT_LBL}>Your name</label>
-                    <input value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} style={EDIT_INP} />
+                    <label style={EDIT_LBL}>First name</label>
+                    <input value={editForm.firstName} onChange={e => setEditForm(f => ({ ...f, firstName: e.target.value }))} style={EDIT_INP} />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <label style={EDIT_LBL}>Your email</label>
-                    <input type="email" value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} style={EDIT_INP} />
+                    <label style={EDIT_LBL}>Last name</label>
+                    <input value={editForm.lastName} onChange={e => setEditForm(f => ({ ...f, lastName: e.target.value }))} style={EDIT_INP} />
                   </div>
                 </div>
+                <label style={EDIT_LBL}>Your email</label>
+                <input type="email" value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} style={EDIT_INP} />
 
                 {editStatus === 'error' && <div style={{ fontSize: '0.66rem', color: '#c0392b', marginTop: 8 }}>Something went wrong — please try again.</div>}
 
