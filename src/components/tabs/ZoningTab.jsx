@@ -47,10 +47,9 @@ function FuelBar({ fuels, totalMw }) {
   );
 }
 
-export default function ZoningTab({ iso, theme, regionId }) {
+export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones }) {
   const t = getT(theme);
   const [index,    setIndex]    = useState(null);
-  const [nZones,   setNZones]   = useState(null);
   const [zonesGJ,  setZonesGJ]  = useState(null);
   const [topo,     setTopo]     = useState([]);
   const [plants,   setPlants]   = useState(null);
@@ -58,15 +57,16 @@ export default function ZoningTab({ iso, theme, regionId }) {
   const [lines,    setLines]    = useState(null);
   const [loading,  setLoading]  = useState(false);
 
-  // Load zones index
+  // Load zones index; default-select the first clustering so the map shows the
+  // zone separation as soon as the tab is opened (controlled by the parent).
   useEffect(() => {
     fetch('/data/zones/index.json').then(r => r.json())
       .then(d => {
         setIndex(d);
-        if (d[iso]?.length) setNZones(d[iso][0]);
+        if (d[iso]?.length && nZones == null) onSelectZones?.(d[iso][0]);
       })
       .catch(() => setIndex({}));
-  }, [iso]);
+  }, [iso]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load region plants + substations once
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function ZoningTab({ iso, theme, regionId }) {
           {available.map(n => {
             const active = nZones === n;
             return (
-              <button key={n} onClick={() => setNZones(n)} style={{
+              <button key={n} onClick={() => onSelectZones?.(n)} style={{
                 fontSize: '0.5rem', padding: '2px 8px', borderRadius: 3,
                 cursor: 'pointer', fontFamily: 'inherit',
                 border: `1px solid ${active ? 'rgba(74,143,204,0.65)' : t.panelBorder}`,
@@ -245,7 +245,7 @@ export default function ZoningTab({ iso, theme, regionId }) {
                     {Object.entries(st.fuels)
                       .sort(([, a], [, b]) => b - a)
                       .slice(0, 3)
-                      .map(([fuel, mw]) => (
+                      .map(([fuel]) => (
                         <span key={fuel} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                           <span style={{
                             display: 'inline-block', width: 6, height: 6,

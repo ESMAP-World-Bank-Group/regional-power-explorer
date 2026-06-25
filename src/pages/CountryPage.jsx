@@ -130,7 +130,7 @@ export default function CountryPage() {
   const [zoneMode,           setZoneMode]           = useState('plain');
   const [nZones,             setNZones]             = useState(null);
   const [zonesIndex,         setZonesIndex]         = useState(null);
-  const [zoneLabelsOn,       setZoneLabelsOn]       = useState(true);
+  const [zoneLabelsOn,       setZoneLabelsOn]       = useState(false);
   const [zoneCorridorsOn,    setZoneCorridorsOn]    = useState(false);
   const [hasNote,    setHasNote]    = useState(null);
   const [noteOpen,   setNoteOpen]   = useState(false);
@@ -211,7 +211,7 @@ export default function CountryPage() {
     setLinesOn(true); setPlantsOn(true); setSubsOn(false); setMinMw(100); setCircleScale(1.0);
     setLcCircleScale(1.0);
     setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
-    setZoneMode('plain'); setNZones(null); setZoneLabelsOn(true);
+    setZoneMode('plain'); setNZones(null); setZoneLabelsOn(false);
     setHasNote(null); setNoteOpen(false); setCountryReady(false);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
@@ -1447,7 +1447,11 @@ export default function CountryPage() {
           )}
 
           {activeTab === 'zoning' && (
-            <ZoningTab iso={iso} theme={theme} regionId={region.id} />
+            <ZoningTab
+              iso={iso} theme={theme} regionId={region.id}
+              nZones={nZones}
+              onSelectZones={(n) => { setZoneMode('modeling'); setNZones(n); }}
+            />
           )}
 
           <div style={{ borderTop: `1px solid ${t.hr}`, paddingTop: 12, marginTop: 20 }}>
