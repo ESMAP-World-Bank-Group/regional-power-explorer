@@ -11,6 +11,15 @@ import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 
+// Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
+// Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKtNsfk0dX5SET9ajr4jZ0YK058f94jyjzTpiUFQZZkp9jTh6p_TtPiI6Gv6UeLhTx/exec';
+
+const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color: '#5A6474', margin: '10px 0 3px', letterSpacing: '0.3px' };
+const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '0.72rem', padding: '6px 8px', borderRadius: 4, border: '1px solid #D5DBE2', color: '#1B2A4A', resize: 'vertical' };
+const EDIT_BTN_PRIMARY = { background: '#4A8FCC', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' };
+const EDIT_BTN_GHOST = { background: 'none', color: '#5A6474', border: '1px solid #D5DBE2', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'inherit' };
+
 function buildPlantFilter(fuel, mw, statusOff) {
   const clauses = [
     ['==', ['get', 'fuel'], fuel],
@@ -134,6 +143,42 @@ export default function CountryPage() {
   const [zoneCorridorsOn,    setZoneCorridorsOn]    = useState(false);
   const [hasNote,    setHasNote]    = useState(null);
   const [noteOpen,   setNoteOpen]   = useState(false);
+  const noteIframeRef = useRef(null);
+  const [editOpen,   setEditOpen]   = useState(false);
+  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '', name: '', email: '' });
+  const [editStatus, setEditStatus] = useState('idle');
+
+  // Open the "suggest an edit" form, pre-filling any text the user highlighted in
+  // the briefing note (same-origin iframe → we can read its selection).
+  const openEditSuggestion = () => {
+    let passage = '';
+    try { passage = noteIframeRef.current?.contentWindow?.getSelection?.().toString().trim() || ''; } catch { /* guard */ }
+    setEditForm({ passage, suggestion: '', name: '', email: '' });
+    setEditStatus('idle');
+    setEditOpen(true);
+  };
+
+  async function submitEditSuggestion(e) {
+    e.preventDefault();
+    if (!editForm.suggestion.trim()) return;
+    setEditStatus('sending');
+    try {
+      await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        body: new URLSearchParams({
+          type: 'brief-edit',
+          country: country?.name || '', iso,
+          passage: editForm.passage, suggestion: editForm.suggestion,
+          name: editForm.name, email: editForm.email,
+          url: window.location.href,
+          source: 'Regional Power Explorer',
+        }),
+      });
+      setEditStatus('sent');
+    } catch {
+      setEditStatus('error');
+    }
+  }
   const mapReadyRef        = useRef(false);
   const countryFeatureRef  = useRef(null);
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
@@ -990,7 +1035,7 @@ export default function CountryPage() {
         fuelsOff={fuelsOff} statusOff={statusOff} kvsOff={kvsOff}
         linesOn={linesOn} plantsOn={plantsOn} subsOn={subsOn}
         minMw={minMw} circleScale={circleScale}
-        plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable}
+        plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={region.id}
         presentFuels={presentFuels}
         basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus} onToggleKv={toggleKv}
@@ -1221,12 +1266,27 @@ export default function CountryPage() {
             boxShadow: '-4px 0 24px rgba(0,0,0,0.18)',
           }}>
             <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '6px 10px',
               borderBottom: '1px solid #E2E6EA',
               backgroundColor: '#F8F9FB',
               flexShrink: 0,
             }}>
+              <button
+                onClick={openEditSuggestion}
+                title="Propose a correction to this briefing note"
+                style={{
+                  background: 'none', border: '1px solid #CFE0F0',
+                  borderRadius: 4, padding: '3px 10px', cursor: 'pointer',
+                  fontSize: '0.65rem', color: '#4A8FCC', fontFamily: 'inherit',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}
+              >
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                </svg>
+                Suggest an edit
+              </button>
               <button
                 onClick={() => setNoteOpen(false)}
                 style={{
@@ -1243,12 +1303,74 @@ export default function CountryPage() {
               </button>
             </div>
             <iframe
+              ref={noteIframeRef}
               src={`/data/notes/${iso}.html`}
               title={`${country.name} – Sector Briefing Note`}
               style={{ flex: 1, border: 'none', width: '100%' }}
             />
           </div>
         </>
+      )}
+
+      {/* ── Suggest-an-edit modal (posts to the Google Sheet via Apps Script) ── */}
+      {editOpen && (
+        <div onClick={() => setEditOpen(false)} style={{
+          position: 'fixed', inset: 0, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.45)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+        }}>
+          <form onClick={e => e.stopPropagation()} onSubmit={submitEditSuggestion} style={{
+            width: 'min(520px, 100%)', maxHeight: '86vh', overflowY: 'auto',
+            backgroundColor: '#fff', borderRadius: 8, boxShadow: '0 12px 40px rgba(0,0,0,0.3)',
+            padding: '18px 20px', fontFamily: 'inherit',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1B2A4A', margin: 0 }}>Suggest an edit</h3>
+              <span style={{ fontSize: '0.62rem', color: '#5A6474' }}>{country?.name} · {iso}</span>
+            </div>
+            <p style={{ fontSize: '0.66rem', color: '#5A6474', lineHeight: 1.5, margin: '0 0 12px' }}>
+              Propose a correction to this briefing note. Tip: highlight text in the note before clicking to pre-fill the passage.
+            </p>
+
+            {editStatus === 'sent' ? (
+              <div style={{ fontSize: '0.78rem', color: '#1f8a4c', padding: '14px 0' }}>
+                ✓ Thanks — your suggestion was sent.
+                <div style={{ marginTop: 14 }}>
+                  <button type="button" onClick={() => setEditOpen(false)} style={EDIT_BTN_PRIMARY}>Close</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <label style={EDIT_LBL}>Passage concerned <span style={{ color: '#9aa3af', fontWeight: 400 }}>(optional)</span></label>
+                <textarea value={editForm.passage} onChange={e => setEditForm(f => ({ ...f, passage: e.target.value }))}
+                  rows={2} placeholder="The original text to fix (auto-filled if you selected it)" style={EDIT_INP} />
+
+                <label style={EDIT_LBL}>Suggested correction *</label>
+                <textarea value={editForm.suggestion} onChange={e => setEditForm(f => ({ ...f, suggestion: e.target.value }))}
+                  rows={4} required placeholder="What should it say / what's wrong?" style={EDIT_INP} />
+
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={EDIT_LBL}>Your name</label>
+                    <input value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} style={EDIT_INP} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={EDIT_LBL}>Your email</label>
+                    <input type="email" value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} style={EDIT_INP} />
+                  </div>
+                </div>
+
+                {editStatus === 'error' && <div style={{ fontSize: '0.66rem', color: '#c0392b', marginTop: 8 }}>Something went wrong — please try again.</div>}
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
+                  <button type="button" onClick={() => setEditOpen(false)} style={EDIT_BTN_GHOST}>Cancel</button>
+                  <button type="submit" disabled={editStatus === 'sending' || !editForm.suggestion.trim()} style={EDIT_BTN_PRIMARY}>
+                    {editStatus === 'sending' ? 'Sending…' : 'Submit suggestion'}
+                  </button>
+                </div>
+              </>
+            )}
+          </form>
+        </div>
       )}
 
       {!isMobile && (

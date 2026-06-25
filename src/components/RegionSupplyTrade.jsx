@@ -121,17 +121,20 @@ function HoverChart({ t, render, tooltip }) {
   const onHover = (yi, e) => {
     if (yi == null || !ref.current) { setH(null); return; }
     const r = ref.current.getBoundingClientRect();
-    setH({ yi, x: e.clientX - r.left, y: e.clientY - r.top });
+    setH({ yi, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width });
   };
   const tip = h ? tooltip(h.yi) : null;
+  const TW = 124;  // approx tooltip width — keep it inside the chart, not over the legend
   return (
     <div ref={ref} style={{ position: 'relative' }} onMouseLeave={() => setH(null)}>
       {render(h?.yi ?? null, onHover)}
       {tip && (
         <div style={{
-          position: 'absolute', left: Math.min(h.x + 12, 200), top: Math.max(h.y - 10, 0),
+          position: 'absolute',
+          left: Math.max(2, Math.min(h.x + 12, (h.w || 200) - TW)),
+          top: Math.max(h.y - 10, 0),
           background: t.panel, border: `1px solid ${t.panelBorder}`, borderRadius: 5,
-          padding: '6px 8px', pointerEvents: 'none', zIndex: 20, minWidth: 110,
+          padding: '6px 8px', pointerEvents: 'none', zIndex: 20, width: TW,
           boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
         }}>{tip}</div>
       )}
@@ -140,10 +143,11 @@ function HoverChart({ t, render, tooltip }) {
 }
 
 // ── Diverging stacked bar: net trade by country ──────────────────────────────
-function NetTradeChart({ data, hoveredYi, onHover, t }) {
+function NetTradeChart({ data, hidden, hoveredYi, onHover, t }) {
   const W = 320, H = 190, pL = 42, pR = 8, pT = 10, pB = 24;
   const iW = W - pL - pR, iH = H - pT - pB;
-  const { years, rows } = data;
+  const { years } = data;
+  const rows = data.rows.filter(r => !hidden?.has(r.iso));
   const posTot = years.map((Y) => rows.reduce((s, r) => s + Math.max(r.net[Y] || 0, 0), 0));
   const negTot = years.map((Y) => rows.reduce((s, r) => s + Math.min(r.net[Y] || 0, 0), 0));
   const axisPos = niceTicks(Math.max(...posTot, 1)).pop() || 1;
@@ -208,11 +212,11 @@ function NetTradeChart({ data, hoveredYi, onHover, t }) {
 }
 
 // ── Stacked bar: generation / capacity by fuel ───────────────────────────────
-function FuelChart({ section, hoveredYi, onHover, t }) {
+function FuelChart({ section, hidden, hoveredYi, onHover, t }) {
   const W = 320, H = 190, pL = 42, pR = 8, pT = 10, pB = 24;
   const iW = W - pL - pR, iH = H - pT - pB;
   const { years, fuels, demand } = section;
-  const allFuels = Object.keys(fuels);
+  const allFuels = Object.keys(fuels).filter(f => !hidden?.has(f));
   const totals = years.map((_, yi) => allFuels.reduce((s, f) => s + num(fuels[f][yi]), 0));
   const dVals = (demand || []).filter(v => v != null);
   const axisMax = niceTicks(Math.max(...totals, dVals.length ? Math.max(...dVals) : 0, 1)).pop() || 1;
@@ -261,15 +265,55 @@ function FuelChart({ section, hoveredYi, onHover, t }) {
   );
 }
 
-function Legend({ items, t }) {
+// Chart on the left, filter legend on the right (same layout as the country tabs)
+function ChartRow({ chart, legend }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3px 10px', marginTop: 6 }}>
-      {items.map(({ label, color }) => (
-        <span key={label} style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: '0.52rem', color: t.lblMuted }}>
-          <span style={{ width: 7, height: 7, borderRadius: 1, backgroundColor: color, flexShrink: 0 }} />
-          {label}
-        </span>
-      ))}
+    <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+      <div style={{ flex: 1, minWidth: 0 }}>{chart}</div>
+      <div style={{ flexShrink: 0, width: 78 }}>{legend}</div>
+    </div>
+  );
+}
+
+function legendBtn(key, color, label, hidden, onToggle, t, dashed) {
+  return (
+    <button key={key} onClick={onToggle ? () => onToggle(key) : undefined} style={{
+      display: 'flex', alignItems: 'center', gap: 4, background: 'none', border: 'none',
+      padding: '2px 2px', width: '100%', textAlign: 'left',
+      cursor: onToggle ? 'pointer' : 'default', opacity: hidden ? 0.4 : 1, fontFamily: 'inherit',
+    }}>
+      {dashed ? (
+        <svg width="12" height="6" style={{ flexShrink: 0 }}>
+          <line x1="0" y1="3" x2="12" y2="3" stroke={t.lbl} strokeWidth="1.2" strokeDasharray="3,2" opacity="0.75" />
+        </svg>
+      ) : (
+        <span style={{ width: 7, height: 7, borderRadius: 1, flexShrink: 0, background: color, opacity: 0.9 }} />
+      )}
+      <span style={{
+        fontSize: '0.5rem', color: hidden ? t.lblMuted : t.lbl,
+        textDecoration: hidden && !dashed ? 'line-through' : 'none',
+        lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+      }}>{label}</span>
+    </button>
+  );
+}
+
+function SideLegend({ t, onAll, onNone, children }) {
+  const mini = {
+    fontSize: '0.42rem', letterSpacing: '0.3px', textTransform: 'uppercase',
+    padding: '1px 5px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
+    border: `1px solid ${t.panelBorder}`, background: 'transparent', color: t.lblMuted,
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <span style={{ fontSize: '0.45rem', color: '#8A94A6', lineHeight: 1, marginBottom: 1, userSelect: 'none' }}>click to filter</span>
+      {(onAll || onNone) && (
+        <div style={{ display: 'flex', gap: 3, marginBottom: 2 }}>
+          <button onClick={onAll} style={mini}>All</button>
+          <button onClick={onNone} style={mini}>None</button>
+        </div>
+      )}
+      {children}
     </div>
   );
 }
@@ -292,6 +336,11 @@ export default function RegionSupplyTrade({ region, theme }) {
   const [supplies, setSupplies] = useState(null);
   const [tradeByIso, setTradeByIso] = useState(null);
   const [view, setView] = useState('generation');
+  const [hiddenFuels, setHiddenFuels] = useState(new Set());
+  const [hiddenCountries, setHiddenCountries] = useState(new Set());
+
+  const toggleFuel = (f) => setHiddenFuels(p => { const n = new Set(p); n.has(f) ? n.delete(f) : n.add(f); return n; });
+  const toggleCountry = (c) => setHiddenCountries(p => { const n = new Set(p); n.has(c) ? n.delete(c) : n.add(c); return n; });
 
   useEffect(() => {
     if (!region) return;
@@ -350,7 +399,7 @@ export default function RegionSupplyTrade({ region, theme }) {
   };
 
   const toggleBtn = (v, lbl) => (
-    <button key={v} onClick={() => setView(v)} style={{
+    <button key={v} onClick={() => { setView(v); setHiddenFuels(new Set()); }} style={{
       fontSize: '0.47rem', letterSpacing: '0.5px', textTransform: 'uppercase',
       padding: '3px 8px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
       border: `1px solid ${view === v ? 'rgba(74,143,204,0.6)' : t.panelBorder}`,
@@ -362,7 +411,7 @@ export default function RegionSupplyTrade({ region, theme }) {
   // supply tooltip
   const supplyTip = supplySec ? (yi) => {
     const rows = Object.keys(supplySec.fuels)
-      .map(f => ({ f, v: num(supplySec.fuels[f][yi]) })).filter(r => r.v > 0)
+      .map(f => ({ f, v: num(supplySec.fuels[f][yi]) })).filter(r => r.v > 0 && !hiddenFuels.has(r.f))
       .sort((a, b) => b.v - a.v);
     if (!rows.length) return null;
     const total = rows.reduce((s, r) => s + r.v, 0);
@@ -381,8 +430,8 @@ export default function RegionSupplyTrade({ region, theme }) {
   // trade tooltip
   const tradeTip = net ? (yi) => {
     const Y = net.years[yi];
-    const imp = net.rows.filter(r => num(r.net[Y]) > 0).sort((a, b) => b.net[Y] - a.net[Y]);
-    const exp = net.rows.filter(r => num(r.net[Y]) < 0).sort((a, b) => a.net[Y] - b.net[Y]);
+    const imp = net.rows.filter(r => !hiddenCountries.has(r.iso) && num(r.net[Y]) > 0).sort((a, b) => b.net[Y] - a.net[Y]);
+    const exp = net.rows.filter(r => !hiddenCountries.has(r.iso) && num(r.net[Y]) < 0).sort((a, b) => a.net[Y] - b.net[Y]);
     if (!imp.length && !exp.length) return null;
     return (
       <>
@@ -405,9 +454,18 @@ export default function RegionSupplyTrade({ region, theme }) {
         </div>
         {supplySec && supplySec.years.length ? (
           <>
-            <HoverChart t={t} tooltip={supplyTip}
-              render={(hy, oh) => <FuelChart section={supplySec} hoveredYi={hy} onHover={oh} t={t} />} />
-            <Legend items={Object.keys(supplySec.fuels).map(f => ({ label: f, color: matchFuelColor(f) }))} t={t} />
+            <ChartRow
+              chart={<HoverChart t={t} tooltip={supplyTip}
+                render={(hy, oh) => <FuelChart section={supplySec} hidden={hiddenFuels} hoveredYi={hy} onHover={oh} t={t} />} />}
+              legend={
+                <SideLegend t={t}
+                  onAll={() => setHiddenFuels(new Set())}
+                  onNone={() => setHiddenFuels(new Set(Object.keys(supplySec.fuels)))}>
+                  {Object.keys(supplySec.fuels).map(f => legendBtn(f, matchFuelColor(f), f, hiddenFuels.has(f), toggleFuel, t))}
+                  {supplySec.demand && legendBtn('__demand__', null, 'Demand', false, null, t, true)}
+                </SideLegend>
+              }
+            />
             <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', marginTop: 6, lineHeight: 1.5 }}>
               Common years {supplySec.window[0]}–{supplySec.window[1]} · {supplySec.nMembers}/{memberCount} countries with data
               {supplySec.demand ? ' · dashed line = electricity demand' : ''}. Window kept identical for all members to avoid coverage jumps.
@@ -425,9 +483,17 @@ export default function RegionSupplyTrade({ region, theme }) {
         <span style={secStyle(t)}>Cross-border Trade · Net Position by Country</span>
         {net && net.years.length ? (
           <>
-            <HoverChart t={t} tooltip={tradeTip}
-              render={(hy, oh) => <NetTradeChart data={net} hoveredYi={hy} onHover={oh} t={t} />} />
-            <Legend items={net.rows.map(r => ({ label: r.iso, color: r.color }))} t={t} />
+            <ChartRow
+              chart={<HoverChart t={t} tooltip={tradeTip}
+                render={(hy, oh) => <NetTradeChart data={net} hidden={hiddenCountries} hoveredYi={hy} onHover={oh} t={t} />} />}
+              legend={
+                <SideLegend t={t}
+                  onAll={() => setHiddenCountries(new Set())}
+                  onNone={() => setHiddenCountries(new Set(net.rows.map(r => r.iso)))}>
+                  {net.rows.map(r => legendBtn(r.iso, r.color, r.iso, hiddenCountries.has(r.iso), toggleCountry, t))}
+                </SideLegend>
+              }
+            />
             <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', marginTop: 6, lineHeight: 1.5 }}>
               Net imports (imports − exports) per member. Above zero = net importer, below = net exporter.
               Common years {net.window[0]}–{net.window[1]} · {net.nMembers}/{memberCount} countries with data (window kept identical for all to avoid jumps).
