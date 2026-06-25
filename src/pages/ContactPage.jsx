@@ -29,7 +29,7 @@ export default function ContactPage() {
   const [status, setStatus] = useState('idle');
 
   // Feature / data request form
-  const [req, setReq] = useState({ name: '', email: '', request: '' });
+  const [req, setReq] = useState({ firstName: '', lastName: '', email: '', request: '' });
   const [reqStatus, setReqStatus] = useState('idle');
 
   const divider = { borderColor: t.panelBorder, margin: '28px 0' };
@@ -46,14 +46,16 @@ export default function ContactPage() {
         method: 'POST',
         mode: 'no-cors',
         body: new URLSearchParams({
-          name: req.name,
+          name: `${req.firstName} ${req.lastName}`.trim(),
+          firstName: req.firstName,
+          lastName: req.lastName,
           email: req.email,
           request: req.request,
           source: 'Regional Power Explorer',
         }),
       });
       setReqStatus('sent');
-      setReq({ name: '', email: '', request: '' });
+      setReq({ firstName: '', lastName: '', email: '', request: '' });
     } catch {
       setReqStatus('error');
     }
@@ -165,11 +167,21 @@ export default function ContactPage() {
             <form onSubmit={handleRequestSubmit}>
               <div style={{ display: 'flex', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
                 <input
-                  type="text" value={req.name} required
-                  onChange={e => { setReq({ ...req, name: e.target.value }); if (reqStatus !== 'idle') setReqStatus('idle'); }}
-                  placeholder="Your name"
+                  type="text" value={req.firstName} required
+                  onChange={e => { setReq({ ...req, firstName: e.target.value }); if (reqStatus !== 'idle') setReqStatus('idle'); }}
+                  placeholder="First name"
                   style={{
-                    flex: '1 1 140px', minWidth: 0, boxSizing: 'border-box', padding: '8px 10px',
+                    flex: '1 1 120px', minWidth: 0, boxSizing: 'border-box', padding: '8px 10px',
+                    borderRadius: 6, border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel,
+                    color: t.text, fontSize: '0.7rem', outline: 'none', fontFamily: 'inherit',
+                  }}
+                />
+                <input
+                  type="text" value={req.lastName} required
+                  onChange={e => { setReq({ ...req, lastName: e.target.value }); if (reqStatus !== 'idle') setReqStatus('idle'); }}
+                  placeholder="Last name"
+                  style={{
+                    flex: '1 1 120px', minWidth: 0, boxSizing: 'border-box', padding: '8px 10px',
                     borderRadius: 6, border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel,
                     color: t.text, fontSize: '0.7rem', outline: 'none', fontFamily: 'inherit',
                   }}
@@ -179,7 +191,7 @@ export default function ContactPage() {
                   onChange={e => { setReq({ ...req, email: e.target.value }); if (reqStatus !== 'idle') setReqStatus('idle'); }}
                   placeholder="Your email"
                   style={{
-                    flex: '1 1 160px', minWidth: 0, boxSizing: 'border-box', padding: '8px 10px',
+                    flex: '1 1 100%', minWidth: 0, boxSizing: 'border-box', padding: '8px 10px',
                     borderRadius: 6, border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel,
                     color: t.text, fontSize: '0.7rem', outline: 'none', fontFamily: 'inherit',
                   }}

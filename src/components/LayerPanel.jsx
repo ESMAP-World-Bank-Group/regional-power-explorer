@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FUEL_COLORS, FUEL_LABELS, VOLTAGE_BRACKETS, COUNTRY_ZONE_COLORS, getT } from '../constants';
+import { sourceReliability } from '../plantSourceReliability';
 
 const STATUS_CONFIG = [
   {
@@ -78,7 +79,7 @@ export default function LayerPanel({
   linesOn, plantsOn, subsOn,
   loadCentersOn, lcMinPop, lcCircleScale,
   minMw, circleScale,
-  plantSource, gppdAvailable, gemAvailable,
+  plantSource, gppdAvailable, gemAvailable, regionId,
   presentFuels,
   basemap, onBasemap, satLabels, onSatLabels,
   onToggleFuel, onToggleStatus,
@@ -242,6 +243,15 @@ export default function LayerPanel({
               );
             })}
           </div>
+          {(() => {
+            const rel = sourceReliability(regionId, plantSource);
+            return rel ? (
+              <p style={{ fontSize: '0.44rem', color: t.lblMuted, fontStyle: 'italic', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 3 }}>
+                <span style={{ color: rel.color, fontSize: '0.5rem', lineHeight: 1 }}>●</span>
+                {plantSource.toUpperCase()} here: {rel.label} <span style={{ opacity: 0.7 }}>(indicative)</span>
+              </p>
+            ) : null;
+          })()}
           {gemAvailable === false && (
             <p style={{ fontSize: '0.44rem', color: '#B8860B', fontStyle: 'italic', marginBottom: 4 }}>
               GEM: run prepare_gem.py

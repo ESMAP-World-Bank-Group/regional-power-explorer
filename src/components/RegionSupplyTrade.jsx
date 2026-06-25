@@ -51,20 +51,25 @@ const countryColor = (iso, i) => COUNTRY_ZONE_COLORS?.[iso] || _PALETTE[i % _PAL
 
 // ── aggregation ───────────────────────────────────────────────────────────────
 function aggregateSupply(supplies, key) {
-  const yearsSet = new Set();
+  // Only members that actually have this section, and keep a strict COMMON year
+  // window [max(first years), min(last years)] so the same set of countries
+  // contributes to every year — no artificial jump when a country's series
+  // starts/ends mid-range.
+  const members = supplies.filter(s => s?.[key]?.years?.length);
+  if (!members.length) return null;
   let unit = key === 'capacity' ? 'MW' : 'GWh';
-  for (const s of supplies) {
-    const g = s?.[key];
-    if (g?.years) { g.years.forEach(y => yearsSet.add(y)); if (g.unit) unit = g.unit; }
-  }
-  const years = [...yearsSet].sort((a, b) => a - b);
-  if (!years.length) return null;
+  members.forEach(s => { if (s[key].unit) unit = s[key].unit; });
+  const start = Math.max(...members.map(s => s[key].years[0]));
+  const end   = Math.min(...members.map(s => s[key].years[s[key].years.length - 1]));
+  if (start > end) return { years: [], fuels: {}, demand: null, unit, nMembers: members.length, window: null };
+
+  const years = [];
+  for (let y = start; y <= end; y++) years.push(y);
   const fuels = {};
   const demand = years.map(() => 0);
   let hasDemand = false;
-  for (const s of supplies) {
-    const g = s?.[key];
-    if (!g?.years) continue;
+  for (const s of members) {
+    const g = s[key];
     years.forEach((Y, yi) => {
       const idx = g.years.indexOf(Y);
       if (idx < 0) return;
@@ -79,28 +84,34 @@ function aggregateSupply(supplies, key) {
   const entries = Object.entries(fuels)
     .filter(([, a]) => a.some(v => v > 0))
     .sort(([, a], [, b]) => b.reduce((s, v) => s + v, 0) - a.reduce((s, v) => s + v, 0));
-  return { years, fuels: Object.fromEntries(entries), demand: hasDemand ? demand : null, unit };
+  return { years, fuels: Object.fromEntries(entries), demand: hasDemand ? demand : null, unit, nMembers: members.length, window: [start, end] };
 }
 
 function aggregateNetTrade(tradeByIso, members) {
-  const yearsSet = new Set();
-  const rows = [];
+  // Members with usable bilateral flows
+  const have = [];
   members.forEach(({ iso, name }, i) => {
     const d = tradeByIso[iso];
     if (!d || d.status) return;
     const imp = d.imports || {}, exp = d.exports || {};
     if (!Object.keys(imp).length && !Object.keys(exp).length) return;
-    d.years.forEach(y => yearsSet.add(y));
     const net = {};
     d.years.forEach((Y, idx) => {
       const im = Object.values(imp).reduce((s, a) => s + num(a[idx]), 0);
       const ex = Object.values(exp).reduce((s, a) => s + num(a[idx]), 0);
       net[Y] = im - ex;                       // >0 net importer, <0 net exporter
     });
-    rows.push({ iso, name, net, color: countryColor(iso, i) });
+    have.push({ iso, name, net, color: countryColor(iso, i), years: d.years });
   });
-  const years = [...yearsSet].sort((a, b) => a - b);
-  return years.length ? { years, rows } : null;
+  if (!have.length) return null;
+  // Strict common window across members that have data → no jump.
+  const start = Math.max(...have.map(r => r.years[0]));
+  const end   = Math.min(...have.map(r => r.years[r.years.length - 1]));
+  if (start > end) return { years: [], rows: [], nMembers: have.length, window: null };
+  const years = [];
+  for (let y = start; y <= end; y++) years.push(y);
+  const rows = have.map(({ iso, name, net, color }) => ({ iso, name, color, net }));
+  return { years, rows, nMembers: have.length, window: [start, end] };
 }
 
 // ── hover wrapper + tooltip ───────────────────────────────────────────────────
@@ -306,6 +317,7 @@ export default function RegionSupplyTrade({ region, theme }) {
   }
 
   const members = region.countries.map(c => ({ iso: c.iso, name: c.name }));
+  const memberCount = members.length;
   const supplySec = aggregateSupply(supplies, view);
   const net = aggregateNetTrade(tradeByIso, members);
 
@@ -391,34 +403,40 @@ export default function RegionSupplyTrade({ region, theme }) {
           {toggleBtn('generation', 'Generation')}
           {toggleBtn('capacity', 'Capacity')}
         </div>
-        {supplySec ? (
+        {supplySec && supplySec.years.length ? (
           <>
             <HoverChart t={t} tooltip={supplyTip}
               render={(hy, oh) => <FuelChart section={supplySec} hoveredYi={hy} onHover={oh} t={t} />} />
             <Legend items={Object.keys(supplySec.fuels).map(f => ({ label: f, color: matchFuelColor(f) }))} t={t} />
             <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', marginTop: 6, lineHeight: 1.5 }}>
-              Aggregated across member countries{supplySec.demand ? '; dashed line = electricity demand' : ''}.
+              Common years {supplySec.window[0]}–{supplySec.window[1]} · {supplySec.nMembers}/{memberCount} countries with data
+              {supplySec.demand ? ' · dashed line = electricity demand' : ''}. Window kept identical for all members to avoid coverage jumps.
             </p>
           </>
         ) : (
-          <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>No {view} data available.</p>
+          <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>
+            {supplySec ? 'Not enough overlapping years across members for a comparable series.' : `No ${view} data available.`}
+          </p>
         )}
       </div>
 
       {/* ── Cross-border trade: net by country (below) ── */}
       <div style={{ borderTop: `1px solid ${t.panelBorder}`, paddingTop: 14 }}>
         <span style={secStyle(t)}>Cross-border Trade · Net Position by Country</span>
-        {net ? (
+        {net && net.years.length ? (
           <>
             <HoverChart t={t} tooltip={tradeTip}
               render={(hy, oh) => <NetTradeChart data={net} hoveredYi={hy} onHover={oh} t={t} />} />
             <Legend items={net.rows.map(r => ({ label: r.iso, color: r.color }))} t={t} />
             <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', marginTop: 6, lineHeight: 1.5 }}>
-              Net imports (imports − exports) per member, by year. Above zero = net importer, below = net exporter.
+              Net imports (imports − exports) per member. Above zero = net importer, below = net exporter.
+              Common years {net.window[0]}–{net.window[1]} · {net.nMembers}/{memberCount} countries with data (window kept identical for all to avoid jumps).
             </p>
           </>
         ) : (
-          <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>No trade data available for this region.</p>
+          <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>
+            {net ? 'Not enough overlapping years across members for a comparable series.' : 'No trade data available for this region.'}
+          </p>
         )}
       </div>
 
