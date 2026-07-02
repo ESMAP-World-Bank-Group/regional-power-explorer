@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
@@ -183,6 +183,7 @@ export default function CountryPage() {
   }
   const mapReadyRef        = useRef(false);
   const countryFeatureRef  = useRef(null);
+  const adaptiveMinRef     = useRef(0);   // adaptive default min-MW for this country
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
   const [layerPanelOpen,  setLayerPanelOpen]  = useState(false);
   const [sheetHeight,     setSheetHeight]     = useState(96);
@@ -343,6 +344,12 @@ export default function CountryPage() {
       setFilteredPlantsData(filteredPlants);
       setFilteredLinesData(filteredLines);
 
+      // Adaptive default min-MW: show all of a small country (e.g. Madagascar),
+      // cap big ones to the ~150 largest. Replaces the flat 100 MW default.
+      const adaptMin = adaptiveMinMw(filteredPlants.features, 150);
+      adaptiveMinRef.current = adaptMin;
+      setMinMw(adaptMin);
+
       const filteredLc = {
         ...lcGJ,
         features: lcGJ.features.filter(f => f.properties.iso === iso),
@@ -426,7 +433,7 @@ export default function CountryPage() {
           id: `plants-${fuel}`,
           type: 'circle',
           source: 'plants',
-          filter: buildPlantFilter(fuel, 100, new Set(['planned'])),
+          filter: buildPlantFilter(fuel, adaptMin, new Set(['planned'])),
           paint: {
             'circle-radius':  plantRadiusExpr(),
             'circle-color':   color,

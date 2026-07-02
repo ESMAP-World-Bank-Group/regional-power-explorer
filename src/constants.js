@@ -167,6 +167,20 @@ export function toggleSatLabels(map, show, theme) {
 
 export const PLANT_STATUSES = ['operating', 'construction', 'planned'];
 
+// Adaptive default min-MW: keeps the map readable by showing at most ~maxMarkers
+// of the largest plants, but returns 0 when there are fewer (so small countries
+// like Madagascar show ALL their plants instead of being hidden by a flat 100 MW).
+export function adaptiveMinMw(features, maxMarkers = 150) {
+  const mws = (features || [])
+    .map(f => f?.properties?.mw || 0)
+    .filter(v => v > 0)
+    .sort((a, b) => b - a);
+  if (mws.length <= maxMarkers) return 0;
+  const kth = mws[maxMarkers - 1];
+  const step = kth >= 200 ? 25 : kth >= 50 ? 10 : 5;   // floor to a tidy value
+  return Math.max(0, Math.floor(kth / step) * step);
+}
+
 // Per-country colors for preferred-zoning overlays — blues, greens, yellows (no orange/violet)
 export const COUNTRY_ZONE_COLORS = {
   // Black Sea

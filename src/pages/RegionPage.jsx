@@ -5,7 +5,7 @@ import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import {
   getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS,
-  plantRadiusExpr, lcRadiusExpr, fuelColorExpr, PLANT_STATUSES, zoneColorExpr,
+  plantRadiusExpr, lcRadiusExpr, fuelColorExpr, PLANT_STATUSES, zoneColorExpr, adaptiveMinMw,
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CapacityChart from '../components/CapacityChart';
@@ -315,6 +315,10 @@ export default function RegionPage() {
       const bounds = fitBounds(expandedIsos, countries);
       if (bounds) map.fitBounds(bounds, { padding: 40, duration: 0 });
 
+      // Adaptive default min-MW: cap to the ~150 largest plants, 0 if fewer.
+      const adaptMin = adaptiveMinMw(plantsGJ.features, 150);
+      setMinMw(adaptMin);
+
       map.addSource('countries',    { type: 'geojson', data: countries, generateId: false });
       map.addSource('plants',       { type: 'geojson', data: plantsGJ });
       map.addSource('lines',        { type: 'geojson', data: linesGJ  });
@@ -430,7 +434,7 @@ export default function RegionPage() {
 
       // Operating: filled circles
       map.addLayer({ id: 'plants-operating', type: 'circle', source: 'plants',
-        filter: makeLayerFilter('operating', new Set(), 100),
+        filter: makeLayerFilter('operating', new Set(), adaptMin),
         paint: {
           'circle-radius':       plantRadiusExpr(),
           'circle-color':        colorExpr,
@@ -442,7 +446,7 @@ export default function RegionPage() {
 
       // Under construction: hollow ring
       map.addLayer({ id: 'plants-construction', type: 'circle', source: 'plants',
-        filter: makeLayerFilter('construction', new Set(), 100),
+        filter: makeLayerFilter('construction', new Set(), adaptMin),
         paint: {
           'circle-radius':         plantRadiusExpr(),
           'circle-color':          'rgba(0,0,0,0)',
@@ -455,7 +459,7 @@ export default function RegionPage() {
 
       // Planned: faint filled + thin stroke — hidden by default (statusOff init)
       map.addLayer({ id: 'plants-planned', type: 'circle', source: 'plants',
-        filter: makeLayerFilter('planned', new Set(), 100),
+        filter: makeLayerFilter('planned', new Set(), adaptMin),
         layout: { visibility: 'none' },
         paint: {
           'circle-radius':         plantRadiusExpr(),
