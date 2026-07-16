@@ -363,7 +363,6 @@ export default function CountryPage() {
       map.addSource('admin1',       { type: 'geojson', data: admin1GJ       });
       const hlFilter = ['==', ['get', 'ISO_A3'], iso];
       map.addSource('zone-fills',        { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
-      map.addSource('zone-inner',        { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-lines',        { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-corridors-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-centroids-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
@@ -556,9 +555,9 @@ export default function CountryPage() {
         paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.22 },
       });
       map.addLayer({
-        id: 'zone-borders', type: 'line', source: 'zone-inner',
+        id: 'zone-borders', type: 'line', source: 'zone-fills',
         layout: { visibility: 'none' },
-        paint: { 'line-color': '#333', 'line-width': 1.8, 'line-opacity': 0.7 },
+        paint: { 'line-color': '#333', 'line-width': 0.9, 'line-opacity': 0.5 },
       });
       map.addLayer({
         id: 'zone-labels', type: 'symbol', source: 'zone-fills',
@@ -858,13 +857,11 @@ export default function CountryPage() {
     Promise.all([
       fetch(`/data/zones/${label}_zones.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`/data/zones/${label}_topo.json`).then(r => r.ok ? r.json() : []).catch(() => []),
-      fetch(`/data/zones/${label}_inner.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`/data/zones/${label}_corridors.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
-    ]).then(([zonesGJ, topo, innerGJ, corridorsGJ]) => {
+    ]).then(([zonesGJ, topo, corridorsGJ]) => {
       if (!zonesGJ || !map.getSource('zone-fills')) return;
       zonesGJ.features.forEach((f, i) => { f.properties.color = COLORS[i % COLORS.length]; });
       map.getSource('zone-fills').setData(zonesGJ);
-      if (innerGJ && map.getSource('zone-inner')) map.getSource('zone-inner').setData(innerGJ);
 
       // Build interzone line geometries from centroids
       const centroids = {};

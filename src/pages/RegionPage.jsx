@@ -361,18 +361,17 @@ export default function RegionPage() {
       // Preferred zones overlay (hidden until mapMode === 'zones')
       const emptyGJ = { type: 'FeatureCollection', features: [] };
       map.addSource('region-zones',         { type: 'geojson', data: emptyGJ });
-      map.addSource('region-zones-inner',   { type: 'geojson', data: emptyGJ });
       map.addSource('region-corridors-src', { type: 'geojson', data: emptyGJ });
       map.addSource('region-centroids-src', { type: 'geojson', data: emptyGJ });
 
       const zoneLayerPaint = {
         fill:   { 'fill-color': zoneColorExpr(), 'fill-opacity': 0.35 },
-        border: { 'line-color': tv.isDark ? '#bbb' : '#444', 'line-width': 1.2, 'line-opacity': 0.7 },
+        border: { 'line-color': tv.isDark ? '#bbb' : '#444', 'line-width': 0.9, 'line-opacity': 0.5 },
       };
       map.addLayer({ id: 'region-zones-fill',   type: 'fill', source: 'region-zones',
         layout: { visibility: 'none' }, paint: zoneLayerPaint.fill });
-      map.addLayer({ id: 'region-zones-border', type: 'line', source: 'region-zones-inner',
-        layout: { visibility: 'none', 'line-cap': 'round', 'line-join': 'round' },
+      map.addLayer({ id: 'region-zones-border', type: 'line', source: 'region-zones',
+        layout: { visibility: 'none' },
         paint: zoneLayerPaint.border });
 
       // Corridor capacity lines for preferred zone view
@@ -681,18 +680,14 @@ export default function RegionPage() {
       const slug       = selectedSlug || 'recommended';
       const url        = `/data/zones/${regionId}_${slug}_zones_hd.geojson`;
       const corrUrl    = `/data/zones/${regionId}_${slug}_corridors.geojson`;
-      const innerUrl   = `/data/zones/${regionId}_${slug}_inner_borders.geojson`;
       Promise.all([
         fetch(url).then(r => { if (!r.ok) throw new Error(); return r.json(); }),
         fetch(corrUrl).then(r => r.ok ? r.json() : null).catch(() => null),
-        fetch(innerUrl).then(r => r.ok ? r.json() : null).catch(() => null),
       ])
-        .then(([data, corridorsGJ, innerGJ]) => {
+        .then(([data, corridorsGJ]) => {
           const m = mapRef.current;
           if (!m?.getSource('region-zones')) return;
           m.getSource('region-zones').setData(data);
-          if (m.getSource('region-zones-inner'))
-            m.getSource('region-zones-inner').setData(innerGJ || data);
           m.setLayoutProperty('region-zones-fill',   'visibility', 'visible');
           m.setLayoutProperty('region-zones-border', 'visibility', 'visible');
           m.setLayoutProperty('region-fill', 'visibility', 'none');
@@ -726,8 +721,6 @@ export default function RegionPage() {
       if (map.getLayer('region-fill'))         map.setLayoutProperty('region-fill', 'visibility', 'visible');
       if (map.getSource('region-zones'))
         map.getSource('region-zones').setData({ type: 'FeatureCollection', features: [] });
-      if (map.getSource('region-zones-inner'))
-        map.getSource('region-zones-inner').setData({ type: 'FeatureCollection', features: [] });
       for (const id of ['region-corridors-ex', 'region-corridors-committed', 'region-corridors-candidate', 'region-corridors-labels', 'region-corridors-dots']) {
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
       }
