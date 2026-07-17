@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[31.41686,-26.10363],[31.45309,-26.7395]]},"properties":{"zone_a":"SWZ_1","zone_b":"SWZ_2","mw":130,"status":"existing","label":"130 MW"}}]}

@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[25.5323,-8.58756],[18.64678,-3.14774]]},"properties":{"zone_a":"COD_2","zone_b":"COD_3","mw":1540,"status":"existing","label":"1,540 MW"}}]}

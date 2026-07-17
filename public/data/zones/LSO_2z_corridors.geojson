@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[27.70856,-29.84742],[28.55117,-29.43486]]},"properties":{"zone_a":"LSO_1","zone_b":"LSO_2","mw":521,"status":"existing","label":"521 MW"}}]}

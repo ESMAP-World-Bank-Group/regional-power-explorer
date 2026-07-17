@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[18.10617,-13.45584],[15.44434,-8.22507]]},"properties":{"zone_a":"AGO_1","zone_b":"AGO_2","mw":1370,"status":"existing","label":"1,370 MW"}}]}

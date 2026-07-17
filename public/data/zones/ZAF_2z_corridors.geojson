@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[28.20632,-27.22494],[21.83021,-30.77974]]},"properties":{"zone_a":"ZAF_1","zone_b":"ZAF_2","mw":10682,"status":"existing","label":"10,682 MW"}}]}

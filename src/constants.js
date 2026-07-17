@@ -230,3 +230,11 @@ export function lcRadiusExpr(scale = 1) {
     15_000_000, 16  * scale,
   ];
 }
+
+// Zoning: a 1-zone clustering has no inter-zone topology and no corridors by
+// definition, so landing on it shows an empty map with no feedback. Prefer the
+// smallest real subdivision.
+export function defaultNZones(available) {
+  if (!available?.length) return null;
+  return available.find(n => n >= 2) ?? available[0];
+}

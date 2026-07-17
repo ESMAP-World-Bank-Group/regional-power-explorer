@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[32.62027,-3.77715],[36.00702,-7.64581]]},"properties":{"zone_a":"TZA_1","zone_b":"TZA_2","mw":5569,"status":"existing","label":"5,569 MW"}}]}

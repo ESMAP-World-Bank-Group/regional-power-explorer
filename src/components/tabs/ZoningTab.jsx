@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { FUEL_COLORS, FUEL_LABELS, getT } from '../../constants';
+import { FUEL_COLORS, FUEL_LABELS, getT, defaultNZones } from '../../constants';
 
 const ZONE_COLORS = ['#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f','#edc948','#b07aa1','#ff9da7','#9c755f','#bab0ac'];
 
@@ -63,7 +63,7 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
     fetch('/data/zones/index.json').then(r => r.json())
       .then(d => {
         setIndex(d);
-        if (d[iso]?.length && nZones == null) onSelectZones?.(d[iso][0]);
+        if (d[iso]?.length && nZones == null) onSelectZones?.(defaultNZones(d[iso]));
       })
       .catch(() => setIndex({}));
   }, [iso]); // eslint-disable-line react-hooks/exhaustive-deps

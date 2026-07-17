@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
@@ -1113,7 +1113,7 @@ export default function CountryPage() {
                     onClick={() => {
                       setZoneMode(mode);
                       if (mode === 'modeling' && !nZones && zonesIndex[iso]?.length) {
-                        setNZones(zonesIndex[iso][0]);
+                        setNZones(defaultNZones(zonesIndex[iso]));
                       }
                     }}
                     style={{
