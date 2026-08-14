@@ -39,6 +39,8 @@ by the scripts in `tools/`. When updating data:
 - Keep the **Data Sources** page (`src/pages/AboutPage.jsx`) in sync: every layer should
   have an accurate source, version, update date, coverage, and quality indicator.
 - Never commit API tokens or credentials (`config/api_tokens.ini` is git-ignored).
+  Copy `config/api_tokens.ini.example` to `config/api_tokens.ini` and fill in your
+  own values — the example file documents which key each pipeline expects.
 
 ## Code style
 
