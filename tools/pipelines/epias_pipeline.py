@@ -171,13 +171,17 @@ def _merge_stats(old: dict | None, new: dict) -> dict:
 
 
 def _recent_hourly(hourly: pd.Series, old_hourly: dict) -> dict:
-    """Raw hourly values for the last HOURLY_RETENTION_DAYS only. Falls back
-    to whatever was already saved if this run fetched nothing new enough."""
+    """Raw hourly values for the last HOURLY_RETENTION_DAYS only. Merges this
+    run's freshly fetched hours into whatever was already saved (new values
+    win on overlap) rather than replacing it outright — otherwise a run whose
+    fetch window doesn't reach up to "today" (e.g. a backfill for one older
+    month) would wipe out already-saved hours it didn't touch."""
     cutoff = pd.Timestamp.now(tz='UTC') - pd.Timedelta(days=HOURLY_RETENTION_DAYS)
-    recent = hourly[hourly.index >= cutoff] if len(hourly) else hourly
-    if recent.empty:
-        return old_hourly
-    return {t.isoformat(): round(v, 2) for t, v in recent.items()}
+    merged = dict(old_hourly)
+    if len(hourly):
+        recent = hourly[hourly.index >= cutoff]
+        merged.update({t.isoformat(): round(v, 2) for t, v in recent.items()})
+    return {t: v for t, v in merged.items() if pd.Timestamp(t) >= cutoff}
 
 
 def _build_series_block(old_block: dict, label: str, hourly: pd.Series) -> dict:
