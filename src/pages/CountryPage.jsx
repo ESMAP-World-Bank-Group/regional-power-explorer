@@ -366,6 +366,7 @@ export default function CountryPage() {
       map.addSource('zone-lines',        { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-corridors-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-centroids-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+      map.addSource('zone-outside',       { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
 
       const tv = getT(theme);
 
@@ -547,6 +548,50 @@ export default function CountryPage() {
           setSelFeature(null);
         }
       });
+
+      // ── Off-model areas ──────────────────────────────────────────────────────
+      // Parts of the country that belong to no dispatch zone because they sit
+      // outside the modelled electrical system (CASA: the KEGOC Western zone, the
+      // Afghan provinces off NEPS). Drawn grey and dashed under the zone layers so
+      // the hole in the zoning explains itself instead of reading as missing data.
+      // Loaded from <ISO>_<n>z_outside.geojson — countries without the file get an
+      // empty source and nothing is shown.
+      map.addLayer({
+        id: 'zone-outside-fill', type: 'fill', source: 'zone-outside',
+        layout: { visibility: 'none' },
+        paint: { 'fill-color': '#9a9a9a', 'fill-opacity': 0.18 },
+      });
+      map.addLayer({
+        id: 'zone-outside-border', type: 'line', source: 'zone-outside',
+        layout: { visibility: 'none' },
+        paint: { 'line-color': '#7a7a7a', 'line-width': 1, 'line-dasharray': [2, 1.5], 'line-opacity': 0.7 },
+      });
+      map.addLayer({
+        id: 'zone-outside-labels', type: 'symbol', source: 'zone-outside',
+        layout: {
+          visibility: 'none',
+          'text-field': ['get', 'zone_name'],
+          'text-size': 10,
+          'text-anchor': 'center',
+          'text-allow-overlap': false,
+        },
+        paint: {
+          'text-color': '#5a5a5a',
+          'text-halo-color': 'rgba(255,255,255,0.85)',
+          'text-halo-width': 1.5,
+        },
+      });
+      map.on('mouseenter', 'zone-outside-fill', e => {
+        map.getCanvas().style.cursor = 'pointer';
+        const { zone_name, zone_id, reason, area_km2 } = e.features[0].properties;
+        const km2 = area_km2 ? ` — ${Number(area_km2).toLocaleString()} km²` : '';
+        popup.setLngLat(e.lngLat)
+          .setHTML(`<b>${zone_name || zone_id}</b><br><span style="opacity:.75">Not modelled${km2}</span>`
+            + (reason ? `<br><span style="opacity:.6">${reason}</span>` : ''))
+          .addTo(map);
+      });
+      map.on('mousemove', 'zone-outside-fill', e => { popup.setLngLat(e.lngLat); });
+      map.on('mouseleave', 'zone-outside-fill', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
       // ── Zone overlay (fill + border + labels + interzone lines) ──────────────
       map.addLayer({
@@ -834,6 +879,7 @@ export default function CountryPage() {
     const map = mapRef.current;
     if (!map || !mapReadyRef.current || !map.getSource('zone-fills')) return;
     const ZONE_IDS  = ['zone-fills', 'zone-borders'];
+    const OUT_IDS   = ['zone-outside-fill', 'zone-outside-border', 'zone-outside-labels'];
     const ADMIN_IDS = ['admin1-fills', 'admin1-borders'];
 
     const showAdmin = zoneMode === 'admin';
@@ -842,7 +888,7 @@ export default function CountryPage() {
     }
 
     if (zoneMode !== 'modeling' || !nZones) {
-      for (const id of ZONE_IDS) {
+      for (const id of [...ZONE_IDS, ...OUT_IDS]) {
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
       }
       for (const id of ['zone-corridors-ex', 'zone-corridors-labels', 'zone-corridors-dots']) {
@@ -858,7 +904,8 @@ export default function CountryPage() {
       fetch(`/data/zones/${label}_zones.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`/data/zones/${label}_topo.json`).then(r => r.ok ? r.json() : []).catch(() => []),
       fetch(`/data/zones/${label}_corridors.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
-    ]).then(([zonesGJ, topo, corridorsGJ]) => {
+      fetch(`/data/zones/${label}_outside.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
+    ]).then(([zonesGJ, topo, corridorsGJ, outsideGJ]) => {
       if (!zonesGJ || !map.getSource('zone-fills')) return;
       zonesGJ.features.forEach((f, i) => { f.properties.color = COLORS[i % COLORS.length]; });
       map.getSource('zone-fills').setData(zonesGJ);
@@ -906,6 +953,17 @@ export default function CountryPage() {
 
       for (const id of ZONE_IDS) {
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'visible');
+      }
+
+      // Off-model areas: shown only where the file exists, so the other countries
+      // (fully covered by their zones) are untouched.
+      const hasOutside = !!outsideGJ?.features?.length;
+      if (map.getSource('zone-outside'))
+        map.getSource('zone-outside').setData(outsideGJ || emptyGJ);
+      for (const id of OUT_IDS) {
+        if (map.getLayer(id))
+          map.setLayoutProperty(id, 'visibility',
+            hasOutside && (id !== 'zone-outside-labels' || zoneLabelsOn) ? 'visible' : 'none');
       }
       if (map.getLayer('zone-labels'))
         map.setLayoutProperty('zone-labels', 'visibility', zoneLabelsOn ? 'visible' : 'none');

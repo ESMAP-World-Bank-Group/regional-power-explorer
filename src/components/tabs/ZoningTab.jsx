@@ -3,6 +3,16 @@ import { FUEL_COLORS, FUEL_LABELS, getT, defaultNZones } from '../../constants';
 
 const ZONE_COLORS = ['#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f','#edc948','#b07aa1','#ff9da7','#9c755f','#bab0ac'];
 
+// Where a zoning comes from, shown under the zone list. Not all zonings are built the
+// same way — some are clustered from OSM, others are the zones of an existing planning
+// model — so the note is data-driven: sources.json can override it per <ISO>_<n>z run.
+// This default describes the clustered runs, which is what most of them are.
+const DEFAULT_SOURCE = {
+  method:     'k-means clustering of OSM substations weighted by voltage and nearby population.',
+  boundaries: 'Zone boundaries are Voronoi polygons clipped to the country border.',
+  limits:     'Transfer limits are rough proxies from OSM line voltage — validate against TSO data.',
+};
+
 function pointInRing(pt, ring) {
   let inside = false;
   const [x, y] = pt;
@@ -56,6 +66,7 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
   const [subs,     setSubs]     = useState(null);
   const [lines,    setLines]    = useState(null);
   const [loading,  setLoading]  = useState(false);
+  const [sources,  setSources]  = useState(null);
 
   // Load zones index; default-select the first clustering so the map shows the
   // zone separation as soon as the tab is opened (controlled by the parent).
@@ -67,6 +78,13 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
       })
       .catch(() => setIndex({}));
   }, [iso]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Provenance of each zoning run, keyed by <ISO>_<n>z. Optional file: without it
+  // every run falls back to DEFAULT_SOURCE.
+  useEffect(() => {
+    fetch('/data/zones/sources.json').then(r => r.ok ? r.json() : null)
+      .then(setSources).catch(() => setSources(null));
+  }, []);
 
   // Load region plants + substations once
   useEffect(() => {
@@ -277,15 +295,16 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
         </div>
       )}
 
-      {/* Methodology note */}
+      {/* Methodology note — per-run when sources.json knows this one */}
       {zonesGJ && (
         <p style={{
           fontSize: '0.5rem', color: t.lblMuted, lineHeight: 1.6,
           margin: '10px 0 0', fontStyle: 'italic',
         }}>
-          k-means clustering of OSM substations weighted by voltage and nearby population.
-          Zone boundaries are Voronoi polygons clipped to the country border.
-          Transfer limits are rough proxies from OSM line voltage — validate against TSO data.
+          {(() => {
+            const s = sources?.[`${iso}_${nZones}z`] || sources?.default || DEFAULT_SOURCE;
+            return [s.method, s.boundaries, s.limits].filter(Boolean).join(' ');
+          })()}
         </p>
       )}
     </div>

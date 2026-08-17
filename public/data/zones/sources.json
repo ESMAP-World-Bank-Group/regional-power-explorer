@@ -1,0 +1,37 @@
+{
+  "AFG_5z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  },
+  "KAZ_2z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  },
+  "KGZ_2z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  },
+  "PAK_3z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  },
+  "TJK_2z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  },
+  "TKM_1z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  },
+  "UZB_1z": {
+    "method": "Zones of the EPM model itself (data_casa_2020): one zone per modelled node, no clustering.",
+    "boundaries": "Boundaries are the model's zone polygons (zones_zcmap.geojson), as used in the dispatch.",
+    "limits": "Corridor ratings are the model's own pTransferLimit for 2025, not an estimate; both values are shown when the two directions differ."
+  }
+}
