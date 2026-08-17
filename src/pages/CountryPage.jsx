@@ -21,18 +21,17 @@ const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit'
 const EDIT_BTN_PRIMARY = { background: '#4A8FCC', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' };
 const EDIT_BTN_GHOST = { background: 'none', color: '#5A6474', border: '1px solid #D5DBE2', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'inherit' };
 
-// Tab row font size — fits the longest label ("Supply & Trade", bold +
-// uppercase) to whatever width each tab actually gets, rather than a fixed
-// size that wraps once enough optional tabs (Market, Brief) are present.
-// TAB_GAP_PX/letter-spacing:0 below (vs. the previous 3px/0.5px) trade a
-// little breathing room for headroom on the font itself — reclaiming that
-// space pushed the safe max from ~7.3px to ~8.3px on a 7-tab row. width(px)
-// ≈ 8.06*fontPx + 7.75 was measured off the rendered (letter-spacing:0)
-// label; TAB_BORDER_PX + TAB_SAFETY_PX account for the button's own border
-// and cross-browser font-metric variance (verified against a real button
-// element, not just bare text).
+// Tab row font size — fits "Overview" (the longest label that must stay on
+// one line; bold + uppercase), NOT "Supply & Trade" — that one is allowed to
+// wrap to two lines (by choice: fitting it too caps every tab's text far
+// below what the row can otherwise support). width(px) ≈ 4.95*fontPx + 5.89
+// was measured off the rendered (letter-spacing:0) label; TAB_BORDER_PX +
+// TAB_SAFETY_PX account for the button's own border and cross-browser
+// font-metric variance (verified against real rendered buttons, including
+// that "Supply & Trade" wraps to exactly two lines and the icon+text
+// "Brief" button still fits on one, not just bare text measurements).
 const TAB_FONT_MIN_PX = 7.2;
-const TAB_FONT_MAX_PX = 10.35; // original size (0.48rem) + 2pt
+const TAB_FONT_MAX_PX = 13.02; // original size (0.48rem) + 4pt
 const TAB_GAP_PX = 2;
 const TAB_BORDER_PX = 2;
 const TAB_SAFETY_PX = 2;
@@ -41,7 +40,7 @@ function tabFontSizePx(panelWidth, tabCount) {
   const gaps = (tabCount - 1) * TAB_GAP_PX;
   const perTab = (panelWidth - headerPadding - gaps) / tabCount;
   const textBudget = perTab - TAB_BORDER_PX - TAB_SAFETY_PX;
-  const fit = (textBudget - 7.75) / 8.06;
+  const fit = (textBudget - 5.89) / 4.95;
   return Math.max(TAB_FONT_MIN_PX, Math.min(TAB_FONT_MAX_PX, fit));
 }
 
@@ -1507,8 +1506,8 @@ export default function CountryPage() {
               const active = activeTab === id;
               return (
                 <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
-                  flex: 1, fontSize: tabFontSize, letterSpacing: 0,
-                  textTransform: 'uppercase', fontFamily: 'inherit',
+                  flex: 1, fontSize: tabFontSize, letterSpacing: 0, lineHeight: 1.15,
+                  textTransform: 'uppercase', fontFamily: 'inherit', textAlign: 'center',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
                   border: `1px solid ${active ? t.panelBorder : 'rgba(128,160,192,0.18)'}`,
