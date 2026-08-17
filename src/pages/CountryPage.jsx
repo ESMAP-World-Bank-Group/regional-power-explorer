@@ -1479,7 +1479,7 @@ export default function CountryPage() {
               const active = activeTab === id;
               return (
                 <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
-                  flex: 1, fontSize: '0.48rem', letterSpacing: '0.5px',
+                  flex: 1, fontSize: 'calc(0.48rem + 2pt)', letterSpacing: '0.5px',
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1487,7 +1487,7 @@ export default function CountryPage() {
                   borderBottom: active ? `1px solid ${t.panel}` : `1px solid ${t.panelBorder}`,
                   backgroundColor: active ? t.panel : 'transparent',
                   color: active ? t.lbl : t.lblMuted,
-                  fontWeight: active ? 700 : 400,
+                  fontWeight: 700,
                   position: 'relative', zIndex: active ? 2 : 1,
                 }}>
                   {label}
@@ -1499,7 +1499,7 @@ export default function CountryPage() {
                 onClick={() => setNoteOpen(o => !o)}
                 title="Open sector briefing note"
                 style={{
-                  flex: 1, fontSize: '0.48rem', letterSpacing: '0.5px',
+                  flex: 1, fontSize: 'calc(0.48rem + 2pt)', letterSpacing: '0.5px',
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1507,7 +1507,7 @@ export default function CountryPage() {
                   borderBottom: noteOpen ? `1px solid ${t.panel}` : `1px solid ${t.panelBorder}`,
                   backgroundColor: noteOpen ? t.panel : 'transparent',
                   color: noteOpen ? '#2E75B6' : t.lblMuted,
-                  fontWeight: noteOpen ? 700 : 400,
+                  fontWeight: 700,
                   position: 'relative', zIndex: noteOpen ? 2 : 1,
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3,
                 }}
