@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "TJK_2z_corridors",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "zone_a": "TAJ_N", "zone_b": "TAJ_S", "mw": 1400, "status": "existing", "label": "1400 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 69.225012512988371, 39.793794377448805 ], [ 71.423598848919482, 38.243012676930292 ] ] } }
+]
+}

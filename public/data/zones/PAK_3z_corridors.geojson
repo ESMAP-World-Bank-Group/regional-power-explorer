@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "PAK_3z_corridors",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "zone_a": "PAK_KAR", "zone_b": "PAK_S", "mw": 700, "status": "existing", "label": "700 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 67.215686726239568, 25.044900098209524 ], [ 66.686646424258882, 27.685264270735033 ] ] } },
+{ "type": "Feature", "properties": { "zone_a": "PAK_N", "zone_b": "PAK_S", "mw": 1500, "status": "existing", "label": "1500 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 72.54454330400938, 32.704685964771443 ], [ 66.686646424258882, 27.685264270735033 ] ] } }
+]
+}

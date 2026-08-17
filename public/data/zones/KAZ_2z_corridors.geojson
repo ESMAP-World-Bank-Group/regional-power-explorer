@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "KAZ_2z_corridors",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "zone_a": "KAZ_N", "zone_b": "KAZ_S", "mw": 2300, "status": "existing", "label": "2300 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 69.816787598663836, 49.853544741441013 ], [ 70.706251847613302, 44.60308644766971 ] ] } }
+]
+}

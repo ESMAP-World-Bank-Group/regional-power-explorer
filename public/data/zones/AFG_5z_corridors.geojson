@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "AFG_5z_corridors",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "zone_a": "NEPS_AFG", "zone_b": "NEPS_TAJ", "mw": 400, "status": "existing", "label": "400 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 67.030803468704136, 32.909837689476284 ], [ 69.362484157981044, 36.758954300398543 ] ] } },
+{ "type": "Feature", "properties": { "zone_a": "NEPS_AFG", "zone_b": "NEPS_UZB", "mw": 400, "status": "existing", "label": "400 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 67.030803468704136, 32.909837689476284 ], [ 66.934796097488586, 36.143429480224896 ] ] } },
+{ "type": "Feature", "properties": { "zone_a": "NEPS_HERAT", "zone_b": "NEPS_TKM", "mw": 350, "status": "planned", "label": "350 MW (from 2030)" }, "geometry": { "type": "LineString", "coordinates": [ [ 62.127397368387669, 34.189903438396861 ], [ 64.639467143581413, 35.871900816888342 ] ] } },
+{ "type": "Feature", "properties": { "zone_a": "NEPS_TKM", "zone_b": "NEPS_UZB", "mw": 400, "status": "existing", "label": "400 MW" }, "geometry": { "type": "LineString", "coordinates": [ [ 64.639467143581413, 35.871900816888342 ], [ 66.934796097488586, 36.143429480224896 ] ] } }
+]
+}
