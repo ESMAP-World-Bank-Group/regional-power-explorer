@@ -10,6 +10,7 @@ import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
+import MarketTab from '../components/tabs/MarketTab';
 
 // Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
 // Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
@@ -142,6 +143,7 @@ export default function CountryPage() {
   const [zoneLabelsOn,       setZoneLabelsOn]       = useState(false);
   const [zoneCorridorsOn,    setZoneCorridorsOn]    = useState(false);
   const [hasNote,    setHasNote]    = useState(null);
+  const [marketAvailable, setMarketAvailable] = useState(null);
   const [noteOpen,   setNoteOpen]   = useState(false);
   const noteIframeRef = useRef(null);
   const [editOpen,   setEditOpen]   = useState(false);
@@ -251,6 +253,13 @@ export default function CountryPage() {
           fetch(`/data/notes/${iso}.html`, { method: 'HEAD' })
             .then(r => setHasNote(r.ok))
             .catch(() => setHasNote(false));
+          fetch(`/data/market/${iso}.json`, { method: 'HEAD' })
+            // Dev server (and some static hosts) return 200 + index.html for
+            // any unmatched path, so r.ok alone can't tell a real JSON file
+            // from the SPA fallback — only every country having a notes file
+            // kept that same flaw invisible in the hasNote check above.
+            .then(r => setMarketAvailable(r.ok && (r.headers.get('content-type') || '').includes('json')))
+            .catch(() => setMarketAvailable(false));
           return;
         }
       }
@@ -261,6 +270,7 @@ export default function CountryPage() {
     setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(false);
     setHasNote(null); setNoteOpen(false); setCountryReady(false);
+    setMarketAvailable(null);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
     track('country_view', { iso });
@@ -1462,6 +1472,7 @@ export default function CountryPage() {
               { id: 'overview', label: 'Overview' },
               { id: 'load',     label: 'Load' },
               { id: 'supply',   label: 'Supply & Trade' },
+              ...(marketAvailable ? [{ id: 'market', label: 'Market' }] : []),
               { id: 're',       label: 'RE' },
               { id: 'zoning',   label: 'Zones' },
             ].map(({ id, label }) => {
@@ -1566,6 +1577,10 @@ export default function CountryPage() {
 
           {activeTab === 'supply' && (
             <SupplyTab iso={iso} theme={theme} />
+          )}
+
+          {activeTab === 'market' && marketAvailable && (
+            <MarketTab iso={iso} theme={theme} />
           )}
 
           {activeTab === 're' && (
