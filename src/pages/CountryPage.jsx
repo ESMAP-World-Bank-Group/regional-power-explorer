@@ -21,28 +21,13 @@ const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit'
 const EDIT_BTN_PRIMARY = { background: '#4A8FCC', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' };
 const EDIT_BTN_GHOST = { background: 'none', color: '#5A6474', border: '1px solid #D5DBE2', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'inherit' };
 
-// Tab row font size — fits "Overview" (the longest label that must stay on
-// one line; bold + uppercase), NOT "Supply & Trade" — that one is allowed to
-// wrap to two lines (by choice: fitting it too caps every tab's text far
-// below what the row can otherwise support). width(px) ≈ 4.95*fontPx + 5.89
-// was measured off the rendered (letter-spacing:0) label; TAB_BORDER_PX +
-// TAB_SAFETY_PX account for the button's own border and cross-browser
-// font-metric variance (verified against real rendered buttons, including
-// that "Supply & Trade" wraps to exactly two lines and the icon+text
-// "Brief" button still fits on one, not just bare text measurements).
-const TAB_FONT_MIN_PX = 7.2;
-const TAB_FONT_MAX_PX = 13.02; // original size (0.48rem) + 4pt
+// Tab row typography — matches RegionPage's tab font exactly (0.58rem,
+// 1px letter-spacing, bold only when active). "Supply & Trade" wraps to two
+// centered lines at 7 tabs (e.g. Turkey, with Market + Brief both present);
+// every other label stays on one line at this size.
 const TAB_GAP_PX = 2;
-const TAB_BORDER_PX = 2;
-const TAB_SAFETY_PX = 2;
-function tabFontSizePx(panelWidth, tabCount) {
-  const headerPadding = 32; // '14px 16px 0' header — 16px each side
-  const gaps = (tabCount - 1) * TAB_GAP_PX;
-  const perTab = (panelWidth - headerPadding - gaps) / tabCount;
-  const textBudget = perTab - TAB_BORDER_PX - TAB_SAFETY_PX;
-  const fit = (textBudget - 5.89) / 4.95;
-  return Math.max(TAB_FONT_MIN_PX, Math.min(TAB_FONT_MAX_PX, fit));
-}
+const TAB_FONT_SIZE = '0.58rem';
+const TAB_LETTER_SPACING = '1px';
 
 function buildPlantFilter(fuel, mw, statusOff) {
   const clauses = [
@@ -1490,10 +1475,6 @@ export default function CountryPage() {
           </div>
 
           {/* ── Tab buttons ── */}
-          {(() => {
-            const tabCount = 5 + (marketAvailable ? 1 : 0) + (hasNote ? 1 : 0);
-            const tabFontSize = `${tabFontSizePx(panelWidth, tabCount).toFixed(2)}px`;
-            return (
           <div style={{ display: 'flex', gap: TAB_GAP_PX, marginBottom: 0 }}>
             {[
               { id: 'overview', label: 'Overview' },
@@ -1506,7 +1487,7 @@ export default function CountryPage() {
               const active = activeTab === id;
               return (
                 <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
-                  flex: 1, fontSize: tabFontSize, letterSpacing: 0, lineHeight: 1.15,
+                  flex: 1, fontSize: TAB_FONT_SIZE, letterSpacing: TAB_LETTER_SPACING, lineHeight: 1.15,
                   textTransform: 'uppercase', fontFamily: 'inherit', textAlign: 'center',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1514,7 +1495,7 @@ export default function CountryPage() {
                   borderBottom: active ? `1px solid ${t.panel}` : `1px solid ${t.panelBorder}`,
                   backgroundColor: active ? t.panel : 'transparent',
                   color: active ? t.lbl : t.lblMuted,
-                  fontWeight: 700,
+                  fontWeight: active ? 700 : 400,
                   position: 'relative', zIndex: active ? 2 : 1,
                 }}>
                   {label}
@@ -1526,7 +1507,7 @@ export default function CountryPage() {
                 onClick={() => setNoteOpen(o => !o)}
                 title="Open sector briefing note"
                 style={{
-                  flex: 1, fontSize: tabFontSize, letterSpacing: 0,
+                  flex: 1, fontSize: TAB_FONT_SIZE, letterSpacing: TAB_LETTER_SPACING,
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1534,7 +1515,7 @@ export default function CountryPage() {
                   borderBottom: noteOpen ? `1px solid ${t.panel}` : `1px solid ${t.panelBorder}`,
                   backgroundColor: noteOpen ? t.panel : 'transparent',
                   color: noteOpen ? '#2E75B6' : t.lblMuted,
-                  fontWeight: 700,
+                  fontWeight: noteOpen ? 700 : 400,
                   position: 'relative', zIndex: noteOpen ? 2 : 1,
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3,
                 }}
@@ -1549,8 +1530,6 @@ export default function CountryPage() {
               </button>
             )}
           </div>
-            );
-          })()}
           <div style={{ height: 1, backgroundColor: t.panelBorder, marginTop: -1, position: 'relative', zIndex: 0 }} />
         </div>
 
