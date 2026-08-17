@@ -5,8 +5,13 @@ import { ChartCaption, downloadBlob } from './chartHelpers';
 const SERIES = ['dam', 'idm', 'bpm'];
 const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010' };
 const GRANULARITIES = [['multiyear', 'Multi-year'], ['year', 'Year'], ['month', 'Month'], ['day', 'Day']];
+const SUB_TABS = [['prices', 'Prices']];
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+// X-axis title — what each granularity's chart points actually represent.
+const AXIS_TITLE = { multiyear: 'Year', year: 'Month', month: 'Day', day: 'Hour' };
 
 // All timestamps in the source JSON are UTC (fixed-width ISO strings with a
 // "+00:00" suffix, and the daily/monthly aggregates are grouped by UTC
@@ -15,6 +20,10 @@ const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 // how the underlying periods were actually bucketed.
 function monthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_ABBR[+m - 1]} ${y}`; }
 function dayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_ABBR[+m - 1]} ${y}`; }
+// Full-word versions, used in the chart tooltip (e.g. "4 August 2026").
+function fullMonthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_FULL[+m - 1]} ${y}`; }
+function fullDayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_FULL[+m - 1]} ${y}`; }
+function hourOfDayLabel(iso) { return `${+iso.slice(11, 13)}:00`; } // "04:00" -> "4:00"
 function hourTimestampLabel(iso) {
   const [datePart, timePart] = iso.split('T');
   const [y, m, d] = datePart.split('-');
@@ -105,25 +114,27 @@ function getChartPoints(block, granularity, period) {
   if (granularity === 'multiyear') {
     const years = Object.keys(block.yearly.mean).sort();
     return { mode: 'band', points: years.map(y => ({
-      label: y, mean: block.yearly.mean[y], min: block.yearly.min[y], max: block.yearly.max[y],
+      label: y, fullLabel: y, mean: block.yearly.mean[y], min: block.yearly.min[y], max: block.yearly.max[y],
     })) };
   }
   if (!period) return { mode: 'band', points: [] };
   if (granularity === 'year') {
     const months = Object.keys(block.monthly.mean).filter(k => k.startsWith(`${period}-`)).sort();
     return { mode: 'band', points: months.map(m => ({
-      label: MONTH_ABBR[+m.slice(5, 7) - 1], mean: block.monthly.mean[m], min: block.monthly.min[m], max: block.monthly.max[m],
+      label: MONTH_ABBR[+m.slice(5, 7) - 1], fullLabel: fullMonthLabel(m),
+      mean: block.monthly.mean[m], min: block.monthly.min[m], max: block.monthly.max[m],
     })) };
   }
   if (granularity === 'month') {
     const days = Object.keys(block.daily.mean).filter(k => k.startsWith(period)).sort();
     return { mode: 'band', points: days.map(d => ({
-      label: `${+d.slice(8, 10)}`, mean: block.daily.mean[d], min: block.daily.min[d], max: block.daily.max[d],
+      label: `${+d.slice(8, 10)}`, fullLabel: fullDayLabel(d),
+      mean: block.daily.mean[d], min: block.daily.min[d], max: block.daily.max[d],
     })) };
   }
   if (granularity === 'day') {
     const hours = Object.keys(block.hourly).filter(k => k.startsWith(period)).sort();
-    return { mode: 'line', points: hours.map(h => ({ label: h.slice(11, 13), value: block.hourly[h] })) };
+    return { mode: 'line', points: hours.map(h => ({ label: hourOfDayLabel(h), value: block.hourly[h] })) };
   }
   return { mode: 'band', points: [] };
 }
@@ -135,9 +146,9 @@ function KpiCard({ label, value, unit, sub, t }) {
       <div style={{ fontSize: '0.42rem', color: t.lblMuted, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 3 }}>
         {label}
       </div>
-      <div style={{ fontSize: '0.95rem', fontWeight: 700, color: t.lbl, lineHeight: 1 }}>
+      <div style={{ fontSize: '1.08rem', fontWeight: 700, color: t.lbl, lineHeight: 1 }}>
         {value}
-        {unit && <span style={{ fontSize: '0.48rem', fontWeight: 400, color: t.lblMuted, marginLeft: 3 }}>{unit}</span>}
+        {unit && <span style={{ fontSize: '0.5rem', fontWeight: 400, color: t.lblMuted, marginLeft: 3 }}>{unit}</span>}
       </div>
       <div style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 3 }}>{sub || ' '}</div>
     </div>
@@ -145,8 +156,8 @@ function KpiCard({ label, value, unit, sub, t }) {
 }
 
 // ── Chart: shaded min-max band + mean line (or a plain line for Day) ─────────
-function PriceChart({ mode, points, color, unit, t, hoveredI, onHover }) {
-  const W = 300, H = 168, pL = 42, pR = 8, pT = 10, pB = 22;
+function PriceChart({ mode, points, color, unit, t, hoveredI, onHover, xAxisLabel }) {
+  const W = 300, H = 168, pL = 42, pR = 8, pT = 10, pB = 30;
   const iW = W - pL - pR, iH = H - pT - pB;
   const n = points.length;
   if (!n) return null;
@@ -200,6 +211,12 @@ function PriceChart({ mode, points, color, unit, t, hoveredI, onHover }) {
         <text key={i} x={toX(i)} y={pT + iH + 9} textAnchor="middle" fill={hoveredI === i ? t.lbl : t.lblMuted} fontSize={5.8}>{p.label}</text>
       ))}
 
+      {xAxisLabel && (
+        <text x={pL + iW / 2} y={pT + iH + 19} textAnchor="middle" fill={t.lblMuted} fontSize={6} fontStyle="italic">
+          {xAxisLabel}
+        </text>
+      )}
+
       {points.map((p, i) => (
         <rect key={`h${i}`} x={pL + i * slotW} y={pT} width={slotW} height={iH}
           fill="transparent" style={{ cursor: 'default' }}
@@ -213,6 +230,7 @@ function PriceChart({ mode, points, color, unit, t, hoveredI, onHover }) {
 export default function MarketTab({ iso, theme }) {
   const t = getT(theme);
 
+  const [subTab,       setSubTab]      = useState('prices');
   const [data,        setData]        = useState(null);
   const [loading,      setLoading]     = useState(true);
   const [series,       setSeries]      = useState('dam');
@@ -261,8 +279,16 @@ export default function MarketTab({ iso, theme }) {
   const unit = data.unit || 'TL/MWh';
   const periodIdx = periods.indexOf(period);
 
+  const subTabBtnStyle = active => ({
+    fontSize: '0.5rem', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: active ? 700 : 400,
+    padding: '4px 10px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
+    border: `1px solid ${active ? t.lbl : t.panelBorder}`,
+    backgroundColor: active ? 'rgba(128,160,192,0.12)' : 'transparent',
+    color: active ? t.lbl : t.lblMuted,
+  });
+
   const toggleBtnStyle = active => ({
-    fontSize: '0.47rem', letterSpacing: '0.5px', textTransform: 'uppercase',
+    fontSize: '0.55rem', letterSpacing: '0.5px', textTransform: 'uppercase',
     padding: '3px 8px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
     border: `1px solid ${active ? 'rgba(74,143,204,0.6)' : t.panelBorder}`,
     backgroundColor: active ? 'rgba(74,143,204,0.1)' : 'transparent',
@@ -312,32 +338,38 @@ export default function MarketTab({ iso, theme }) {
     if (!tip) return null;
     const p = chartPoints.points[tip.i];
     if (!p) return null;
-    const TW = 116;
-    const left = tip.x > 150 ? tip.x - TW - 6 : tip.x + 8;
+    const TW = 148;
+    const left = tip.x > 170 ? tip.x - TW - 6 : tip.x + 8;
     const top  = Math.max(tip.y - 30, 0);
+    const dateLine = chartPoints.mode === 'band' ? p.fullLabel : (period ? fullDayLabel(period) : p.label);
+    const row = (label, value, muted) => (
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: muted ? '0.52rem' : '0.55rem', color: muted ? t.lblMuted : t.lbl }}>
+        <span style={{ color: t.lblMuted }}>{label}</span>
+        <span>{value} <span style={{ fontSize: '0.46rem', color: t.lblMuted }}>{unit}</span></span>
+      </div>
+    );
     return (
       <div style={{
         position: 'absolute', left, top, width: TW, pointerEvents: 'none', zIndex: 10,
         backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
         borderRadius: 4, padding: '6px 8px', boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
       }}>
-        <div style={{ fontWeight: 700, fontSize: '0.6rem', color: t.lbl, marginBottom: 3 }}>{p.label}</div>
+        <div style={{ fontWeight: 700, fontSize: '0.56rem', color: t.lbl, marginBottom: 3 }}>
+          <span style={{ fontWeight: 400, color: t.lblMuted }}>Date: </span>{dateLine}
+        </div>
         {chartPoints.mode === 'band' ? (
           <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: t.lbl }}>
-              <span style={{ color: t.lblMuted }}>Mean</span><span>{fmtPrice(p.mean)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.52rem', color: t.lblMuted }}>
-              <span>Min</span><span>{fmtPrice(p.min)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.52rem', color: t.lblMuted }}>
-              <span>Max</span><span>{fmtPrice(p.max)}</span>
-            </div>
+            {row('Mean', fmtPrice(p.mean))}
+            {row('Min', fmtPrice(p.min), true)}
+            {row('Max', fmtPrice(p.max), true)}
           </>
         ) : (
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: t.lbl }}>
-            <span style={{ color: t.lblMuted }}>Price</span><span>{fmtPrice(p.value)}</span>
-          </div>
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.52rem', color: t.lblMuted, marginBottom: 2 }}>
+              <span>Hour</span><span>{p.label}</span>
+            </div>
+            {row('Price', fmtPrice(p.value))}
+          </>
         )}
       </div>
     );
@@ -345,77 +377,96 @@ export default function MarketTab({ iso, theme }) {
 
   return (
     <div>
-      {/* Series toggle */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
-        {SERIES.map(s => (
-          <button key={s} title={data[s]?.label} onClick={() => { setSeries(s); setTip(null); }}
-            style={toggleBtnStyle(series === s)}>{s.toUpperCase()}</button>
-        ))}
-      </div>
-      {block?.label && (
-        <p style={{ fontSize: '0.52rem', color: t.lblMuted, margin: '0 0 10px' }}>{block.label}</p>
-      )}
-
-      {/* Granularity toggle */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
-        {GRANULARITIES.map(([g, lbl]) => (
-          <button key={g} onClick={() => { setGranularity(g); setTip(null); }}
-            style={toggleBtnStyle(granularity === g)}>{lbl}</button>
+      {/* Sub-tabs */}
+      <div style={{ display: 'flex', gap: 4, marginBottom: 12 }}>
+        {SUB_TABS.map(([id, lbl]) => (
+          <button key={id} onClick={() => setSubTab(id)} style={subTabBtnStyle(subTab === id)}>{lbl}</button>
         ))}
       </div>
 
-      {/* Period nav */}
-      {granularity !== 'multiyear' && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-          <button onClick={goPrev} disabled={periodIdx <= 0} style={navBtnStyle(periodIdx <= 0)}>‹</button>
-          <select
-            value={period ?? ''}
-            onChange={e => { setPeriod(e.target.value); setTip(null); }}
-            style={{
-              flex: 1, fontSize: '0.6rem', padding: '3px 6px', borderRadius: 4, fontFamily: 'inherit',
-              border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel, color: t.lbl, outline: 'none',
-            }}
-          >
-            {periods.map(p => <option key={p} value={p}>{periodOptionLabel(granularity, p)}</option>)}
-          </select>
-          <button onClick={goNext} disabled={periodIdx < 0 || periodIdx >= periods.length - 1}
-            style={navBtnStyle(periodIdx < 0 || periodIdx >= periods.length - 1)}>›</button>
-        </div>
+      {subTab === 'prices' && (
+        <>
+          {/* Series toggle — full dataset name, 2 lines, slightly narrower than the panel */}
+          <div style={{ display: 'flex', gap: 4, marginBottom: 10, width: '93%' }}>
+            {SERIES.map(s => {
+              const [line1, line2 = ''] = (data[s]?.label || s.toUpperCase()).split(' — ');
+              const active = series === s;
+              return (
+                <button key={s} onClick={() => { setSeries(s); setTip(null); }} style={{
+                  flex: 1, padding: '6px 4px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
+                  border: `1px solid ${active ? 'rgba(74,143,204,0.6)' : t.panelBorder}`,
+                  backgroundColor: active ? 'rgba(74,143,204,0.1)' : 'transparent',
+                  textAlign: 'center', lineHeight: 1.3,
+                }}>
+                  <div style={{ fontSize: '0.52rem', fontWeight: 700, color: active ? t.lbl : t.lblMuted }}>{line1}</div>
+                  <div style={{ fontSize: '0.44rem', fontWeight: 400, color: t.lblMuted, marginTop: 1 }}>{line2}</div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Granularity toggle */}
+          <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+            {GRANULARITIES.map(([g, lbl]) => (
+              <button key={g} onClick={() => { setGranularity(g); setTip(null); }}
+                style={toggleBtnStyle(granularity === g)}>{lbl}</button>
+            ))}
+          </div>
+
+          {/* Period nav */}
+          {granularity !== 'multiyear' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+              <button onClick={goPrev} disabled={periodIdx <= 0} style={navBtnStyle(periodIdx <= 0)}>‹</button>
+              <select
+                value={period ?? ''}
+                onChange={e => { setPeriod(e.target.value); setTip(null); }}
+                style={{
+                  flex: 1, fontSize: '0.6rem', padding: '3px 6px', borderRadius: 4, fontFamily: 'inherit',
+                  border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel, color: t.lbl, outline: 'none',
+                }}
+              >
+                {periods.map(p => <option key={p} value={p}>{periodOptionLabel(granularity, p)}</option>)}
+              </select>
+              <button onClick={goNext} disabled={periodIdx < 0 || periodIdx >= periods.length - 1}
+                style={navBtnStyle(periodIdx < 0 || periodIdx >= periods.length - 1)}>›</button>
+            </div>
+          )}
+
+          {/* KPI cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 14 }}>
+            <KpiCard label={kpi1Label} value={fmtPrice(stats?.avg)} unit={unit}
+              sub={stats ? `Min ${fmtPrice(stats.min)} · Max ${fmtPrice(stats.max)}` : 'No data'} t={t} />
+            <KpiCard label="Latest Price" value={fmtPrice(latestHourly?.value)} unit={unit}
+              sub={latestHourly ? hourTimestampLabel(latestHourly.ts) : 'No data'} t={t} />
+          </div>
+
+          {/* Chart */}
+          {noHourlyDetail ? (
+            <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '24px 8px', textAlign: 'center', lineHeight: 1.5 }}>
+              No hourly detail available for {dayLabel(period)} — outside the rolling 90-day window.
+              The average above is still accurate; only the hour-by-hour chart is unavailable.
+            </p>
+          ) : chartPoints.points.length ? (
+            <div ref={chartRef} style={{ position: 'relative' }}>
+              <PriceChart mode={chartPoints.mode} points={chartPoints.points} color={SERIES_COLOR[series]}
+                unit={unit} t={t} hoveredI={tip?.i ?? null} onHover={handleHover} xAxisLabel={AXIS_TITLE[granularity]} />
+              {tooltip}
+            </div>
+          ) : (
+            <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '12px 0' }}>No data for this period.</p>
+          )}
+
+          <ChartCaption source={data.source} t={t} />
+
+          {/* CSV download */}
+          <div style={{ marginTop: 16, borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12 }}>
+            <span style={{ fontSize: '0.47rem', letterSpacing: '2px', fontWeight: 700, color: t.lblMuted, textTransform: 'uppercase', display: 'block', marginBottom: 7 }}>
+              Export Data
+            </span>
+            <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} daily CSV</button>
+          </div>
+        </>
       )}
-
-      {/* KPI cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 14 }}>
-        <KpiCard label={kpi1Label} value={fmtPrice(stats?.avg)} unit={unit}
-          sub={stats ? `Min ${fmtPrice(stats.min)} · Max ${fmtPrice(stats.max)}` : 'No data'} t={t} />
-        <KpiCard label="Latest Price" value={fmtPrice(latestHourly?.value)} unit={unit}
-          sub={latestHourly ? hourTimestampLabel(latestHourly.ts) : 'No data'} t={t} />
-      </div>
-
-      {/* Chart */}
-      {noHourlyDetail ? (
-        <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '24px 8px', textAlign: 'center', lineHeight: 1.5 }}>
-          No hourly detail available for {dayLabel(period)} — outside the rolling 90-day window.
-          The average above is still accurate; only the hour-by-hour chart is unavailable.
-        </p>
-      ) : chartPoints.points.length ? (
-        <div ref={chartRef} style={{ position: 'relative' }}>
-          <PriceChart mode={chartPoints.mode} points={chartPoints.points} color={SERIES_COLOR[series]}
-            unit={unit} t={t} hoveredI={tip?.i ?? null} onHover={handleHover} />
-          {tooltip}
-        </div>
-      ) : (
-        <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '12px 0' }}>No data for this period.</p>
-      )}
-
-      <ChartCaption source={data.source} t={t} />
-
-      {/* CSV download */}
-      <div style={{ marginTop: 16, borderTop: `1px solid ${t.panelBorder}`, paddingTop: 12 }}>
-        <span style={{ fontSize: '0.47rem', letterSpacing: '2px', fontWeight: 700, color: t.lblMuted, textTransform: 'uppercase', display: 'block', marginBottom: 7 }}>
-          Export Data
-        </span>
-        <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} daily CSV</button>
-      </div>
     </div>
   );
 }
