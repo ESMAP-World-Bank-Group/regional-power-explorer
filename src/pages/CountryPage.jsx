@@ -128,7 +128,7 @@ export default function CountryPage() {
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
-  const [panelWidth,         setPanelWidth]         = useState(380);
+  const [panelWidth,         setPanelWidth]         = useState(440); // match RegionPage's default so the tab row doesn't start cramped
   const isDrRef   = useRef(false);
   const drStartX  = useRef(0);
   const drStartW  = useRef(0);
