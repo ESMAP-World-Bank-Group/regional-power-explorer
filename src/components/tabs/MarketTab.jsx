@@ -4,6 +4,7 @@ import { ChartCaption, downloadBlob } from './chartHelpers';
 
 const SERIES = ['dam', 'idm', 'bpm'];
 const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010' };
+const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the series color — stays out of the way
 const GRANULARITIES = [['multiyear', 'Multi-year'], ['year', 'Year'], ['month', 'Month'], ['day', 'Day']];
 const SUB_TABS = [['prices', 'Prices']];
 
@@ -171,23 +172,21 @@ function PriceChart({ mode, points, color, unit, t, hoveredI, onHover, xAxisLabe
   const toY = v => pT + iH - (v / axisMax) * iH;
   const toX = i => n === 1 ? pL + iW / 2 : pL + (i / (n - 1)) * iW;
   const slotW = iW / n;
+  // Bars sit centered in their own slot (matching the hover rects below);
+  // the Day line chart keeps the edge-to-edge toX spread instead.
+  const barW    = Math.max(slotW * 0.55, 1.5);
+  const barX    = i => pL + i * slotW + (slotW - barW) / 2;
+  const slotMid = i => pL + i * slotW + slotW / 2;
+  const xPos    = i => mode === 'band' ? slotMid(i) : toX(i);
 
-  let bandPath = null, meanPts = null, linePts = null;
-  if (mode === 'band') {
-    const top = points.map((p, i) => `${toX(i).toFixed(1)},${toY(p.max ?? p.mean).toFixed(1)}`);
-    const bot = [];
-    for (let i = n - 1; i >= 0; i--) {
-      const p = points[i];
-      bot.push(`${toX(i).toFixed(1)},${toY(p.min ?? p.mean).toFixed(1)}`);
-    }
-    bandPath = `M${top.join(' L')} L${bot.join(' L')} Z`;
-    meanPts = points.map((p, i) => p.mean != null ? `${toX(i).toFixed(1)},${toY(p.mean).toFixed(1)}` : null).filter(Boolean).join(' ');
-  } else {
+  let linePts = null;
+  if (mode !== 'band') {
     linePts = points.map((p, i) => p.value != null ? `${toX(i).toFixed(1)},${toY(p.value).toFixed(1)}` : null).filter(Boolean).join(' ');
   }
 
   const labelStep = n > 20 ? Math.ceil(n / 10) : n > 10 ? 2 : 1;
   const hlFill = t.isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+  const whiskerCapW = barW * 0.55;
 
   return (
     <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
@@ -203,12 +202,26 @@ function PriceChart({ mode, points, color, unit, t, hoveredI, onHover, xAxisLabe
 
       {hoveredI != null && <rect x={pL + hoveredI * slotW} y={pT} width={slotW} height={iH} fill={hlFill} />}
 
-      {mode === 'band' && bandPath && <path d={bandPath} fill={color} opacity={0.16} stroke="none" />}
-      {mode === 'band' && meanPts && <polyline points={meanPts} fill="none" stroke={color} strokeWidth={1.4} strokeLinejoin="round" strokeLinecap="round" />}
+      {mode === 'band' && points.map((p, i) => p.mean == null ? null : (
+        <rect key={`bar${i}`} x={barX(i)} y={toY(p.mean)} width={barW}
+          height={Math.max(pT + iH - toY(p.mean), 0.5)} fill={color} opacity={hoveredI === i ? 1 : 0.85} />
+      ))}
+      {mode === 'band' && points.map((p, i) => {
+        if (p.min == null || p.max == null) return null;
+        const cx = slotMid(i);
+        const yMin = toY(p.min), yMax = toY(p.max);
+        return (
+          <g key={`wh${i}`}>
+            <line x1={cx} x2={cx} y1={yMax} y2={yMin} stroke={WHISKER_COLOR} strokeWidth={0.7} />
+            <line x1={cx - whiskerCapW / 2} x2={cx + whiskerCapW / 2} y1={yMax} y2={yMax} stroke={WHISKER_COLOR} strokeWidth={0.7} />
+            <line x1={cx - whiskerCapW / 2} x2={cx + whiskerCapW / 2} y1={yMin} y2={yMin} stroke={WHISKER_COLOR} strokeWidth={0.7} />
+          </g>
+        );
+      })}
       {mode === 'line' && linePts && <polyline points={linePts} fill="none" stroke={color} strokeWidth={1.4} strokeLinejoin="round" strokeLinecap="round" />}
 
       {points.map((p, i) => i % labelStep === 0 && (
-        <text key={i} x={toX(i)} y={pT + iH + 9} textAnchor="middle" fill={hoveredI === i ? t.lbl : t.lblMuted} fontSize={5.8}>{p.label}</text>
+        <text key={i} x={xPos(i)} y={pT + iH + 9} textAnchor="middle" fill={hoveredI === i ? t.lbl : t.lblMuted} fontSize={5.8}>{p.label}</text>
       ))}
 
       {xAxisLabel && (
