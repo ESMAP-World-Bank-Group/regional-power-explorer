@@ -142,15 +142,15 @@ function getChartPoints(block, granularity, period) {
 // ── KPI card ──────────────────────────────────────────────────────────────────
 function KpiCard({ label, value, unit, sub, t }) {
   return (
-    <div style={{ padding: '7px 10px', borderRadius: 5, backgroundColor: t.cardBg, border: `1px solid ${t.cardBorder}` }}>
-      <div style={{ fontSize: '0.42rem', color: t.lblMuted, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 3 }}>
+    <div style={{ padding: '8px 10px', borderRadius: 5, backgroundColor: t.cardBg, border: `1px solid ${t.cardBorder}` }}>
+      <div style={{ fontSize: '0.5rem', color: t.lblMuted, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 4 }}>
         {label}
       </div>
       <div style={{ fontSize: '1.08rem', fontWeight: 700, color: t.lbl, lineHeight: 1 }}>
         {value}
-        {unit && <span style={{ fontSize: '0.5rem', fontWeight: 400, color: t.lblMuted, marginLeft: 3 }}>{unit}</span>}
+        {unit && <span style={{ fontSize: '0.56rem', fontWeight: 400, color: t.lblMuted, marginLeft: 3 }}>{unit}</span>}
       </div>
-      <div style={{ fontSize: '0.46rem', color: t.lblMuted, marginTop: 3 }}>{sub || ' '}</div>
+      <div style={{ fontSize: '0.54rem', color: t.lblMuted, marginTop: 4 }}>{sub || ' '}</div>
     </div>
   );
 }
@@ -279,11 +279,13 @@ export default function MarketTab({ iso, theme }) {
   const unit = data.unit || 'TL/MWh';
   const periodIdx = periods.indexOf(period);
 
+  // Underline-style sub-tabs (a tab strip, not standalone pill buttons) —
+  // reads as a tab set even with just one entry, and more (e.g.
+  // "Consumption") can be added to SUB_TABS without restyling.
   const subTabBtnStyle = active => ({
-    fontSize: '0.5rem', letterSpacing: '1px', textTransform: 'uppercase', fontWeight: active ? 700 : 400,
-    padding: '4px 10px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
-    border: `1px solid ${active ? t.lbl : t.panelBorder}`,
-    backgroundColor: active ? 'rgba(128,160,192,0.12)' : 'transparent',
+    fontSize: '0.56rem', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: active ? 700 : 400,
+    padding: '0 2px 7px', cursor: 'pointer', fontFamily: 'inherit',
+    background: 'none', border: 'none', borderBottom: `2px solid ${active ? 'rgba(74,143,204,0.9)' : 'transparent'}`,
     color: active ? t.lbl : t.lblMuted,
   });
 
@@ -378,7 +380,7 @@ export default function MarketTab({ iso, theme }) {
   return (
     <div>
       {/* Sub-tabs */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 12 }}>
+      <div style={{ display: 'flex', gap: 16, marginBottom: 14, borderBottom: `1px solid ${t.panelBorder}` }}>
         {SUB_TABS.map(([id, lbl]) => (
           <button key={id} onClick={() => setSubTab(id)} style={subTabBtnStyle(subTab === id)}>{lbl}</button>
         ))}
@@ -386,20 +388,20 @@ export default function MarketTab({ iso, theme }) {
 
       {subTab === 'prices' && (
         <>
-          {/* Series toggle — full dataset name, 2 lines, slightly narrower than the panel */}
-          <div style={{ display: 'flex', gap: 4, marginBottom: 10, width: '93%' }}>
+          {/* Series toggle — full dataset name, 2 lines, slightly narrower than the panel, centered */}
+          <div style={{ display: 'flex', gap: 4, width: '93%', margin: '0 auto 10px' }}>
             {SERIES.map(s => {
               const [line1, line2 = ''] = (data[s]?.label || s.toUpperCase()).split(' — ');
               const active = series === s;
               return (
                 <button key={s} onClick={() => { setSeries(s); setTip(null); }} style={{
-                  flex: 1, padding: '6px 4px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
+                  flex: 1, padding: '7px 4px', borderRadius: 3, cursor: 'pointer', fontFamily: 'inherit',
                   border: `1px solid ${active ? 'rgba(74,143,204,0.6)' : t.panelBorder}`,
                   backgroundColor: active ? 'rgba(74,143,204,0.1)' : 'transparent',
                   textAlign: 'center', lineHeight: 1.3,
                 }}>
-                  <div style={{ fontSize: '0.52rem', fontWeight: 700, color: active ? t.lbl : t.lblMuted }}>{line1}</div>
-                  <div style={{ fontSize: '0.44rem', fontWeight: 400, color: t.lblMuted, marginTop: 1 }}>{line2}</div>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: active ? t.lbl : t.lblMuted }}>{line1}</div>
+                  <div style={{ fontSize: '0.58rem', fontWeight: 400, color: t.lblMuted, marginTop: 2 }}>{line2}</div>
                 </button>
               );
             })}

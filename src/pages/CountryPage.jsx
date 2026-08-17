@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_MAX } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
@@ -136,7 +136,7 @@ export default function CountryPage() {
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
-  const [panelWidth,         setPanelWidth]         = useState(PANEL_WIDTH_MAX); // starts at max, same as RegionPage
+  const [panelWidth,         setPanelWidth]         = useState(PANEL_WIDTH_DEFAULT); // same starting size as RegionPage
   const isDrRef   = useRef(false);
   const drStartX  = useRef(0);
   const drStartW  = useRef(0);

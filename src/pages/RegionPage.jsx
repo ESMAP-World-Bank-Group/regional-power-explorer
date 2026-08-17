@@ -6,7 +6,7 @@ import { useTheme } from '../App';
 import {
   getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS,
   plantRadiusExpr, lcRadiusExpr, fuelColorExpr, PLANT_STATUSES, zoneColorExpr, adaptiveMinMw,
-  PANEL_WIDTH_MIN, PANEL_WIDTH_MAX,
+  PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX,
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CapacityChart from '../components/CapacityChart';
@@ -110,7 +110,7 @@ export default function RegionPage() {
   const [circleScale,     setCircleScale]     = useState(1.0);
   const [plantSource,     setPlantSource]     = useState('gem');
   const [mapReady,        setMapReady]        = useState(false);
-  const [panelWidth,      setPanelWidth]      = useState(PANEL_WIDTH_MAX);
+  const [panelWidth,      setPanelWidth]      = useState(PANEL_WIDTH_DEFAULT);
   const [selFeature,      setSelFeature]      = useState(null);
   const [activeTab,       setActiveTab]       = useState('overview');
   const [basemap,         setBasemap]         = useState('minimal');

@@ -165,11 +165,13 @@ export function toggleSatLabels(map, show, theme) {
   map.addLayer({ id: 'sat-labels', type: 'raster', source: 'sat-labels-tiles', paint: { 'raster-opacity': 0.9 } });
 }
 
-// Right-side detail panel (region + country pages) — draggable, starts at its
-// own max and can only be shrunk from there. Max = old 520px cap + 2cm
-// (@ 96 CSS px/in ÷ 2.54cm/in ≈ 37.8px/cm), rounded.
+// Right-side detail panel (region + country pages) — draggable. Opens at
+// PANEL_WIDTH_DEFAULT (old 520px cap + 2cm) and can be dragged smaller down
+// to PANEL_WIDTH_MIN, or bigger up to PANEL_WIDTH_MAX (default + a further
+// 4cm of headroom) — both cm figures @ 96 CSS px/in ÷ 2.54cm/in, rounded.
 export const PANEL_WIDTH_MIN = 220;
-export const PANEL_WIDTH_MAX = 596;
+export const PANEL_WIDTH_DEFAULT = 596;
+export const PANEL_WIDTH_MAX = 747;
 
 export const PLANT_STATUSES = ['operating', 'construction', 'planned'];
 
