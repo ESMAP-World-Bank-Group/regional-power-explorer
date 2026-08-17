@@ -263,7 +263,11 @@ export default function RegionPage() {
   // Country filter — reapply all plant filters when countriesOff changes
   useEffect(() => {
     const map = mapRef.current;
-    if (!map?.getLayer('plants-operating') || !region) return;
+    // map.getLayer() reads map.style internally, which is undefined until the
+    // map's 'load' event fires — calling it any earlier throws inside
+    // maplibre-gl itself (not something a null-check on `map` catches), which
+    // this effect can easily do since it also re-runs whenever `region` changes.
+    if (!map?.isStyleLoaded() || !map.getLayer('plants-operating') || !region) return;
     const visibleIsos = countriesOff.size > 0
       ? region.countries.map(c => c.iso).filter(iso => !countriesOff.has(iso))
       : null;
@@ -673,7 +677,7 @@ export default function RegionPage() {
   // ── Zone mode / refine toggle ─────────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
-    if (!map?.getLayer('region-zones-fill')) return;
+    if (!map?.isStyleLoaded() || !map.getLayer('region-zones-fill')) return;
     const showZones = mapMode === 'zones';
 
     if (showZones) {
