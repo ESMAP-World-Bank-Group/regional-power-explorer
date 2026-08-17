@@ -24,20 +24,24 @@ const EDIT_BTN_GHOST = { background: 'none', color: '#5A6474', border: '1px soli
 // Tab row font size — fits the longest label ("Supply & Trade", bold +
 // uppercase) to whatever width each tab actually gets, rather than a fixed
 // size that wraps once enough optional tabs (Market, Brief) are present.
-// width(px) ≈ 8.13*fontPx + 14.3 was measured directly off the rendered
-// label text; TAB_BORDER_PX + TAB_SAFETY_PX account for the button's own
-// border eating into that width and for cross-browser font-metric variance
-// (verified empirically against a real button element, not just bare text).
+// TAB_GAP_PX/letter-spacing:0 below (vs. the previous 3px/0.5px) trade a
+// little breathing room for headroom on the font itself — reclaiming that
+// space pushed the safe max from ~7.3px to ~8.3px on a 7-tab row. width(px)
+// ≈ 8.06*fontPx + 7.75 was measured off the rendered (letter-spacing:0)
+// label; TAB_BORDER_PX + TAB_SAFETY_PX account for the button's own border
+// and cross-browser font-metric variance (verified against a real button
+// element, not just bare text).
 const TAB_FONT_MIN_PX = 7.2;
 const TAB_FONT_MAX_PX = 10.35; // original size (0.48rem) + 2pt
+const TAB_GAP_PX = 2;
 const TAB_BORDER_PX = 2;
 const TAB_SAFETY_PX = 2;
 function tabFontSizePx(panelWidth, tabCount) {
   const headerPadding = 32; // '14px 16px 0' header — 16px each side
-  const gaps = (tabCount - 1) * 3;
+  const gaps = (tabCount - 1) * TAB_GAP_PX;
   const perTab = (panelWidth - headerPadding - gaps) / tabCount;
   const textBudget = perTab - TAB_BORDER_PX - TAB_SAFETY_PX;
-  const fit = (textBudget - 14.3) / 8.13;
+  const fit = (textBudget - 7.75) / 8.06;
   return Math.max(TAB_FONT_MIN_PX, Math.min(TAB_FONT_MAX_PX, fit));
 }
 
@@ -1491,7 +1495,7 @@ export default function CountryPage() {
             const tabCount = 5 + (marketAvailable ? 1 : 0) + (hasNote ? 1 : 0);
             const tabFontSize = `${tabFontSizePx(panelWidth, tabCount).toFixed(2)}px`;
             return (
-          <div style={{ display: 'flex', gap: 3, marginBottom: 0 }}>
+          <div style={{ display: 'flex', gap: TAB_GAP_PX, marginBottom: 0 }}>
             {[
               { id: 'overview', label: 'Overview' },
               { id: 'load',     label: 'Load' },
@@ -1503,7 +1507,7 @@ export default function CountryPage() {
               const active = activeTab === id;
               return (
                 <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
-                  flex: 1, fontSize: tabFontSize, letterSpacing: '0.5px',
+                  flex: 1, fontSize: tabFontSize, letterSpacing: 0,
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1523,7 +1527,7 @@ export default function CountryPage() {
                 onClick={() => setNoteOpen(o => !o)}
                 title="Open sector briefing note"
                 style={{
-                  flex: 1, fontSize: tabFontSize, letterSpacing: '0.5px',
+                  flex: 1, fontSize: tabFontSize, letterSpacing: 0,
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
