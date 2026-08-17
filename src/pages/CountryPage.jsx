@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_MAX } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
@@ -20,6 +20,26 @@ const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color:
 const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '0.72rem', padding: '6px 8px', borderRadius: 4, border: '1px solid #D5DBE2', color: '#1B2A4A', resize: 'vertical' };
 const EDIT_BTN_PRIMARY = { background: '#4A8FCC', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' };
 const EDIT_BTN_GHOST = { background: 'none', color: '#5A6474', border: '1px solid #D5DBE2', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'inherit' };
+
+// Tab row font size — fits the longest label ("Supply & Trade", bold +
+// uppercase) to whatever width each tab actually gets, rather than a fixed
+// size that wraps once enough optional tabs (Market, Brief) are present.
+// width(px) ≈ 8.13*fontPx + 14.3 was measured directly off the rendered
+// label text; TAB_BORDER_PX + TAB_SAFETY_PX account for the button's own
+// border eating into that width and for cross-browser font-metric variance
+// (verified empirically against a real button element, not just bare text).
+const TAB_FONT_MIN_PX = 7.2;
+const TAB_FONT_MAX_PX = 10.35; // original size (0.48rem) + 2pt
+const TAB_BORDER_PX = 2;
+const TAB_SAFETY_PX = 2;
+function tabFontSizePx(panelWidth, tabCount) {
+  const headerPadding = 32; // '14px 16px 0' header — 16px each side
+  const gaps = (tabCount - 1) * 3;
+  const perTab = (panelWidth - headerPadding - gaps) / tabCount;
+  const textBudget = perTab - TAB_BORDER_PX - TAB_SAFETY_PX;
+  const fit = (textBudget - 14.3) / 8.13;
+  return Math.max(TAB_FONT_MIN_PX, Math.min(TAB_FONT_MAX_PX, fit));
+}
 
 function buildPlantFilter(fuel, mw, statusOff) {
   const clauses = [
@@ -128,7 +148,7 @@ export default function CountryPage() {
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
-  const [panelWidth,         setPanelWidth]         = useState(440); // match RegionPage's default so the tab row doesn't start cramped
+  const [panelWidth,         setPanelWidth]         = useState(PANEL_WIDTH_MAX); // starts at max, same as RegionPage
   const isDrRef   = useRef(false);
   const drStartX  = useRef(0);
   const drStartW  = useRef(0);
@@ -1032,7 +1052,7 @@ export default function CountryPage() {
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
-      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
@@ -1467,6 +1487,10 @@ export default function CountryPage() {
           </div>
 
           {/* ── Tab buttons ── */}
+          {(() => {
+            const tabCount = 5 + (marketAvailable ? 1 : 0) + (hasNote ? 1 : 0);
+            const tabFontSize = `${tabFontSizePx(panelWidth, tabCount).toFixed(2)}px`;
+            return (
           <div style={{ display: 'flex', gap: 3, marginBottom: 0 }}>
             {[
               { id: 'overview', label: 'Overview' },
@@ -1479,7 +1503,7 @@ export default function CountryPage() {
               const active = activeTab === id;
               return (
                 <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
-                  flex: 1, fontSize: 'calc(0.48rem + 2pt)', letterSpacing: '0.5px',
+                  flex: 1, fontSize: tabFontSize, letterSpacing: '0.5px',
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1499,7 +1523,7 @@ export default function CountryPage() {
                 onClick={() => setNoteOpen(o => !o)}
                 title="Open sector briefing note"
                 style={{
-                  flex: 1, fontSize: 'calc(0.48rem + 2pt)', letterSpacing: '0.5px',
+                  flex: 1, fontSize: tabFontSize, letterSpacing: '0.5px',
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1522,6 +1546,8 @@ export default function CountryPage() {
               </button>
             )}
           </div>
+            );
+          })()}
           <div style={{ height: 1, backgroundColor: t.panelBorder, marginTop: -1, position: 'relative', zIndex: 0 }} />
         </div>
 

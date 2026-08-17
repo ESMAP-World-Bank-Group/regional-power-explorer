@@ -6,6 +6,7 @@ import { useTheme } from '../App';
 import {
   getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS,
   plantRadiusExpr, lcRadiusExpr, fuelColorExpr, PLANT_STATUSES, zoneColorExpr, adaptiveMinMw,
+  PANEL_WIDTH_MIN, PANEL_WIDTH_MAX,
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CapacityChart from '../components/CapacityChart';
@@ -109,7 +110,7 @@ export default function RegionPage() {
   const [circleScale,     setCircleScale]     = useState(1.0);
   const [plantSource,     setPlantSource]     = useState('gem');
   const [mapReady,        setMapReady]        = useState(false);
-  const [panelWidth,      setPanelWidth]      = useState(440);
+  const [panelWidth,      setPanelWidth]      = useState(PANEL_WIDTH_MAX);
   const [selFeature,      setSelFeature]      = useState(null);
   const [activeTab,       setActiveTab]       = useState('overview');
   const [basemap,         setBasemap]         = useState('minimal');
@@ -1005,7 +1006,7 @@ export default function RegionPage() {
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
-      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
