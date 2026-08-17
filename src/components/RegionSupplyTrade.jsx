@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { getT, FUEL_COLORS, COUNTRY_ZONE_COLORS } from '../constants';
+import ChartCaption from './ChartCaption';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 const num = v => (Number.isFinite(v) ? v : 0);   // defensive: never NaN/Infinity
@@ -84,34 +85,59 @@ function aggregateSupply(supplies, key) {
   const entries = Object.entries(fuels)
     .filter(([, a]) => a.some(v => v > 0))
     .sort(([, a], [, b]) => b.reduce((s, v) => s + v, 0) - a.reduce((s, v) => s + v, 0));
-  return { years, fuels: Object.fromEntries(entries), demand: hasDemand ? demand : null, unit, nMembers: members.length, window: [start, end] };
+  // Distinct upstream sources across contributing members — a region chart can
+  // mix OWID/Ember with national statistics, and the caption must say so.
+  const sources = [...new Set(members.map(s => s[key].source).filter(Boolean))];
+  return { years, fuels: Object.fromEntries(entries), demand: hasDemand ? demand : null, unit, nMembers: members.length, window: [start, end], sources };
 }
 
 function aggregateNetTrade(tradeByIso, members) {
   // Members with usable bilateral flows
   const have = [];
+  // Members absent from the chart, split by reason. "isolated" = no
+  // interconnection at all (a real zero); "unreported" = interconnected but no
+  // usable series in the source. Conflating the two would let a reader conclude
+  // that a country does not trade when in fact nobody declared its flows.
+  const isolated = [], unreported = [];
   members.forEach(({ iso, name }, i) => {
     const d = tradeByIso[iso];
-    if (!d || d.status) return;
+    if (!d) { unreported.push(iso); return; }
+    if (d.status) { isolated.push(iso); return; }
     const imp = d.imports || {}, exp = d.exports || {};
-    if (!Object.keys(imp).length && !Object.keys(exp).length) return;
+    if (!Object.keys(imp).length && !Object.keys(exp).length) { unreported.push(iso); return; }
     const net = {};
     d.years.forEach((Y, idx) => {
       const im = Object.values(imp).reduce((s, a) => s + num(a[idx]), 0);
       const ex = Object.values(exp).reduce((s, a) => s + num(a[idx]), 0);
       net[Y] = im - ex;                       // >0 net importer, <0 net exporter
     });
-    have.push({ iso, name, net, color: countryColor(iso, i), years: d.years });
+    have.push({ iso, name, net, color: countryColor(iso, i), years: d.years, source: d.source });
   });
   if (!have.length) return null;
+  const sources = [...new Set(have.map(r => r.source).filter(Boolean))];
   // Strict common window across members that have data → no jump.
   const start = Math.max(...have.map(r => r.years[0]));
   const end   = Math.min(...have.map(r => r.years[r.years.length - 1]));
-  if (start > end) return { years: [], rows: [], nMembers: have.length, window: null };
+  if (start > end) return { years: [], rows: [], nMembers: have.length, window: null, sources, isolated, unreported };
   const years = [];
   for (let y = start; y <= end; y++) years.push(y);
   const rows = have.map(({ iso, name, net, color }) => ({ iso, name, color, net }));
-  return { years, rows, nMembers: have.length, window: [start, end] };
+  return { years, rows, nMembers: have.length, window: [start, end], sources, isolated, unreported };
+}
+
+// Spells out which members are missing and why, so an absent country is never
+// read as a country that does not trade. Interconnectors between two unreported
+// members (e.g. OMVS, CLSG in West Africa) are invisible on this chart.
+function missingNote(net) {
+  const bits = [];
+  if (net.unreported?.length) {
+    bits.push(`No usable series for ${net.unreported.join(', ')} — absent from the chart, `
+            + 'which is not the same as no trade: flows between two such members do not appear at all');
+  }
+  if (net.isolated?.length) {
+    bits.push(`${net.isolated.join(', ')} ${net.isolated.length > 1 ? 'have' : 'has'} no cross-border interconnection`);
+  }
+  return bits.length ? bits.join('. ') + '.' : '';
 }
 
 // ── hover wrapper + tooltip ───────────────────────────────────────────────────
@@ -470,6 +496,7 @@ export default function RegionSupplyTrade({ region, theme }) {
               Common years {supplySec.window[0]}–{supplySec.window[1]} · {supplySec.nMembers}/{memberCount} countries with data
               {supplySec.demand ? ' · dashed line = electricity demand' : ''}. Window kept identical for all members to avoid coverage jumps.
             </p>
+            <ChartCaption sources={supplySec.sources} t={t} />
           </>
         ) : (
           <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>
@@ -498,6 +525,7 @@ export default function RegionSupplyTrade({ region, theme }) {
               Net imports (imports − exports) per member. Above zero = net importer, below = net exporter.
               Common years {net.window[0]}–{net.window[1]} · {net.nMembers}/{memberCount} countries with data (window kept identical for all to avoid jumps).
             </p>
+            <ChartCaption sources={net.sources} t={t} extra={missingNote(net)} />
           </>
         ) : (
           <p style={{ fontSize: '0.7rem', color: t.lblMuted, fontStyle: 'italic' }}>
