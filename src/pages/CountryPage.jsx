@@ -3,13 +3,14 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
+import MarketTab from '../components/tabs/MarketTab';
 
 // Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
 // Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
@@ -19,6 +20,14 @@ const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color:
 const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '0.72rem', padding: '6px 8px', borderRadius: 4, border: '1px solid #D5DBE2', color: '#1B2A4A', resize: 'vertical' };
 const EDIT_BTN_PRIMARY = { background: '#4A8FCC', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' };
 const EDIT_BTN_GHOST = { background: 'none', color: '#5A6474', border: '1px solid #D5DBE2', borderRadius: 4, padding: '6px 14px', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'inherit' };
+
+// Tab row typography — matches RegionPage's tab font exactly (0.58rem,
+// 1px letter-spacing, bold only when active). "Supply & Trade" wraps to two
+// centered lines at 7 tabs (e.g. Turkey, with Market + Brief both present);
+// every other label stays on one line at this size.
+const TAB_GAP_PX = 2;
+const TAB_FONT_SIZE = '0.58rem';
+const TAB_LETTER_SPACING = '1px';
 
 function buildPlantFilter(fuel, mw, statusOff) {
   const clauses = [
@@ -127,7 +136,7 @@ export default function CountryPage() {
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
-  const [panelWidth,         setPanelWidth]         = useState(380);
+  const [panelWidth,         setPanelWidth]         = useState(PANEL_WIDTH_DEFAULT); // same starting size as RegionPage
   const isDrRef   = useRef(false);
   const drStartX  = useRef(0);
   const drStartW  = useRef(0);
@@ -142,6 +151,7 @@ export default function CountryPage() {
   const [zoneLabelsOn,       setZoneLabelsOn]       = useState(false);
   const [zoneCorridorsOn,    setZoneCorridorsOn]    = useState(false);
   const [hasNote,    setHasNote]    = useState(null);
+  const [marketAvailable, setMarketAvailable] = useState(null);
   const [noteOpen,   setNoteOpen]   = useState(false);
   const noteIframeRef = useRef(null);
   const [editOpen,   setEditOpen]   = useState(false);
@@ -251,6 +261,13 @@ export default function CountryPage() {
           fetch(`/data/notes/${iso}.html`, { method: 'HEAD' })
             .then(r => setHasNote(r.ok))
             .catch(() => setHasNote(false));
+          fetch(`/data/market/${iso}.json`, { method: 'HEAD' })
+            // Dev server (and some static hosts) return 200 + index.html for
+            // any unmatched path, so r.ok alone can't tell a real JSON file
+            // from the SPA fallback — only every country having a notes file
+            // kept that same flaw invisible in the hasNote check above.
+            .then(r => setMarketAvailable(r.ok && (r.headers.get('content-type') || '').includes('json')))
+            .catch(() => setMarketAvailable(false));
           return;
         }
       }
@@ -261,6 +278,7 @@ export default function CountryPage() {
     setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null); setCountryCenter(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(false);
     setHasNote(null); setNoteOpen(false); setCountryReady(false);
+    setMarketAvailable(null);
     mapReadyRef.current = false;
     countryFeatureRef.current = null;
     track('country_view', { iso });
@@ -1080,7 +1098,7 @@ export default function CountryPage() {
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
-      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(220, Math.min(520, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
@@ -1515,19 +1533,20 @@ export default function CountryPage() {
           </div>
 
           {/* ── Tab buttons ── */}
-          <div style={{ display: 'flex', gap: 3, marginBottom: 0 }}>
+          <div style={{ display: 'flex', gap: TAB_GAP_PX, marginBottom: 0 }}>
             {[
               { id: 'overview', label: 'Overview' },
               { id: 'load',     label: 'Load' },
               { id: 'supply',   label: 'Supply & Trade' },
+              ...(marketAvailable ? [{ id: 'market', label: 'Market' }] : []),
               { id: 're',       label: 'RE' },
               { id: 'zoning',   label: 'Zones' },
             ].map(({ id, label }) => {
               const active = activeTab === id;
               return (
                 <button key={id} onClick={() => { setActiveTab(id); track('tab_change', { tab: id, iso }); }} style={{
-                  flex: 1, fontSize: '0.48rem', letterSpacing: '0.5px',
-                  textTransform: 'uppercase', fontFamily: 'inherit',
+                  flex: 1, fontSize: TAB_FONT_SIZE, letterSpacing: TAB_LETTER_SPACING, lineHeight: 1.15,
+                  textTransform: 'uppercase', fontFamily: 'inherit', textAlign: 'center',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
                   border: `1px solid ${active ? t.panelBorder : 'rgba(128,160,192,0.18)'}`,
@@ -1546,7 +1565,7 @@ export default function CountryPage() {
                 onClick={() => setNoteOpen(o => !o)}
                 title="Open sector briefing note"
                 style={{
-                  flex: 1, fontSize: '0.48rem', letterSpacing: '0.5px',
+                  flex: 1, fontSize: TAB_FONT_SIZE, letterSpacing: TAB_LETTER_SPACING,
                   textTransform: 'uppercase', fontFamily: 'inherit',
                   padding: '4px 0', borderRadius: '3px 3px 0 0',
                   cursor: 'pointer',
@@ -1624,6 +1643,10 @@ export default function CountryPage() {
 
           {activeTab === 'supply' && (
             <SupplyTab iso={iso} theme={theme} />
+          )}
+
+          {activeTab === 'market' && marketAvailable && (
+            <MarketTab iso={iso} theme={theme} />
           )}
 
           {activeTab === 're' && (

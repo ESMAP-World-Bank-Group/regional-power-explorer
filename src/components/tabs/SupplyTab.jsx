@@ -1,14 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { FUEL_COLORS, getT } from '../../constants';
 import ChartCaption from '../ChartCaption';
-
-function downloadBlob(content, filename, type = 'application/octet-stream') {
-  const blob = new Blob([content], { type });
-  const url  = URL.createObjectURL(blob);
-  const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
+import { downloadBlob } from './chartHelpers';
 
 // ── Chart palette (blue-teal-amber) ──────────────────────────────────────────
 const P = {

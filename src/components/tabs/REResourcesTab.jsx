@@ -72,8 +72,8 @@ function LineChart({ data, color, yUnit, t }) {
           return (
             <g key={i}>
               <line x1={pL} y1={y} x2={pL + iW} y2={y}
-                stroke={t.panelBorder} strokeWidth={0.5} strokeDasharray="2,2" />
-              <text x={pL - 2} y={y + 3} textAnchor="end" fill={t.lblMuted} fontSize={6.5}>
+                stroke={t.panelBorder} strokeWidth={0.26} strokeDasharray="2,2" />
+              <text x={pL - 2} y={y + 3} textAnchor="end" fill={t.lblMuted} fontSize={4.2}>
                 {v.toFixed(1)}
               </text>
             </g>
@@ -81,19 +81,19 @@ function LineChart({ data, color, yUnit, t }) {
         })}
         <polygon points={fill} fill={color} opacity={0.12} />
         <polyline points={pts} fill="none" stroke={color}
-          strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
+          strokeWidth={0.8} strokeLinejoin="round" strokeLinecap="round" />
         {data.map((v, i) => (
-          <circle key={i} cx={toX(i)} cy={toY(v)} r={2} fill={color} />
+          <circle key={i} cx={toX(i)} cy={toY(v)} r={1.3} fill={color} />
         ))}
         {[0, 3, 6, 9, 11].map(i => (
-          <text key={i} x={toX(i)} y={H - 4} textAnchor="middle" fill={t.lblMuted} fontSize={7}>
+          <text key={i} x={toX(i)} y={H - 4} textAnchor="middle" fill={t.lblMuted} fontSize={3.75}>
             {MONTH_LABELS[i]}
           </text>
         ))}
         {/* Y unit rotated label */}
         <text
           transform={`translate(8, ${pT + iH / 2}) rotate(-90)`}
-          textAnchor="middle" fill={t.lblMuted} fontSize={6}
+          textAnchor="middle" fill={t.lblMuted} fontSize={3.9}
         >
           {yUnit}
         </text>

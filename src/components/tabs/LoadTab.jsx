@@ -136,32 +136,32 @@ function TrendChart({ historical, projected, t }) {
         return (
           <g key={v}>
             <line x1={pL} y1={y} x2={pL + iW} y2={y}
-              stroke={t.panelBorder} strokeWidth={0.5} strokeDasharray="2,2" />
-            <text x={pL - 2} y={y + 3} textAnchor="end" fill={t.lblMuted} fontSize={6.5}>
+              stroke={t.panelBorder} strokeWidth={0.26} strokeDasharray="2,2" />
+            <text x={pL - 2} y={y + 3} textAnchor="end" fill={t.lblMuted} fontSize={4.2}>
               {fmtTWh(v)}
             </text>
           </g>
         );
       })}
       <text transform={`translate(8, ${pT + iH / 2}) rotate(-90)`}
-        textAnchor="middle" fill={t.lblMuted} fontSize={6}>TWh/yr</text>
+        textAnchor="middle" fill={t.lblMuted} fontSize={3.9}>TWh/yr</text>
       <polyline points={histPts} fill="none" stroke="#3887C4"
-        strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
+        strokeWidth={0.8} strokeLinejoin="round" strokeLinecap="round" />
       {projPts && (
         <>
           <polyline points={projPts} fill="none" stroke="#3887C4"
-            strokeWidth={1.4} strokeDasharray="4,3" strokeLinejoin="round"
+            strokeWidth={0.75} strokeDasharray="4,3" strokeLinejoin="round"
             strokeLinecap="round" opacity={0.55} />
           {midProjVal != null && (
             <text x={toX(midProjYear)} y={toY(midProjVal) - 5}
-              textAnchor="middle" fill={t.lblMuted} fontSize={6} fontStyle="italic">
+              textAnchor="middle" fill={t.lblMuted} fontSize={3.9} fontStyle="italic">
               projected
             </text>
           )}
         </>
       )}
       {[minYear, Math.round((minYear + maxYear) / 2), maxYear].map(yr => (
-        <text key={yr} x={toX(yr)} y={H - 2} textAnchor="middle" fill={t.lblMuted} fontSize={7}>
+        <text key={yr} x={toX(yr)} y={H - 2} textAnchor="middle" fill={t.lblMuted} fontSize={3.75}>
           {yr}
         </text>
       ))}
@@ -185,9 +185,9 @@ function ProfileChart({ profile, color, t }) {
     <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
       <polygon points={fill} fill={color} opacity={0.12} />
       <polyline points={pts} fill="none" stroke={color}
-        strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" />
+        strokeWidth={0.8} strokeLinejoin="round" strokeLinecap="round" />
       {[0, 6, 12, 18, 23].map(h => (
-        <text key={h} x={toX(h)} y={H - 3} textAnchor="middle" fill={t.lblMuted} fontSize={7}>
+        <text key={h} x={toX(h)} y={H - 3} textAnchor="middle" fill={t.lblMuted} fontSize={3.75}>
           {h}h
         </text>
       ))}

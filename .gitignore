@@ -17,6 +17,7 @@ data-source/cache/
 data-source/*.csv
 data-source/gem/
 config/api_tokens.ini
+.eptr2-tgt
 
 # Raw source inputs — kept out of the public repo. Raw downloads (national
 # reports, energy balances, API dumps…) belong in the private data store;

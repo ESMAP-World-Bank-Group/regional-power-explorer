@@ -1,0 +1,14 @@
+# Setup:
+#   1. Copy this file within the same folder (/config), and rename the
+#      copy from 'api_tokens.ini.example' to 'api_tokens.ini'.
+#   2. Fill in the username and password below — ask the team for these,
+#      they're shared credentials, not personal ones.
+# Nothing else needs to change. 
+# This `api_tokens.ini.example`file should stay as it is — you don't need to delete it.
+#
+# 'api_tokens.ini' is gitignored, so it will never be committed or shared
+# publicly on GitHub — this keeps the credentials safe.
+
+[api_tokens]
+epias_username = your_epias_username_here
+epias_password = your_epias_password_here

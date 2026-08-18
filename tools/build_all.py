@@ -21,6 +21,8 @@ Pipelines:
   AZE     — SSC XLS + CSV -> supply/AZE.json + trade/AZE.json
   GEO     — ESCO PDFs + TYNDP xlsx -> supply/GEO.json
   ARM     — OWID/Ember + IEA/Armstat + ESCO PDFs -> supply/ARM.json + trade/ARM.json
+  EPIAS   — EPIAS Transparency Platform (eptr2) -> market/TUR.json
+            Requires [api_tokens] epias_username/epias_password in config/api_tokens.ini
   OWID    — OWID/Ember CSV -> supply/{ISO3}.json for any country list
             Default countries: KAZ UZB KGZ TJK TKM
   UZB     — SIAT JSONs -> enriches supply/UZB.json with capacity (MW)
@@ -38,6 +40,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from pipelines import (
     tur_pipeline,
+    epias_pipeline,
     aze_pipeline,
     geo_pipeline,
     arm_pipeline,
@@ -58,6 +61,9 @@ if __name__ == '__main__':
         if not ca_only:
             print('=== TUR pipeline ===')
             tur_pipeline.run()
+            print()
+            print('=== EPIAS pipeline (TUR market prices) ===')
+            epias_pipeline.run()
             print()
             print('=== AZE pipeline ===')
             aze_pipeline.run()
