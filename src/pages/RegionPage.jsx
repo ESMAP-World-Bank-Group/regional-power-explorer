@@ -13,7 +13,7 @@ import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
 import MetaRegionPage from './MetaRegionPage';
-import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, regionFilter, raiseBoundaries } from '../utils/basemap';
+import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, regionFilter, addRegionCoast, raiseBoundaries } from '../utils/basemap';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -363,6 +363,8 @@ export default function RegionPage() {
       map.addLayer({ id: 'region-border', type: 'line', source: 'countries',
         filter: ['in', ['get', 'ISO_A3'], ['literal', isos]],
         paint: { 'line-color': hl.border, 'line-width': hl.borderW, 'line-opacity': 0.9 } });
+      addRegionCoast(map, { areas: region.non_determined, color: hl.border,
+        width: hl.borderW, opacity: 0.9 });
 
 
       // Preferred zones overlay (hidden until mapMode === 'zones')
