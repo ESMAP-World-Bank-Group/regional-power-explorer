@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mozambique Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Mozambique electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~2.7 GW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">20.1 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~30%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~82%</div><div class="kpi-lbl">Hydro share (Cahora Bassa)</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-warn"><strong>Cabo Delgado insurgency — ongoing security risk to energy infrastructure.</strong> Since 2017, an Islamist insurgency (Ansar al-Sunna, linked to ISIS) has destabilised Cabo Delgado province in northern Mozambique — precisely where the country's largest LNG developments (TotalEnergies Mozambique LNG, 13 MTPA; Eni Coral FLNG) are located. TotalEnergies declared force majeure and suspended construction in March 2021; its onshore LNG facilities remain under force majeure as of 2025, with an estimated 780,000 people displaced. Rwandan and Mozambican government troops have progressively stabilised some areas since mid-2021, and TotalEnergies has announced plans to restart construction — but the security situation in northern Mozambique remains fragile and directly affects the most consequential energy investments in the country's history.</div>
+
+<h2>1. Energy context</h2>
+<p>Mozambique presents one of the sharpest paradoxes in African energy: a major electricity exporter with a domestic population that is among the continent's least electrified. The Cahora Bassa hydropower complex (2,075 MW) on the Zambezi River has for decades exported the majority of its output to South Africa via a 1,414 km HVDC line — a colonial-era arrangement (HCB Agreement, 1969) that locked in export pricing at below-market rates and left Mozambican households without electricity. Today, with the HCB treaty renegotiated and Mozambique increasing its domestic electricity offtake, the country is gradually redirecting more of its own generation to serve a population where ~70% lack electricity access.</p>
+<p>The discovery of world-class offshore gas reserves in 2010–2012 (Anadarko/Eni, now TotalEnergies and Eni) promised to transform Mozambique from a power-exporting backwater to a global LNG powerhouse. The Cabo Delgado insurgency since 2017 has dramatically complicated this trajectory — TotalEnergies' 13 MTPA LNG project (the largest private investment in African history, ~USD 20 billion) remains suspended. Only Eni's Coral FLNG (floating LNG, 3.4 MTPA, operated by BP) is producing, having sailed the Coral Sul FLNG vessel into position in 2022.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~2.7 GW, 2024)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">2.7</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, 20.1 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">20.1</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Mozambique installed capacity and 2023 generation. Cahora Bassa (2,075 MW) dominates; most output historically exported to South Africa. Sources: HCB; EDM; Ember 2024; IEA MOZ Profile; IRENA.</p>
+
+<ul>
+  <li><strong>Cahora Bassa hydro (2,075 MW, ~82% of generation):</strong> HCB (Hidroeléctrica de Cahora Bassa) is the 5th-largest hydropower plant in Africa and the operational heart of Mozambique's electricity system. Ownership: 85% Mozambique (via HCB S.A., with government/state holding) and 15% Portugal (EdP). The dam's 1,414 km HVDC line (Songo–Apollo) delivers up to 1,920 MW to Eskom's substation near Johannesburg — historically, this was over 80% of Cahora Bassa's output. Renegotiated pricing and increased domestic allocation since the mid-2000s have brought more HCB power into Mozambique, but export to South Africa remains the dominant use.</li>
+  <li><strong>Gas-fired generation (~16% of generation):</strong> Central Térmica de Ressano Garcia (175 MW, Aggreko + EdF originally, now operated under various arrangements), supplied by domestic gas from Sasol's Temane field in southern Mozambique. Gas-to-power is the primary growth vector for domestic electricity supply — the government has announced plans for new CCGT capacity at Temane (450 MW, funded by multilateral lenders) to serve southern load centres and reduce diesel dependence.</li>
+  <li><strong>Diesel/HFO (~1% of generation):</strong> EDM operates small diesel generators in provincial centres not connected to the main grid (Pemba, Quelimane, Inhambane, Lichinga). These are the electricity backbone for provincial towns — expensive but the only alternative until the EDM grid is extended.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Mozambique generation and demand (TWh), 2015–2023. Large positive net export position (generation >> domestic demand) reflects Cahora Bassa's export orientation. Sources: HCB; EDM; Ember; IEA.</p>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EDM — Electricidade de Moçambique <span class="trade-badge">State Utility (distribution + domestic generation)</span></div>
+      <p class="trade-body">EDM (Electricidade de Moçambique) is the state-owned utility responsible for electricity transmission, distribution, and some generation. EDM is financially distressed: below-cost tariffs, high technical losses (~27%), non-payment by government entities, and the cost of extending the grid to rural areas combine to create a structural deficit. EDM manages the domestic grid, including the 400 kV backbone from Cahora Bassa southward, the Ressano Garcia gas plant, and the connection to South Africa and Zimbabwe. Its electrification rate (~30%) makes Mozambique one of the least-electrified countries in SAPP.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">HCB S.A. — Hidroeléctrica de Cahora Bassa <span class="trade-badge trade-badge-grey">Hydro operator (Mozambique + Portugal)</span></div>
+      <p class="trade-body">HCB is a joint company (85% Mozambique/15% Portugal) that owns and operates the Cahora Bassa dam and its HVDC transmission line to South Africa. The HCB PPA with Eskom is Mozambique's most valuable energy asset — and the source of its export surplus. The 2007 renegotiation of the original 1969 HCB Agreement gave Mozambique majority ownership and better pricing. HCB revenues flow to the Mozambican state, partially funding the national budget — but a large share of this clean, cheap power goes to South Africa rather than serving Mozambican households.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">TotalEnergies / Eni — Offshore LNG developers <span class="trade-badge trade-badge-grey">Upstream / LNG</span></div>
+      <p class="trade-body">TotalEnergies operates the Mozambique LNG project (Afungi, Cabo Delgado; 13 MTPA; force majeure since March 2021). Eni operates the Coral FLNG (3.4 MTPA; Coral Sul vessel operational since 2022, output sold to BP under a long-term SPA). ENH (Empresa Nacional de Hidrocarbonetos) is the national oil company, holding participating interests in all offshore blocks. If TotalEnergies' project restarts (construction restart announcements expected 2025–2026 pending security assessment), it would be the largest private investment in Mozambican history and generate significant gas-to-power potential for northern Mozambique.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>The export paradox:</strong> Mozambique is a net electricity exporter yet 70% of its population lacks electricity access. This paradox reflects the colonial-era HCB agreement (locking most Cahora Bassa output into export) and the weakness of EDM's domestic distribution infrastructure. Resolving it requires both: (1) retaining more HCB power domestically rather than exporting (politically complex given HCB revenues support the state budget), and (2) investing in EDM's grid to physically connect rural areas.</li>
+  <li><strong>Cabo Delgado and the LNG delay:</strong> TotalEnergies' 13 MTPA Mozambique LNG would have been transformative — not only for LNG exports (revenue) but for gas-to-power for Mozambique's north. With the project suspended since 2021, northern Mozambique (including Cabo Delgado itself) remains energy-impoverished, and the fiscal revenues that would have funded electrification investment are absent. The security situation is the single most important variable for Mozambique's energy future.</li>
+  <li><strong>Cyclone risk:</strong> Mozambique is one of Africa's most cyclone-exposed countries (Cyclone Idai, 2019 killed 1,300+; Cyclone Freddy, 2023 hit twice). EDM's grid infrastructure — particularly in southern and central Mozambique — has suffered repeated damage. Grid hardening and reconstruction has consumed EDM's capital budget, diverting resources from electrification expansion.</li>
+  <li><strong>Temane gas-to-power expansion:</strong> The planned Temane CCGT (450 MW, World Bank / AfDB co-financing) would be a major step toward redirecting southern Mozambique's domestic gas into electricity production for Maputo and surrounding areas, reducing diesel dependence and potentially enabling tariff reductions. Financial close is a complex multi-lender process that has been in preparation for several years.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Mozambique's electricity sector embodies the "resource paradox" in its starkest form: a country that exports 3–4 TWh of electricity annually to South Africa while 70% of its own population lives without electricity — a direct legacy of the 1969 Cahora Bassa treaty that prioritised South African industrial demand over Mozambican household access.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The Cabo Delgado insurgency is not only a humanitarian crisis — it is the single most consequential constraint on Mozambique's energy future: TotalEnergies' suspended LNG project (USD 20 billion, 13 MTPA) would have generated USD 1–2 billion/year in government revenues and enabled gas-to-power investment across northern Mozambique.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Coral FLNG (Eni/BP, operational 2022) is the success story within the Cabo Delgado crisis: by using a floating LNG vessel offshore (avoiding onshore security risks), Eni brought 3.4 MTPA of LNG production online and demonstrated that some development can proceed even while TotalEnergies' onshore facility remains suspended.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The Cahora Bassa HVDC line (Songo–Apollo, 1,414 km) is one of SAPP's most strategically critical pieces of infrastructure — it delivers up to 1,920 MW of clean Mozambican hydro to South Africa. Historical sabotage incidents (civil war era) and current maintenance risks make it a single-point-of-failure in SAPP's regional grid that neither Mozambique nor South Africa has adequately mitigated.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>EDM's 30% electrification rate, in a country generating 20 TWh/year, is not a generation problem — it is a distribution infrastructure problem: the grid does not reach the population. Closing the access gap requires rural distribution investment (estimated USD 1.5–2 billion over 10 years) on a scale that EDM cannot self-finance and that donors have not yet committed to at the required scale.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EDM Annual Report 2023; HCB — Operations data 2023; Ember Electricity Data 2024; IEA Mozambique Energy Profile; IRENA Mozambique Country Profile 2024; TotalEnergies — Mozambique LNG project updates 2021–2025; Eni — Coral FLNG commissioning reports 2022; ENH Mozambique — Annual Report 2023; World Bank Mozambique Energy Sector notes; AfDB Temane CCGT project documents; OCHA Mozambique — Cabo Delgado situation reports; Amnesty International / Human Rights Watch — Cabo Delgado reporting 2021–2024; SAPP Pool Statistics 2023; Zitamar News — Mozambique energy coverage 2023–2024.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Gas','Oil','Solar'];
+const C1=['#0F7B72','#2E75B6','#5B3FA0','#F59F00'];
+const GW1=[2.20,0.35,0.10,0.05];
+const L2=['Hydro','Gas','Oil','Solar'];
+const C2=['#0F7B72','#2E75B6','#5B3FA0','#F59F00'];
+const D2=[82,16,1,0];
+const TWh2=[16.48,3.12,0.16,0.07];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[18.38,18.86,17.78,17.26,19.10,19.13,18.97,19.69,20.09];
+const dem=[2.0,2.2,2.4,2.6,2.8,3.0,3.5,4.0,4.5];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2},{label:'Domestic demand (est.)',data:dem,borderColor:'#2E75B6',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

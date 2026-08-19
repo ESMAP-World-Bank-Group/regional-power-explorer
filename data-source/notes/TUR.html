@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Türkiye Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{
+    --navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;
+    --teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;
+    --green:#1A7A4A;--purple:#5B3FA0;
+    --grey:#F4F5F7;--border:#E2E6EA;
+    --text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-flag{font-size:26px;flex-shrink:0;margin-top:2px}
+  .trade-content{flex:1}
+  .trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}
+  .trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Turkish electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; May 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">121 GW</div><div class="kpi-lbl">Installed capacity (Oct 2025)</div></div>
+  <div class="kpi"><div class="kpi-val">354 TWh</div><div class="kpi-lbl">Demand (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">46%</div><div class="kpi-lbl">Renewables share (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">~3 600 MW</div><div class="kpi-lbl">Interconnections (active)</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Türkiye is one of the world's fastest-growing large electricity markets. With 85 million people and a large industrial base, it consumed <strong>354 TWh in 2024</strong> — more than Poland, the Netherlands and Belgium combined. The country imports nearly all of its fossil fuels (98% of gas, large share of coal), making the chronic <strong>energy import bill</strong> one of the biggest drags on Türkiye's current account. Reducing this dependency is the central driver of energy policy.</p>
+<p>In 2024, Türkiye made the transition from a net electricity importer to a <strong>net exporter</strong> for the first time in several years, driven by a strong hydro year and rapid solar growth. The government's National Energy Plan (NEP 2035) targets 120 GW of wind and solar by 2035 and entry into the nuclear era via Akkuyu.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (Oct 2025)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">121</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">355</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Installed capacity and generation mix. Sources: Turkish Ministry of Energy (MENR), Ember, Enerdata — 2024–2025.</p>
+
+<ul>
+  <li><strong>Coal (18% cap / 35% gen):</strong> ~122 TWh in 2024. Predominantly domestic lignite + imported hard coal. No new plants under construction. Türkiye overtook Germany as Europe's largest coal power producer in 2024. Politically sensitive due to lignite employment.</li>
+  <li><strong>Hydro (27% cap / 21% gen):</strong> ~75 TWh in 2024 — near-record. Most large sites developed. Highly variable year-to-year; sensitive to climate change and reservoir depletion in western basins.</li>
+  <li><strong>Gas (20% cap / 19% gen):</strong> ~67 TWh in 2024. Flexible back-up and peak capacity. 100% import-dependent (Russia, Azerbaijan, LNG). Share declining from ~37% a decade ago.</li>
+  <li><strong>Wind (12% cap / 10% gen):</strong> ~37 TWh in 2024. Strong Aegean/Marmara resource. New additions slowed in 2022–2023 (permitting, grid bottlenecks) but recovering through YEKA tenders.</li>
+  <li><strong>Solar PV (20% cap / 8.7% gen):</strong> ~31 TWh in 2024. Fastest-growing segment — ~20 GW by end-2024, ~25 GW by 2025. Predominantly commercial/industrial. YEKA auctions delivering ~2–3 €cent/kWh.</li>
+  <li><strong>Geothermal (1.4% cap / 3.1% gen):</strong> ~11 TWh. Türkiye is top-5 globally. Concentrated in western Anatolia (Denizli, Aydın, Manisa).</li>
+  <li><strong>Nuclear — Akkuyu (commissioning):</strong> 4×1 200 MW VVER-1200, built by Rosatom (Mersin). Unit 1 completed; trial operations began July 2025. Units 2–4 to follow at ~1-year intervals; full 4 800 MW by ~2029.</li>
+</ul>
+
+<h3>2.2 Demand — historical trend and end-use</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity demand — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">354</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Demand trend and end-use. Sources: MENR, Enerdata, TheGlobalEconomy, Ember.</p>
+<p>Demand grew at ~5%/year over 2010–2018, slowed during 2019–2023 (economic stress, COVID, industrial slowdown), then re-accelerated at +5.5% in 2024 driven by record cooling demand and industrial recovery. Government forecasts: 380 TWh (2025), 455 TWh (2030), 511 TWh (2035). The capacity gap is large and growing.</p>
+<div class="callout"><strong>Retail tariffs (indicative 2025):</strong> Residential tariffs are regulated and tiered — approximately 3.5–5.5 TL/kWh for households (~$0.10–0.16/kWh). Consumers above ~1 GWh/year can access the competitive market (EPIAŞ day-ahead or bilateral). Tariffs have been adjusted frequently due to currency depreciation and import costs.</div>
+
+
+<div class="chart-legend" id="leg3"></div>
+<div class="chart-grid-3">
+  <div>
+    <div class="chart-title">Output by destination</div>
+    <div class="chart-wrap" style="height:155px">
+      <canvas id="c4"></canvas>
+      <div class="chart-center"><div class="chart-center-val">355</div><div class="chart-center-lbl">TWh gen.</div></div>
+    </div>
+  </div>
+  <div class="stat-note" style="grid-column:2/4">
+    <div class="stat-item"><strong>Net exporter in 2024 (first time in years)</strong>~19 TWh to Bulgaria (main corridor) · smaller volumes to Greece, Georgia</div>
+    <div class="stat-item"><strong>Domestic ~99% of generation consumed</strong>Industry 45% · Buildings 52% (services 27% + residential 25%) · Other 3%</div>
+    <div style="font-size:11px;color:var(--light)">Sources: MENR, Ember, Enerdata 2024</div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 5 — Output by destination.</p>
+
+<h3>2.3 Grid and interconnections</h3>
+<p>The HV grid (400 kV and 154 kV) is operated by TEIAŞ. Türkiye <strong>synchronised with ENTSO-E's Continental European grid in 2010</strong>, giving it real-time access to European power markets — a major structural advantage over most regional peers. Network losses ~9–10%. Topological features worth noting:</p>
+<ul>
+  <li><strong>East–West divide:</strong> the large industrial demand centres are in the north-west (Marmara, Thrace) while the best renewable resources — solar in south-east Anatolia, geothermal in western Anatolia, wind on Aegean coast — are geographically dispersed. Grid reinforcement investments are a bottleneck for renewable integration.</li>
+  <li><strong>Seasonal hydro variability:</strong> eastern Anatolian basins (Euphrates, Tigris) supply large hydro capacity, but reservoir levels are increasingly affected by drought years, creating year-on-year generation volatility.</li>
+  <li><strong>No major isolated zones</strong> — the Turkish grid is largely interconnected domestically, unlike some neighbouring systems.</li>
+</ul>
+<table>
+  <tr><th>Country</th><th>Infrastructure</th><th>Capacity</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Bulgaria</strong></td><td>400 kV (Strandzha–Malkoclar); 2nd line planned</td><td>~1 000–1 500 MW</td><td>Main export corridor. ~19 TWh exported in 2024. ENTSO-E synchronised.</td></tr>
+  <tr><td><strong>Greece</strong></td><td>400 kV (Babaeski–Nea Santa); 2nd 400 kV line (2 GW, ~2029)</td><td>~600 MW → 2 600 MW</td><td>Active — bidirectional. EU RRF funding (€100M) for second line.</td></tr>
+  <tr><td><strong>Georgia</strong></td><td>220 kV lines</td><td>~400 MW</td><td>Seasonal bilateral trade. Also serves as corridor for Azerbaijani electricity transit.</td></tr>
+  <tr><td><strong>Iran</strong></td><td>400 kV + 154 kV lines</td><td>~400–500 MW</td><td>Bidirectional — Türkiye historically net importer from Iran during peak periods.</td></tr>
+  <tr><td><strong>Armenia</strong></td><td>Physical infrastructure exists</td><td>—</td><td>Inactive — border closed since 1993. Would create a significant new export corridor if normalised.</td></tr>
+</table>
+
+<h3>2.4 Cross-border trade arrangements</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-flag">🇧🇬</div>
+    <div class="trade-content">
+      <div class="trade-title">Bulgaria — main export corridor <span class="trade-badge">Structural</span></div>
+      <p class="trade-body">Bulgaria has become Türkiye's primary electricity export destination — ~19 TWh in 2024 via the Strandzha–Malkoclar 400 kV interconnection. Trade is commercial and market-based: Turkish generators (increasingly solar and wind) sell into the ENTSO-E day-ahead market when cross-border capacity is available and Turkish prices are competitive. The quadrilateral Azerbaijan–Türkiye–Georgia–Bulgaria green energy framework (launched 2024) aims to formalise a broader corridor routing Azerbaijani and Turkish renewables to the EU, with a potential second Bulgaria–Türkiye 400 kV line under discussion.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-flag">🇬🇷</div>
+    <div class="trade-content">
+      <div class="trade-title">Greece — EU market gateway <span class="trade-badge">Active</span></div>
+      <p class="trade-body">Bidirectional flows via the existing 400 kV interconnection (~600 MW). A second 400 kV line (130 km, 2 GW capacity, completion ~2029) has received €100M in EU RRF support — a signal of European interest in Türkiye as a low-cost renewable export platform. Türkiye's YEKA solar costs (2–3 €cent/kWh) make it a natural summer exporter to Europe once interconnection capacity expands.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-flag">🇮🇷</div>
+    <div class="trade-content">
+      <div class="trade-title">Iran — historical bilateral flows <span class="trade-badge trade-badge-grey">Modest</span></div>
+      <p class="trade-body">Türkiye and Iran have bilateral electricity trade arrangements governed by intergovernmental frameworks, not spot markets. Türkiye has historically been a net importer from Iran during periods of tight domestic supply (winter gas shortages). Flows reverse depending on system conditions. Volumes are relatively modest; the broader energy relationship is dominated by gas (Iran is a secondary gas supplier to Türkiye via the Iran–Türkiye pipeline).</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure</h3>
+<p>Türkiye's electricity market is <strong>structurally more advanced</strong> than most regional peers. The 2001 Electricity Market Law (EML) unbundled the former state monopoly TEK and created an independent regulator (EMRA/EPDK). The 2013 EML deepened the framework, establishing EPIAŞ as the market operator with a functioning day-ahead and intraday spot market since 2015. Distribution was fully privatised across 21 regional companies (completed 2013), and competitive retail supply is available above ~1 GWh/year threshold. The key remaining state role is in transmission (TEIAŞ, privatisation pending since 2021) and a portion of generation (EÜAŞ).</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Ownership / notes</th></tr>
+  <tr><td><strong>EMRA (EPDK)</strong></td><td>Independent regulator — licences, tariff oversight, market rules</td><td>State / independent authority</td></tr>
+  <tr><td><strong>Ministry (MENR)</strong></td><td>Policy — YEKA tenders, National Energy Plan, nuclear strategy</td><td>Government</td></tr>
+  <tr><td><strong>TEIAŞ</strong></td><td>TSO — HV grid, dispatch, balancing, ENTSO-E interface</td><td>State (privatisation process initiated 2021, ongoing)</td></tr>
+  <tr><td><strong>EPIAŞ</strong></td><td>Market operator — day-ahead, intraday markets, settlement, transparency</td><td>State + private shareholders</td></tr>
+  <tr><td><strong>EÜAŞ</strong></td><td>State generation company — large hydro, some thermal. Progressive privatisation.</td><td>State (partial privatisation ongoing)</td></tr>
+  <tr><td><strong>21 distribution companies</strong></td><td>Operate regional MT/LV networks. All privatised (2008–2013). Affiliated retail supply arms.</td><td>Private (Limak, Kalyon, Akenerji, etc.)</td></tr>
+  <tr><td><strong>Private IPPs</strong></td><td>Majority of generation capacity — hydro, wind, solar, gas</td><td>Various Turkish and international investors</td></tr>
+  <tr><td><strong>BOTAŞ</strong></td><td>State gas importer/transmitter — controls gas supply to gas-fired power plants</td><td>State-owned. Dominant position in gas pricing.</td></tr>
+  <tr><td><strong>Akkuyu Nuclear JSC</strong></td><td>Owns and operates Akkuyu NPP (4×1 200 MW). 15-year PPA at $0.1235/kWh for 70% of Units 1–2 output</td><td>93% Rosatom; up to 49% to be sold to investors</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 920 460" role="img">
+<title>Turkish electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>
+.nt{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;fill:#fff}
+.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}
+.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}
+.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}
+.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}
+</style>
+
+<!-- ROW 1: MENR + EMRA -->
+<rect x="200" y="18" width="155" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="278" y="44" text-anchor="middle" dominant-baseline="central">Ministry (MENR)</text>
+<rect x="415" y="18" width="155" height="52" rx="8" fill="#5B3FA0"/>
+<text class="nt" x="493" y="34" text-anchor="middle" dominant-baseline="central">EMRA (EPDK)</text>
+<text class="ns" x="493" y="54" text-anchor="middle" dominant-baseline="central">Regulator · licences</text>
+<line x1="355" y1="44" x2="413" y2="44" class="arrd"/>
+<text class="lbl" x="384" y="37" text-anchor="middle">policy mandate</text>
+<path d="M493 70 L493 96 L308 96 L308 118" fill="none" class="arrd"/>
+<text class="lbl" x="400" y="90" text-anchor="middle">tariff oversight</text>
+<line x1="493" y1="70" x2="493" y2="118" class="arrd"/>
+<text class="lbl" x="555" y="96" text-anchor="start">licences</text>
+
+<!-- ROW 2: Generators → EPIAŞ → TEIAŞ → Distrib → Consumers -->
+<rect x="20" y="120" width="150" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="95" y="145" text-anchor="middle" dominant-baseline="central">Generators</text>
+<text class="ns" x="95" y="163" text-anchor="middle" dominant-baseline="central">EÜAŞ + private IPPs</text>
+<line x1="170" y1="155" x2="188" y2="155" class="arr"/>
+<text class="lbl" x="179" y="147" text-anchor="middle">bids</text>
+<rect x="190" y="120" width="155" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="268" y="145" text-anchor="middle" dominant-baseline="central">EPIAŞ</text>
+<text class="ns" x="268" y="163" text-anchor="middle" dominant-baseline="central">Day-ahead · intraday</text>
+<line x1="345" y1="155" x2="383" y2="155" class="arr"/>
+<text class="lbl" x="364" y="147" text-anchor="middle">dispatch</text>
+<rect x="385" y="120" width="155" height="70" rx="8" fill="#2E75B6"/>
+<text class="nt" x="463" y="145" text-anchor="middle" dominant-baseline="central">TEIAŞ</text>
+<text class="ns" x="463" y="163" text-anchor="middle" dominant-baseline="central">TSO · HV grid · ENTSO-E</text>
+<line x1="540" y1="155" x2="578" y2="155" class="arr"/>
+<text class="lbl" x="559" y="147" text-anchor="middle">bulk</text>
+<rect x="580" y="120" width="155" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="658" y="145" text-anchor="middle" dominant-baseline="central">Distribution</text>
+<text class="ns" x="658" y="163" text-anchor="middle" dominant-baseline="central">21 private regions</text>
+<line x1="735" y1="155" x2="773" y2="155" class="arr"/>
+<text class="lbl" x="754" y="147" text-anchor="middle">retail</text>
+<rect x="775" y="120" width="130" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="840" y="141" text-anchor="middle" dominant-baseline="central">Consumers</text>
+<text class="ns" x="840" y="159" text-anchor="middle" dominant-baseline="central">Free market</text>
+<text class="ns" x="840" y="177" text-anchor="middle" dominant-baseline="central">or regulated</text>
+
+<!-- Gen bracket down -->
+<line x1="95" y1="190" x2="95" y2="238" stroke="#CBD5E0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<!-- TEIAŞ → Exports -->
+<line x1="463" y1="190" x2="463" y2="238" class="arr"/>
+<text class="lbl" x="479" y="218" text-anchor="start">exports</text>
+
+<!-- ROW 3: gen sub-boxes + Exports -->
+<rect x="20"  y="240" width="70" height="72" rx="6" fill="#2E75B6"/>
+<text class="nt" x="55"  y="258" text-anchor="middle" dominant-baseline="central">Hydro</text>
+<text class="ns" x="55"  y="274" text-anchor="middle" dominant-baseline="central">EÜAŞ+IPPs</text>
+<text class="ns" x="55"  y="290" text-anchor="middle" dominant-baseline="central">~32 GW</text>
+<rect x="100" y="240" width="70" height="72" rx="6" fill="#4A5568"/>
+<text class="nt" x="135" y="258" text-anchor="middle" dominant-baseline="central">Coal</text>
+<text class="ns" x="135" y="274" text-anchor="middle" dominant-baseline="central">Lignite +</text>
+<text class="ns" x="135" y="290" text-anchor="middle" dominant-baseline="central">hard coal</text>
+<rect x="385" y="240" width="155" height="72" rx="8" fill="#2E75B6"/>
+<text class="nt" x="463" y="268" text-anchor="middle" dominant-baseline="central">Exports</text>
+<text class="ns" x="463" y="288" text-anchor="middle" dominant-baseline="central">Bulgaria · Greece · Georgia</text>
+
+<!-- ROW 4: Wind+Solar + BOTAŞ + ENTSO-E -->
+<rect x="20"  y="330" width="70" height="72" rx="6" fill="#1A7A4A"/>
+<text class="nt" x="55"  y="348" text-anchor="middle" dominant-baseline="central">Wind+Solar</text>
+<text class="ns" x="55"  y="364" text-anchor="middle" dominant-baseline="central">~32 GW</text>
+<text class="ns" x="55"  y="380" text-anchor="middle" dominant-baseline="central">YEKA</text>
+<rect x="100" y="330" width="70" height="72" rx="6" fill="#B7770D"/>
+<text class="nt" x="135" y="348" text-anchor="middle" dominant-baseline="central">Gas TPPs</text>
+<text class="ns" x="135" y="364" text-anchor="middle" dominant-baseline="central">~24 GW</text>
+<text class="ns" x="135" y="380" text-anchor="middle" dominant-baseline="central">flex / peak</text>
+
+<rect x="385" y="330" width="155" height="72" rx="8" fill="#4A5568"/>
+<text class="nt" x="463" y="358" text-anchor="middle" dominant-baseline="central">BOTAŞ</text>
+<text class="ns" x="463" y="378" text-anchor="middle" dominant-baseline="central">State gas importer / TSO</text>
+
+<line x1="463" y1="330" x2="463" y2="314" class="arrd"/>
+<path d="M463 312 L135 312 L135 330" fill="none" class="arrd"/>
+<text class="lbl" x="300" y="306" text-anchor="middle">gas fuel</text>
+
+<rect x="660" y="280" width="155" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="738" y="300" text-anchor="middle" dominant-baseline="central">ENTSO-E sync.</text>
+<text class="ns" x="738" y="320" text-anchor="middle" dominant-baseline="central">Connected since 2010</text>
+<line x1="660" y1="306" x2="542" y2="175" class="arrd"/>
+
+<!-- Legend -->
+<rect x="20"  y="420" width="10" height="10" rx="2" fill="#5B3FA0"/><text class="lbl" x="34"  y="429">Regulator</text>
+<rect x="110" y="420" width="10" height="10" rx="2" fill="#2E75B6"/><text class="lbl" x="124" y="429">State grid / market</text>
+<rect x="250" y="420" width="10" height="10" rx="2" fill="#0F7B72"/><text class="lbl" x="264" y="429">Generation</text>
+<rect x="344" y="420" width="10" height="10" rx="2" fill="#C0392B"/><text class="lbl" x="358" y="429">Distribution</text>
+<line x1="20"  y1="446" x2="42"  y2="446" stroke="#6B7280" stroke-width="1.4" marker-end="url(#ar)"/>
+<text class="lbl" x="48" y="450">power / commercial</text>
+<line x1="200" y1="446" x2="222" y2="446" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+<text class="lbl" x="228" y="450">regulatory / gas</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 6 — Actor map of the Turkish electricity sector.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 Akkuyu — Türkiye's nuclear entry</h3>
+<ul>
+  <li>Unit 1 completed construction; trial operations began July 2025. Units 2–4 to follow at ~1-year intervals; full 4 800 MW by ~2029. At full capacity: ~35 TWh/year (~10% of current demand).</li>
+  <li>Project financed ~93% by Rosatom ($20bn total, "build-own-operate" model unique in nuclear industry). TETAŞ holds a 15-year PPA at $0.1235/kWh for 70% of Units 1–2 and 30% of Units 3–4.</li>
+  <li>Second plant at Sinop (Black Sea, MHI/Framatome consortium) in early planning. Third site in Thrace being studied. Türkiye's energy minister confirmed parallel discussions with the US and South Korea for second-plant technology (Oct 2025).</li>
+</ul>
+<div class="callout">Akkuyu deepens Türkiye's energy relationship with Russia at a moment when Ankara is also diversifying geopolitically. The 93% Russian-owned structure, the Rosatom operating role, and fuel supply dependency create a significant long-term geopolitical entanglement.</div>
+
+<h3>4.2 Renewables push — YEKA model and 2035 ambitions</h3>
+<ul>
+  <li>Target: <strong>120 GW wind + solar by 2035</strong> (from ~32 GW today). Near-quadrupling in 10 years.</li>
+  <li>YEKA tenders auction large blocks (1–3 GW) bundled with domestic manufacturing requirements. Recent solar YEKA bids: 2–3 €cent/kWh — among the lowest in the region.</li>
+  <li>Storage (DEKA) tender model, analogous to YEKA, being prepared for 2026 — critical for integrating the fast-growing intermittent fleet.</li>
+  <li>Offshore wind development scoped for 2026 under a YEKA-style offshore framework.</li>
+</ul>
+
+<h3>4.3 Türkiye as regional energy hub</h3>
+<ul>
+  <li>~19 TWh exported to Bulgaria in 2024 via Strandzha–Malkoclar (near-record). Corridor has ~43 TWh/year theoretical capacity, currently underutilised.</li>
+  <li>Second Greece–Türkiye 400 kV line (2 GW, ~2029) would add a second EU export corridor, backed by €100M EU RRF funding.</li>
+  <li>Azerbaijan–Türkiye–Georgia–Bulgaria quadrilateral green energy framework (2024) formalises Türkiye's role as transit hub for Azerbaijani renewables to EU.</li>
+</ul>
+
+<h3>4.4 Demand growth and supply adequacy</h3>
+<ul>
+  <li>Demand grew 5.5% in 2024 — one of the fastest rates globally. Forecasts: 455 TWh by 2030, 511 TWh by 2035. Requires ~150–160 GW installed (vs 121 GW today).</li>
+  <li>Coal (~35% of generation) is declining in share but remains structurally important baseload — domestic lignite employment makes fast phase-out politically difficult.</li>
+  <li>Gas (~24 GW) is the main flexibility resource but expensive and import-dependent. LNG infrastructure expanding.</li>
+</ul>
+<div class="callout">Türkiye's structural tension: demand grows faster than renewable capacity can be built, grid infrastructure is lagging behind, and the coal exit is constrained by industrial and social policy. Akkuyu's 4.8 GW helps but won't close the gap alone.</div>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Demand is growing faster than almost any large economy — +5.5% in 2024, 455 TWh by 2030. The capacity gap is real and creates urgency around every investment decision.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Akkuyu is Türkiye's most consequential energy event in a generation. Unit 1 in trial operation since July 2025, full 4.8 GW by ~2029. It reduces gas dependence but deepens the Russian energy entanglement.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The YEKA model delivers world-competitive renewable prices (solar at 2–3 €cent/kWh). Combined with ENTSO-E synchronisation, Türkiye is positioning as a low-cost renewable exporter to Europe — the Bulgaria corridor (19 TWh in 2024) is the first proof point.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The second Greece–Türkiye 400 kV line (~2029, 2 GW) and the Bulgaria–Azerbaijan–Türkiye quadrilateral are the physical and political infrastructure of Türkiye's hub ambition. Grid bottlenecks on both sides remain the binding constraint.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Coal is not going away quickly. With ~35% of generation and no new plants under construction, the share will decline — but domestic lignite and industrial energy costs make fast phase-out politically very hard.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+Turkish Ministry of Energy and Natural Resources (MENR) · Ember Türkiye Electricity Reviews 2024 &amp; 2025 · Enerdata Türkiye Energy Profile · World Nuclear Association (2025) · Anadolu Agency energy coverage 2024–2026 · Balkan Green Energy News · ENTSO-E Transparency Platform · Lexology Türkiye electricity regulation Q&amp;A (2023) · Daily Sabah energy section · ScienceDirect / Elsevier renewable energy research</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>May 2026</span>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// Chart 1: Installed cap Oct 2025 (121 GW)
+// hydro 26.6, solar 20.2, gas 19.8, coal 18.1, wind 11.8, geo 1.4, other 2.1
+const L1=['Hydro','Solar PV','Gas','Coal','Wind','Geothermal','Other'];
+const C1=['#1E9AF5','#FFD700','#9A7040','#808890','#44DAEC','#D4A820','#D1D5DB'];
+const D1=[26.6,20.2,19.8,18.1,11.8,1.4,2.1];
+const GW1=D1.map(v=>+(v*121/100).toFixed(1));
+
+// Chart 2: Generation 2024 (355 TWh)
+const L2=['Coal','Hydro','Gas','Wind','Solar PV','Geothermal','Other'];
+const C2=['#808890','#1E9AF5','#9A7040','#44DAEC','#FFD700','#D4A820','#D1D5DB'];
+const D2=[34.7,21.1,18.9,10.4,8.7,3.1,3.1];
+const TWh2=D2.map(v=>+(v*355/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} GW (${D1[c.dataIndex]}%)`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+// Demand historical Türkiye TWh
+const yrs=['2000','2005','2010','2015','2018','2019','2020','2021','2022','2023','2024'];
+const dem=[129,160,211,262,290,291,264,284,287,285,354];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
+const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:100,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Industry','Buildings (services+res.)','Other'];
+const C3=['#1B3A5C','#2E75B6','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[45,52,3],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+
+const L4=['Domestic consumption','Net exports'];
+const C4=['#2E75B6','#C0392B'];
+const leg3=document.getElementById('leg3');
+L4.forEach((l,i)=>{leg3.innerHTML+=`<span><span class="lsq" style="background:${C4[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c4'),{type:'doughnut',data:{labels:L4,datasets:[{data:[353,2],backgroundColor:C4,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed} TWh`}}}}});
+</script>
+</body></html>

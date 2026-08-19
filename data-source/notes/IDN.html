@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indonesia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
+  <div class="doc-title">The Indonesia electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~101 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">~373 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">99.8%</div><div class="kpi-lbl">Electrification rate (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">JETP $20B</div><div class="kpi-lbl">Just Energy Transition Partnership (2022)</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Indonesia is Southeast Asia's largest electricity system, serving 280 million people across 17,000 inhabited islands. The country is simultaneously one of the world's largest coal exporters and one of its most coal-dependent power systems — coal accounts for ~58% of generation — creating a fundamental tension between fossil fuel export revenues and decarbonisation commitments. PLN (Perusahaan Listrik Negara), the state-owned utility, dominates with a near-monopoly on transmission and distribution and a single-buyer role for all IPP generation.</p>
+<p>Indonesia holds the world's largest untapped geothermal resource (27.79 GW potential, only 9% utilised at 2.5 GW), and the world's largest archipelago creates formidable grid integration challenges. Seven separate regional grids, limited inter-island interconnection, and extensive diesel dependence in remote eastern islands characterise the system. Near-universal electrification (99.83%) has been achieved but masks significant quality-of-supply disparities between Java-Bali and the outer islands.</p>
+<p>The <strong>Just Energy Transition Partnership (JETP)</strong>, announced at the G20 Bali Summit in November 2022, committed USD 20 billion in public and private finance to accelerate Indonesia's coal phase-out and renewable energy deployment. As of December 2025, USD 3.1 billion had been approved — 15.5% of the target — indicating slower-than-expected implementation against political and institutional barriers. RUPTL 2025–2034 (PLN's national electricity supply plan) targets 34% renewables by 2030 and coal phase-out by 2040 under President Prabowo's (since October 2024) commitments.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">101</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">373</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation. Sources: PLN RUPTL 2025–2034, Ember Indonesia 2024, IEA Indonesia 2024.</p>
+
+<ul>
+  <li><strong>Coal (25% capacity / 58% generation):</strong> Coal's high capacity factor (~70%) explains the gap: 25 GW of coal capacity generates 58% of electricity (216 TWh). Key plants: Suralaya (West Java, 3.4 GW, built 1984–1997), Paiton (East Java, 3.6 GW), PLTU Cirebon (660 MW, partially Chinese-owned). Domestic coal is cheap (~USD 40–60/ton under the domestic market obligation, far below export prices), making coal financially attractive to PLN. Coal export revenues have declined from USD 201/ton (2023) to USD 121/ton (H1 2025), pressuring coal-producing provinces and changing the fiscal calculus for the transition.</li>
+  <li><strong>Gas (20% capacity / 17% generation):</strong> PLN operates gas-fired plants (CCGTs and open-cycle) across Java-Bali and Sumatra. Domestic gas production from Natuna, West Papua, and Sumatra fields. Some LNG is used in remote island power systems (mobile LNG supply). Gas capacity factors are lower than coal due to dispatch economics.</li>
+  <li><strong>Oil / Diesel (20% capacity / 2% generation):</strong> A large legacy fleet of diesel gensets (isolated island systems, outer islands). Very high operating costs (~USD 0.25–0.40/kWh); PLN receives government compensation to fund these. Diesel replacement with solar+storage is a priority for isolated systems, but high capital requirements slow rollout.</li>
+  <li><strong>Hydro (7% capacity / 7% generation):</strong> 6.9 GW of hydropower, primarily in Sumatra (Asahan, Singkarak), Java (Saguling, Cirata, Jatiluhur), and Kalimantan. Cirata in West Java (~1 GW + 192 MWp floating solar) is the largest. New large hydro projects (Kayan, Mentarang in Kalimantan, up to 9 GW combined potential) are in various development stages.</li>
+  <li><strong>Geothermal (2.5% capacity / 5% generation):</strong> 2.54 GW operational, producing ~5% of electricity — the highest share in ASEAN and second globally after the USA. Fields in Java (Geothermal Sarulla 330 MW, Gunung Salak, Darajat), North Sumatra, and East Java. Indonesia has 27.79 GW of geothermal potential — 40% of the global total — but only 9% is utilised due to high exploration costs, complex permitting, and the economic competition from cheap coal. Masdar invested in PLN's geothermal subsidiary PGE in 2023; target of 5.2 GW additional capacity by 2035 under RUPTL 2025.</li>
+  <li><strong>Biomass (11% capacity / 6% generation):</strong> Primarily palm oil mill effluent (POME), bagasse, and wood residue from the agricultural sector. Distributed across Sumatra and Kalimantan. Bioenergy capacity is high but capacity factors are moderate.</li>
+  <li><strong>Solar (0.4% capacity / &lt;1% generation):</strong> Very low absolute deployment to date. <strong>Cirata floating solar</strong> (192 MWp, West Java, inaugurated November 2023) is Southeast Asia's largest floating solar installation — 343,000 panels on the Cirata reservoir, saving 214,000 tCO₂/yr and supplying ~50,000 homes. Masdar and PLN announced plans to triple capacity. Rooftop solar is expanding slowly, hampered by PLN's reluctance to allow net metering (protects PLN revenue) and unclear regulatory frameworks.</li>
+</ul>
+<div class="callout">PLN's financial position is structurally stressed: in 2024, the government provided <strong>IDR 177 trillion (~USD 11 billion) in subsidies and compensation</strong> — equivalent to 33% of PLN's total revenues. Without these transfers, PLN would report a loss of ~IDR 120 trillion. Low regulated tariffs (especially for subsidised households) do not recover supply costs, creating a permanent fiscal dependency on government transfers. This constrains PLN's ability to invest in the grid and new generation independently.</div>
+
+<h3>2.2 Demand — historical trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Generation trend 2015–2023 (CAGR ~4.8%/yr). Sources: PLN Statistics 2024, Ember Indonesia 2024.</p>
+<p>Demand growth (~4–5%/yr CAGR) is driven by GDP growth, continued urbanisation, appliance penetration, and growing manufacturing and mining sectors. The 2020 dip reflects COVID-19. The acceleration in 2022–2023 reflects post-COVID recovery plus new EV charging, smelting, and data centre loads. Indonesia's electrification-adjusted demand growth is among the highest in ASEAN, reflecting both rising living standards and industrial expansion (nickel smelting and EV battery processing are large and fast-growing loads in Sulawesi and Maluku).</p>
+<div class="callout"><strong>Tariffs:</strong> Subsidised (450–900 VA residential): Rp 415–605/kWh (~USD 0.025–0.038/kWh). Non-subsidised (1,300 VA): Rp 1,445/kWh (~USD 0.090/kWh). Premium residential (6,600+ VA): Rp 1,700/kWh (~USD 0.106/kWh). Tariffs are adjusted quarterly (or held politically). The large subsidy tier covering lower-income households is a social protection mechanism but also a fiscal burden — government compensation for below-cost tariffs was IDR 177 trillion in 2024.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Grid / Link</th><th>Infrastructure</th><th>Notes</th></tr>
+  <tr><td><strong>Java–Bali (central system)</strong></td><td>Interconnected 500/150 kV AC grid; submarine cables to Bali and Madura</td><td>Most developed grid; ~60% of national demand. Largely self-sufficient in generation; imports from Sumatra planned via HVDC.</td></tr>
+  <tr><td><strong>Sumatra</strong></td><td>220/150 kV AC interconnected ring; diverse generation</td><td>Second largest grid. Java–Sumatra HVDC (±500 kV, 3,000 MW, 550 km including 40 km submarine) in advanced development; would enable large-scale RE export from Sumatra to Java. Target completion ~2026–2027.</td></tr>
+  <tr><td><strong>Kalimantan, Sulawesi, NTB, NTT, Maluku, Papua</strong></td><td>Mostly isolated or small-interconnected grids; limited inter-island transmission</td><td>High diesel dependency, high unit costs, significant RE opportunity (solar, small hydro, wind in NTT). Targeted for diesel replacement via solar+BESS.</td></tr>
+  <tr><td><strong>ASEAN Power Grid (cross-border)</strong></td><td>Kalimantan–Sabah (Malaysia) feasibility study; Sumatra–Peninsular Malaysia study</td><td>No operational cross-border links. U.S.-supported feasibility assessments (USTDA) for Kalimantan–Sabah and Sumatra–Malaysia interconnections. Commercial and political barriers remain high. Indonesia's cheap domestic coal limits import demand.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">PLN (Perusahaan Listrik Negara) <span class="trade-badge">Vertically Integrated State Utility</span></div>
+      <p class="trade-body">PLN is the near-monopoly state utility: 100% government-owned, operating generation (~60% of capacity), all transmission, and all distribution. PLN acts as single buyer for all IPP generation. PLN's vertical integration and political tariff-setting create a structural tension between commercial viability and social obligations. PLN's financial losses require government compensation (IDR 177 trillion in 2024). RUPTL 2025–2034 (10-year electricity supply plan) defines investment targets for coal retirement and RE deployment; PLN submits to MEMR approval.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">IPPs (~40% of capacity) <span class="trade-badge trade-badge-grey">Private Generation</span></div>
+      <p class="trade-body">IPPs include Chinese-backed coal plants (dominant in the last 2010s build-out), international geothermal operators (Chevron, KS Orka, EDC, Masdar-PGE JV), and emerging RE developers. IPPs sell all output to PLN under long-term PPAs governed by MEMR Regulations 10/2025 and 19/2025. Renewable energy PPAs face structural challenges: PLN has historically been slow to sign new RE PPAs due to financial constraints and protection of existing coal capacity factors (take-or-pay clauses). Regulation 19/2025 on hybrid power plants aims to accelerate solar+BESS+diesel replacement projects.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">MEMR (Ministry of Energy and Mineral Resources) <span class="trade-badge trade-badge-grey">Policy &amp; Regulation</span></div>
+      <p class="trade-body">MEMR is the combined sector policy maker and regulator — a conflict of interest noted by international observers (ADB, IEA). MEMR sets tariff guidelines, approves RUPTL, issues concessions, and enforces the Domestic Market Obligation (DMO) for coal (requiring 25% of production sold domestically at capped prices). The <strong>DEN (National Energy Council)</strong>, chaired by the President, sets overarching energy policy including the National Energy Plan (KEN). No independent economic regulator exists for electricity.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Coal lock-in and JETP implementation gap:</strong> The JETP USD 20B commitment (2022) has mobilised only USD 3.1B by December 2025. The first coal early retirement pilot (Cirebon-1, ~660 MW) was cancelled in 2025 due to PPA restructuring complexity and stranded asset concerns. RUPTL 2025–2034 (MEMR Regulation 10/2025) sets a coal phase-out roadmap to 2040 but includes no binding retirement schedules. The Suralaya and Paiton plants (28–40 years old) are identified as priority retirements but no firm dates are set.</li>
+  <li><strong>PLN financial sustainability:</strong> PLN's IDR 177 trillion annual government subsidy/compensation in 2024 is unsustainable at scale if RE investment is added. PLN's liquidity ratios are below 1.0. The transition requires PLN to simultaneously retire coal, deploy RE, and upgrade grids — a capital requirement far exceeding its internal generation capacity. Tariff reform (raising subsidised tiers toward cost recovery) is politically difficult but fiscally necessary.</li>
+  <li><strong>Geothermal underutilisation:</strong> Indonesia has 27.79 GW of geothermal potential (40% of global total) but only 2.54 GW (9%) is developed. Barriers: high upfront exploration risk (~USD 5–10M per well, with high dry-well rates), complex permitting across national parks and protected areas, competition from cheap coal, and financing gaps for small developers. The government targets 5.2 GW additional by 2035, requiring a step-change in exploration financing and permitting speed.</li>
+  <li><strong>Inter-island grid fragmentation:</strong> Seven isolated regional grids and thousands of diesel-powered island systems create equity and cost disparities. The Java–Sumatra HVDC (3 GW, under development) would be transformative if completed as planned. Kalimantan and Sulawesi have significant untapped RE resources (coal+hydro in Kalimantan; geothermal in Sulawesi) that cannot be delivered to population centres without transmission investment.</li>
+  <li><strong>Coal export revenue decline and transition economics:</strong> Coal export revenues fell from USD 20.5B (2023) to USD 14.75B (H1 2025) as prices declined. Coal-dependent provinces (Central Kalimantan, South Sumatra) face revenue pressure, reducing political support for transition. The estimated health cost savings from coal phase-out (~USD 61.3B) exceed the economic losses from reduced export revenues, but these benefits are diffuse while costs are concentrated in mining regions.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Indonesia is simultaneously the world's second-largest coal exporter and its most coal-dependent large power system (58% generation) — the transition requires managing stranded assets, lost export revenues, and PLN's financial sustainability simultaneously.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>JETP (USD 20B, 2022) has delivered only USD 3.1B in approved financing by December 2025 — implementation is lagging due to PPA complexity, institutional resistance, and the absence of binding coal retirement schedules in RUPTL 2025–2034.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Indonesia has the world's largest untapped geothermal resource (27.79 GW, 40% global share) but only 9% is developed — resolving exploration financing, permitting on protected areas, and PPA bankability would be the highest-value clean energy intervention in the region.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>PLN's annual subsidy dependence (IDR 177T = USD 11B in 2024, 33% of revenue) is structurally unsustainable; tariff reform toward cost recovery is a prerequisite for PLN's ability to self-finance the energy transition.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>The Java–Sumatra HVDC (3 GW under development) and Kalimantan–Sabah cross-border feasibility studies represent the most transformative grid investments — enabling RE export from resource-rich outer islands to population centres and regional markets.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> PLN RUPTL 2025–2034; IEA Indonesia Energy Profile 2024; Ember Indonesia Clean Power 2024; IEEFA PLN Financial Sustainability 2024; UNDP Indonesia JETP Portal December 2025; JETP-ID official portal; Masdar Cirata Floating Solar inauguration 2023; ANTARA News — Geothermal expansion 5.2 GW; TransitionZero Indonesia coal retirement 2025; Mongabay Indonesia coal retirement February 2025; IISD — MEMR Regulation 10/2025; ADB Better Regulation Indonesia 2024; PwC — inter-island grid costs November 2024; Energy Tracker Asia — Indonesia geothermal.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Coal','Gas','Oil / Diesel','Biomass','Hydro','Geothermal','Solar & Wind','Other'];
+const C1=['#2C2C2C','#808890','#A0522D','#1A7A4A','#1E9AF5','#FF8C42','#FFD700','#B0B0B0'];
+const GW1=[25.0,20.4,20.2,11.1,6.9,2.5,0.6,14.3];
+
+const L2=['Coal','Gas','Bioenergy','Hydro','Geothermal','Oil','Solar & Wind'];
+const C2=['#2C2C2C','#808890','#1A7A4A','#1E9AF5','#FF8C42','#A0522D','#FFD700'];
+const D2=[58,17,6,7,5,2,5];
+const TWh2=D2.map(v=>+(v*373/100).toFixed(0));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[243.3,258.2,267.0,285.3,297.1,293.4,310.3,334.3,373.1];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2C2C2C',backgroundColor:'rgba(44,44,44,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2C2C2C',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

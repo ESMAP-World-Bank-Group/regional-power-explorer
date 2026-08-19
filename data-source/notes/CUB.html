@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuba Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .alert{background:#FFF3CD;border-left:4px solid #F0A500;padding:13px 17px;margin:14px 0;font-size:13px;color:#856404;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Cuba</div>
+    <div class="doc-sub">~7,000 MW nominal installed (much offline) · Soviet-era oil thermal plants + UNE utility · Nationwide blackouts 2023-2025 (8-18 hrs/day) · October 2024 near-total grid collapse · Venezuela oil subsidy decline · US embargo constrains all energy finance · Solar push ~100 MW operational · ~11 million people (exodus accelerating) · Worst electricity crisis in Western Hemisphere</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~7,000 MW</div><div class="kpi-lbl">Nominal installed (effective: ~2,500-3,000 MW)</div></div>
+    <div class="kpi"><div class="kpi-val">8-18 hrs</div><div class="kpi-lbl">Daily blackouts, 2024 peak crisis</div></div>
+    <div class="kpi"><div class="kpi-val">Oct 2024</div><div class="kpi-lbl">Near-total national grid collapse (4 days)</div></div>
+    <div class="kpi"><div class="kpi-val">~100 MW</div><div class="kpi-lbl">Solar PV operational by end 2024</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <div class="alert">
+      <strong>Data quality caution:</strong> Cuba's electricity sector data is heavily state-controlled. Official UNE (Union Eléctrica) statistics diverge significantly from independent estimates and journalist reporting. The generation mix, capacity figures, and RE percentages below reflect best-available external estimates (IEA, IRENA, Reuters, AP) cross-checked against publicly available Cuban government announcements. Treat all figures as approximate. The October 2024 grid collapse and ongoing crisis are well-documented from multiple independent sources; long-run capacity and generation statistics are less reliable.
+    </div>
+
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Cuba is experiencing the most severe peacetime electricity crisis in the Western Hemisphere. The island's nominal ~7,000 MW of installed generation capacity — built primarily during the Soviet era (1960s-1980s) and designed for Soviet-supplied fuel oil — has deteriorated dramatically due to deferred maintenance, spare parts shortages exacerbated by the US trade embargo, and the collapse of Venezuelan oil subsidies from ~100,000 barrels/day (2012) to ~20,000 barrels/day (2024). By 2024, effective generation capacity available to <strong>UNE (Unión Eléctrica)</strong>, Cuba's state electricity monopoly, was approximately 2,500-3,000 MW against peak demand of ~3,000-3,500 MW — creating structural deficits of 500-1,000 MW that translate to daily blackouts of 8-18 hours in most provinces. On 18 October 2024, the entire national grid collapsed — triggered by the failure of the Antonio Guiteras thermoelectric plant (Matanzas), Cuba's largest — leaving 11 million people without electricity for 3-4 days in the longest total outage since the 1959 Revolution. Cuba announced plans to add 1,200 MW of distributed solar by 2025-26; by end 2024, approximately 100 MW was operational — too small to affect the crisis materially.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Nominal generation capacity by type (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Fuel oil (Soviet-era thermoelectric, much offline)</span>
+          <span><span class="lsq" style="background:#555"></span>Diesel (distributed generators)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass (sugarcane bagasse)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (new, operational 2023-24)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (small, ~100 MW)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~5%</div>
+            <div class="chart-center-lbl">effective RE share</div>
+          </div>
+        </div>
+        <p class="fig-caption">Note: Nominal installed capacity; effective available capacity ~35-45% of nominal due to equipment failure and fuel shortages. Source: IEA; IRENA; Reuters; AP Cuba energy reporting 2024</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Soviet-era grid: designed for a world that no longer exists</strong>Cuba's electricity infrastructure was built overwhelmingly with Soviet technical assistance and Soviet fuel oil supplies (at subsidised prices). The grid was designed for continuous Soviet-standard fuel oil supply at ~100,000 bbl/day to run 7+ thermoelectric plants (Mariel, Nuevitas, Renté, Santa Cruz del Norte, Cienfuegos, Felton, Antonio Guiteras). When the Soviet Union collapsed (1991), Cuba entered the "Special Period" (Período Especial) — a severe economic crisis that included 12-16 hour blackouts from 1992-1993. The system partially recovered on Venezuelan PdVSA oil (from 2004, Petrocaribe arrangement). Venezuela's economic collapse (2017-ongoing) has reprised and exceeded the 1990s crisis: PdVSA deliveries fell from ~100,000 to ~20,000 bbl/day, fuel oil stock depleted, plants unable to operate.</div>
+        <div class="stat-item"><strong>US embargo: the energy dimension</strong>The US embargo (in force since 1962, strengthened by Helms-Burton 1996) directly constrains Cuba's electricity sector in multiple ways: (1) US equipment manufacturers cannot sell spare parts or generation equipment to Cuba — UNE must source from Russia, China, or third countries at higher cost and longer lead times; (2) US financing institutions (including MDBs where US holds veto power, notably IDB) cannot provide concessional finance to Cuba for RE projects; (3) US dollar transactions for Cuban energy imports are restricted, complicating oil purchase financing. The OFAC licences required for any US-adjacent energy technology transfer to Cuba create commercial barriers that effectively exclude most Western RE developers. Chinese and Russian solar panel suppliers are not affected — Cuba's small solar fleet (~100 MW) uses almost entirely Chinese-sourced equipment.</div>
+        <div class="stat-item"><strong>The 1,200 MW solar announcement: ambition vs. capacity</strong>Cuba's government announced in 2022 that it would install 1,200 MW of distributed solar panels by end 2025, primarily on rooftops and in community installations, to reduce reliance on fuel oil for daytime generation. The programme is funded partly by Russian credit lines and partly by Chinese equipment suppliers. Progress as of end 2024: approximately 100-120 MW operational — ~10% of target. Bottlenecks: import finance (US dollar restrictions on Chinese panel purchases), installation labour (Cuban emigration has depleted skilled workforce), grid interconnection capacity (the grid itself is unreliable, limiting the value of additional generation if distribution infrastructure fails). 100 MW of solar provides ~150 GWh/year — covering ~2-3% of Cuba's ~5,000 GWh annual consumption in a crisis year.</div>
+        <div class="stat-item"><strong>Population exodus: the energy-migration nexus</strong>Cuba has experienced one of the Western Hemisphere's largest emigration waves since 2020: an estimated 500,000-700,000 people have emigrated (primarily to the US, Nicaragua, and Spain) representing ~5-6% of the population. The electricity crisis is a primary driver — surveys of Cuban emigrants consistently cite blackouts as a top push factor. The emigration itself worsens the crisis: the skilled workforce needed to repair thermoelectric plants and install solar panels is emigrating. A brutal positive feedback loop: blackouts → emigration → fewer workers to fix blackouts → worse blackouts → more emigration. The demographic impact on Cuba's potential economic recovery — including energy sector recovery — will persist for a generation.</div>
+        <div class="stat-item"><strong>Private generators: Cuba's informal energy economy</strong>Cuba's blackout crisis has created a large informal market in diesel and gasoline generators, inverters, and batteries purchased through the US dollar black market. Estimates suggest 500,000-1M Cuban households have some form of private backup power (generators, inverter-battery systems charged when grid is on). This informal generation represents perhaps 200-400 MW of distributed capacity — roughly equivalent to Cuba's entire solar programme — but is entirely untracked by UNE statistics, runs on imported fuel with high emissions, and imposes significant out-of-pocket costs on households that can barely afford food. The informal energy economy is a coping mechanism, not a solution.</div>
+      </div>
+    </div>
+
+    <h2>The October 2024 Collapse: A Turning Point</h2>
+    <p>The total grid collapse of 18-22 October 2024 — triggered by the sequential failure of all major thermoelectric plants as Antonio Guiteras tripped and the system could not stabilise — marked a qualitative shift in Cuba's energy crisis:</p>
+    <ul>
+      <li><strong>Timeline:</strong> Antonio Guiteras (Matanzas, 316 MW, Cuba's newest thermoelectric plant) tripped on 18 October due to mechanical failure; cascading failures left the entire 7,000+ km² grid without power; restoration took 3-4 days; full restoration of province-level service took 2+ weeks.</li>
+      <li><strong>Humanitarian impact:</strong> Hospitals on emergency generators; water systems failed (pumping stations without power); food spoilage; social unrest in Havana, Santiago, and other cities. International Red Cross delivered emergency support.</li>
+      <li><strong>Government response:</strong> Cuba requested emergency fuel assistance from Russia and Mexico; Russia reportedly provided generator fuel on credit; Mexico provided some diesel; China pledged accelerated solar panel deliveries. Cuba announced a "national energy emergency" and emergency rationing protocols.</li>
+      <li><strong>Structural significance:</strong> The October 2024 collapse demonstrated that Cuba's grid has passed a threshold of fragility where restoration requires months, not days, and where any additional plant failure can cascade to total blackout. The system cannot self-stabilise — each plant failure reduces generation margin, increasing the probability of the next failure.</li>
+    </ul>
+
+    <div class="callout">
+      Cuba's electricity crisis is not primarily a technical problem — the island has, on paper, 7,000 MW of installed capacity for 11 million people, which would be a comfortable reserve margin in normal operation. It is a political economy problem: the US embargo restricts equipment access, Venezuelan oil subsidies have collapsed, the centralised socialist economy cannot mobilise private capital for repairs, and skilled workers are emigrating faster than replacements are trained. Solar panels cannot fix corroded turbine blades or cracked steam pipes. Only a fundamental change in Cuba's political-economic context — including some easing of US restrictions and restoration of international financing access — can reverse the electricity crisis.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Cuba's electricity crisis is the most severe demonstration in the modern era of what happens when a large centralised grid is designed around a single fuel source (Soviet oil), that source disappears (Soviet collapse → Venezuelan subsidy exhaustion), and the political economy prevents accessing alternative fuel supply or maintenance finance — offering a cautionary case study applicable to every Caribbean and SIDS economy with high import energy dependence.</strong> The lesson is not that centralised grids are bad or that Soviet-era technology is uniquely fragile — it is that single-fuel dependency at national scale, without political and commercial flexibility to adapt supply chains, creates existential energy risk that no amount of grid engineering can mitigate. Diversity of fuel sources and supplier relationships is an energy security principle that Cuba uniquely violated at maximum scale.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The US embargo's energy dimension is often underappreciated in policy discussions focused on trade: the inability to access US-adjacent finance (IDB, OPIC/DFC, commercial banks subject to OFAC), US equipment manufacturers, and US-standard grid technology is directly responsible for an estimated 2-4 million tonnes/year of additional CO₂ from Cuba's fuel oil generation that could be displaced by commercially available solar — making the embargo an environmental issue as well as a geopolitical one.</strong> The IDB cannot finance Cuban RE projects; the US Export-Import Bank cannot support US equipment sales to Cuba; OFAC restrictions make any dollar-denominated Cuban energy transaction legally complex for non-US companies. This effectively limits Cuba's RE suppliers to China and Russia — not because those countries' panels are inferior, but because the full ecosystem of project finance, insurance, O&amp;M support, and technology access that makes large RE projects bankable is US-anchored and Cuba-excluded.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Cuba's 1,200 MW distributed solar target is structurally correct — distributed rooftop solar on Cuban households would provide daytime generation that directly offsets fuel oil at each distribution point, reducing transmission losses and increasing resilience to grid failures — but the implementation capacity to achieve this at speed simply does not exist inside Cuba given emigration of skilled workers, import finance constraints, and the state monopoly on installation.</strong> Distributed solar's resilience advantage (a household with solar + inverter has some power even when the grid is down) is especially valuable in Cuba's context of chronic grid instability. But 1,200 MW of distributed solar requires approximately 4 million panel installations on 11 million people — a programme larger than anything Cuba has achieved institutionally. Even at Chinese panel prices (~US$150/kW), the hardware cost alone is ~US$180M, requiring financing that Cuba cannot currently access at scale.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The emigration-blackout feedback loop — where electricity crisis accelerates emigration of the skilled workers needed to repair the grid, worsening the electricity crisis — is Cuba's most dangerous medium-term dynamic, and any stabilisation scenario for the Cuban electricity sector requires addressing both sides of this loop: stopping the bleeding of skilled workers (economic incentive reform, improved living conditions) and accelerating external technical assistance (which requires political changes on both the Cuban and US sides).</strong> Power plant operators, electrical engineers, and grid technicians are among the most economically mobile professional groups in Cuba — they have internationally transferable skills and the US immigration system has specific pathways for them. The Cuban government's salary reform (2021-23 dollarisation of some state wages) has partially improved retention but has not stopped emigration. Without skilled operators, even repaired equipment will fail again.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Cuba's electricity crisis, if it continues at 2024-2025 intensity for another 2-3 years, risks becoming a humanitarian crisis comparable to the 1990s Special Period — with cascading effects on food production (irrigation pumps offline), water supply (pumping stations), healthcare (hospital backup generators failing), and social order that could reshape the island's political future in ways that will affect Caribbean regional dynamics for decades.</strong> The October 2024 collapse was a warning, not a nadir. Cuba's thermoelectric plants continue to deteriorate; fuel supply remains constrained; the solar programme is far behind target; skilled workers continue to emigrate. An analytical baseline that treats Cuba's electricity system as "troubled but stable" is no longer defensible. The system is on a trajectory of continued degradation absent a major external intervention (emergency MDB financing, US sanctions relief, large-scale Chinese infrastructure investment at grant or near-grant terms).</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      UNE (Unión Eléctrica de Cuba) — official reports (limited public disclosure) ·
+      IEA — Cuba energy profile 2024 ·
+      IRENA — Caribbean energy statistics 2025 ·
+      Reuters — Cuba electricity crisis reporting 2023-2024 ·
+      Associated Press — October 2024 grid collapse coverage ·
+      EcuRed (Cuba) — thermoelectric plant specifications ·
+      WB — Cuba energy profile (pre-2020 data only) ·
+      OFAC — Cuba energy sanctions guidance ·
+      Brookings Institution — Cuba energy policy analysis 2024
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Fuel oil (Soviet-era thermoelectric)', 'Diesel (distributed generators)', 'Biomass (sugarcane bagasse)', 'Solar PV (new 2023-24)', 'Hydro (small)'],
+    datasets: [{ data: [72, 14, 8, 3, 3], backgroundColor: ['#8B4513','#555','#4CAF50','#FFD700','#1B6CA8'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belgium Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Belgium</div>
+    <div class="doc-sub">~25 GW installed · Nuclear ~50% of generation · 4 GW nuclear → target 8 GW · Offshore 2.26 GW → 8 GW by 2040 · Nuclear ban repealed May 2025 · Nationalisation plan 2026 · Elia TSO · Princess Elisabeth Zone</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~25 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~50%</div><div class="kpi-lbl">Nuclear share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">2.26 GW</div><div class="kpi-lbl">Offshore wind operational (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">8 GW</div><div class="kpi-lbl">Nuclear target (from 4 GW today)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Belgium's electricity system is anchored by <strong>nuclear power at roughly 50% of generation</strong> — from seven reactors at Doel (Antwerp) and Tihange (Liège) operated by Engie/Electrabel. After years of political debate over a nuclear phase-out, Belgium has definitively reversed course: <strong>parliament repealed the 2003 nuclear ban law in May 2025</strong>, and the government signed a letter of intent to nationalise the Belgian nuclear sector in <strong>April 2026</strong>, targeting an expansion from 4 GW to <strong>8 GW</strong> of nuclear capacity. The offshore wind fleet (2.26 GW, 399 turbines) provides ~10% of electricity. Belgium is a strongly interconnected market — Elia's grid connects to France, Netherlands, Germany, Luxembourg, and the UK (Nemo Link), making Belgium a critical European electricity transit hub.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2025 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9B59B6"></span>Nuclear (Doel + Tihange)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore + offshore)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass / CHP</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~50%</div>
+            <div class="chart-center-lbl">nuclear share</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Elia; World Nuclear Association; Norton Rose Fulbright; Climact; Wikipedia Belgium electricity</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Elia — TSO and European grid key node</strong>Belgian TSO; 51% public, 49% private; operates 19,500 km of high-voltage grid; interconnects with France, Netherlands, Germany, Luxembourg, UK (Nemo Link 1,000 MW); European Centre for Infrastructure Studies based in Brussels; facilitates Belgium's role as transit country</div>
+        <div class="stat-item"><strong>Nuclear: 4 GW today → nationalisation + 8 GW target</strong>7 reactors (Doel 1–4, Tihange 1–3); Doel 4 and Tihange 3 extended to 2035; government signed April 2026 letter of intent to acquire Engie nuclear assets; plan to double capacity via new units (APR-1400 or SMR); ban law repealed May 2025</div>
+        <div class="stat-item"><strong>Princess Elisabeth Zone: 3.15–3.5 GW offshore</strong>New offshore wind zone in Belgian North Sea; 50 km² beyond existing wind farms; tender expected 2025-26; will push total Belgian offshore to ~5.5 GW; zone designed for direct DC coupling to shore and potentially to Norway/UK</div>
+        <div class="stat-item"><strong>Nemo Link: 1,000 MW Belgium–UK HVDC</strong>Operational since 2019; connects Zeebrugge to Canterbury; enables Belgian nuclear output to serve UK demand and UK offshore wind to serve Belgian market during high-generation periods; part of broader EU–UK electricity market coupling discussion post-Brexit</div>
+        <div class="stat-item"><strong>CRM (Capacity Remuneration Mechanism)</strong>Belgian auction system to secure supply adequacy; pays generators (including existing nuclear) for capacity availability; designed to address the nuclear phase-out gap; now repurposed to incentivise nuclear life extension and new investment; EC state aid approved</div>
+      </div>
+    </div>
+
+    <h2>The Nuclear U-Turn: From Phase-Out to Nationalisation</h2>
+    <p>Belgium's nuclear policy reversal is one of Europe's most dramatic energy policy stories of the decade:</p>
+    <ul>
+      <li><strong>2003:</strong> Belgium passes law requiring nuclear phase-out by 2025 — all reactors to close, no new construction permitted.</li>
+      <li><strong>2022:</strong> Russia invades Ukraine; European energy crisis. Belgium announces Doel 4 and Tihange 3 will be extended 10 years to 2035 — first breach of the phase-out law.</li>
+      <li><strong>May 2025:</strong> Belgian parliament votes by large majority to repeal the 2003 nuclear ban law entirely. New nuclear construction is again legal.</li>
+      <li><strong>April 2026:</strong> Government signs letter of intent with Engie/Electrabel to acquire all nuclear assets — effectively nationalising the Belgian nuclear sector. Rationale: the state needs to control long-term nuclear investment decisions; private operators cannot take 60-year investment horizons commercially.</li>
+      <li><strong>Target:</strong> Double nuclear capacity from 4 GW to 8 GW through new units (design under evaluation) + SMR potential. Timeline: 2035–2040 for first new units optimistically.</li>
+    </ul>
+
+    <div class="callout">
+      Belgium's nationalisation of its nuclear fleet is the most significant European energy policy development of 2026 — and signals a broader truth: the clean energy transition cannot be delivered entirely by private capital with commercial time horizons. Nuclear's 60–80 year asset life, 15–20 year construction timeline, and exposure to political risk make it fundamentally incompatible with private financing on commercial terms. Belgium, like France (EDF), Finland (TVO as cooperative), and the UK (RAB model for Hinkley), has concluded that the state must own or guarantee nuclear to make it bankable. This is a structural lesson for any country planning new nuclear.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Belgium's nuclear reversal — from legislated phase-out in 2003 to nationalisation and capacity doubling in 2026 — is the most complete example of how energy security crises override long-standing political commitments to nuclear exit.</strong> The 2022 Ukraine shock compressed two decades of gradual policy evolution into two years of emergency decisions. What was politically impossible in 2021 (new nuclear) became the official state strategy by 2026. The lesson: nuclear policy reversals happen fast under crisis conditions, but delivery timelines (15+ years for new capacity) remain immune to political urgency.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Belgium's strategic position as Europe's electricity transit hub — interconnected to France, Netherlands, Germany, Luxembourg, and the UK — makes its supply adequacy a European problem, not just a Belgian one.</strong> During periods of French nuclear outage (which were severe in 2022), Belgium provided import cover. During Belgian nuclear maintenance seasons, France and Germany supply Belgium. Elia's cross-border flows run continuously in both directions across 5 borders. Any Belgian capacity shortfall (nuclear outage, delayed new build) propagates into neighbouring markets — making Belgium's nuclear investment decisions of European systemic importance.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Princess Elisabeth offshore zone (3.15–3.5 GW) represents Belgium's largest single RE development and its first step toward an offshore wind capacity that could eventually match nuclear in contribution.</strong> Belgium's North Sea zone is small compared to the UK or Denmark, but the Elisabeth zone is being designed with next-generation specifications: direct DC coupling, potential hybrid interconnection to Norway, and integration with hydrogen production. If fully realised, it pushes Belgian offshore to ~5.5 GW — covering ~15–20% of national consumption from offshore alone.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Belgium's capacity market (CRM) has become a model that other European countries are adopting — and demonstrates that energy-only markets cannot guarantee supply adequacy in systems with high variable RE shares.</strong> As dispatchable generators (nuclear, gas) cannot earn adequate revenues from volatile spot prices alone in high-RE systems, capacity payments become necessary to maintain the firm capacity that balances the system. Belgium introduced this mechanism in 2021; France, Germany, Poland, and others have followed or are following. The design details (auction structure, capacity testing, cross-border participation) are the critical policy challenge.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Belgium's plan to expand nuclear from 4 GW to 8 GW faces the same fundamental challenge as all new nuclear in Europe: who bears the construction risk and cost overrun exposure?</strong> The nationalisation decision is an implicit answer — the Belgian state will bear it. But the capital required (~€15–20B for new units) competes with offshore wind, grid investment, and social spending. Belgium's debt-to-GDP ratio (above 100%) limits fiscal headroom. The practical question is not whether Belgium will nationalise nuclear but whether it can finance 8 GW of nuclear without crowding out other transition investments or straining sovereign creditworthiness.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      World Nuclear Association — Nuclear Power in Belgium ·
+      Norton Rose Fulbright — Global Offshore Wind: Belgium ·
+      Climact — Belgium's nuclear shift: what does it mean? ·
+      Elia — Belgian electricity market monitoring reports ·
+      Lexology — Belgian energy policy 2025 (Federal, Flemish, Walloon) ·
+      NES 2024 — Belgian Energy Transition</div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Nuclear (Doel + Tihange)', 'Wind (onshore + offshore)', 'Solar PV', 'Natural gas (CCGT)', 'Biomass / CHP'],
+    datasets: [{ data: [50, 18, 10, 15, 7], backgroundColor: ['#9B59B6','#6AB0DE','#FFD700','#C85020','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

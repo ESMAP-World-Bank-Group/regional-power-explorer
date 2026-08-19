@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morocco Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Morocco</div>
+    <div class="doc-sub">~12 GW total capacity · 45% renewable · MASEN + ONEE · Noor Ouarzazate CSP · 2.4 GW wind · 52% RE target 2030 · Green hydrogen · Europe export ambitions</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~12 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">45.4%</div><div class="kpi-lbl">Renewable capacity share (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">9.3 GW</div><div class="kpi-lbl">Solar+wind target by 2029</div></div>
+    <div class="kpi"><div class="kpi-val">52%</div><div class="kpi-lbl">RE capacity target 2030</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div style="background:#EEF3F8;border-bottom:1px solid #C9D6E4;padding:12px 56px;font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.6;color:#33465C"><strong style="color:#1B3A5C">Status note.</strong> Figures reported for Morocco follow the reporting boundary used by the national utility and may include generating assets located in Western Sahara, a territory whose final status is unresolved and which the United Nations lists as a non-self-governing territory. The Foum El Oued wind farm cited below is located in Western Sahara. Nothing in this note implies a position on status.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Morocco has approximately <strong>12 GW</strong> of installed electricity capacity, of which <strong>5.5 GW (45.4%) is renewable</strong> as of end-2025: 2.1 GW hydro, 2.4 GW wind, and ~961 MW solar. The remaining ~6.5 GW is predominantly coal (Jorf Lasfar and Safi), gas, and oil. Morocco is simultaneously one of Africa's most ambitious renewable energy developers and one of its largest coal importers — a tension that defines its current transition period. The national target is <strong>52% renewable in installed capacity by 2030</strong>, with ANRE approving a build-out from ~3.4 GW wind+solar today to <strong>9.3 GW by 2029</strong>.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#3A3A3A"></span>Coal</span>
+          <span><span class="lsq" style="background:#C85020"></span>Gas / oil</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar (CSP + PV)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~12 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: ANRE; IEA-PVPS Morocco; Enerdata; pv-magazine</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Jorf Lasfar Coal: 2,056 MW</strong>Largest power plant in Morocco; CEB-operated; coal imported; significant carbon liability; TAQA Morocco operates under long-term PPA with ONEE</div>
+        <div class="stat-item"><strong>Noor Ouarzazate CSP: ~580 MW</strong>World's largest concentrated solar power complex; Noor I (160 MW), Noor II (200 MW), Noor III (150 MW), Noor IV PV (70 MW); MASEN flagship; parabolic trough + tower + PV</div>
+        <div class="stat-item"><strong>Wind: 2.4 GW</strong>Tarfaya (300 MW, largest wind farm in Africa), Loukous (270 MW), Akhfenir, Foum El Oued; MASEN + private IPPs; excellent Atlantic coast resource</div>
+        <div class="stat-item"><strong>Hydro: 2.1 GW</strong>Pumped storage + run-of-river; Afourer (460 MW pumped storage); crucial for seasonal balancing; drought risk from decreasing Atlas snowpack</div>
+        <div class="stat-item"><strong>ANRE 2029 targets</strong>Solar: 1,515 → 5,163 MW; Wind: 935 → 4,175 MW; requires ~6 GW new wind+solar in 4 years</div>
+      </div>
+    </div>
+
+    <h2>ONEE, MASEN &amp; Market Structure</h2>
+    <p>Morocco's electricity sector is organised around two key institutions:</p>
+    <ul>
+      <li><strong>ONEE (Office National de l'Électricité et de l'Eau Potable):</strong> Vertically integrated state utility; transmission, distribution, and legacy thermal generation; purchases renewable power from MASEN projects and private IPPs under PPAs; managing financial stress from subsidised tariffs vs. imported fuel costs.</li>
+      <li><strong>MASEN (Moroccan Agency for Sustainable Energy):</strong> Independent agency managing renewable energy development; procures, structures, and oversees utility-scale RE projects; runs competitive tenders for solar, wind, and CSP; acts as offtaker or pass-through to ONEE.</li>
+      <li><strong>Private IPPs:</strong> Nareva (ONA group), TAQA Morocco, EDF Renouvelables, Acciona, EDF EN, and international developers active across wind and solar; Morocco has one of the most active RE IPP markets in Africa.</li>
+      <li><strong>Interconnections:</strong> Two 400 kV AC cables to Spain (Tarifa); interconnection with Algeria operational but limited; aspirations for subsea HVDC cable to France/Iberia for large-scale clean energy export.</li>
+    </ul>
+
+    <div class="callout">
+      Morocco is often cited as a model for African energy transition, and for good reason: the combination of MASEN's institutional capacity, competitive renewable tenders, world-class wind and solar resources, and proximity to European electricity markets creates a compelling clean energy development platform. Yet the headline 52% renewables target co-exists with two operational coal plants (Jorf Lasfar 2,056 MW + Safi 1,386 MW) that will not retire before 2030. The real transition story lies in what happens after 2030 — when Morocco's green hydrogen export ambitions come online and European carbon border adjustment mechanisms create financial pressure to close fossil capacity.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Morocco's 9.3 GW solar+wind target by 2029 requires near-tripling current capacity in four years — an unprecedented procurement rate for the country.</strong> ANRE's approval of detailed annual targets creates regulatory certainty, but the bottleneck is ONEE's financial capacity to absorb PPAs and the development of a domestic equipment manufacturing base. Morocco has been building EPC and O&amp;M expertise through MASEN projects; scaling to 1.5–2 GW/year will test whether that expertise is deep enough.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The Noor CSP complex remains Morocco's most distinctive clean energy asset globally but is not replicable at lower cost.</strong> CSP with thermal storage (Noor III parabolic trough + molten salt) provides dispatchable clean electricity after dark — a capability PV alone cannot replicate. But costs ($0.15–0.20/kWh) far exceed PV + battery alternatives, and Morocco will likely not build more large-scale CSP. The Noor complex is a sunk-cost strategic asset that differentiates Morocco in a PV-dominated world.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The coal exit question defines Morocco's credibility as a clean energy leader.</strong> Jorf Lasfar (2,056 MW) and Safi (1,386 MW) are Morocco's two largest power plants, both coal-fired, both under long-term PPAs extending beyond 2030. Retiring them early requires compensating investors; keeping them makes Morocco's 2030 renewable targets a capacity fiction without a generation reality. The EU carbon border adjustment mechanism — applying to Moroccan electricity exports — creates a financial incentive to accelerate the coal exit that did not exist before.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Morocco's green hydrogen ambitions could be transformative but face the "first mover" challenge.</strong> The government is targeting large-scale green hydrogen production from Atlantic wind for export to Europe — leveraging the best wind resources in North Africa. But the entire green hydrogen value chain (electrolysers, pipelines or ammonia conversion, European import terminals) must develop simultaneously. The first projects will set costs and de-risk the supply chain for followers; Morocco's early mover advantage is real but the timing risk is high.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The proposed Morocco–Europe subsea HVDC cable would make Morocco the electricity equivalent of Norway for southern Europe.</strong> Like Norway's offshore wind and hydro connected to Britain via subsea HVDC, a Morocco-Europe cable would allow Iberian and French grids to draw on Moroccan solar and Atlantic wind during peak hours — and Morocco to earn export revenue while European grids decarbonise. The economic logic is compelling; the financing and political alignment across multiple countries is the hard part.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      ANRE Morocco — Wind and Solar Capacity Target 2029 (9.3 GW) · Enerdata ·
+      pv-magazine — Morocco installs 204 MW utility-scale solar in 2025 (Feb 2026) ·
+      IEA-PVPS — Morocco country profile ·
+      OilPrice.com — Morocco Emerging as Renewable Energy Superpower ·
+      MASEN — Noor Ouarzazate Complex documentation ·
+      Germany-Morocco Energy Partnership — Electricity Market Overview ·
+      Mordor Intelligence — Morocco Power Market Analysis
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Coal', 'Gas / oil', 'Hydro', 'Wind', 'Solar (CSP + PV)'],
+    datasets: [{ data: [3440, 3060, 2100, 2400, 1000], backgroundColor: ['#3A3A3A','#C85020','#1E9AF5','#6AB0DE','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

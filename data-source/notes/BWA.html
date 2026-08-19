@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Botswana Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Botswana electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~900 MW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">3.2 TWh</div><div class="kpi-lbl">Domestic generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~73%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~70% imports</div><div class="kpi-lbl">Share of consumption from SAPP</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout"><strong>Eskom-dependency risk.</strong> Botswana imports approximately 70% of its electricity from South Africa (Eskom). During South Africa's acute load shedding periods (Stage 6+), Eskom reduces exports to Botswana, triggering cascading outages in Gaborone, Francistown and other cities. Botswana effectively has no control over 70% of its electricity supply — making it the SAPP member most exposed to ZAF's load shedding crisis. The government's Morupule B rehabilitation and solar IPP programme are partly motivated by this vulnerability.</div>
+
+<h2>1. Energy context</h2>
+<p>Botswana is a middle-income, politically stable democracy (one of Africa's few uninterrupted multi-party democracies since 1966) with an economy built on diamond mining — Botswana produces ~20% of the world's diamonds by value (Debswana, a De Beers/government JV). This diamond wealth has funded high-quality infrastructure but has not translated into energy self-sufficiency: Botswana imports approximately 70% of its electricity from South Africa's Eskom, making it among the most import-dependent large utilities in SAPP.</p>
+<p>Domestically, Botswana's Morupule B power station (600 MW coal) is the primary generation asset, but has been plagued by poor performance since commissioning in 2012 — at times producing less than 50% of rated capacity due to design flaws (Hitachi SA, the contractor, is in litigation with BPC over the defective plant). The government has prioritised energy independence as a strategic goal: a large solar IPP programme, rehabilitation of Morupule B, and the construction of a new Morupule C (300 MW coal) are all in the pipeline. Botswana also sits on very large coal reserves (estimated 212 billion tonnes — one of the world's largest undeveloped coalfields) whose development for power and export is a strategic goal, though it conflicts with global decarbonisation trends.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~900 MW domestic)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~900</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Domestic generation (2023, ~3.2 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">3.2</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Botswana domestic generation, 2023. Total consumption ~4.7 TWh (demand); gap covered by Eskom imports. Sources: BPC; BERA; Ember 2024; IEA BWA Profile; IRENA.</p>
+
+<ul>
+  <li><strong>Coal (~98% of domestic generation, Morupule B):</strong> Morupule B (600 MW, 4×150 MW units, CESC India EPC, Hitachi SA turbines) has been among southern Africa's most troubled power projects. Commissioned 2012–2016, it has never reliably operated at full capacity: turbine faults, boiler failures, coal handling issues, and a complex contractual dispute between BPC and Hitachi SA over defective equipment have kept actual output consistently below rated capacity. Average output has been ~200–350 MW against 600 MW nameplate — meaning Botswana routinely gets 33–58% of the capacity it theoretically has.</li>
+  <li><strong>Solar IPPs (growing, ~100–150 MW):</strong> BPC and BERA (Botswana Energy Regulatory Authority) have run two solar IPP procurement rounds. Projects at Selebi-Phikwe (East Botswana) and other sites total approximately 100–150 MW of commissioned solar PV (2021–2023). Several additional projects in the 50–100 MW range are in development. Botswana's irradiance (5.5–6.0 kWh/m²/day in the Kalahari) is among the best in SAPP for solar — the resource argument for solar is compelling.</li>
+  <li><strong>Morupule A (132 MW, coal, old):</strong> The original Morupule A plant (pre-independence era, 4×33 MW) provides backup generation but is old and unreliable. It remains available on a plant-by-plant basis but is not part of Botswana's long-term generation plan.</li>
+</ul>
+
+<h3>2.2 Historical generation and consumption</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Botswana domestic generation and total demand (TWh), 2015–2023. Large import gap (demand >> generation) throughout the period; demand consistently 4–5 TWh, domestic generation 2–3 TWh. Sources: BPC; Ember; IEA.</p>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">BPC — Botswana Power Corporation <span class="trade-badge">Vertically Integrated SOE</span></div>
+      <p class="trade-body">BPC is the state-owned electricity utility responsible for generation, transmission, and distribution. Despite operating in one of Africa's wealthiest per-capita countries, BPC is financially stressed: Morupule B underperformance forces expensive Eskom imports, while tariffs have not kept pace with costs. BPC signed a new long-term Power Import Agreement with Eskom (bilateral, through SAPP), but Eskom's own load shedding constraints mean BPC cannot rely on contracted volumes being delivered. BPC is implementing a financial and operational turnaround plan with World Bank technical assistance.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Debswana Diamond Company — Industrial self-generator <span class="trade-badge trade-badge-grey">Mining / Large Consumer</span></div>
+      <p class="trade-body">Debswana (50% De Beers/50% Botswana government) operates the Jwaneng (world's richest diamond mine by value) and Orapa mines. Mining is Botswana's largest electricity consumer (~25–30% of total demand) and Debswana has self-generation backup capacity. Debswana's electricity security is a direct national economic concern — any sustained power disruption affecting the mines reduces diamond production and Botswana's primary export revenue. This makes Debswana a strategic motivator for BPC's investment programme in supply security.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Morupule B litigation and rehabilitation:</strong> The Hitachi SA / BPC dispute over Morupule B's defective equipment is one of the largest power sector contractual disputes in SAPP history. Arbitration and litigation have been ongoing for years. Meanwhile, BPC is rehabilitating some units with separate contractors — at additional cost, beyond the original project budget. Resolving the legal dispute and achieving reliable output from all four units of Morupule B is BPC's most important near-term operational challenge.</li>
+  <li><strong>Coal vs. solar strategic tension:</strong> Botswana has one of the world's largest unexploited coal reserves (Mmamabula coalfield, estimated 2.6 billion tonnes exploitable). Historical plans included large coal-to-power (Mmamabula Energy Project: 2,400 MW) and coal export infrastructure. These plans conflict with global decarbonisation trends — international financing for coal is essentially unavailable, and export markets for thermal coal are shrinking. The government's 2023 national energy policy acknowledges this tension and increasingly leans toward solar as the growth vector, while retaining coal for baseload (Morupule C, 300 MW, is still in the planning stage with government financing).</li>
+  <li><strong>Solar IPP acceleration:</strong> Botswana's solar resources and relatively strong governance (transparent procurement, rule of law) make it an attractive destination for solar IPP investment. The barriers are BPC's creditworthiness as offtaker and the government's willingness to provide sovereign guarantees. If these can be resolved — BERA has made progress on the regulatory framework — Botswana could reasonably target 500–1,000 MW of solar in the next 5–7 years, substantially reducing Eskom dependency.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Botswana imports 70% of its electricity from a supplier (Eskom) that is itself in crisis — this is SAPP's most acute bilateral dependency risk, and it exposed Botswana to cascading load shedding every time South Africa hit Stage 6+ in 2022–2023.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Morupule B (600 MW) is southern Africa's most instructive cautionary tale about power plant procurement: the plant was supposed to end Botswana's Eskom dependence; instead, persistent underperformance has prolonged and deepened it — testament to the governance, contractor selection, and quality assurance risks in large power projects.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Botswana's Kalahari solar resource (5.5–6.0 kWh/m²/day) and political stability make it one of SAPP's best environments for solar IPP investment — the country has the creditworthiness (Baa2 sovereign), the regulatory framework (BERA), and the resource; what remains is BPC offtaker creditworthiness and government guarantee willingness.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The Mmamabula coal reserve (world-scale, politically supported, domestically financed) is Botswana's energy policy dilemma: it offers baseload supply security at a time when the country desperately needs domestic generation, but at a carbon cost and stranded asset risk that no international financier will support and that global coal markets are moving away from.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Debswana's diamond mines are the hidden anchor of Botswana's energy security calculus: maintaining reliable power to Jwaneng and Orapa is a non-negotiable national economic priority — which means BPC will always be under pressure to provide backup diesel generation rather than accept load shedding at mine sites, regardless of the broader supply situation.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> BPC Annual Report 2023; BERA Botswana — Annual Report 2023; Ember Electricity Data 2024; IEA Botswana Energy Profile; IRENA Botswana Country Profile 2024; World Bank Botswana Energy Sector notes; Debswana — Annual Report 2023; De Beers Group — Botswana operations report; SAPP Pool Statistics 2023; Mmegi / Daily News Botswana — electricity sector coverage 2023–2024; Eskom — Botswana Power Import Agreement details.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Coal','Solar','Oil'];
+const C1=['#5A6474','#F59F00','#5B3FA0'];
+const GW1=[0.732,0.130,0.030];
+const L2=['Coal','Oil','Solar'];
+const C2=['#5A6474','#5B3FA0','#F59F00'];
+const D2=[98,1,0];
+const TWh2=[3.19,0.03,0.01];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[2.97,2.69,3.02,3.11,2.51,2.18,2.49,2.56,3.23];
+const dem=[4.74,4.5,4.6,4.8,4.2,3.6,4.2,4.5,4.74];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#5A6474',backgroundColor:'rgba(90,100,116,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#5A6474',borderWidth:2},{label:'Demand',data:dem,borderColor:'#2E75B6',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

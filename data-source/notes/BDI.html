@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burundi Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout-crit{background:#FEE2E2;border-left:4px solid #C0392B;padding:13px 17px;margin:14px 0;font-size:13px;color:#7F1D1D;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FEF3C7;border-left:4px solid #B7770D;padding:13px 17px;margin:14px 0;font-size:13px;color:#78350F;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Burundian electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~100 MW</div><div class="kpi-lbl">Installed capacity (est. 2024)</div></div>
+  <div class="kpi"><div class="kpi-val">~15–20%</div><div class="kpi-lbl">Electrification rate (World Bank 2023)</div></div>
+  <div class="kpi"><div class="kpi-val">45 MW</div><div class="kpi-lbl">Jiji-Mulembwe hydro (AfDB, commissioned 2024)</div></div>
+  <div class="kpi"><div class="kpi-val">147 MW</div><div class="kpi-lbl">Ruzizi III (EGL, advanced financing)</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-crit"><strong>Data quality warning — fragile and politically restricted state.</strong> Burundi has been under significant political stress since the 2015 election crisis (President Nkurunziza's controversial third term, mass displacement, repression). International statistical reporting on Burundi is limited: REGIDESO (the state utility) does not publish reliable audited statistics, and most figures cited by IFIs are estimates. The electrification rate, installed capacity, and generation figures presented here are rough estimates from World Bank surveys, IRENA, and AfDB project data. Significant uncertainty should be assumed.</div>
+
+<h2>1. Energy context</h2>
+<p>Burundi is among the poorest countries on earth (GDP per capita ~USD 220, 2023) and one of the least electrified in Africa: approximately <strong>15–20% of its 13 million people</strong> have access to electricity (World Bank 2023). Load shedding of up to 12–18 hours per day is reported in Bujumbura, the economic capital; outside the capital, access is negligible. The electricity sector is a microcosm of Burundi's broader development challenges: underfunded institutions, a financially insolvent state utility (<strong>REGIDESO</strong>), conflict legacy, and an exceptionally limited resource base.</p>
+<p>The most significant recent development is the commissioning of the <strong>Jiji-Mulembwe hydropower project</strong> (approximately 45 MW, AfDB-financed, commissioned 2023–2024) — the largest addition to Burundi's electricity system in decades. This project, together with Burundi's ~26.7 MW share of the <strong>Rusumo Falls tripartite project</strong> (Rwanda-Tanzania-Burundi, 2023), has nominally doubled installed capacity from pre-project levels. Whether this translates into improved supply reliability depends on REGIDESO's operational capacity and the grid's ability to absorb and distribute additional generation.</p>
+<p>The most consequential near-term project is <strong>Ruzizi III</strong> — 147 MW of new hydropower on the Ruzizi River, developed by EGL (the DRC-Rwanda-Burundi tripartite utility, in which Burundi holds a 27% stake). If financed and built (AfDB and EIB are lead financiers), Burundi's share (~40 MW) would transform the country's electricity balance. Advanced financing discussions are underway as of mid-2026.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~100 MW, 2024 estimate)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~100</div><div class="chart-center-lbl">MW est.</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Indicative generation mix</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~0.5</div><div class="chart-center-lbl">TWh est.</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Estimated capacity and generation mix (2024). Figures are approximate given limited REGIDESO reporting. Sources: AfDB, World Bank, IRENA, EGL project documentation.</p>
+
+<ul>
+  <li><strong>Jiji-Mulembwe (45 MW, AfDB-financed, commissioned 2023–24):</strong> Jiji (27 MW) and Mulembwe (18 MW) hydropower stations on the Jiji and Mulembwe rivers in eastern Burundi. This is the largest single new generation investment in Burundi in many years, financed by the African Development Bank and other donors. Commissioning has provided a significant boost to the system, though integration with the underdeveloped grid network is still being consolidated.</li>
+  <li><strong>Ruzizi I+II (EGL, Burundi share ~7–12 MW):</strong> Ruzizi I (29.8 MW total) and Ruzizi II (43.8 MW total) are operated by EGL — the DRC-Rwanda-Burundi tripartite utility. Burundi's equity share (~27%) translates to roughly 7–12 MW of firm output. These plants are on the Ruzizi River between DRC and Rwanda, at a distance from Burundi's main consumption centres.</li>
+  <li><strong>Rusumo Falls (~26.7 MW Burundi share):</strong> The 80 MW Rusumo Falls project on the Kagera River (shared equally with Rwanda and Tanzania) was commissioned in 2023. Burundi's share is approximately 26.7 MW. Connecting this generation to Burundi's grid required construction of a 110 kV transmission line that was also part of the NELSAP project.</li>
+  <li><strong>Other domestic hydro (~15 MW):</strong> Rwegura (18 MW, partly operational), Murembwe, Nyemanga, and other small plants. Many are old, poorly maintained, and operating below nameplate.</li>
+  <li><strong>Diesel/HFO emergency (~5–10 MW):</strong> Bujumbura thermal generators. High-cost backup; REGIDESO avoids dispatch due to cost.</li>
+</ul>
+<div class="callout-warn"><strong>REGIDESO financial crisis:</strong> REGIDESO's estimated debt exceeds USD 150 million, with annual revenues far below operational and debt service costs. Cross-subsidised residential tariffs (reported at ~USD 0.09–0.10/kWh) cover only a fraction of supply costs. Government payment arrears for public sector consumption further impair REGIDESO's cash flow. The utility is essentially insolvent and requires continuous state support, which constrains investment in maintenance, grid extension, and billing systems.</div>
+
+<h3>2.2 Demand and access</h3>
+<p>Burundi's peak demand is estimated at approximately 80–100 MW — essentially equal to or exceeding the total installed capacity, explaining why load shedding of 12–18 hours per day has been structural in Bujumbura. Even with Jiji-Mulembwe and Rusumo Falls additions, the newly available supply at ~100 MW barely equals estimated peak demand. Distribution losses (~25–30%) and billing non-collection further reduce effective commercial supply.</p>
+<p>The ~15–20% electrification rate (World Bank 2023) represents primarily grid-connected households in Bujumbura and larger towns. Rural electrification is negligible: Burundi is one of the most densely populated countries in Africa but also among the poorest, and the economics of rural grid extension are deeply unfavourable. Off-grid solar is growing through NGO and diaspora-funded programmes.</p>
+
+<h3>2.3 Key interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Capacity</th><th>Status</th></tr>
+  <tr><td><strong>Rusumo Falls (BDI-RWA-TZA, NELSAP)</strong></td><td>26.7 MW Burundi share</td><td>Commissioned 2023. 110 kV transmission line to connect Burundi share under construction/finalisation.</td></tr>
+  <tr><td><strong>EGL Ruzizi I+II (DRC-RWA-BDI)</strong></td><td>~7–12 MW Burundi share</td><td>Operational. Long-standing tripartite arrangement.</td></tr>
+  <tr><td><strong>Ruzizi III (EGL, AfDB/EIB)</strong></td><td>147 MW total / ~40 MW BDI share</td><td>Advanced financing stage. If built, would transform Burundi's electricity balance.</td></tr>
+  <tr><td><strong>Rwanda–Burundi</strong></td><td>Small bilateral flows</td><td>Variable; Rwanda imports/exports depending on seasons. Grid capacity limited.</td></tr>
+</table>
+
+<h2>3. Key actors</h2>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Notes</th></tr>
+  <tr><td><strong>Ministry of Energy</strong></td><td>Policy — sector oversight, Jiji-Mulembwe, Ruzizi III, rural electrification targets</td><td>Government of Burundi</td></tr>
+  <tr><td><strong>AREEN</strong></td><td>Regulator — Agence de Régulation du secteur de l'Energie. Established 2015. Limited operational capacity.</td><td>State / autonomous</td></tr>
+  <tr><td><strong>REGIDESO</strong></td><td>Vertically integrated state utility — generation, transmission, distribution. Financially insolvent. ~100 MW capacity.</td><td>State-owned (GoBDI 100%)</td></tr>
+  <tr><td><strong>EGL (Énergie des Grands Lacs)</strong></td><td>Tripartite utility — Ruzizi I+II; Burundi 27% equity. Ruzizi III under financing.</td><td>DRC 46%, Rwanda 27%, BDI 27%</td></tr>
+  <tr><td><strong>African Development Bank</strong></td><td>Jiji-Mulembwe financing (~USD 100M); Ruzizi III co-financier</td><td>Primary MDB for Burundi energy</td></tr>
+  <tr><td><strong>EIB / World Bank</strong></td><td>Ruzizi III co-financiers; rural electrification support</td><td>MDB / IFI</td></tr>
+</table>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 Generation finally catching demand — barely</h3>
+<ul>
+  <li>Jiji-Mulembwe (45 MW) + Rusumo Falls share (26.7 MW) added roughly 70 MW of new capacity to Burundi's system in 2023–2024, approximately doubling installed capacity from the pre-project ~55 MW baseline. Combined with Ruzizi I+II EGL share, Burundi now has a nominal 100 MW — barely matching estimated peak demand of 80–100 MW before losses.</li>
+  <li>In practice, generation additions have reduced load shedding in Bujumbura modestly. Dry-season hydrology constrains actual output, and REGIDESO's distribution and billing systems limit the economic translation of new generation into revenue and reinvestment. The 2024 situation — 100 MW capacity, 12+ hours shedding continuing — illustrates how generation addition alone does not fix a sector with deep operational and financial pathologies.</li>
+</ul>
+<h3>4.2 Ruzizi III — the transformational project</h3>
+<ul>
+  <li>Ruzizi III (147 MW, EGL, Ruzizi River between DRC and Rwanda, Burundi's share ~40 MW) is the most consequential near-term electricity project for Burundi. Unlike Jiji-Mulembwe (which brought supply to roughly equality with demand), Ruzizi III would create a genuine surplus — enabling Burundi to phase out diesel, reduce tariffs, and serve rural areas. AfDB and EIB are the primary financiers; financial close was targeted for 2025 but has been delayed.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Burundi has one of the lowest electrification rates in Africa (~15–20%), chronic load shedding in the capital, and an insolvent state utility (REGIDESO). The 2023–2024 commissioning of Jiji-Mulembwe (45 MW) and Rusumo Falls share (26.7 MW) roughly doubled installed capacity — a genuine step forward, but one that brings supply barely to parity with demand rather than creating surplus.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>REGIDESO's financial insolvency — USD 150M+ debt, below-cost-recovery tariffs (~$0.09/kWh), ~25–30% losses, and government payment arrears — is the structural constraint that prevents generation additions from translating into improved service. More generation without utility reform delivers unreliable supply at unsustainable cost. Utility financial turnaround is a prerequisite for meaningful sector improvement.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Ruzizi III (147 MW EGL, ~40 MW Burundi share, AfDB/EIB co-financing) is the most transformational near-term project. It would create a genuine generation surplus, enabling load shedding elimination and rural electrification expansion. The delay to financial close — now past the 2025 target — reflects EGL governance complexity, DRC financing challenges, and off-take agreement negotiations. For Burundi, this project is decades in the making and remains the most important single energy event pending.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Burundi's 27% stake in EGL (Énergie des Grands Lacs) — the tripartite DRC-Rwanda-Burundi utility operating Ruzizi I and II — gives it a structural mechanism for accessing shared regional hydro resources. EGL is one of the oldest functioning regional energy institutions in Africa and a model for the type of multinational utility that EAPP integration requires at scale.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Political repression and restricted civil society since 2015 have impaired Burundi's relationships with multilateral donors, making standard IFI lending difficult. Much of the recent financing (AfDB for Jiji-Mulembwe, EIB for Ruzizi III) has required creative governance structures and enhanced conditionality. Political normalisation — improving relations with IFIs and allowing civil society monitoring of utility performance — would unlock additional concessional financing that Burundi badly needs.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+African Development Bank — Jiji-Mulembwe Hydropower Project documentation &nbsp;·&nbsp; EGL — Ruzizi III project updates &nbsp;·&nbsp; World Bank — Access to Electricity, Burundi (2023) &nbsp;·&nbsp; IRENA Burundi country profile &nbsp;·&nbsp; NELSAP — Rusumo Falls project completion &nbsp;·&nbsp; IEA Africa Energy Outlook 2022 — Burundi data &nbsp;·&nbsp; IMF Burundi Article IV 2024 &nbsp;·&nbsp; Energypedia — Burundi electricity &nbsp;·&nbsp; Crisis Group — Burundi political situation &nbsp;·&nbsp; MINenergie Burundi — sector publications (limited)
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Jiji-Mulembwe hydro','Rusumo + EGL share','Other domestic hydro','Diesel emergency'];
+const C1=['#1E9AF5','#44DAEC','#1A9AF5','#808890'];
+const MW1=[45,39,8,8];
+
+const L2=['Hydro (domestic)','Rusumo / EGL shares','Diesel'];
+const C2=['#1E9AF5','#44DAEC','#808890'];
+const D2=[68,25,7];
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:MW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:D2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>

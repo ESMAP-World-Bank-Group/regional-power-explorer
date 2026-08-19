@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepal Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Nepal</div>
+    <div class="doc-sub">3,422 MW · 95% hydropower · Upper Tamakoshi 456 MW · NEA net exporter to India · NPR 17.5B export revenue FY2025 · 10,000 MW target 2029</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">3,422 MW</div><div class="kpi-lbl">Installed capacity (Mar 2025)</div></div>
+    <div class="kpi"><div class="kpi-val">95%</div><div class="kpi-lbl">Hydropower share</div></div>
+    <div class="kpi"><div class="kpi-val">2,380 GWh</div><div class="kpi-lbl">Export to India (FY2024-25)</div></div>
+    <div class="kpi"><div class="kpi-val">456 MW</div><div class="kpi-lbl">Upper Tamakoshi HPP</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Nepal has <strong>3,422 MW</strong> of installed electricity capacity as of March 2025, of which an extraordinary <strong>95% (3,256 MW) is hydropower</strong>. The country has transformed over the past decade from chronic load-shedding (up to 18 hours/day in 2015) to a net electricity exporter, as a wave of run-of-river and storage hydropower plants came online. The milestone of becoming a net exporter to India — earning <strong>NPR 17.5 billion</strong> from electricity exports in FY2024-25 — marks the most consequential shift in Nepal's energy economy in its history.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (March 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#C85020"></span>Thermal (backup)</span>
+          <span><span class="lsq" style="background:#5CB85C"></span>Co-generation</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">3,422 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: NEA; Annapurna Express; Rising Nepal Daily; Kathmandu Post</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Upper Tamakoshi: 456 MW</strong>Nepal's largest; Dolakha district; run-of-river; 6×76 MW Francis turbines; commissioned July 2021; suffered landslide damage Sept 2024, fully restored June 2025</div>
+        <div class="stat-item"><strong>Kali Gandaki A: 144 MW</strong>Syangja district; Nepal's second-largest; NEA-operated; storage type; commissioned 2002; key season-balancing plant</div>
+        <div class="stat-item"><strong>Marsyangdi + Middle Marsyangdi: 69+70 MW</strong>Two-plant cascade on Marsyangdi River; NEA-operated; important baseload</div>
+        <div class="stat-item"><strong>Net export position: 668 GWh (FY24-25)</strong>Gross export 2,380 GWh to India; gross import 1,712 GWh from India (dry-season backup); net positive for first time in history</div>
+        <div class="stat-item"><strong>India approval: 1,010 MW from 30 plants</strong>India approved Nepal to export up to 1,010 MW from 30 named hydropower plants; cross-border transmission expanding; Bangladesh also receiving ~40 MW via India</div>
+      </div>
+    </div>
+
+    <h2>NEA &amp; Market Structure</h2>
+    <ul>
+      <li><strong>NEA (Nepal Electricity Authority):</strong> Vertically integrated state utility; generation + transmission + distribution; the key institution in Nepal's power sector; improving financial position as export revenues grow.</li>
+      <li><strong>IPPs:</strong> Private hydropower IPPs have driven most capacity additions in the 2010s and 2020s; they sell power to NEA under PPAs; sector increasingly relies on private developers for new projects while NEA manages the grid.</li>
+      <li><strong>IPPAN:</strong> Independent Power Producers Association of Nepal; represents a large and growing IPP community.</li>
+      <li><strong>Interconnections:</strong> Multiple 220 kV and 132 kV cross-border lines to India (PGCIL–NEA); capacity being expanded under the Power Trade Agreement. A new 400 kV cross-border line is under development to increase export capacity.</li>
+      <li><strong>Bangladesh link:</strong> Nepal now exports ~40 MW to Bangladesh via India's grid — the first South Asian tri-country electricity trade arrangement.</li>
+    </ul>
+
+    <div class="callout">
+      Nepal's transition from 18-hour daily load shedding in 2015 to net electricity exporter in 2025 is one of Asia's most dramatic energy transformation stories. The key was a wave of run-of-river hydropower projects by private IPPs, many financed by the IFC and development banks, that added ~2,000 MW in roughly eight years. Nepal's 42,000 MW theoretical hydro potential — less than 10% developed — means this is only the beginning of what could become a major regional clean energy export economy.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Nepal's electricity export to India is transforming its geopolitical and economic relationship with its southern neighbour.</strong> For decades, Nepal imported electricity from India in the dry season and was a net electricity debtor. Now Nepal earns NPR 17.5 billion annually from exports and has approval to export 1,010 MW. This shift — from dependency to partnership — strengthens Nepal's negotiating position across bilateral relations beyond energy.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The seasonal mismatch between Nepal's run-of-river hydro and India's demand pattern is the central technical challenge.</strong> Nepal's rivers peak in the monsoon (June–September) when India's demand is partly met by its own hydro. Nepal's dry-season (November–May) output is lower — exactly when Nepal needs to import from India. Storage hydropower (multi-year reservoirs like Upper Arun, Dudhkoshi, Budhigandaki) would shift Nepal's generation profile toward dry-season export, which commands premium prices. Nepal's pipeline of storage hydro is critical to maximising export value.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The 10,000 MW by 2029 target is achievable only if transmission infrastructure keeps pace with generation.</strong> Nepal is adding ~500–800 MW/year in new hydro capacity; the bottleneck is increasingly cross-border transmission capacity to India, not the hydro projects themselves. The planned 400 kV cross-border line and transmission corridor upgrades are critical path items; delays will strand generation capacity that Nepal has invested to build.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Upper Tamakoshi's landslide vulnerability is a warning about Nepal's infrastructure risk.</strong> The September 2024 landslide that knocked Nepal's largest power plant (456 MW) offline for 88 days caused a significant supply shortfall and economic loss. As climate change increases extreme rainfall events in the Himalayas, hydropower plants in steep river gorges face escalating geological risk. Disaster resilience — in plant design, access road redundancy, and rapid repair capacity — must be incorporated into all future projects.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Nepal's emergence as a power exporter creates a new model for Himalayan small states.</strong> With Bhutan already exporting ~70% of its hydro production to India, and Nepal now joining as a net exporter, the Himalayan corridor from Bhutan to western Nepal is becoming the renewable energy backbone of South Asian electricity trade. If Pakistan ultimately connects via India, this corridor could evolve into a South Asian Green Energy Belt — replacing the region's coal dependency with low-cost Himalayan hydro.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Rising Nepal Daily — Nepal exports power worth Rs 17.5bn to India and Bangladesh ·
+      Annapurna Express — NEA exporting 350 MW to India, Bangladesh ·
+      Kathmandu Post — India raises imports of Nepal's energy to nearly 1,000 MW ·
+      Kathmandu Post — Upper Tamakoshi resumes full power generation (June 2025)·
+      NEA — 40th Anniversary publication (Aug 2025) ·
+      SAARC Chamber — Nepal's Energy Trade ·
+      Borderlens — From darkness to light: Nepal's hydropower journey
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Solar PV', 'Thermal (backup)', 'Co-generation'],
+    datasets: [{ data: [3256, 107, 53, 6], backgroundColor: ['#1E9AF5','#FFD700','#C85020','#5CB85C'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

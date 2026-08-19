@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cabo Verde Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — AIMS (Atlantic)</div>
+    <div class="doc-title">Cabo Verde</div>
+    <div class="doc-sub">~170 MW installed · Diesel ~52% + wind ~30% + solar ~16% + other ~2% · ELECTRA (state majority utility) · 9 inhabited islands, each independent grid · ~580,000 people · Cabeólica wind farm (25.5 MW across 4 islands, 2011 — one of West Africa's first utility wind farms) · SWRO desalination electricity load: water-energy nexus · 100% RE 2030 target · Tourism economy (~800,000 visitors, Sal and Boa Vista) · Atlantic aviation hub · ECOWAS member · Portuguese-speaking</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~48%</div><div class="kpi-lbl">National RE share 2024 (wind + solar)</div></div>
+    <div class="kpi"><div class="kpi-val">25.5 MW</div><div class="kpi-lbl">Cabeólica wind (4 islands, 2011) — West Africa pioneer</div></div>
+    <div class="kpi"><div class="kpi-val">9 islands</div><div class="kpi-lbl">Each electrically isolated — no inter-island grid cables</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">National target by 2030</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Cabo Verde — ten volcanic islands (nine inhabited) in the Atlantic Ocean 570 km off the West African coast, with a population of approximately 580,000 and a tourism- and remittance-driven economy — is one of the most advanced electricity transition stories among African SIDS. Its exceptional Atlantic trade wind resource (annual average 7-9 m/s across the northern and eastern islands), strong solar irradiation (1,900-2,200 kWh/kWp/year), and political stability (a model democracy in the African context since independence in 1975) have combined to make Cabo Verde a genuine RE leader in its region. The 2011 commissioning of the <strong>Cabeólica wind farm</strong> — 25.5 MW across four islands (Santiago, São Vicente, Sal, Boavista), financed by IFC, African Development Bank, and the Portuguese development bank — was one of the first utility-scale wind projects in West Africa and a landmark demonstration that island states in the Atlantic tropics could achieve significant wind generation at commercial scale.</p>
+    <p><strong>ELECTRA</strong> (Empresa de Electricidade e Água de Cabo Verde), the state majority utility (with Engie and other private shareholders holding minority stakes), operates nine independent island grids — each island has its own diesel generators, wind turbines (where installed), and solar capacity, with no submarine cables connecting islands. This isolation is both a constraint (each island must maintain its own generation reserve margin) and a design feature: Cabo Verde's RE transition must be achieved island by island, not by connecting RE-rich islands to RE-poor ones. The largest grids: Santiago (Praia capital, ~220,000 people, ~80 MW); São Vicente (Mindelo, ~80,000, ~35 MW); Sal (Espargos/Santa Maria, tourism hub, ~25 MW); Fogo (São Filipe, ~35,000, ~12 MW). National RE share (2024): approximately 48% (wind: 30%, solar: 16%, small hydro: 2%) — a remarkable achievement from near-zero RE in 2005.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">National generation mix (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (island generation plants)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Cabeólica + newer island wind)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (utility + rooftop, all islands)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Small hydro + other</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~48%</div>
+            <div class="chart-center-lbl">National RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Aggregate across 9 independent island grids. RE shares vary significantly by island: São Vicente ~60% RE (strong wind); Fogo ~20% RE (limited wind). Source: ELECTRA 2024; ARE (Autoridade Reguladora) 2024; IRENA 2025; Cabeólica 2024</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Cabeólica: Africa's island wind pioneer and its 13-year operational legacy</strong>Cabeólica, S.A. — a joint venture between the Cabo Verde government (35%), InfraAfrica (35%), and Électricité de France (EDF, 30%) — commissioned 25.5 MW of Vestas V52 wind turbines across four islands in 2011. The project was financed by IFC, African Development Bank, and EIB — a landmark development finance structure for an island RE project in Africa. Thirteen years of operation have demonstrated: (1) Santiago wind average 7.2 m/s — consistently above design assumption; (2) annual capacity factor: 32-35%, well above global onshore wind average (~27%); (3) saltwater/high humidity accelerates blade and nacelle corrosion, but has been managed within the O&amp;M budget; (4) Cabeólica provides approximately 22-25% of Cabo Verde's total electricity generation. IFC's equity exit (2021, sold to InfraAfrica) confirmed commercial viability. Cabeólica is now planning turbine repowering (V52 → larger turbines) for post-2030.</div>
+        <div class="stat-item"><strong>Water-energy nexus: SWRO desalination as electricity load and RE opportunity</strong>Cabo Verde is semi-arid — Sal and Boavista (flat, tourist-dominated) receive ~100-150 mm/year. Water is predominantly produced by seawater reverse osmosis (SWRO) desalination operated by ELECTRA and tourist resort operators. SWRO is the largest single industrial electricity load in Cabo Verde — estimated at 15-20% of national electricity consumption. ELECTRA has experimented with using SWRO as demand response: running desalination at full capacity during high-wind/high-solar periods (cheapest electricity) and reducing output during peak diesel hours. This dispatchable demand approach — treating SWRO as a virtual battery — is an underexplored pathway for managing RE variability in island systems with large desalination loads, and has shown 12-18% diesel displacement improvement in pilot testing on São Vicente.</div>
+        <div class="stat-item"><strong>Island grid variability: RE shares from 20% to 60% depending on island</strong>Cabo Verde's national average RE (48%) masks enormous variation by island: São Vicente achieves approximately 55-60% RE from its strong wind resource and Cabeólica turbines; Santiago reaches approximately 45-50% from Cabeólica + expanding solar; Sal and Boavista achieve 40-50% from wind + solar. Fogo (volcanic, variable wind): approximately 20% RE. Santo Antão and São Nicolau (mountainous, some hydro potential): 25-35%. The islands with the lowest RE shares are the ones where diesel costs are highest (remoteness, smaller volumes) — creating the strongest economic case for faster RE deployment precisely where it is most logistically challenging. The per-island RE investment case differs substantially from the national average and requires island-specific planning rather than national aggregation.</div>
+        <div class="stat-item"><strong>Tourism electricity load: Sal and Boavista resort demand drives island grid sizing</strong>Sal and Boavista together host approximately 60-70% of Cabo Verde's 800,000+ annual visitors in all-inclusive beach resorts (TUI, Thomas Cook, Club Med). These resorts have extremely high electricity intensity: air conditioning, pools, desalination, kitchens, laundry, and entertainment create loads of 500-800 kW per large resort. The seasonal visitor pattern (European winter peak: November-March) creates pronounced seasonality on these island grids. Cabo Verde's tourists are arriving by short-haul from Europe in a context where European aviation decarbonisation pressure is growing — the carbon cost of Sal/Boavista tourism makes the RE share of resort electricity a reputational issue for European tour operators, which is an underutilised leverage point for accelerating resort rooftop solar installation and ELECTRA RE investment on these tourist-critical islands.</div>
+      </div>
+    </div>
+
+    <h2>Path to 100% RE: Wind, Solar, and BESS</h2>
+    <p>Cabo Verde's 100% RE by 2030 target requires moving from 48% (2024) to 100% — on nine separate island grids, in 6 years. The technical pathway is clear: each island needs additional wind and/or solar + BESS to reach the point where RE can supply 24/7 demand with diesel only as emergency backup. ADB and EIB have both committed to Cabo Verde RE expansion financing (ARE/ELECTRA tender for 30 MW solar + 15 MW BESS national programme, 2024-2026). The binding constraint is not wind or solar resource — both are excellent on all inhabited islands — but BESS capacity and ELECTRA's grid management capability at high RE penetration (>70% instantaneous RE share creates frequency and voltage stability challenges on small island grids without sufficient BESS).</p>
+    <div class="callout">
+      Cabo Verde in 2026 sits at a transition inflection point: nearly 50% RE nationally, with strong wind and solar resources, a functioning regulatory framework (ARE), a commercially oriented utility (ELECTRA), and a clear 100% RE 2030 target. The 50%→100% step requires BESS at scale on all nine island grids — an investment of approximately €80-120M nationally — and the grid management capability to run each island system at >80% instantaneous RE without frequency collapse. Both are achievable with EIB, ADB, and Climate Fund financing that is now in the pipeline. Cabo Verde is close to the finish line, and accelerating BESS deployment is the decisive step.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Cabo Verde's SWRO desalination load — estimated at 15-20% of national electricity consumption — should be operated as dispatchable demand response (running at maximum capacity during high-wind/high-solar periods, reducing during diesel-peak hours), which would effectively provide 15-30 MWh/day of implicit storage across the national system without any battery investment, and ELECTRA's operational teams should be trained and incentivised to manage SWRO dispatch as a grid flexibility tool rather than treating it as a fixed base load.</strong> SWRO demand response has been piloted on São Vicente and shown 12-18% diesel displacement improvement. Scaling it to Sal and Santiago — where SWRO loads are largest and RE variability is highest — would materially improve the economics of the 100% RE transition at each island grid level, reducing the BESS capacity needed and therefore the total capital cost. IFC should fund an ELECTRA SWRO demand response programme (estimated cost: US$2-3M for metering, control software, and operator training) as a low-cost complement to the much larger BESS investment.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Cabeólica's planned turbine repowering (V52 turbines, commissioned 2011, approaching end of 20-year design life by 2030-2031) is the highest-stakes electricity asset decision in Cabo Verde's near-term energy planning: repowering with larger turbines (2.5-3.5 MW per unit) would increase wind generation by 50-80% on the four host islands at significantly lower O&amp;M cost per kWh, but requires renegotiating land access agreements, ARE licensing, and ELECTRA power purchase agreements — all of which should be initiated in 2025-2026 to avoid a generation gap as the V52s approach decommissioning.</strong> Repowering 30 V52 turbines (850 kW each) with 12-15 modern 2.5-3.5 MW turbines would deliver approximately 35-50 MW on the same land footprint — a 40-100% increase in wind capacity with fewer, quieter, more efficient turbines. The repowering business case is strong, but each component of Cabo Verde's multi-party RE structure (Cabeólica shareholders, ELECTRA PPA, ARE tariff regulation, municipal land access) must separately approve the repowering concept. Coordination risk is the primary barrier, not economics.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Cabo Verde's isolation from the West African mainland grid — unlike continental ECOWAS members who can access cross-border electricity trade — means that each island's grid must be self-sufficient in generation reserve, creating a permanent structural cost premium relative to mainland peers that can share reserves across borders, and this isolation premium should be explicitly quantified and presented to ECOWAS and COP climate finance forums as a SIDS-specific funding gap that standard ECOWAS grid investment frameworks do not address.</strong> ECOWAS's West African Power Pool (WAPP) is building cross-border high voltage transmission between mainland countries. Cabo Verde cannot connect to WAPP by definition — 570 km of open ocean separates it from Senegal. Every reserve margin percentage point that Cabo Verde must maintain on each island represents generation capacity that a mainland country can share with its neighbours. The isolation premium (estimated 8-15% of total system cost) is a structural feature of Cabo Verde's geography that justifies dedicated SIDS island isolation grant financing beyond standard ECOWAS programmes.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The EU-Cabo Verde Special Partnership gives Cabo Verde privileged access to EU climate finance, EIB project finance, and EU regulatory frameworks — including the potential for Cabo Verde to join EU renewable energy certification schemes — which ELECTRA and ARE should exploit to align Cabo Verde's RE certification with European standards that enable resort operators to credibly claim 100% RE electricity to their European customers and tour operators, creating commercial pull for the RE transition rather than relying solely on regulatory push.</strong> European tour operators increasingly face pressure from EU Taxonomy and ESG reporting to disclose the carbon footprint of their supply chains including hotel electricity. If Cabo Verde resort electricity carries an internationally recognised RE certificate (GO — Guarantee of Origin, or equivalent), TUI/Thomas Cook/Club Med can market their Cabo Verde resorts as carbon-neutral holidays. This creates a direct commercial incentive for resorts to install rooftop solar and for ELECTRA to accelerate grid RE — linking EU tourism decarbonisation policy to Cabo Verde RE investment with no additional public funding required.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Cabo Verde's combination of political stability, regulatory maturity (ARE), an experienced and commercially oriented utility (ELECTRA), strong RE resources, and demonstrated first-mover success (Cabeólica 2011) makes it the most investment-ready SIDS electricity market in the Atlantic AIMS region — and it should be actively positioned by IFC, ADB, and ESMAP as the Atlantic AIMS reference case for private RE investment in island states, attracting merchant solar+BESS developers rather than relying exclusively on concessional development finance for the final 50%→100% RE step.</strong> Cabo Verde's ARE regulatory framework has tariff-setting processes, independent dispute resolution, and 10+ year PPA track records that are prerequisites for private investment risk appetite. The 100% RE 2030 target creates a clear regulatory signal. IFC's role should be as a mobiliser of private finance rather than as a direct lender, reserving concessional capital for the outer islands (Brava, Maio, São Nicolau) where commercial finance will not go independently.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      ELECTRA — Annual Report 2024 ·
+      ARE (Autoridade Reguladora Multissectorial da Economia, Cabo Verde) — Energy Statistics 2024 ·
+      Cabeólica, S.A. — operational data 2024 ·
+      ADB — Cabo Verde RE programme ·
+      EIB — Cabo Verde energy financing ·
+      IFC — Cabeólica project documentation ·
+      IRENA — Cabo Verde energy profile 2025 ·
+      Cabo Verde government — NDC 2022; Energy Policy 2021-2030 ·
+      ECOWAS/WAPP — West Africa Power Pool status 2024
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (island generation plants)', 'Wind (Cabeólica + newer island wind)', 'Solar PV (utility + rooftop, all islands)', 'Small hydro + other'],
+    datasets: [{ data: [52, 30, 16, 2], backgroundColor: ['#8B4513','#6AB0DE','#FFD700','#1B6CA8'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

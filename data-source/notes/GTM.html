@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guatemala Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Guatemala</div>
+    <div class="doc-sub">SIEPAC member · AMM wholesale market · 83.5% renewable (2024) · Biomass + hydro dominant · Regional net exporter · PEG-5 1.4 GW auction</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~3.2 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">83.5%</div><div class="kpi-lbl">Renewable share (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">~300 MW</div><div class="kpi-lbl">Chixoy HPP (INDE)</div></div>
+    <div class="kpi"><div class="kpi-val">Net exporter</div><div class="kpi-lbl">SIEPAC MER position</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Guatemala has the most advanced and diversified electricity market in Central America, with approximately <strong>3.2 GW of installed capacity</strong> and a renewable share of <strong>83.5%</strong> as reported by the AMM (wholesale market operator) at end-2024. The mix is distinctive: hydro leads at 48% of installed capacity, but biomass (largely sugarcane bagasse cogeneration) contributes a remarkable 28% — a structural feature unique in the region. Solar PV surged in 2023, reaching 17% of generation (up from under 2% in 2022), signalling the beginning of a solar acceleration phase.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (end 2024, AMM)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro (large + small)</span>
+          <span><span class="lsq" style="background:#5CB85C"></span>Biomass / bagasse</span>
+          <span><span class="lsq" style="background:#C85020"></span>Fossil (coal/bunker/diesel)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#A050D0"></span>Wind + Geothermal</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~3.2 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: AMM Guatemala — Investor's Guide April 2025; CNEE</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Chixoy HPP: 300 MW (INDE)</strong>Guatemala's largest single plant; run-of-river on Chixoy/Negro River; state-owned; INDE also owns transmission grid</div>
+        <div class="stat-item"><strong>Biomass / bagasse: ~895 MW</strong>Sugarcane industry cogeneration; seasonal (Oct–Apr harvest); firm capacity during dry season when hydro weakens; 27.7% of installed capacity</div>
+        <div class="stat-item"><strong>Solar PV: 17% of generation (2023)</strong>Explosive growth from 1.8% in 2022; multiple private IPP projects; growing in northwest and coastal corridor</div>
+        <div class="stat-item"><strong>Geothermal: ~72 MW</strong>Zunil and Orzunil plants; small but firm baseload; potential for expansion in volcanic belt</div>
+        <div class="stat-item"><strong>1.4 GW auction (PEG-5/PET-3)</strong>Open tender launched 2024 for firm capacity additions to meet demand growth through 2030; predominantly solar and wind expected</div>
+      </div>
+    </div>
+
+    <h2>Market Structure</h2>
+    <p>Guatemala operates the most liberalised electricity market in Central America — a three-tier model separating generation (competitive), transmission (INDE monopoly), and distribution (private concessions):</p>
+    <ul>
+      <li><strong>CNEE (Comisión Nacional de Energía Eléctrica):</strong> Independent regulator; sets tariffs and standards; technically sound institution.</li>
+      <li><strong>AMM (Administrador del Mercado Mayorista):</strong> Private non-profit wholesale market operator; manages dispatch, cross-border trade via SIEPAC, and market settlements; one of the most effective market operators in the region.</li>
+      <li><strong>INDE (Instituto Nacional de Electrificación):</strong> State company; owns and operates the national transmission grid; also generates through Chixoy HPP and several smaller plants; net revenues fund rural electrification.</li>
+      <li><strong>EEGSA (Empresa Eléctrica de Guatemala):</strong> Enel-controlled distributor serving Guatemala City and surroundings (~1.5 million clients).</li>
+      <li><strong>Energuate:</strong> Private distributor covering most of the rest of the country; owned by I Squared Capital.</li>
+    </ul>
+
+    <div class="callout">
+      Guatemala is Central America's largest electricity market and its most dynamic in terms of renewable energy investment. The AMM's competitive wholesale market has attracted dozens of private IPPs across hydro, solar, wind, biomass, and geothermal — a track record that contrasts sharply with the state-monopoly models of Honduras and Nicaragua. Guatemala is consistently a net exporter in the SIEPAC MER, sending surplus power to El Salvador and Honduras.
+    </div>
+
+    <h2>SIEPAC &amp; Regional Role</h2>
+    <p>Guatemala is the northern anchor of the <strong>SIEPAC transmission line</strong> (Sistema de Interconexión Eléctrica de los Países de América Central) — the 1,800 km regional grid linking all six SIEPAC nations. Key regional dynamics:</p>
+    <ul>
+      <li>Guatemala is structurally a <strong>net exporter</strong> in the Regional Electricity Market (MER); biomass and hydro surplus flows south to El Salvador and Honduras during dry seasons.</li>
+      <li>The planned SIEPAC expansion includes a new interconnection with <strong>Mexico (SENER/CFE)</strong> at the northern border — which would give Guatemala access to Mexico's larger market and make it a transit node for bi-directional flows.</li>
+      <li>Guatemala's connection to Belize (under study) could extend regional integration further.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Guatemala's biomass/bagasse sector is a structurally unique and underappreciated competitive advantage.</strong> ~895 MW of seasonal cogeneration from sugarcane provides firm, dispatchable renewable capacity during the dry season — precisely when hydro weakens. This load-balancing role is not replicable in most markets and gives Guatemala lower backup thermal costs than its neighbours.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Solar PV grew from 2% to 17% of generation in a single year (2022→2023), with further growth expected.</strong> The 1.4 GW PEG-5 auction and ongoing private development will make solar Guatemala's largest generation technology by installed capacity within a few years. Managing the integration of variable solar into a predominantly hydro + biomass system is the key technical challenge ahead.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Guatemala's AMM-based market model is the regional benchmark.</strong> The separation of transmission (INDE) from generation and distribution, the private non-profit AMM as market operator, and CNEE as an independent regulator have produced a competitive, investment-attracting market that other SIEPAC countries have not replicated. This institutional advantage is durable and should be protected.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The planned Guatemala–Mexico interconnection is the region's most strategically significant cross-border project.</strong> Linking Guatemala to Mexico's national grid would dramatically expand the market for Guatemalan exports, provide a large balancing partner for variable renewables, and position Guatemala as the gateway between Mesoamerican and North American electricity markets.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Rural electrification remains incomplete despite market success.</strong> Urbanised commercial and industrial customers benefit from competitive generation markets; rural and indigenous communities in highland and jungle areas still face limited access. INDE's rural electrification mandate — funded partly by Chixoy revenues — has closed much of the gap, but the last mile remains a social infrastructure challenge distinct from the commercial market.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      AMM (Administrador del Mercado Mayorista) — Investor's Guide, April 2025 ·
+      CNEE — Capacity statistics, end-2024 ·
+      IEA — Guatemala Countries &amp; Regions profile ·
+      U.S. Commercial Service — Guatemala Energy Guide ·
+      Climatescope 2024 — Guatemala ·
+      GarciaBodan — 3,700 MW renewable potential 2024–2040 ·
+      IDB — SIEPAC and MER regional integration ·
+      IRENA — Guatemala Statistical Profile ·
+      BLP Legal — PEG-5 and PET-3 Guatemala auction briefing
+    </div>
+
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro (large + small)', 'Biomass / bagasse', 'Fossil (coal/bunker/diesel)', 'Solar PV', 'Wind + Geothermal'],
+    datasets: [{ data: [1540, 887, 527, 43, 183], backgroundColor: ['#1E9AF5','#5CB85C','#C85020','#FFD700','#A050D0'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Africa Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-crit{background:#FDECEA;border-left:4px solid var(--coral);padding:13px 17px;margin:14px 0;font-size:13px;color:#7A1A12;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}.trade-badge-green{background:#1A7A4A}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">South Africa electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~60 GW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">233 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~84%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">Stage 6 avg</div><div class="kpi-lbl">Peak load shedding 2023</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-crit"><strong>Load shedding crisis.</strong> South Africa experienced the worst electricity supply crisis in its history in 2022–2023, with Eskom implementing up to Stage 8 load shedding (16 hours/day of rolling blackouts). The cumulative economic cost of load shedding since 2008 is estimated at over R1 trillion, with the 2023 year alone costing approximately R300 billion in lost economic output. While load shedding eased in 2024 following the entry of embedded solar and emergency procurement of additional generation, Eskom's ageing coal fleet (average age >35 years) and massive debt (R400+ billion) remain existential challenges for the sector. South Africa is simultaneously the largest electricity market in sub-Saharan Africa and the one experiencing the most acute supply crisis among middle-income countries globally.</div>
+
+<h2>1. Energy context</h2>
+<p>South Africa is the dominant electricity economy in sub-Saharan Africa — its 233 TWh of generation in 2023 exceeds the combined output of all other SAPP members. The sector's structure reflects apartheid-era centralised planning: Eskom, founded in 1923, was built as a vertically-integrated monopoly supplying the mining-industrial complex with cheap coal-fired electricity. This model delivered low tariffs and high electrification for urban consumers, but at the cost of fleet inflexibility, coal dependence (82% of generation), and no competitive market for new entry.</p>
+<p>The collapse of Eskom's operational performance — driven by years of state capture (looting of procurement contracts 2010–2018), deferred maintenance, ageing plant, and management instability — triggered a load shedding crisis that became the defining economic policy crisis of the Ramaphosa presidency. The government's response since 2022 has been the most rapid energy sector liberalisation in South Africa's history: removing licensing requirements for embedded generation, accelerating the REIPPP programme, and beginning the structural separation of Eskom's transmission business. Generation fell from a peak of 256.7 TWh in 2018 to 233.4 TWh in 2023 — the difference representing roughly the annual electricity consumption of Nigeria.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~60 GW, 2024 est.)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~60</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, 233 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">233</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — South Africa installed capacity and 2023 generation mix. Coal still provides 82% of generation; solar and wind are growing rapidly through the REIPPP programme. Sources: Eskom Annual Report 2023; NERSA; Ember Electricity Data 2024; IRENA South Africa Country Profile 2024.</p>
+
+<ul>
+  <li><strong>Coal (~82% of generation, ~40 GW):</strong> Eskom operates 15 coal power stations totalling ~40 GW of nameplate capacity — but effective available capacity has fallen to 20–26 GW due to ageing plant, deferred maintenance, and the Energy Availability Factor (EAF) consistently below 60% in 2022–2023. Medupi (4,800 MW) and Kusile (4,800 MW), meant to add 9.6 GW by 2020, are still being commissioned (all units expected by 2024–2025) after massive delays and cost overruns (from R69 billion to R340 billion combined).</li>
+  <li><strong>Solar PV (~6.6 GW grid-scale + rapidly growing embedded):</strong> REIPPP (Renewable Energy IPP Procurement Programme) has contracted 2.8 GW of solar PV through rounds 1–5. Additionally, the 2021 licensing exemption (raised from 1 MW to 100 MW, then effectively removed) triggered a large-scale embedded solar boom: businesses and households installed an estimated 4–6 GW of rooftop/commercial solar in 2022–2023, fundamentally changing the midday demand curve and reducing Eskom's peak earnings.</li>
+  <li><strong>Wind (~3.3 GW):</strong> REIPPP contracted ~3.3 GW of wind, principally in the Northern Cape and Eastern Cape (Karoo), operating at excellent capacity factors (35–45%). Wind is the fastest-falling LCOE technology in SAPP. The remaining REIPPP rounds (6+) will add further wind capacity.</li>
+  <li><strong>Nuclear (1,860 MW — Koeberg):</strong> Africa's only commercial nuclear power station, commissioned 1984–1985 (Unit 1 and Unit 2). Eskom completed a life extension refurbishment for Unit 1 in 2023–2024 (new steam generators, Framatome supply), extending its operating life to 2044. Unit 2 refurbishment follows. Government has announced intentions to procure 2,500 MW of new nuclear capacity, but no contracts have been awarded and the timeline is unclear.</li>
+  <li><strong>Gas/Oil OCGTs (~4.7 GW):</strong> Open-cycle gas turbines at Ankerlig (1,338 MW) and Gourikwa (746 MW), plus the Dedisa (342 MW) and Avon (685 MW) IPP gas peakers. All run on expensive diesel/HFO, used primarily for emergency peak cover — running these during load shedding is extremely expensive (unit costs USD 0.30–0.50/kWh). They are a symptom of the crisis rather than a sustainable solution.</li>
+  <li><strong>Hydro/Pumped Storage (~3.3 GW):</strong> Pumped storage (Drakensberg, Palmiet, Ingula) provides essential system flexibility. Run-of-river hydro is limited. Ingula (1,332 MW) was a major addition in 2016–2017.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:185px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — South Africa generation and demand (TWh), 2015–2023. Declining generation trend reflects Eskom's plant deterioration and load shedding; demand is suppressed below potential by blackouts and economic impact. Sources: Eskom; Ember; IEA.</p>
+
+<h3>2.3 SAPP interconnections — South Africa as regional anchor</h3>
+<table>
+  <tr><th>Link</th><th>Capacity</th><th>Notes</th></tr>
+  <tr><td><strong>ZAF → ZWE / ZMB / MOZ</strong></td><td>Multiple 400 kV + 275 kV corridors; net ~3–5 TWh/yr exports</td><td>South Africa is the principal exporter in SAPP, supplying Botswana (~75% of BWA demand), Namibia (~70% of NAM demand), Lesotho (~65%), Eswatini, and Zimbabwe on an emergency basis. During acute load shedding (2022–2023), ZAF reduced exports, forcing SAPP members to find alternative suppliers or increase load shedding domestically.</td></tr>
+  <tr><td><strong>Mozambique DC line (HCB)</strong></td><td>1,920 MW HVDC (Apollo-Songo)</td><td>The Cahora Bassa HVDC line delivers Mozambican hydro power to Eskom's Apollo converter station near Pretoria. This single line carries up to 1,920 MW and is one of the longest HVDC links in the world (1,414 km). It is strategically critical — disruptions (from Mozambican insurgency, sabotage) have occurred historically.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Eskom Holdings SOC <span class="trade-badge">Vertically Integrated (unbundling in progress)</span></div>
+      <p class="trade-body">Eskom is one of the world's largest electricity utilities by installed capacity and the most financially stressed major utility in the world. Its total debt stands at approximately R400 billion (USD ~22 billion), of which the government has taken over R254 billion under a debt relief package announced in 2023. Eskom is being legally unbundled: Transmission (TransCo, now Eskom Transmission) is being separated as an independent system operator and market facilitator — this is the prerequisite for a competitive generation market. The unbundling has been delayed repeatedly but remains the government's stated policy.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">NERSA — National Energy Regulator of South Africa <span class="trade-badge trade-badge-grey">Regulator</span></div>
+      <p class="trade-body">NERSA regulates electricity, piped-gas, and petroleum pipelines. It approves Eskom's multi-year price determinations (MYPD) and licences IPPs. Its independence has been challenged by political pressure on tariff decisions — NERSA approved lower-than-requested Eskom tariff increases multiple times in 2017–2021, worsening Eskom's financial position. The electricity regulatory framework is under review via the Electricity Regulation Amendment Act (ERAA) process, aimed at enabling a competitive electricity market once the transmission SO is operational.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">REIPPP Independent Power Producers <span class="trade-badge trade-badge-green">Private IPPs (~140+ projects)</span></div>
+      <p class="trade-body">The Renewable Energy IPP Procurement Programme (REIPPP) has contracted over 9 GW across Rounds 1–6+ (solar PV, wind, small hydro, CSP, biomass) since 2011. Projects are financed via PPAs with Eskom as single buyer and backed by government guarantee letters. REIPPP has been South Africa's most successful energy sector reform — it has attracted USD 16+ billion in private capital and delivered electricity at declining cost (Round 1 solar: USD 0.28/kWh; Round 4: USD 0.062/kWh). Its expansion is now the primary mechanism for adding clean generation capacity to replace retiring coal.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Eskom debt and tariff spiral:</strong> Eskom's R400 billion debt requires servicing, but tariff increases to fund this (Eskom requested 32% in 2023, NERSA approved 18.65%) are economically and politically painful. The government's R254 billion debt relief (2023 budget) is conditional on Eskom meeting performance targets — but the utility's operational performance remains challenged by aging plant. The tariff increase approved for 2024 (12.74%) is below inflation and below Eskom's cost recovery level, perpetuating the structural deficit.</li>
+  <li><strong>Just Energy Transition — coal phase-out:</strong> South Africa's JET-P (Just Energy Transition Partnership) — initially USD 8.5 billion at COP26, expanded to USD 11.4 billion at COP27 — is the most significant multilateral climate finance arrangement on the continent. It aims to accelerate renewable deployment and support workers in coal-dependent regions (principally Mpumalanga). Implementation has been slower than planned: disbursements are behind schedule, and coal communities are concerned about the pace and equity of the transition. Eskom plans to retire ~35 GW of coal by 2050.</li>
+  <li><strong>Embedded solar revolution:</strong> The 2021 decision to raise the licensing-free generation threshold to 100 MW (and its subsequent effective removal) unleashed a commercial and industrial solar boom: an estimated 3–5 GW was installed in 2022–2023 by businesses seeking to escape load shedding. This is transforming the system load curve, reducing midday demand on Eskom but creating evening peak challenges (the "duck curve") and reducing Eskom's revenue, potentially worsening its financial position even as it relieves operational pressure.</li>
+  <li><strong>Transmission backlog:</strong> REIPPP wind and solar projects are concentrated in the Northern and Western Cape, but the transmission grid connecting these to demand centres (Gauteng, KwaZulu-Natal) is severely congested. The estimated transmission investment backlog is R150–200 billion over 10 years. Eskom's TransCo (now being separated) must accelerate transmission construction while managing capital constraints — a significant governance and financing challenge.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>South Africa's load shedding crisis is not a resource shortage — it is a governance failure: the country has 60 GW of installed capacity but cannot reliably dispatch more than 25–30 GW due to Eskom plant breakdowns, state capture legacy, deferred maintenance, and financial distress. The physical assets exist; the institutional capacity to operate them at rated output does not.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The REIPPP programme has been South Africa's most successful policy experiment: from USD 0.28/kWh in Round 1 (2012) to USD 0.062/kWh for wind in Round 4 (2021), it has delivered 9+ GW of competitive, privately-financed renewables and proven that green energy investment at scale is bankable in a challenging emerging market context.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The JET-P USD 11.4 billion partnership is the most ambitious climate finance arrangement in Africa — but its success depends on South Africa's ability to absorb and deploy capital faster than it can retire coal, which requires transmission investment, community transition planning, and Eskom restructuring to all advance simultaneously.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The embedded solar boom (3–5 GW installed 2022–2023) is restructuring South Africa's electricity system from the bottom up: commercial and industrial customers are partially decoupling from Eskom, reducing midday grid load but creating evening ramp challenges and eroding Eskom's revenue base in ways that could paradoxically worsen the utility's viability if not managed through tariff reform.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>South Africa is the load-bearing anchor of SAPP: when it restricts exports during peak load shedding, Botswana, Namibia, Lesotho, and Eswatini all face intensified blackouts — the regional energy security of southern Africa is therefore directly coupled to Eskom's operational recovery, making ZAF grid stabilisation a regional priority, not just a domestic one.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> Eskom Annual Report 2023; Eskom Integrated Results 2023; NERSA — Eskom MYPD5 determination; National Treasury — Budget Review 2023 (Eskom debt relief); Ember Electricity Data 2024; IEA South Africa Energy Review 2023; IRENA South Africa Country Profile 2024; REIPPP — IPP Office progress reports 2024; Presidential Climate Commission — JET-P progress report 2024; DMRE — Integrated Resource Plan 2019 (IRP2019); CSIR Energy Centre — Load shedding cost estimates 2023; BusinessDay / EE Publishers — Eskom and load shedding coverage 2022–2024; SAPP — Pool Statistics 2023; World Bank South Africa Energy Sector notes.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Coal','Gas/Oil','Solar','Wind','Hydro/PS','Nuclear'];
+const C1=['#5A6474','#5B3FA0','#F59F00','#1A7A4A','#0F7B72','#2E75B6'];
+const GW1=[40.0,4.7,6.6,3.3,3.3,1.86];
+const L2=['Coal','Solar','Wind','Nuclear','Gas/Oil','Hydro'];
+const C2=['#5A6474','#F59F00','#1A7A4A','#2E75B6','#5B3FA0','#0F7B72'];
+const D2=[82,6,5,4,2,1];
+const TWh2=[192.3,14.8,11.6,8.1,3.7,2.0];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[250.4,253.1,255.5,256.7,253.5,241.2,245.9,239.5,233.4];
+const dem=[234.0,237.0,238.0,240.0,236.0,224.0,228.0,222.0,232.4];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#5A6474',backgroundColor:'rgba(90,100,116,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#5A6474',borderWidth:2},{label:'Demand',data:dem,borderColor:'#2E75B6',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myanmar Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-crit{background:#FDECEA;border-left:4px solid var(--coral);padding:15px 19px;margin:0 0 22px;font-size:13.5px;color:#6B1A15;line-height:1.75;border-radius:0 5px 5px 0;font-weight:500}
+  .callout-crit strong{color:var(--coral)}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-crit{background:var(--coral)}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
+  <div class="doc-title">Myanmar electricity sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~6.8 GW</div><div class="kpi-lbl">Nominal installed capacity (pre-coup)</div></div>
+  <div class="kpi"><div class="kpi-val">2–2.8 GW</div><div class="kpi-lbl">Estimated actual daily generation (2025)</div></div>
+  <div class="kpi"><div class="kpi-val">~50–55%</div><div class="kpi-lbl">Generation shortfall vs. pre-coup peak demand (5,483 MW)</div></div>
+  <div class="kpi"><div class="kpi-val">~72.5%</div><div class="kpi-lbl">Electrification rate (2021, last reliable estimate)</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-crit">
+  <strong>Fragile and conflict-affected state (FCAS) — active civil war since February 2021 coup.</strong> Myanmar has been under military authorities (SAC) control since the coup against the elected government in February 2021. A multi-front civil war is ongoing, with multiple armed groups contesting territory. The electricity sector has been severely disrupted: infrastructure is deliberately targeted, bill collection has collapsed (&lt;3% of billing revenue collected in opposition-controlled areas), international energy companies have exited, and large parts of the country face daily power cuts of 16–20 hours. Data reliability is very low — all figures in this note carry significant uncertainty. Standard economic and financial analysis does not apply in a wartime context.
+</div>
+
+<h2>1. Energy context</h2>
+<p>Myanmar entered the 2021 military coup with an electricity sector that was already deeply under-resourced relative to its population: even at the pre-coup peak, ~27% of the population lacked any grid access, rural electrification was shallow (many villages had a grid connection but erratic supply), and tariffs were heavily subsidised at levels that made the sector financially unsustainable. The sector depended on a combination of hydropower (concentrated in Kayah and Shan states, ethnically contested areas), natural gas (onshore and offshore, operated under pre-coup PSCs with TotalEnergies, Chevron, PTTEP), and limited coal generation.</p>
+<p>The February 2021 coup triggered an immediate collapse of the sector's already precarious operating framework. The Civil Disobedience Movement (CDM) led to mass walkouts by utility staff. Hydropower plant operators abandoned stations. Gas field workers walked off. The National Unity Government (NUG) declared a revenue-denial campaign — citizens and businesses in large cities have refused to pay electricity bills. As a result, by 2025, the Myanmar Electricity Enterprise (MOEE) and its successor entities are functionally bankrupt in large parts of the country, with &lt;3% bill collection and 89+ high-voltage transmission pylons deliberately destroyed as acts of sabotage.</p>
+<p>This briefing note describes Myanmar's electricity sector as it was structured before the coup, with analysis of the post-coup collapse. Given the ongoing conflict, all figures are indicative estimates and conditions are changing rapidly. Planning, investment, and sector reform are not feasible under the current circumstances.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix (pre-coup nominal capacity)</h3>
+<div class="callout-warn">The charts below reflect nominal installed capacity and generation as of 2019–2021 (pre-coup). Actual operating capacity in 2025 is estimated at only 2,000–2,800 MW daily — roughly 40–50% of nominal — due to damage, fuel shortages, staff departures, and rebel control of hydro facilities.</div>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Nominal installed capacity (pre-coup, ~6.8 GW)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">6.8</div><div class="chart-center-lbl">GW (nominal)</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (pre-coup, ~23.6 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">23.6</div><div class="chart-center-lbl">TWh (2020/21)</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Pre-coup nominal capacity and generation mix. Sources: MOEE Myanmar 2020/21 statistics, IEA, World Bank, Ember. Post-coup capacity and generation figures are not reliably available.</p>
+
+<ul>
+  <li><strong>Hydropower (~44–54% of capacity, ~50% of pre-coup generation):</strong> Myanmar has abundant hydropower resources along the Ayeyarwady, Salween, and Chindwin rivers. Major pre-coup hydro plants include Yeywa (790 MW, Mandalay region), Paunglaung (1,280 MW, Kayah), Baluchaung (168 MW, Kayah), and several Chinese-constructed plants in Shan State. Many hydro plants are in contested ethnic areas and have been damaged, seized by armed groups, or abandoned since 2021. Paunglaung and several other large plants have been affected by the conflict.</li>
+  <li><strong>Natural gas (~40–50% of capacity, ~40% of pre-coup generation):</strong> Myanmar's gas sector was operated by offshore (Yadana, Zawtika, Shwe) and onshore fields under PSCs with <strong>TotalEnergies</strong> (withdrew July 2022), <strong>Chevron</strong> (withdrew 2022), <strong>PTTEP</strong> (Thailand, continued), and others. Gas is exported to Thailand (Yadana pipeline, ~600–700 mmcfd) — export revenue was the military authorities' major foreign currency earner. Domestic gas-fired plants (primarily in Yangon, Mandalay) have faced fuel supply problems due to disinvestment in upstream maintenance.</li>
+  <li><strong>Coal (2–3% of capacity):</strong> Limited coal capacity, mainly at Tigyit (120 MW, Shan State) — Chinese-built. Post-coup, Chinese construction companies have reportedly continued or accelerated some coal plant projects under bilateral agreements with the military authorities.</li>
+  <li><strong>Solar (3–5% of capacity):</strong> Several solar projects (40–220 MW range) were under construction or in early operation at the time of the coup. Most have stalled. Limited utility-scale solar is operational in the post-coup period.</li>
+</ul>
+
+<h3>2.2 Demand — historical trend (pre-coup growth, post-coup collapse)</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh), estimated</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Generation 2014–2023 est. 2020–2023 figures are rough estimates; post-coup generation data is not reliably published. Sources: MOEE Myanmar, IEA, World Bank; 2022–2023 estimated from crisis reports.</p>
+<p>Pre-coup, Myanmar's electricity demand grew at ~6–8%/yr from a low base, driven by rapid urbanisation, industrial growth, and expanding electrification. Peak demand reached ~5,483 MW by 2020/21. Post-coup, effective demand served has collapsed: major industries have shut or relocated, urban households face 16–20 hours of daily power cuts, and the economic contraction (GDP -18% in FY2021/22 per IMF) has reduced industrial and commercial consumption. Actual power supplied may be as low as 30–40% of pre-coup levels in Yangon; in conflict zones, supply has effectively ceased in many areas.</p>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Myanmar–Thailand</strong></td><td>Yadana/Zawtika gas pipelines (gas export, not electricity); 1 small electricity interconnection at Tachileik (~5 MW)</td><td>Gas pipeline exports to Thailand (PTTEP/PTT) are the primary energy trade. Electricity interconnection is minimal. Thailand has reduced Yadana gas imports as Myanmar supply reliability declined. The military authorities relies on Yadana export revenue (~USD 1B+/yr) as a key financial lifeline; armed groups have threatened pipeline infrastructure.</td></tr>
+  <tr><td><strong>Myanmar–China</strong></td><td>Shweli hydro (China, 600 MW) exports to Yunnan; several small cross-border connections</td><td>Some electricity exported to China from Chinese-built hydro in Shan State (under Chinese concession agreements). This arrangement has continued under the military authorities. China has not imposed broad energy sanctions.</td></tr>
+  <tr><td><strong>Domestic grid</strong></td><td>230 kV backbone grid connecting Yangon, Mandalay, and Naypyidaw; partial coverage of ethnic states</td><td>89+ high-voltage pylons deliberately destroyed as of 2025 (resistance forces). Grid reliability in Yangon has collapsed; Yangon EDC estimates 16–20 hours of load-shedding daily in 2024–2025. The Tanintharyi and coastal regions are poorly connected.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">MOEE / MEPE (military authorities-controlled utilities) <span class="trade-badge trade-badge-crit">Conflict-Affected State Entity</span></div>
+      <p class="trade-body">The <strong>Ministry of Electricity and Energy (MOEE)</strong> and its operating entities — <strong>Myanmar Electric Power Enterprise (MEPE)</strong> for generation and transmission, <strong>Electricity Supply Enterprise (ESE)</strong> for rural distribution, and <strong>Yangon, Mandalay, and Ayeyarwady EDCs</strong> for urban distribution — have been under military (SAC) control since February 2021. These entities are effectively bankrupt in large parts of the country: the CDM revenue-denial campaign has resulted in &lt;3% bill collection in opposition-held areas. Senior technical staff participated in CDM walkouts and have not returned; many are in exile or have been imprisoned. The entities continue to operate with reduced staffing and severe financial constraints, relying on state budget transfers and gas export revenues.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">National Unity Government (NUG) — energy policy in exile <span class="trade-badge trade-badge-grey">Parallel Authority</span></div>
+      <p class="trade-body">The NUG — the parallel government of elected MPs and civil society leaders — has issued its own energy policy pronouncements and has declared the military authorities' electricity revenues illegitimate. The NUG controls or is allied with groups controlling significant territory, including areas with hydro resources. Its energy ministry has engaged with international donors and development institutions, but has no ability to deliver electricity services on a significant scale. The NUG's international legitimacy (recognised by some governments) creates a dual-authority problem for any post-conflict reconstruction effort.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">International companies — most have exited <span class="trade-badge trade-badge-grey">Private Sector</span></div>
+      <p class="trade-body"><strong>TotalEnergies</strong> withdrew from the Yadana gas field in July 2022, citing human rights due diligence under French law and international ethical obligations. <strong>Chevron</strong> also divested its Myanmar holdings in 2022. <strong>PTTEP</strong> (Thailand's state oil company) and <strong>MOGE</strong> (Myanmar Oil and Gas Enterprise, military authorities-controlled) continue operating Yadana under an arrangement that has drawn criticism from human rights organisations. Chinese companies (CITIC, China Power International) remain active in hydro construction and operations under bilateral agreements with the military authorities. New IPP investment in power generation has effectively ceased from Western and multilateral sources.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Active armed conflict and infrastructure destruction:</strong> Myanmar's civil war has seen deliberate targeting of electricity infrastructure: 89+ pylons destroyed, substations sabotaged, and hydro plant personnel evacuated or forced to flee. The Electricity Generating Authority of Thailand (EGAT), which purchases power from Myanmar-side facilities, has experienced supply disruptions. Power infrastructure repair under fire is impossible; the grid in many areas may require wholesale reconstruction post-conflict.</li>
+  <li><strong>Financial collapse of the sector:</strong> The revenue-denial campaign has effectively collapsed the utility's revenue base in large population centres. With &lt;3% bill collection in many areas and hyperinflationary kyat depreciation reducing the real value of what is collected, MOEE entities cannot pay for fuel, maintenance, or salaries. The military authorities subsidises the sector from gas export revenues and Chinese loans, but the level of fiscal transfer required to maintain even minimal supply is unsustainable without a political settlement.</li>
+  <li><strong>Gas export revenues as military authorities lifeline:</strong> Yadana pipeline gas exports to Thailand (~USD 1–1.5B/yr) are a primary financial lifeline for the SAC military authorities, alongside jade and gem exports. Sanctions debates (particularly in the US and EU) have centred on whether to target these revenues. PTTEP's continued operation of Yadana has been a source of significant controversy. Disruption of gas exports would accelerate the military authorities' financial collapse but would also hurt Thailand's energy security (Yadana supplies ~8–10% of Thailand's gas).</li>
+  <li><strong>Electrification regression:</strong> The pre-coup electrification rate of ~72.5% (2021) has almost certainly regressed in conflict-affected areas. In Chin, Kachin, and Sagaing regions — which have seen heavy fighting — grid infrastructure has been destroyed and off-grid diesel generators are the only electricity source for many communities. The humanitarian and development implications of the power crisis compound the direct violence of the conflict.</li>
+  <li><strong>Post-conflict reconstruction deficit:</strong> Even under an optimistic scenario of a political settlement in 2025–2026, the electricity sector will require massive reconstruction investment (transmission network, hydro plant rehabilitation, distribution restoration) before normal service can resume. The scale of destruction, the legacy of pre-coup under-investment, and the need to restore technical staff confidence (most CDM participants remain outside MOEE) make reconstruction a multi-year, multi-billion dollar challenge requiring international support.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Myanmar's electricity sector has effectively collapsed under the weight of the post-2021 civil war: an estimated 2,000–2,800 MW of daily generation serves a pre-coup peak demand of 5,483 MW, resulting in 16–20 hours of daily load-shedding in major cities and near-total supply loss in contested areas.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The revenue-denial campaign is one of the most effective economic warfare tactics in the conflict: &lt;3% bill collection in opposition areas has rendered the military authorities' distribution utilities financially non-functional, forcing reliance on gas export revenues and Chinese financial support to maintain any semblance of service.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Yadana gas exports to Thailand (~USD 1B+/yr) are a critical SAC military authorities revenue source; PTTEP's continued operation is commercially necessary for Thailand's energy security but ethically and politically contested — this is the electricity sector's most sensitive geopolitical pressure point.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>International energy companies (TotalEnergies, Chevron) have exited; Chinese companies remain active under bilateral agreements with the military authorities — Myanmar's post-coup energy sector is increasingly a Chinese-sphere dependency, with long-term implications for post-conflict energy architecture and financing.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Any credible post-conflict reconstruction scenario requires sector-wide rehabilitation: 89+ destroyed pylons, abandoned hydro plants in contested territories, hollowed-out technical workforce (CDM participants largely in exile), and a financial framework that does not assume continuity of pre-coup institutions — this is not a repair task but a reconstruction.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> MOEE Myanmar Energy Statistics 2020/21 (last reliable official publication); IEA Myanmar Country Profile; World Bank Myanmar Energy Sector Assessment; Ember Myanmar Electricity Data; UN OCHA Myanmar Humanitarian Situation Reports 2022–2025; Justice For Myanmar — energy sector financing reports 2022–2024; TotalEnergies press release — Yadana withdrawal July 2022; PTTEP Annual Reports 2022–2024; Global New Light of Myanmar (military authorities-controlled; reviewed for infrastructure data only); Myanmar Accountability Project — infrastructure targeting database; Reuters / AP / The Irrawaddy — ongoing conflict reporting; Global Energy Monitor — Myanmar coal and gas tracker 2024; ASEAN Centre for Energy — Myanmar Country Energy Outlook; IMF Article IV Myanmar 2022–2023.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Gas','Solar','Coal','Other'];
+const C1=['#1E9AF5','#808890','#FFD700','#2C2C2C','#B0B0B0'];
+const GW1=[3.03,3.41,0.33,0.14,0.14];
+
+const L2=['Hydro','Gas','Coal','Other'];
+const C2=['#1E9AF5','#808890','#2C2C2C','#B0B0B0'];
+const D2=[50,42,4,4];
+const TWh2=D2.map(v=>+(v*23.6/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[13.2,14.5,15.8,17.2,18.8,20.3,21.5,22.8,16.0,12.0];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#C0392B',backgroundColor:'rgba(192,57,43,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:dem.map((v,i)=>i>=7?'#C0392B':'#2E75B6'),borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

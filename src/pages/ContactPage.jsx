@@ -9,19 +9,6 @@ const FORMSPREE_ID = 'mlgkpwav';
 // the script is deployed; until then the request form shows a short notice.
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKtNsfk0dX5SET9ajr4jZ0YK058f94jyjzTpiUFQZZkp9jTh6p_TtPiI6Gv6UeLhTx/exec';
 
-function ExternalLink({ href, children }) {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={{
-      color: 'rgba(74,143,204,0.88)', textDecoration: 'none',
-    }}
-      onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'}
-      onMouseOut={e => e.currentTarget.style.textDecoration = 'none'}
-    >
-      {children}
-    </a>
-  );
-}
-
 export default function ContactPage() {
   const { theme } = useTheme();
   const t = getT(theme);
@@ -96,9 +83,8 @@ export default function ContactPage() {
         <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 24 }}>
           An open tool for exploring power-sector data across regions — generation mix, installed
           capacity, power plants, grid infrastructure, renewable energy resources, and country profiles.
-          Developed with the support of{' '}
-          <ExternalLink href="https://www.esmap.org">ESMAP</ExternalLink>
-          {' '}/ World Bank.
+          It is a pilot, is not an official product of any institution, and carries no institutional
+          endorsement. Figures are indicative and parts of the content were drafted with AI assistance.
         </p>
 
         {/* GitHub repository — prominent */}
@@ -119,7 +105,7 @@ export default function ContactPage() {
               Source code on GitHub
             </span>
             <span style={{ display: 'block', fontSize: '0.65rem', color: t.muted, marginTop: 3, lineHeight: 1.5 }}>
-              ESMAP-World-Bank-Group / regional-power-explorer
+              regional-power-explorer
             </span>
           </span>
           <span aria-hidden="true" style={{ fontSize: '0.85rem', color: 'rgba(74,143,204,0.9)', fontWeight: 700 }}>↗</span>
@@ -312,29 +298,11 @@ export default function ContactPage() {
           )}
         </div>
 
-        <hr style={divider} />
-
-        {/* Development status & coverage roadmap */}
-        <a
-          href="/PROJECT_STATUS.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 10,
-            padding: '11px 15px', borderRadius: 8, textDecoration: 'none',
-            border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel,
-          }}
-        >
-          <span style={{ flex: 1 }}>
-            <span style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: t.text }}>
-              Development status &amp; coverage roadmap
-            </span>
-            <span style={{ display: 'block', fontSize: '0.6rem', color: t.muted, marginTop: 2, lineHeight: 1.5 }}>
-              Data currently in the tool by region, and what is being added next.
-            </span>
-          </span>
-          <span aria-hidden="true" style={{ fontSize: '0.7rem', color: t.muted }}>↗</span>
-        </a>
+        {/* The development status & coverage roadmap used to be linked here. It is an
+            internal working document: it carries institutional branding, names sources
+            that are not cleared for publication, and records open questions rather than
+            settled positions. It now lives in data-source/, outside public/, so the build
+            cannot copy it into dist/ and it is not reachable by direct URL. */}
 
       </div>
     </div>

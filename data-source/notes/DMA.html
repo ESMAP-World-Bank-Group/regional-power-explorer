@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dominica Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean / OECS</div>
+    <div class="doc-title">Dominica</div>
+    <div class="doc-sub">~85 MW installed · Diesel/HFO ~78% + small hydro ~14% + solar ~6% · DOMLEC (Fortis Canada) · Geothermal potential 150-200 MW (Wotten Waven) — island needs only ~30 MW · Hurricane Maria 2017 (Category 5, 90% buildings damaged) · "Climate Resilient Island" commitment · ~72,000 people · Could become Caribbean's first geothermal electricity exporter via submarine cable to Martinique/Guadeloupe</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~85 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">150-200 MW</div><div class="kpi-lbl">Estimated geothermal potential (vs. ~30 MW peak demand)</div></div>
+    <div class="kpi"><div class="kpi-val">Maria 2017</div><div class="kpi-lbl">Category 5 landfall — 90% buildings damaged</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030 (primarily geothermal)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Dominica, the "Nature Isle of the Caribbean," is a rugged volcanic island of ~750 km² with one of the Eastern Caribbean's most dramatic geothermal resources — and one of its most diesel-dependent current electricity systems. The island's approximately 85 MW of installed generation is operated by <strong>DOMLEC (Dominica Electricity Services Ltd.)</strong>, a subsidiary of <strong>Fortis Inc.</strong> (Canada), with approximately 78% coming from diesel and HFO at the Fond Cole Power Station and satellite plants. Small run-of-river hydro stations on the Trafalgar, Padu, and Laudat rivers contribute ~14%. A modest solar fleet (~6%) has been added post-2018. Peak demand is only ~25-30 MW — making this one of the Caribbean's smallest grids in absolute terms. The defining feature of Dominica's energy future is not its current mix but its untapped <strong>geothermal potential: 150-200 MW</strong> in the Wotten Waven / Laudat geothermal field — more than five times the island's peak electricity demand. If developed, Dominica could supply 100% of its own electricity from geothermal, retire all diesel, and export surplus electricity to neighbouring Martinique and Guadeloupe (French overseas territories) via submarine cable — transforming from one of the region's most fuel-import-dependent islands to a clean energy exporter.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (Fond Cole Power Station)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Small hydro (Trafalgar, Padu, Laudat rivers)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (utility + rooftop)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Geothermal (pilot, pre-commercial)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~20%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: DOMLEC Annual Report 2024; Dominica Bureau of Standards / DGED; IRENA Caribbean 2025; WB geothermal assessment</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Wotten Waven geothermal: more energy than Dominica needs</strong>The Wotten Waven / Laudat geothermal field in Dominica's volcanic interior is one of the Eastern Caribbean's most promising geothermal resources. Surface manifestations: boiling springs, fumaroles, mud pools at Wotten Waven village and Titou Gorge area; subsurface temperature gradient drilling (IDA-financed, 2012-2014) confirmed viable resource at ~2,000m depth. Estimated resource: 150-200 MWe; Dominica's peak electricity demand: ~27-30 MW. Geothermal capacity factor ~85-90% (baseload, unlike solar or wind). Development history: multiple exploration permits; Ormat Technologies (US, Israel) undertook initial exploration 2015-2018; IDA/ESMAP funded phases 1-2. Hurricane Maria 2017 caused significant delay (exploration camp damaged; equipment destroyed). Current status (2026): Phase 3 exploration ongoing; commercial FID expected 2026-2027; first commercial production target: 2028-2030. Export scenario: 50-60 MW domestic use + 80-100 MW export via submarine cable to Martinique / Guadeloupe. France (as Martinique/Guadeloupe's sovereign) has formally expressed interest in the export option.</div>
+        <div class="stat-item"><strong>Hurricane Maria 2017: worst natural disaster in Caribbean history per capita</strong>Hurricane Maria (Category 5, 257 km/h sustained winds) made direct landfall on Dominica on 18 September 2017. Damage: ~90% of buildings damaged or destroyed; 65% loss of roof cover island-wide; total economic damage ~US$1.3B (~225% of GDP); 31 confirmed deaths. DOMLEC grid: complete destruction — all distribution lines down, substations flooded, generating equipment damaged. Power restoration took 4-5 months for most of the island (some communities waited 6+ months). The Maria experience validated PM Roosevelt Skerrit's "Climate Resilient Island" strategy — all post-Maria reconstruction (schools, hospitals, roads, electricity infrastructure) was built to hurricane-resistant standards. DOMLEC's post-Maria grid rebuild used underground cabling in vulnerable areas, elevated substations, and hurricane-rated switchgear. The rebuild cost (IDA/IDB/EU funded): ~US$70M for electricity infrastructure alone.</div>
+        <div class="stat-item"><strong>DOMLEC and Fortis: same model as Belize</strong>Dominica Electricity Services Ltd. is 71% owned by Fortis Inc. (St. John's, Newfoundland), with the Government of Dominica holding 21% and the public ~8%. The DOMLEC-Fortis relationship mirrors Belize's BEL-Fortis structure: a small Caribbean utility within a large North American investor-owned utility conglomerate. Fortis provides management and technical expertise; the regulatory framework (Dominica NTRC, National Telecommunications Regulatory Commission) sets tariffs. Post-Maria, Fortis has increased investment in grid resilience but faces the same tension as in Belize: generating a regulated return while the government pushes for rapid RE transition investment that may dilute near-term returns.</div>
+        <div class="stat-item"><strong>Citizenship by Investment (CBI): funding the energy transition</strong>Dominica's Citizenship by Investment Programme (CBI) — one of the Caribbean's most active, generating ~US$100-150M/year — has been a significant source of government investment capital for post-Maria reconstruction and energy infrastructure. CBI funds have contributed to: the Fond Cole Power Station resilience upgrades; rooftop solar grants for households; road infrastructure enabling access to geothermal sites. The CBI-to-energy pipeline is unusual among SIDS — most rely exclusively on MDB borrowing. Dominica's CBI revenue provides a degree of fiscal flexibility for energy investment that most OECS peers lack. The sustainability of CBI revenue (given scrutiny from EU/US of Caribbean CBI programmes) is a medium-term risk to this financing model.</div>
+        <div class="stat-item"><strong>Export scenario: Dominica as the Caribbean's green energy hub</strong>If the Wotten Waven geothermal field is developed to 100+ MW, Dominica would need only ~30 MW domestically, leaving 70-80 MW for export. A submarine cable to Martinique (~35 km southeast, French territory, ~400,000 people, heavily diesel-dependent grid) would allow France to count this clean energy toward its RE targets for overseas territories. A further extension to Guadeloupe (~100 km north, ~400,000 people) would complete an Eastern Caribbean clean energy triangle. The IDB has funded a cable feasibility study (2022-2023); results were positive technically, though finance structuring between three jurisdictions (Dominica, France/Martinique, France/Guadeloupe) remains complex. The export revenue — potentially US$20-30M/year at European electricity prices — would transform Dominica's national income.</div>
+      </div>
+    </div>
+
+    <h2>Post-Maria: Building Back Better or Just Building Back?</h2>
+    <p>Dominica's post-Maria reconstruction offers the Caribbean's most instructive case study in resilient rebuilding:</p>
+    <ul>
+      <li><strong>What worked:</strong> Underground cabling in Roseau (the capital) dramatically reduced the time to restore electricity post-Maria vs. equivalent overhead line areas — undergrounded areas were back online in days, not months. Hospital and emergency services with backup generation survived the storm operationally. The IDA-funded grid resilience project (2018-2022) has now completed much of the island's distribution upgrade.</li>
+      <li><strong>What was delayed:</strong> The geothermal development — which Maria disrupted — remains the critical long-term item. Each year of delay costs Dominica an estimated US$15-20M in avoided diesel fuel costs. The exploration-to-commercial-production timeline has slipped repeatedly; a 2026-2027 FID now looks the earliest realistic date for commercial geothermal.</li>
+      <li><strong>The counterfactual risk:</strong> Without geothermal coming online, Dominica's 100% RE by 2030 target is unachievable. Solar alone cannot provide the baseload reliability that geothermal would supply, and Dominica's small land area (only ~750 km²) with rugged topography limits utility-scale solar siting. The 100% RE target is effectively conditional on geothermal — which is conditional on a multi-year commercial development process outside DOMLEC or the government's direct control.</li>
+    </ul>
+
+    <div class="callout">
+      Dominica's energy situation is uniquely paradoxical: an island with enough geothermal energy in its rocks to supply itself and two neighbouring islands five times over, currently burning diesel for 78% of its electricity. The barrier is not resource availability, not technology, not even fundamentally finance — it is the timeline of commercial geothermal development, which requires 8-12 years from exploration to commercial operation even with adequate funding, and which was set back 3-5 years by Hurricane Maria. The Caribbean's most energy-rich small island is also, for now, one of its most fossil-fuel-dependent.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Dominica's geothermal resource (150-200 MW estimated) exceeds its domestic electricity demand (~30 MW) by a factor of five — making it the only SIDS in the Eastern Caribbean with a credible pathway to becoming a net clean energy exporter, and the decision whether and how to develop geothermal for export is the most consequential energy policy choice the island will make in the next decade.</strong> The domestic-only scenario (30 MW geothermal for 100% RE) and the export scenario (100+ MW with submarine cable to Martinique/Guadeloupe) have fundamentally different implications for Dominica's economy, fiscal position, and political relationships with France. The export scenario would generate national income equivalent to doubling tourism revenues — but requires France's sustained political commitment to a long-term RE import arrangement from a non-EU territory, which carries geopolitical complexity.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Hurricane Maria's destruction of DOMLEC's grid and the subsequent IDA-funded rebuild represents the Caribbean's most advanced implementation of "build back better" for electricity infrastructure — and its lessons (underground cabling priority, elevated substations, hurricane-rated switchgear, backup generation at critical facilities) should be systematically applied across all Eastern Caribbean grid rebuilds rather than reinvented after each storm.</strong> The DOMLEC post-Maria rebuild was not perfect — geothermal was delayed, some communities waited 6+ months for power — but it produced a measurably more resilient grid than existed before Maria. Restoration after a subsequent Category 4 storm in 2021 (Tropical Storm Elsa impacts) was demonstrably faster in areas rebuilt post-Maria. The "resilient rebuild" premium (estimated +15-20% capital cost vs. pre-Maria standard) is worth paying as an infrastructure insurance premium in the Caribbean context.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The DOMLEC-Fortis ownership structure, which provides management competence and access to Fortis' capital markets but also requires a regulated return that inflates tariffs, becomes an acute problem in the geothermal development context — because Fortis' regulated return model is not designed for the pre-revenue exploration risk phase of geothermal development, creating a structural mismatch that requires concessional public capital (IDA, IDB) to fill the exploration phase before private commercial capital can take over for the production phase.</strong> This is why geothermal development globally (including in Dominica) requires a public-risk-taking / private-return structure: governments and MDBs absorb the ~US$20-40M exploration drilling risk; private developers (Ormat, Cyrq, others) then bid competitively for the production phase once the resource is confirmed. The Dominica geothermal finance architecture (IDA exploration → commercial PPA for production) is conceptually sound but took a decade to reach the PPA negotiation stage.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Dominica's CBI-funded government fiscal space — unusual among OECS micro-states — has been essential for maintaining RE transition investment momentum between MDB disbursements and between hurricane reconstruction cycles, and demonstrates that diversified non-tax revenue sources (tourism levies, CBI, REDD+ where available) can materially accelerate SIDS energy transitions when directed toward the energy sector by capable governments.</strong> Most OECS states depend almost exclusively on MDB project loans for energy infrastructure investment; Dominica's CBI income (~US$100-150M/year, 15-20% of GDP) provides the government budget flexibility to co-invest in energy projects, accelerate regulatory approvals, and maintain grid investment even when MDB disbursement cycles are slow. The CBI sustainability risk (EU and US scrutiny of Caribbean passport programmes) means this financing model cannot be assumed permanent — an argument for accelerating geothermal development while CBI revenues remain strong.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Dominica's "Climate Resilient Island" branding — initiated by PM Roosevelt Skerrit immediately after Hurricane Maria — has been more than rhetorical: it has attracted disproportionate climate finance attention, secured a dedicated IDA climate resilience facility, and kept Dominica in international climate conversations far above what a 72,000-person economy would normally achieve, demonstrating that credible national climate narrative combined with demonstrated post-disaster action can generate real financial and diplomatic returns for micro-states.</strong> The Climate Resilient Island commitment includes binding climate-proofing standards for all new public construction, a National Resilience Development Strategy, and explicit linkage of CBI investment to resilience infrastructure. Whether this brand promise is being consistently delivered (some infrastructure rebuild has used non-resilient standards due to cost pressure) is debated internally. But the international attention it has generated — including dedicated IDA and EU trust fund windows — has mobilised capital that would not otherwise have reached a 72,000-person island in the Eastern Caribbean.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      DOMLEC (Dominica Electricity Services) — Annual Report 2024 ·
+      Dominica NTRC — tariff and regulatory orders ·
+      IDA/World Bank — Dominica Resilience, Recovery and Reconstruction Programme ·
+      IDB — Dominica geothermal development ·
+      IRENA — Caribbean energy data 2025 ·
+      ESMAP — Dominica geothermal resource assessment ·
+      Fortis Inc. — Dominica investor disclosures ·
+      NOAA — Hurricane Maria post-season report 2017 ·
+      UNFCCC — Dominica NDC 2022
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (Fond Cole Power Station)', 'Small hydro (Trafalgar, Padu, Laudat)', 'Solar PV (utility + rooftop)', 'Geothermal (pilot, pre-commercial)'],
+    datasets: [{ data: [78, 14, 6, 2], backgroundColor: ['#8B4513','#1B6CA8','#FFD700','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

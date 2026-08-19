@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brunei Darussalam Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
+  <div class="doc-title">The Brunei Darussalam<br>electricity sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~0.9 GW</div><div class="kpi-lbl">Installed capacity (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~5.6 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~100%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">30% RE 2035</div><div class="kpi-lbl">RE Vision 2035 (revised target)</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Brunei Darussalam is one of the smallest electricity systems in Southeast Asia, serving a population of ~450,000 on the northwest coast of Borneo. The country is a major LNG and oil exporter, and its electricity sector reflects this energy wealth: tariffs are among the lowest in the world (BND 0.01–0.12/kWh), and per capita consumption (~12,000 kWh/person/year) is the second highest in ASEAN after Singapore. The entire public grid of ~906 MW runs almost exclusively on <strong>natural gas</strong> from the Seria and Champion fields, which have supplied Brunei's own consumption and LNG exports to Japan and Korea since 1972.</p>
+<p>The government's Brunei Vision 2035 and the <strong>Renewable Energy Vision 2035</strong> set a target of 30% renewable energy in the generation mix by 2035 (revised upward from 10% in 2014). In practice, progress has been very slow: as of 2024, renewable generation remains below 1% of supply (primarily small rooftop solar). The combination of heavily subsidised fossil fuel tariffs, a very small grid that limits large-scale variable RE integration, and no large-scale hydro resource makes the transition structurally difficult.</p>
+<p>The most consequential near-term development is the planned <strong>Sarawak–Brunei power interconnection</strong> (targeted by 2030, 30–50 MW), which would give Brunei access to Sarawak's large-scale hydro and solar resources and enable its first cross-border clean energy import. The Sarawak–Sabah interconnection was energised in January 2026, establishing the Borneo grid backbone on which a Brunei link would depend.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">0.9</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">5.6</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation. Sources: ERIA ASEAN Energy Outlook 2023, Brunei DES Annual Statistics 2024.</p>
+
+<ul>
+  <li><strong>Natural gas (~98% of generation):</strong> All public generation comes from gas-fired steam turbines and open-cycle gas turbines (OCGTs) supplied directly from Seria and Champion onshore fields and the adjacent Brunei Shell Petroleum (BSP) infrastructure. No LNG import — Brunei is a net LNG exporter via Brunei LNG (BLNG, operational since 1972, 70% Brunei government / 25% Shell / 5% Mitsubishi). Berakas Power Generation Co (BPGE) is the primary generator; Powertek Sdn Bhd operates the second-largest station. Both are regulated by the Department of Electrical Services (DES).</li>
+  <li><strong>Solar (&lt;2% of capacity):</strong> Very limited deployment as of 2024 — an estimated 15–20 MWp of rooftop solar under the DES net metering programme (launched ~2020, with updated regulations from 2023). A government-backed solar farm development is planned toward the 100 MWp interim target by 2025 (behind schedule). The tariff structure (as low as BND 0.01/kWh for the first 600 kWh/month) makes rooftop solar economically unattractive without additional incentives.</li>
+</ul>
+<div class="callout">Brunei's per capita consumption of ~12,000 kWh/year is among the highest in Southeast Asia, driven by near-continuous air conditioning, low tariffs, and heavy government and industrial use. This makes per-unit RE cost displacement difficult — the absolute RE volume required to reach 30% of the mix is ~1.7 TWh/year by 2035.</div>
+
+<h3>2.2 Demand — historical trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Generation trend (2014–2023, CAGR ~1.8%/yr). Sources: ERIA, Brunei DES, IEA.</p>
+<p>Demand growth is modest (~1.5–2%/yr) reflecting a small, slow-growing population and a mature built environment. <strong>Residential consumption dominates</strong>, driven by air conditioning load year-round in a humid tropical climate. Government and commercial buildings also consume heavily. Industrial load is moderate — most heavy industry is linked to oil and gas operations (BSP, BLNG facilities). There is no significant manufacturing base driving large industrial loads.</p>
+<div class="callout"><strong>Tariffs:</strong> Among the world's most subsidised. Residential: BND 0.01/kWh for the first 600 kWh/month (~USD 0.0075/kWh), rising to BND 0.08–0.12/kWh for higher bands. Commercial: slightly higher. The tariff structure has not changed since 2012 and does not recover the cost of supply, which is effectively cross-subsidised by the government's hydrocarbon revenues. The subsidy creates a formidable barrier to renewable energy investment, which cannot compete at these prices without direct government support.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Capacity / Infrastructure</th><th>Status</th></tr>
+  <tr><td><strong>Sarawak–Sabah grid</strong></td><td>New backbone transmission line, Borneo grid</td><td>Energised January 2026. Not yet connected to Brunei but establishes the Borneo grid backbone on which a Brunei tie-line depends. Operated by Sarawak Energy.</td></tr>
+  <tr><td><strong>Sarawak–Brunei power link (planned)</strong></td><td>30–50 MW initial capacity; to carry renewable energy (hydro + solar from Sarawak)</td><td>Targeted by 2030. Feasibility study stage. Would give Brunei access to Sarawak's large hydropower portfolio and grid-scale solar. Discussions ongoing under ASEAN Power Grid and BIMP-EAGA regional frameworks.</td></tr>
+  <tr><td><strong>Other ASEAN connections</strong></td><td>None currently</td><td>Brunei is part of the BIMP-PIP (Brunei–Indonesia–Malaysia–Philippines) multilateral pilot study but no concrete projects are under construction. The country is effectively an island grid pending the Sarawak link.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Dept of Electrical Services (DES) <span class="trade-badge">Regulator &amp; Grid Operator</span></div>
+      <p class="trade-body">DES, under the Ministry of Energy, is both the electricity regulator and the main distribution/grid operator. It sets tariffs (subject to government approval), issues licences, and manages the national transmission and distribution grid. DES also operates the net metering programme for rooftop solar and manages the connection of small generators. The combined role of regulator and operator creates limited commercial independence; tariff decisions are effectively made at the ministerial/cabinet level.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Berakas Power Generation Co. (BPGE) &amp; Powertek <span class="trade-badge trade-badge-grey">Generation</span></div>
+      <p class="trade-body">BPGE is the primary electricity generator in Brunei, operating gas-fired turbines at Berakas Power Station (~380 MW). Powertek Sdn Bhd operates a second gas-fired station at Lumut (~440 MW). Both sell wholesale electricity to DES under regulated arrangements. There are no independent power producers operating at scale, and the generation sector is effectively government-controlled. BSP (Brunei Shell Petroleum) provides the gas supply to both generators via a dedicated pipeline system.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Gas subsidy and renewable energy viability:</strong> The extremely low tariff (BND 0.01/kWh first band) makes renewable energy economically unviable without explicit subsidies or tariff reform. Solar LCOE of ~BND 0.07–0.12/kWh is five to twelve times the base residential tariff. Until tariffs reflect cost of service — a politically sensitive change in a high-income rentier state — RE deployment will depend entirely on government-funded projects.</li>
+  <li><strong>Small grid scale and RE integration:</strong> At ~0.9 GW peak load, Brunei's grid is too small to absorb large amounts of variable solar or wind without significant storage or grid flexibility. A 100 MW solar project alone would represent ~11% of peak load — requiring battery storage to manage intermittency. The planned Sarawak interconnection is important not just for importing clean energy but for stabilising the grid as RE penetration grows.</li>
+  <li><strong>Gas reserve depletion (long-term):</strong> Brunei's proven gas reserves have been declining. BLNG exports (the cornerstone of government revenue) have fallen from 8 mtpa (2000s peak) to ~7 mtpa in recent years. Remaining reserves are estimated at 30–40 years at current depletion rates. The long-term generation strategy depends on either maintaining domestic gas supply for power or developing the Sarawak import link as a replacement source.</li>
+  <li><strong>Hydrogen and green energy exports:</strong> The Brunei government has announced ambitions to become a green hydrogen and ammonia exporter via the BRDEA (Brunei Renewable Energy Development and Acceleration programme). Japan and Korea are potential off-takers. However, no large-scale projects are operational, and the economics of green hydrogen from solar in Brunei (given the subsidy environment and limited solar resource vs. Australia or the Middle East) are challenging.</li>
+  <li><strong>Per capita consumption and efficiency:</strong> At ~12,000 kWh/person/year, Brunei's per capita consumption is the second highest in ASEAN. This reflects both high air conditioning loads and extremely low tariffs that provide no price signal for efficiency. A building energy code exists but enforcement is limited. Demand-side management programmes are nascent.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Brunei's electricity system is almost entirely gas-fired, with negligible renewables despite a revised 30% RE target for 2035 — the structural barrier is a domestic tariff as low as BND 0.01/kWh that makes clean energy economically unviable without direct subsidies.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The planned Sarawak–Brunei power interconnection (targeted 2030, 30–50 MW) is the most credible near-term pathway to any clean energy in the mix, enabling imports of Sarawak hydro and grid-scale solar.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Per capita consumption (~12,000 kWh/yr) is among the highest in Southeast Asia, driven by low tariffs and year-round air conditioning; demand-side management has limited uptake given current price signals.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Gas reserves depletion is a multi-decade challenge — BLNG export revenues are declining, and the long-term domestic power strategy depends on either sustaining gas supply or developing cross-border RE imports via Sarawak.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Brunei participates in ASEAN Power Grid frameworks (BIMP-PIP) and has hydrogen export ambitions, but no large-scale cross-border or green energy projects are yet operational, making the country one of the least integrated in the regional grid.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> Brunei DES Annual Report 2024; ERIA ASEAN Energy Outlook 2023; IEA Brunei Darussalam Country Profile; Low Carbon Power — Brunei Generation Mix 2023; Sarawak Energy — Sarawak–Sabah Interconnection press release (Jan 2026); DayakDaily — Sarawak 30–50 MW RE export to Brunei by 2030; DES Net Metering Programme; GlobalPetrolPrices — Brunei Electricity Tariff 2024; ASEAN Centre for Energy ASEAN Power Grid Report 2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Gas','Solar & Other'];
+const C1=['#808890','#FFD700'];
+const GW1=[0.88,0.02];
+
+const L2=['Gas','Solar & Other'];
+const C2=['#808890','#FFD700'];
+const D2=[99,1];
+const TWh2=D2.map(v=>+(v*5.6/100).toFixed(2));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} TWh`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[4.0,4.0,4.0,4.1,4.2,4.3,4.3,4.3,4.5,5.6];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#808890',backgroundColor:'rgba(128,136,144,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#808890',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zambia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Zambia electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~3.7 GW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">19.5 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~47%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~87%</div><div class="kpi-lbl">Hydro share of generation</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-warn"><strong>Drought vulnerability — 2024 crisis.</strong> Zambia generates 87% of its electricity from hydropower, making it extremely vulnerable to El Niño-driven drought. The 2024 drought — the worst in decades — reduced Kariba and Kafue water levels to critical lows, forcing ZESCO to implement load shedding of up to 20 hours/day (from a normal 0–4 hours) and to declare a national emergency. Zambia, normally a SAPP electricity exporter, became a net importer for the first time in years. The 2023 generation data (19.5 TWh) reflects normal hydrology; the 2024 outturn is expected to be substantially lower. This episode illustrates the existential climate risk of near-total hydro dependency.</div>
+
+<h2>1. Energy context</h2>
+<p>Zambia is one of SAPP's most hydro-rich countries and, in normal years, a net electricity exporter to the region. Anchored by the Kafue and Zambezi river systems, Zambia has developed approximately 3.4 GW of hydropower capacity — the largest share of which came online in the 2021 commissioning of Kafue Gorge Lower (750 MW), the most significant new hydropower addition in southern Africa in a generation. The copper mining industry — Zambia is the world's seventh-largest copper producer — is by far the dominant electricity consumer, and the security and affordability of electricity supply is directly linked to Zambia's export earnings and fiscal position.</p>
+<p>However, Zambia's almost total hydro dependency is also its greatest vulnerability. With over 87% of generation from water-dependent sources, consecutive poor rainfall seasons translate directly into national electricity crises. The 2019–2020 drought, the 2022 drought, and the severe 2024 El Niño drought all imposed major load shedding costs on households and industries. Zambia's energy planning challenge is to add non-hydro generation (coal, solar) fast enough to provide climate resilience without abandoning the low-carbon advantage of its hydro base.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~3.7 GW, 2024)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">3.7</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, 19.5 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">19.5</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Zambia installed capacity and 2023 generation mix. Hydro dominates. Sources: ZESCO; ERB Zambia; Ember Electricity Data 2024; IEA ZMB Profile; IRENA; World Bank.</p>
+
+<ul>
+  <li><strong>Hydro (~3.4 GW, ~87% of generation):</strong> Kafue Gorge Upper (990 MW, commissioned 1978), Kafue Gorge Lower (750 MW, commissioned 2021, by China's Sinohydro and Zambia's ZESCO), Kariba South (1,080 MW, shared Zambezi River Authority with Zimbabwe), Itezhi-Tezhi (120 MW, EdF/ZESCO joint venture), plus several smaller stations. The Kariba North Bank is operated by Zimbabwe (1,050 MW on Zimbabwe side, effectively shared resource). The Kafue River catchment and Kariba reservoir are the twin lifelines of Zambia's generation.</li>
+  <li><strong>Coal (~300 MW, ~11% of generation):</strong> Maamba Collieries power plant (300 MW, IPP), commissioned 2016 by Nava Bharat (India). Maamba is the principal non-hydro thermal generator and a critical drought buffer — when Kariba and Kafue levels fall, Maamba runs at full capacity. The Zambia Electricity Supply Corporation also operates the older Lunsemfwa hydro and the small coal-fired plant at Ndola.</li>
+  <li><strong>Solar (small but growing, ~80 MW):</strong> Multiple small solar plants have been developed under Zambia's REFIT (feed-in tariff) programme. Ngonye Falls solar (34 MW), Bangweulu solar (54 MW, commissioned 2022). Solar is growing rapidly as a drought hedge — the government has ambitious targets for 800 MW of new solar by 2030.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Zambia generation and demand (TWh), 2015–2023. Growth in generation driven by Kafue Gorge Lower (2021). Net export position visible (generation > demand). Sources: ZESCO; Ember; IEA.</p>
+
+<h3>2.3 SAPP role and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Notes</th></tr>
+  <tr><td><strong>Kariba Dam (ZMB/ZWE)</strong></td><td>Zambezi River Authority governs the shared Kariba reservoir. Zimbabwe (Kariba North Bank, 1,050 MW) and Zambia (Kariba South, 1,080 MW) both draw from the same reservoir. Coordinating water releases between the two countries is a continuous negotiation — in drought years, both face shortfalls simultaneously, triggering competing demands on the Zambezi River Authority to prioritise downstream release vs. reservoir conservation.</td></tr>
+  <tr><td><strong>SAPP exports (normal years)</strong></td><td>Zambia typically exports to Zimbabwe, DRC (via copper belt interconnection), and Tanzania. Kafue Gorge Lower's additional capacity made Zambia a significant net exporter in 2021–2023 (net 3+ TWh). This reversed in 2024 when drought forced Zambia to import.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ZESCO — Zambia Electricity Supply Corporation <span class="trade-badge">Vertically Integrated SOE</span></div>
+      <p class="trade-body">ZESCO is the state-owned, vertically integrated utility responsible for generation, transmission, and distribution. It operates the bulk of Zambia's hydro generation and the national transmission grid. ZESCO faces a chronic financial deficit driven by below-cost-recovery electricity tariffs (particularly for the residential sector), high network losses (~22%), and the costs of operating the grid to remote rural areas. Copper mining companies (First Quantum, Vedanta, Barrick, Glencore) negotiate direct supply agreements with ZESCO and pay higher industrial tariffs, cross-subsidising household consumers.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ERB — Energy Regulation Board <span class="trade-badge trade-badge-grey">Regulator</span></div>
+      <p class="trade-body">The Energy Regulation Board regulates the electricity, petroleum, and renewable energy sectors. ERB sets ZESCO's tariffs and approves IPP licences. Zambia's electricity tariff (industrial: ~USD 0.08–0.10/kWh; residential: ~USD 0.03–0.06/kWh) is among the lowest in SAPP — historically maintained for competitiveness of copper mining, but below ZESCO's cost of service. Tariff reform has been a persistent conditionality in World Bank and IMF engagements but is politically difficult.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Drought and climate vulnerability:</strong> The 2024 El Niño drought is the clearest demonstration that Zambia's 87% hydro dependency is unsustainable as a long-term strategy under climate change. The Intergovernmental Panel on Climate Change projects that southern Africa's rainfall will become more variable and droughts more frequent. Solar — which is counter-cyclical to drought (dry years often have good solar irradiance) — is the natural drought hedge. The government's 800 MW solar target by 2030 is the right strategic direction but needs to accelerate.</li>
+  <li><strong>Copper mining and industrial load:</strong> The copper mining industry represents the backbone of Zambia's economy (copper = ~70% of export earnings) and ~60% of industrial electricity demand. Mine electrification and expansion — particularly First Quantum's Kansanshi and Sentinel mines, and the Zambia/DRC Copperbelt — are directly tied to electricity availability. Mining company self-generation (diesel, heavy fuel) during outages is expensive and undermines the economics of mining expansion, making ZESCO's supply reliability a national competitiveness issue.</li>
+  <li><strong>Kafue Gorge Lower — the strategic pivot:</strong> KGL (750 MW, 2021) is the most important electricity infrastructure investment in Zambia in 40 years. It more than doubled the Kafue system's capacity and gave Zambia a net export surplus in 2021–2023. However, KGL is financed by a Chinese government loan and the plant is operated by a Chinese consortium — the terms of the power purchase agreement and loan repayment have been a subject of concern regarding Zambia's sovereign debt, given that Zambia was in debt default from 2020 to 2023.</li>
+  <li><strong>Tariff reform stalemate:</strong> ZESCO cannot finance new generation or maintain the grid at below-cost tariffs. Yet tariff increases face political resistance and affect copper mining competitiveness. The IMF/World Bank-supported Extended Credit Facility programme (2023) includes tariff reform conditionalities, but implementation has historically lagged. Without tariff reform, ZESCO cannot finance the solar and diversification investments needed for climate resilience.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Zambia's 2024 drought crisis — 20 hours/day of load shedding in a country that was exporting electricity just months earlier — is the most dramatic illustration in Africa of climate-driven energy system fragility: 87% hydro dependency, built over 50 years, can become a liability in a single dry season.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Kafue Gorge Lower (750 MW, 2021) was a genuine strategic achievement — but arrived just before the 2024 drought. Its existence prevented the 2024 crisis from being even worse: without KGL, Zambia would have lost an additional 750 MW of hydro capacity during the drought, making 20-hour load shedding a certainty rather than a worst-case outcome.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Solar is the structurally correct drought hedge for Zambia: dry years correlate with higher solar irradiance (fewer clouds), meaning that 800 MW of solar would produce more electricity precisely when hydro generates less — a natural portfolio diversification that the government's 2030 target begins to address.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The Kariba shared reservoir governance (Zambezi River Authority) is SAPP's most consequential bilateral institution — coordinating water releases between Zambia and Zimbabwe during drought requires political trust and technical cooperation that is difficult to sustain precisely when the stakes are highest and both countries are in crisis simultaneously.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Zambia's copper mining sector is both the primary justification for low industrial electricity tariffs (competitiveness) and the country's best argument for accelerating energy sector reform (mining companies will pay for reliability) — the tariff reform stalemate is not an economic inevitability but a political choice that successive governments have deferred.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> ZESCO Annual Report 2023; ERB Zambia — Annual Report 2023; Ember Electricity Data 2024; IEA Zambia Energy Profile; IRENA Zambia Country Profile 2024; World Bank Zambia Energy Sector notes; Zambezi River Authority — Kariba reservoir data 2023–2024; AfDB Kafue Gorge Lower financing documents; First Quantum Minerals — operational updates 2024; SAPP Pool Statistics 2023; Zambia Daily Mail / Lusaka Times — drought and electricity coverage 2024; IMF Zambia Extended Credit Facility press releases 2023.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Coal','Solar'];
+const C1=['#0F7B72','#5A6474','#F59F00'];
+const GW1=[3.30,0.30,0.08];
+const L2=['Hydro','Coal','Solar','Bioenergy'];
+const C2=['#0F7B72','#5A6474','#F59F00','#8A94A6'];
+const D2=[87,11,1,1];
+const TWh2=[17.09,2.13,0.15,0.08];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[13.58,11.85,14.64,16.35,14.86,15.31,17.80,19.55,19.54];
+const dem=[16.09,14.0,13.5,14.5,13.5,13.0,15.0,16.0,16.09];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2},{label:'Demand',data:dem,borderColor:'#2E75B6',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

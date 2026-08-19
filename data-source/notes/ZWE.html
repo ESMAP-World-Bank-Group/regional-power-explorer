@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zimbabwe Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Zimbabwe electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~2.3 GW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">10.1 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~49%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">~1.9 TWh</div><div class="kpi-lbl">Net imports from SAPP (2023)</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-warn"><strong>Economic crisis and governance fragility.</strong> Zimbabwe's electricity sector cannot be understood without the broader economic context: decades of hyperinflation (peak 2008: 89.7 sextillion percent), economic contraction, US dollar adoption, and a political environment defined by ZANU-PF's uninterrupted rule since 1980 (Mugabe 1980–2017, Mnangagwa 2017–present). The 2023 presidential election was declared fraudulent by international observers. ZESA Holdings operates in a near-permanent financial crisis: foreign exchange shortages make it unable to pay for SAPP power imports, purchase fuel for thermal plants, or finance capital investment at the scale the grid requires. The electricity crisis is as much a consequence of Zimbabwe's macroeconomic situation as it is a technical or infrastructure problem.</div>
+
+<h2>1. Energy context</h2>
+<p>Zimbabwe's electricity sector is characterised by chronic supply deficits: peak demand of approximately 2,000–2,200 MW is met by available supply of only 1,200–1,600 MW (depending on hydrology and plant status), requiring load shedding of 8–16 hours per day in most urban areas. The sector relies on two primary sources — Kariba North Bank hydropower (1,050 MW, shared Zambezi River Authority resource with Zambia) and Hwange Thermal Power Station (900+ MW coal, recently expanded with Units 7+8) — plus imports from SAPP members.</p>
+<p>Zimbabwe's electricity problems compound its broader economic challenges: businesses run diesel generators, adding to input costs; agricultural productivity is constrained by unreliable pump irrigation; and households cope with load shedding through expensive alternatives. The country's economic recovery depends, in part, on electricity reliability — yet ZESA's financial position prevents the investment needed to improve reliability, creating a self-reinforcing trap.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~2.3 GW, 2024)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">2.3</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, 10.1 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">10.1</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Zimbabwe installed capacity and 2023 generation. Hydro (Kariba) and coal (Hwange) split roughly 54/43%; 2024 drought severely impacted hydro output. Sources: ZESA; ZETDC; Ember 2024; IEA ZWE Profile.</p>
+
+<ul>
+  <li><strong>Kariba North Bank (1,050 MW hydro):</strong> Zimbabwe's share of the shared Kariba reservoir, operated by Zimbabwe Power Company (ZPC). Kariba is Zimbabwe's lowest-cost electricity source when reservoir levels are adequate. The 2024 drought (El Niño) reduced Kariba to critically low levels — output from Kariba North Bank fell to 30–40% of rated capacity, triggering the worst load shedding Zimbabwe has experienced since 2008. The Zambezi River Authority manages reservoir drawdown in coordination with Zambia (Kariba South).</li>
+  <li><strong>Hwange TPS (Units 1–6: ~920 MW coal; Units 7+8: +600 MW, commissioned 2023):</strong> Hwange Thermal Power Station, Zimbabwe's flagship coal plant, was expanded by 600 MW (Units 7 and 8) built by PowerChina with Chinese government financing — the most significant capacity addition in Zimbabwe's electricity sector in decades. However, Units 7+8 have experienced repeated commissioning difficulties and are not reliably producing at rated capacity. Older Units 1–6 require rehabilitation: plant availability has averaged 40–50% due to deferred maintenance and coal quality issues (Hwange coal has high ash content).</li>
+  <li><strong>Solar (emerging, ~30 MW):</strong> Several small solar IPPs have been commissioned under Zimbabwe's renewable energy REFIT framework. Distributed Power Africa and Solarcentury have projects. The government has issued renewable energy licences for 3–500 MW of new solar. Corporate and commercial rooftop solar is growing rapidly (businesses installing panels to reduce diesel generator costs). Zimbabwe has excellent solar resources (insolation ~5.5 kWh/m²/day).</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Zimbabwe generation and demand (TWh), 2015–2023. Volatile output driven by drought years (2016, 2020); 2023 improvement from Hwange 7+8 and better hydrology. Demand > generation = net imports from SAPP. Sources: ZESA; Ember; IEA.</p>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ZESA Holdings / ZPC / ZETDC <span class="trade-badge">Vertically Integrated SOE (holding structure)</span></div>
+      <p class="trade-body">ZESA Holdings is the holding company for Zimbabwe's electricity sector: Zimbabwe Power Company (ZPC) generates; Zimbabwe Electricity Transmission and Distribution Company (ZETDC) transmits and distributes. ZESA operates at a severe financial loss — foreign exchange shortages prevent payment for SAPP imports, fuel purchases for thermal plants, and capital expenditure. ZETDC's technical and commercial losses exceed 25%. Government arrears to ZESA are substantial. The Zimbabwe Electricity Regulatory Authority (ZERA) sets tariffs but political constraints keep tariffs below cost recovery — compounding the financial trap.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Zambezi River Authority (ZRA) <span class="trade-badge trade-badge-grey">Bilateral: ZWE + ZMB</span></div>
+      <p class="trade-body">ZRA manages the Kariba Dam and Zambezi River system shared between Zimbabwe and Zambia. Each country operates its own turbines on its side (Kariba North: Zimbabwe 1,050 MW; Kariba South: Zambia 1,080 MW), drawing from the same reservoir. ZRA coordinates water releases for power generation, balancing competing demands from both countries' utilities. In drought years, both countries simultaneously experience hydro shortfalls from the same reservoir — creating a joint crisis with no mutual buffer, only the option of coordinated rationing.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Foreign exchange and import payment:</strong> Zimbabwe's electricity deficit (~1.9 TWh imported in 2023 from Zambia, South Africa, and Mozambique) must be paid for in US dollars. ZESA's chronic foreign exchange shortage results in SAPP import arrears — at times, SAPP members reduce exports to Zimbabwe as a result. This is Zimbabwe's most acute electricity system constraint: not physical capacity (which Hwange 7+8 partially addresses) but the ability to pay for power it needs to import in hard currency.</li>
+  <li><strong>Hwange 7+8 commissioning risk:</strong> The 600 MW Hwange expansion (Units 7+8, PowerChina) was a major investment. Early performance has been below expectations — output has been unreliable and commissioning extended beyond schedule. If Units 7+8 reach full output reliably, they would substantially reduce Zimbabwe's import dependence. If they continue underperforming, Zimbabwe's supply deficit will persist into the late 2020s and potentially deepen during drought years.</li>
+  <li><strong>Solar IPP pipeline — untapped potential:</strong> Zimbabwe has issued renewable energy licences for hundreds of MW of solar, but most projects have not reached financial close — blocked by ZESA's inability to sign creditworthy PPAs (due to its own financial distress), the absence of government guarantees, and foreign exchange repatriation risk. Unlocking Zimbabwe's solar IPP pipeline requires PPA/payment guarantee structures that manage ZESA's credit risk — a role for the World Bank's IFC, MIGA, or USAID's DFC.</li>
+  <li><strong>2024 drought — acute crisis:</strong> The 2024 El Niño drought reduced Kariba levels to near-record lows, slashing Zimbabwe's cheapest power source at precisely the moment Zambia (its primary import supplier) was also in drought crisis. The simultaneous failure of both countries' hydro in 2024 left Zimbabwe with a supply gap that Hwange (already operating at limited capacity) and reduced SAPP imports could not fill — leading to 18+ hours of load shedding in Harare and Bulawayo.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Zimbabwe's electricity crisis is fundamentally a macroeconomic crisis expressed through the energy sector: foreign exchange scarcity prevents import payments, tariff controls prevent cost recovery, and financial distress prevents investment — a trap that no amount of new generation capacity can break without broader economic stabilisation.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Hwange Units 7+8 (600 MW, PowerChina) are the most significant electricity infrastructure investment in Zimbabwe in 40 years — they could reduce import dependence by 30–40% if they perform reliably. Their actual performance trajectory is the single most important variable for Zimbabwe's electricity supply outlook to 2030.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The Kariba shared reservoir is Zimbabwe and Zambia's shared vulnerability: in the 2024 drought, both countries drew simultaneously from a reservoir at critically low levels, demonstrating that bilateral hydro dependence without diversification creates correlated risk across borders — not portfolio diversification.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Zimbabwe's solar IPP pipeline (hundreds of MW licensed, very few financed) is blocked not by resource or technical constraints but by ZESA's financial incapacity to sign creditworthy PPAs — a problem that targeted payment guarantee instruments (MIGA, IFC partial risk guarantees) are specifically designed to address but have not yet been deployed at the required scale in Zimbabwe.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Despite everything, Zimbabwe's electrification rate (~49%) is higher than several SAPP peers with better utility finances — reflecting the apartheid-era settler-colonial infrastructure base inherited in 1980 and the urban concentration of the grid. The risk is that prolonged underinvestment erodes this legacy advantage faster than new investment can compensate.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> ZESA Holdings Annual Report 2023; ZETDC operational data; ZERA Zimbabwe tariff determinations; Ember Electricity Data 2024; IEA Zimbabwe Energy Profile; IRENA Zimbabwe Country Profile 2024; Zambezi River Authority — reservoir data 2023–2024; PowerChina — Hwange 7+8 commissioning updates; World Bank Zimbabwe Economic Update 2024; IMF Zimbabwe Article IV 2023; SAPP Pool Statistics 2023; The Herald / NewsDay Zimbabwe — electricity sector coverage 2023–2024; Crisis in Zimbabwe Coalition — economic context.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Coal','Solar'];
+const C1=['#0F7B72','#5A6474','#F59F00'];
+const GW1=[1.050,1.200,0.030];
+const L2=['Hydro','Coal','Solar','Bioenergy'];
+const C2=['#0F7B72','#5A6474','#F59F00','#8A94A6'];
+const D2=[54,43,0,1];
+const TWh2=[5.46,4.38,0.03,0.12];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[9.63,7.40,7.70,9.62,8.67,6.81,8.68,9.05,10.11];
+const dem=[11.0,10.5,10.5,11.0,11.0,9.5,10.5,11.0,11.99];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2},{label:'Demand',data:dem,borderColor:'#2E75B6',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

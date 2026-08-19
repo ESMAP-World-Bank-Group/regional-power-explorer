@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thailand Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · ASEAN Power Grid</div>
+  <div class="doc-title">The Thailand electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~52 GW</div><div class="kpi-lbl">Installed capacity (2025)</div></div>
+  <div class="kpi"><div class="kpi-val">~201 TWh</div><div class="kpi-lbl">Generation (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">&gt;99%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">PDP 2024</div><div class="kpi-lbl">51% RE generation target by 2037</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Thailand operates the second-largest electricity system in mainland Southeast Asia, serving 72 million people with near-universal access. The system is dominated by <strong>natural gas (~68% of generation in 2024)</strong>, supplemented by Lao hydropower imports (~15% of demand), coal (~17%), and a growing mix of biomass, solar, and wind. The Electricity Generating Authority of Thailand (EGAT) — a vertically integrated state utility — owns 31% of installed capacity and 100% of high-voltage transmission, with private IPPs and SPPs supplying the remainder under long-term PPAs.</p>
+<p>The sector's defining strategic tension is between <strong>LNG import exposure and decarbonisation ambitions</strong>. Thailand imports significant volumes of LNG (~35% of power-generation gas), which is exposed to global spot price volatility. In March 2026, Middle East tensions briefly disrupted LNG supply routes, causing spot prices to spike ~125% and forcing emergency coal plant dispatches — a stark demonstration of structural gas dependency.</p>
+<p>Thailand's response is the <strong>Power Development Plan 2024 (PDP 2024)</strong>, the most ambitious iteration yet: 51% renewable generation by 2037 (up from 36% in PDP 2018), 10 GW of battery storage by 2037, coal phase-out by 2050, and 34.85 GW of new renewable capacity. The path requires deploying solar and wind at a pace (~3 GW/yr RE additions) that has not been sustained historically, plus resolving a structural lag in battery storage deployment (only 1.9 GW deployed vs. 10 GW target by 2037).</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (2025)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">52</div><div class="chart-center-lbl">GW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">201</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation. Sources: EGAT Power Development Report 2025, ERC Thailand, Ember Global Electricity Review 2025.</p>
+
+<ul>
+  <li><strong>Natural gas (~37% capacity / 68% generation):</strong> Thailand's primary generation fuel. Gas is supplied from Gulf of Thailand domestic production (PTT), LNG imports (~35% of generation gas), and Myanmar pipelines (~8% of generation gas from the Yadana field). Gas is dispatched at high capacity factors, explaining the disparity between its 37% capacity share and 68% generation share. Major gas plants: Map Ta Phut, Bang Pakong, Wang Noi. RATCH and Gulf Energy now operate private LNG import terminals (Hin Kong), marking the first deregulation of gas imports beyond PTT's monopoly.</li>
+  <li><strong>Coal / lignite (~15% capacity / 17% generation):</strong> Mae Moh lignite mine-mouth plant (Lampang, ~2.4 GW, EGAT) and several private coal IPPs in South Thailand (Krabi, Thepa, though Thepa was cancelled after protests). Coal phase-out target: 2050 (PDP 2024), with Mae Moh closure by 2051. The 2026 LNG price spike forced temporary full-capacity coal dispatch, illustrating coal's role as system backstop.</li>
+  <li><strong>Laos hydropower imports (~11% capacity contracted / 15% generation):</strong> Thailand's largest single non-domestic source. EGAT holds PPAs with Laos for ~10,500 MW of contracted capacity (2022 agreements), drawing ~15% of total demand in 2024 (~30 TWh/yr). Key import plants: Xayaburi (1,285 MW Mekong mainstream), Nam Theun 2 (1,070 MW), Hongsa coal (30% domestic share via EGAT), and smaller hydro schemes. EGAT paused new PPAs for 4 planned Mekong dams (Sanakham, Luang Prabang, Pak Beng, Pak Ley) in August 2024 pending environmental compliance.</li>
+  <li><strong>Biomass (~6% capacity / 5% generation):</strong> Sugarcane, rice husk, and wood waste-fired SPPs (Small Power Producers), primarily in the Central and North regions. Approximately 2.9 GW installed. Biomass is the largest renewable source by generation share, providing dispatchable baseload.</li>
+  <li><strong>Solar (~9% capacity / 4–5% generation):</strong> 3.6 GW rooftop and utility-scale by early 2024, growing rapidly (~32% annual growth). MEA reduced rooftop approval time to 30 days (2024), driving a surge in applications. PDP 2024 targets 9 GW by 2037 total, with significant floating solar on EGAT reservoirs (Ubol Ratana 140 MW hybrid hydro-solar, Sirindhorn Dam 44 MW). ADB loan of USD 820M (Jan 2025) supports 12 solar-plus-BESS projects.</li>
+  <li><strong>Wind (~2% / ~3% generation):</strong> ~1 GW installed, concentrated in Northeast Thailand (Khao Kho, Lam Takong). Offshore wind under feasibility review (Orsted 1.2 GW seabed rights secured; Vestas testing 15 MW turbines).</li>
+</ul>
+
+<h3>2.2 Demand — historical trend</h3>
+<div>
+  <div class="chart-title">Electricity generation + imports — historical trend (TWh)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Total supply trend 2014–2024. Sources: EGAT Annual Statistics, Ember Thailand 2025.</p>
+<p>Demand growth averages ~2%/yr (CAGR), moderate for a middle-income economy. The 2020 dip reflects COVID-19 industrial slowdown. The 2022 dip reflects a combination of high electricity prices (gas spike) suppressing industrial demand and a mild year. Growth resumed strongly in 2023–2024 as manufacturing — particularly electronics and auto assembly — recovered and expanded. EV charging, data centres, and semiconductor manufacturing represent emerging demand-growth drivers through the 2030s.</p>
+<div class="callout"><strong>Tariffs (2026):</strong> Residential: ~3.95–4.08 THB/kWh (~USD 0.112–0.117/kWh), adjusted quarterly by the ERC via the Ft (fuel adjustment) mechanism. The 2026 Middle East LNG disruption pushed emergency spot purchases but the ERC smoothed the impact over multiple quarters. Industrial tariffs are structured in time-of-use blocks (peak/off-peak). Tariff transparency is relatively high by regional standards, with published Ft components.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Laos (multiple)</strong></td><td>115–500 kV AC lines at Nong Khai, Tha Li, Ubon, and other crossing points; total &gt;15 bilateral lines</td><td>Active and dominant. ~10,500 MW contracted capacity; ~30 TWh/yr imported in 2024. Commercial and technical backbone of the ASEAN Power Grid pilot. EGAT paused 4 new Mekong dam PPAs (Aug 2024) for environmental compliance.</td></tr>
+  <tr><td><strong>Myanmar</strong></td><td>Gas pipelines (Yadana/Yetagun to South Thailand plants); 115–220 kV power links in Karen/Shan states</td><td>Myanmar gas supplies ~8% of EGAT generation gas (Yadana pipeline). Some power IPP exports from Karen-state hydropower to EGAT border stations. Post-coup instability has increased supply risk; US sanctions on MOGE (Myanmar oil company) complicate SWIFT payment flows.</td></tr>
+  <tr><td><strong>Malaysia</strong></td><td>115 kV AC (Kelantan–Sungai Kolok cross-border)</td><td>Limited capacity (~100–150 MW). Historical bilateral balancing; not a major trade corridor. ASEAN Power Grid plans envision upgrading this link for Malaysia-Thailand RE trading.</td></tr>
+  <tr><td><strong>Cambodia</strong></td><td>115 kV AC (Surin–Banteay Meanchey)</td><td>Limited power trade. Cambodia primarily a receiver of Lao/Thai power; the link enables balancing and emergency support.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EGAT (Electricity Generating Authority of Thailand) <span class="trade-badge">State Utility / Transmission Monopoly</span></div>
+      <p class="trade-body">EGAT is the dominant state-owned utility: it owns 31% of installed generation capacity (all major hydro and many large thermal plants), operates the national 500–230 kV high-voltage transmission system exclusively, and manages all major cross-border PPAs (Laos, Myanmar). EGAT also holds equity in RATCH Group (45%) and EGCO (25%) — two of the largest private gencos. This dual role as system operator and generation investor creates potential conflicts of interest in dispatch and planning decisions. EGAT has no independent regulatory oversight for transmission access pricing.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">MEA &amp; PEA <span class="trade-badge trade-badge-grey">Distribution</span></div>
+      <p class="trade-body">MEA (Metropolitan Electricity Authority) serves Bangkok and its surroundings; PEA (Provincial Electricity Authority) serves all other regions. Both are state-owned and buy power from EGAT at regulated bulk tariffs. MEA reduced rooftop solar connection approval to 30 days (2024), triggering a ~40% application surge and significant rooftop deployment. PEA manages rural electrification in an extensive provincial grid.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ERC (Energy Regulatory Commission) <span class="trade-badge trade-badge-grey">Independent Regulator</span></div>
+      <p class="trade-body">ERC, established 2007, is the independent regulator for electricity, gas, and LNG. It approves tariff structures (base tariff + Ft fuel adjustment, reset every 4 months), issues generation and retail licences, and resolves disputes. ERC approved emergency LNG purchase contracts during the March 2026 Middle East supply disruption. ERC has announced a 2025 strategic roadmap focused on RE integration, BESS regulatory frameworks, nuclear preparedness (MOU with OAP, 2024), and LNG market liberalisation.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">IPPs, SPPs, VSPPs <span class="trade-badge trade-badge-grey">Private Generation</span></div>
+      <p class="trade-body">IPPs (Independent Power Producers) supply ~31% of capacity via long-term PPAs with EGAT. Major IPPs: <strong>Gulf Energy</strong> (gas, solar-BESS, targets LNG imports), <strong>RATCH Group</strong> (gas, renewables, data centre power supply), <strong>B.Grimm Power</strong> (gas, solar), <strong>BCPG</strong> (RE), <strong>EGCO Group</strong>. SPPs (Small Power Producers, 10–90 MW) supply ~19% of capacity, largely from biomass and cogeneration. VSPPs (Very Small Power Producers, &lt;10 MW) include rooftop solar under the net-metering and FiT schemes.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Gas dependency and LNG geopolitical exposure:</strong> Gas generates 68% of Thailand's electricity. Of the generation gas, ~35% is imported LNG — routed through the Strait of Hormuz. The March 2026 disruption (Iran-US tensions) caused a 125% spot price spike and emergency coal dispatches. This acute vulnerability is the primary driver of PDP 2024's accelerated RE targets and storage mandates.</li>
+  <li><strong>Myanmar gas supply uncertainty:</strong> ~8% of EGAT's generation gas comes from the Yadana pipeline (Myanmar). Post-coup instability, US sanctions on MOGE, and declining field production create supply risk. EGAT and PTT are working to reduce Myanmar gas dependency through LNG substitution and domestic Gulf of Thailand field development.</li>
+  <li><strong>Laos hydro import strategy and Mekong environment:</strong> Laos imports (~15% of demand) are cheap, dispatchable, and politically important for bilateral relations. However, EGAT's pause on new Mekong dam PPAs (Aug 2024) signals growing environmental sensitivity, and climate-driven drought years reduce hydro output unpredictably. Thailand's growing BESS deployment partially compensates for this seasonality.</li>
+  <li><strong>Battery storage lag:</strong> PDP 2024 targets 10 GW of BESS by 2037. As of late 2024, ~1.9 GW was deployed (19% of target). Storage is essential to integrate high variable RE shares — without it, solar and wind curtailment will limit the 51% RE target's feasibility. The ADB USD 820M loan (Jan 2025) is accelerating deployment, but regulatory frameworks for storage revenue streams (capacity payment, ancillary services, arbitrage) need further development.</li>
+  <li><strong>EGAT's dual role and market design:</strong> EGAT's simultaneous roles as transmission monopoly, major genco, and cross-border contract holder create conflicts of interest. IPP and RE developers face uncertainty about fair dispatch and grid access. An independent system operator (ISO) or separate transmission company is discussed in PDP 2024 but not yet legislated.</li>
+  <li><strong>Coal phase-out by 2050:</strong> Mae Moh (Lampang) closure targeted by 2051 is the cornerstone. However, the 2026 energy crisis led to temporarily returning coal plants to full capacity, showing the tension between climate goals and energy security. CCS on bioenergy (BECCS) is planned for 2040+, with significant technical and cost uncertainty.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Thailand runs on gas (68% of generation) with 35% of that gas imported as LNG — the March 2026 Strait of Hormuz disruption exposed structural vulnerability; PDP 2024's accelerated RE targets are partly a geopolitical hedge, not just a climate choice.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Laos imports (~15% of demand from EGAT's ~10.5 GW of contracted Lao capacity) are central to system adequacy; EGAT's August 2024 PPA pause for environmental compliance is a signal that Thailand will increasingly condition import expansion on downstream Mekong impact standards.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>PDP 2024 is ambitious (51% RE by 2037, 10 GW BESS) but battery storage deployment is lagging at only 19% of target as of 2024 — without accelerated storage, high variable RE shares cannot be reliably integrated.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>EGAT's dual role as transmission operator and generation investor creates dispatch and investment incentive conflicts; separating transmission from generation — an ongoing policy debate — is a prerequisite for a fully competitive renewable energy market.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Rooftop solar is surging (MEA approval time reduced to 30 days, 32% annual growth in 2024) but remains small at ~3.6 GW; offshore wind is entering feasibility stage and could become a major source by 2030 if permitting and grid access frameworks are established.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EGAT Power Development Report 2025; ERC Thailand Strategic Roadmap 2025; Ember — Thailand Electricity Review 2025; UNDP JUST Thailand Scoping Report 2025; Bloomberg NEF — Thailand Net-Zero Power Grid 2025; CASE for SE Asia — Middle East tensions Thailand electricity 2026; Mongabay — Thailand coal fossil fuels 2026; IEEFA — Iran conflict Thai LNG 2026; Energy Tracker Asia — Thailand rooftop solar 2025; GIZ PACT — Thailand BESS Technical Report 2025; ADB — USD 820M solar-BESS loan Thailand 2025.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Gas','Coal','Imports (Laos)','Solar','Biomass','Wind','Hydro (domestic)','Oil & Other'];
+const C1=['#808890','#2C2C2C','#5B3FA0','#FFD700','#1A7A4A','#44DAEC','#1E9AF5','#A0522D'];
+const GW1=[19.2,7.8,5.7,4.7,3.1,1.0,3.1,7.4];
+
+const L2=['Gas','Coal','Laos imports','Biomass','Solar','Wind','Hydro (domestic)','Oil'];
+const C2=['#808890','#2C2C2C','#5B3FA0','#1A7A4A','#FFD700','#44DAEC','#1E9AF5','#A0522D'];
+const D2=[68,17,0,5,4,3,3,0];
+const D2b=[68,17,15,5,4,3,3,2];
+const TWh2=[136.7,34.2,30.2,10.1,8.0,6.0,6.0,4.0];
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+const dem=[162,168,172,177,183,187,181,187,180,183,201];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lithuania Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Lithuania</div>
+    <div class="doc-sub">~4 GW installed · Wind ~1.5 GW + Solar ~1 GW (2024, both accelerating) · Gas ~35% backup · Ignalina NPP closed 2009 (EU accession condition) · Klaipeda LNG FSRU (2014, EU's first Russian gas alternative) · NordBalt 700 MW (Lithuania-Sweden) · LitPol Link 500 MW (Lithuania-Poland) · BRELL exit 8 Feb 2025 · ~2.8 million population</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~4 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~1.5 GW</div><div class="kpi-lbl">Wind installed (2024, growing to 5+ GW)</div></div>
+    <div class="kpi"><div class="kpi-val">2009</div><div class="kpi-lbl">Ignalina NPP closure (EU condition)</div></div>
+    <div class="kpi"><div class="kpi-val">8 Feb 2025</div><div class="kpi-lbl">Baltic synchronisation — Lithuania the HVDC anchor</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Lithuania's electricity system carries two defining historical wounds: the forced closure of <strong>Ignalina Nuclear Power Plant</strong> (RBMK-1000 reactors, same design type as Chernobyl, closed as an EU accession condition — Unit 1 in 2004, Unit 2 in 2009) and 80 years of Soviet BRELL grid synchronisation with Russia. Ignalina's closure transformed Lithuania from a major electricity exporter (~80% of generation was nuclear) to a significant importer overnight, driving up costs and gas consumption. Wind (~1.5 GW) and solar (~1 GW) are now the fastest-growing sources, and Lithuania has become a Baltic RE leader. Gas (~35%) provides system backup. The landmark grid event: Lithuania provided the HVDC anchor for the 8 February 2025 BRELL exit via the <strong>LitPol Link</strong> (Lithuania-Poland, 500 MW HVDC) — making it the physical synchronisation gateway for all three Baltic states. Interconnectors: <strong>NordBalt</strong> (Lithuania-Sweden, 700 MW HVDC) + LitPol Link. The Klaipeda LNG FSRU (2014) was the first European LNG import terminal to provide an alternative to Russian gas. Main utilities: <strong>Ignitis</strong> (formerly LEO LT) and private generators; TSO is <strong>Litgrid</strong>.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + OCGT)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass + biogas CHP</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Kaunas, Kruonis pumped)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~50%</div>
+            <div class="chart-center-lbl">RE 2024 (incl. imports)</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Litgrid (Lithuanian TSO) statistics 2024; VERT (energy regulator); Ignitis; IEA; Ember Lithuania 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Ignalina NPP: forced closure, 2004 + 2009</strong>Ignalina NPP (2 × RBMK-1000, 1,500 MW each; commissioned 1984-87) was one of the most powerful nuclear plants ever built. Lithuania generated ~80% of its electricity from Ignalina in the 1990s-2000s, exported heavily, and had Europe's lowest electricity prices. EU accession (2004) required closure: Unit 1 in 2004, Unit 2 in December 2009. Reason: RBMK-1000 reactors (like Chernobyl) were not "upgradeable" to EU/IAEA safety standards and lacked a containment structure. Decommissioning (funded ~€2.5B EU aid) is ongoing — the most complex nuclear decommissioning project in EU history. Final decommissioning completion: ~2038.</div>
+        <div class="stat-item"><strong>Klaipeda LNG FSRU: Europe's first Russian gas escape</strong>Lithuania commissioned the Klaipeda LNG Floating Storage and Regasification Unit (FSRU) "Independence" in December 2014 — the EU's first LNG import terminal specifically designed to reduce Russian gas dependency. The decision, mocked by some at the time as economically irrational (LNG was expensive; Russian pipeline gas was cheap), proved geopolitically visionary a decade later. The FSRU imports LNG from Norway, USA, and Qatar; its 4 BCM/year capacity supplies Lithuania and provides swing supply for Latvia via Inčukalns. Lithuania eliminated 100% Russian gas dependence by 2022.</div>
+        <div class="stat-item"><strong>LitPol Link + NordBalt: dual HVDC strategy</strong>Lithuania operates two strategic HVDC interconnectors: LitPol Link (500 MW Lithuania-Poland, operational 2015-16; upgrade to 1,000 MW underway) connects Lithuania to Continental European markets; NordBalt (700 MW Lithuania-Sweden, operational 2016) connects to Nordic markets. Together they provide 1,200 MW of import capacity — roughly 30% of Lithuanian peak demand. Post-BRELL, LitPol Link is the physical synchronisation anchor: the Lithuanian grid frequency is now locked to Polish/Continental frequency, not Russian. A second LitPol Link (LitPol Link 2, 700-1,000 MW) is in planning for post-2030.</div>
+        <div class="stat-item"><strong>Kruonis pumped storage: Baltic grid stabiliser</strong>Kruonis Pumped Storage Plant (900 MW, on the Nemunas River reservoir system) is the largest power plant in the Baltics; operated by Ignitis; designed as a frequency regulator for the Baltic system. Post-BRELL, Kruonis plays a critical role in frequency stabilisation during the transition period: its fast-response turbines (ramp to 900 MW in ~90 seconds) provide the synthetic inertia and primary frequency response that the Continental European Network requires during Baltic grid events. Kruonis is irreplaceable for Baltic-Continental grid integration quality.</div>
+        <div class="stat-item"><strong>Ignalina New NPP: SMR studies underway</strong>Lithuanian parliament approved a feasibility study for a new nuclear plant at Ignalina site in 2022 — motivated by post-2009 electricity import dependency and climate targets. Focus: small modular reactors (SMR). Vendors evaluated: NuScale, GE-Hitachi BWRX-300, Rolls-Royce SMR. Key challenge: SMR technology not yet commercially deployed at scale anywhere; cost and timeline uncertain. Baltic states (Latvia, Estonia) would need to co-invest to justify unit size economics. Decision expected post-2028 after global SMR first-of-a-kind projects demonstrate feasibility.</div>
+      </div>
+    </div>
+
+    <h2>The Ignalina Story: 15 Years After</h2>
+    <p>The closure of Ignalina NPP is the most consequential single energy decision in Baltic history — not because it was wrong or right, but because its consequences still shape Lithuanian (and Baltic) energy policy 15 years later:</p>
+    <ul>
+      <li><strong>The capacity gap:</strong> Ignalina generated 12-14 TWh/year — more than Lithuania's entire current annual electricity consumption (~12 TWh). Its closure created an immediate 12+ TWh gap that was filled by: gas-fired generation (expensive), electricity imports from Poland and Russia (geopolitically uncomfortable), and NordBalt/LitPol Link (which themselves cost €500M+ to build). The total cost of replacing Ignalina's generation over 15 years — including higher electricity prices, import costs, and interconnector investment — significantly exceeds the closure's decommissioning aid.</li>
+      <li><strong>The decommissioning saga:</strong> Ignalina decommissioning is the most complex nuclear decommissioning project in EU history. RBMK-1000 reactors are graphite-moderated, water-cooled — unlike Western PWR/BWR designs — and contain graphite blocks that cannot be simply removed without extensive radiation management. The Ignalina International Decommissioning Support Fund (IISF), funded by the EU and donor countries (~€2.5B total), supports the project. Completion timeline has slipped repeatedly; current estimate: major decommissioning complete by 2038, final site clearance by ~2045+.</li>
+      <li><strong>Spent fuel management:</strong> Ignalina's RBMK-1000 reactors left ~22,000 spent fuel assemblies requiring secure dry cask storage for decades. The Ignalina ISFSF (Interim Spent Fuel Storage Facility) is under construction at site — a €400M facility to safely store spent fuel until permanent disposal becomes available (likely not before 2060). Lithuania has no final deep geological repository (DGR) — and the EU as a whole lacks a single operational DGR for spent nuclear fuel.</li>
+      <li><strong>The political backlash:</strong> Lithuanian public opinion overwhelmingly supported keeping Ignalina open; surveys showed 60-70% opposition to closure even in 2008-09. The closure was an EU accession condition — imposed as a non-negotiable price for EU membership — which created lasting resentment about external constraints on Lithuanian sovereignty over energy policy. This resentment partly explains Lithuania's strong advocacy for SMR development as a sovereign nuclear option that does not require EU safety dispensation.</li>
+    </ul>
+
+    <div class="callout">
+      Lithuania is the clearest case in Europe of a country that had a functioning low-carbon, low-cost electricity system (Ignalina nuclear, 80% of generation) and was required to shut it down as a price of EU integration — resulting in 15 years of higher electricity costs, gas dependency, and import reliance. The Klaipeda LNG FSRU and the Baltic synchronisation are both consequences of that forced closure: Lithuania had to build alternative supply infrastructure and grid architecture because the EU eliminated its indigenous baseload. Now Lithuania is studying whether SMRs can restore the nuclear baseload that Ignalina provided — from a position of much greater sovereignty than 2004.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Lithuania's 2014 decision to commission the Klaipeda LNG FSRU — at a time when Russian pipeline gas was cheap and LNG was expensive — is the most prescient energy security investment made by any EU member state in the past two decades, and its vindication by the 2022 Russia-Ukraine crisis should inform how the EU evaluates energy security investments that appear economically suboptimal at the time of decision.</strong> In 2014, the Klaipeda FSRU was criticised as overpriced, politically motivated, and unnecessary. Lithuanian Prime Minister Butkevičius was mocked for naming the vessel "Independence." By 2023, it was the most valuable energy security asset in the Baltic region — enabling Lithuania, Latvia, and Estonia to replace Russian gas without crisis-level supply disruption. The lesson: energy security premia on supply diversification infrastructure are often worth paying before you need them, not after.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Lithuania's role as the HVDC anchor for Baltic-Continental synchronisation — providing the physical frequency lock between the Baltic grid and Poland/Continental Europe — gives it a central grid management responsibility that exceeds what its 2.8 million population and modest generation base would otherwise warrant.</strong> Lithuania hosts LitPol Link (the synchronisation gateway), NordBalt (Nordic market access), Kruonis pumped storage (Baltic frequency stabilisation), and will host the second LitPol Link. This infrastructure concentration makes Litgrid one of the most technically demanding TSO operations in the EU relative to system size. Lithuania's grid management capability must evolve to match its infrastructure responsibility — a human capital and institutional investment challenge as much as a technical one.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The forced closure of Ignalina NPP — 12-14 TWh/year of clean nuclear electricity eliminated as a condition of EU membership — created a negative externality for Lithuanian and Baltic electricity consumers that has never been formally quantified or compensated by the EU, and which provides important context for the region's scepticism about EU-mandated energy decisions.</strong> The EU paid €2.5B+ in decommissioning aid — but this compensates Lithuania for the cost of demolishing the plant, not for the lost generation value or the higher consumer costs over 15 years. A full social cost accounting of the Ignalina closure decision would likely show that the EU's RBMK safety concern, while technically justified, was handled in a way that imposed disproportionate cost on Lithuania without adequate economic compensation. This history shapes Baltic negotiating positions in every subsequent EU energy debate.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Lithuania's wind deployment — reaching 1.5 GW onshore by 2024, with a pipeline of 3-4 GW offshore in the Baltic — represents the most credible path to energy independence in its history: the first time Lithuania has a domestic RE resource large enough to approach full electricity self-sufficiency without nuclear or Russian dependence.</strong> Lithuanian Baltic offshore wind (Pomeranian Bay zone, 5+ GW potential) at 40% capacity factor generates more electricity annually than Ignalina's two units ever did. Combined with onshore wind (expanding toward 3+ GW), solar (~1 GW and growing), and biomass CHP, Lithuania has a realistic pathway to 80%+ domestic RE by 2030 — something it could not have said at any point in its independent history. The energy security position of 2030 Lithuania will be structurally better than 2009 Lithuania even without new nuclear.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The Ignalina New NPP SMR study — politically motivated as much as technically — reflects a genuine Baltic energy policy gap: if all three Baltic states achieve 80-100% annual RE by 2030, they will still need winter baseload when wind and solar are simultaneously low across the entire Baltic region, and no amount of interconnection can fully substitute for on-demand firm generation in a dark, windless January week.</strong> The Baltic "winter dunkelflaute" (dark windless period) scenario — low solar, low wind, cold temperatures, high heating demand — is the planning extreme that RE-only advocates have difficulty solving without either massive cross-regional imports (expensive and not always available) or firm generation (gas, nuclear, or large-scale storage). SMR development for the late 2030s is Lithuania's hedge against this risk — not a rejection of RE, but an insurance policy against RE's structural seasonal limits in high-latitude northern Europe.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Litgrid — Lithuanian TSO, annual report 2025 ·
+      VERT (Valstybinė energetikos reguliavimo taryba) — Lithuanian energy regulator ·
+      Ignitis Group — annual report 2024 ·
+      IEA — Baltic energy security and Lithuania energy data ·
+      Ember — Lithuania electricity mix 2025 ·
+      IISF — Ignalina International Decommissioning Support Fund ·
+      Ministry of Energy Lithuania — National Energy Independence Strategy ·
+      European Commission — Baltic synchronisation project documentation
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Wind (onshore)', 'Natural gas (CCGT + OCGT)', 'Solar PV', 'Biomass + biogas CHP', 'Hydro (Kaunas, Kruonis pumped)'],
+    datasets: [{ data: [32, 35, 12, 13, 8], backgroundColor: ['#6AB0DE','#C85020','#FFD700','#4CAF50','#1B6CA8'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

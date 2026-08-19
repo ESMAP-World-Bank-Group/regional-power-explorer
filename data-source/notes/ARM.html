@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Armenia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-flag{font-size:26px;flex-shrink:0;margin-top:2px}
+  .trade-content{flex:1}
+  .trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}
+  .trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Armenian electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; May 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~3 263 MW</div><div class="kpi-lbl">Installed capacity</div></div>
+  <div class="kpi"><div class="kpi-val">~8 TWh</div><div class="kpi-lbl">Demand (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">~37%</div><div class="kpi-lbl">Renewables share</div></div>
+  <div class="kpi"><div class="kpi-val">~1 550 MW</div><div class="kpi-lbl">Interconnections</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Armenia is a landlocked country of 3 million people with two closed borders — Türkiye and Azerbaijan — since the early 1990s. <strong>78.6% of total primary energy supply was imported in 2020</strong>, dominated by Russian natural gas (59.6%) via a single corridor through Georgia. Armenia is <strong>the only nuclear power producer in the South Caucasus</strong> — a key strategic differentiator.</p>
+<p>The electricity sector is the one segment where Armenia achieves effective autonomy: it is a net exporter, operates a diversified nuclear-hydro-gas mix, and has carried out a substantial market reform since the mid-1990s — moving from a near-bankrupt Soviet-era monopoly to a partially privatised market.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">3 263</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2024 est.)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~8</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Installed capacity and generation mix. Sources: PSRC, IEA, SRI Energy — estimates 2024–2025.</p>
+
+<ul>
+  <li><strong>Nuclear — Metsamor (408 MW):</strong> sole baseload anchor (~33% of output). VVER-440, commissioned 1980. Life extended to 2036 via $65M Rosatom contract (Dec 2024). Currently under maintenance shutdown Apr–Sep 2026.</li>
+  <li><strong>Large hydro (965 MW):</strong> Sevan-Hrazdan cascade (IEC/Tashir, 561 MW) and Vorotan cascade (ContourGlobal/KKR, 404 MW). Seasonal peak in spring/summer.</li>
+  <li><strong>Small hydro (~390 MW):</strong> 300+ plants, fragmented ownership. Developed via feed-in tariffs since 2007.</li>
+  <li><strong>Gas thermal (690 MW):</strong> Hrazdan Unit 5 (440 MW, Tashir) and Yerevan CCGT (250 MW, ArmPower). Cover winter peak; fuel the Iran barter circuit.</li>
+  <li><strong>Solar PV (~800 MW):</strong> ~15% of 2025 generation. Fast-growing — utility IPPs and rooftop prosumers.</li>
+  <li><strong>Wind (&lt;10 MW):</strong> near-zero despite 4 900 MW theoretical potential (USAID).</li>
+</ul>
+
+<h3>2.2 Demand — historical trend and end-use</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity demand — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~7</div><div class="chart-center-lbl">TWh sold</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Demand trend and end-use. Sources: IEA, TheGlobalEconomy, SRI Energy, PSRC.</p>
+<p>Demand bottomed in the mid-1990s post-Soviet crisis (~3 TWh) and has grown steadily since, reaching ~7.8 TWh in 2022. Growth reflects economic recovery and rising living standards. Strong winter peak covered by gas back-up; summer surpluses exported to Iran and Georgia.</p>
+<div class="callout"><strong>Retail tariffs (2026, unchanged since 2022):</strong> Vulnerable households: 29.99 / 19.99 AMD/kWh (day/night) · Standard residential (≤200 kWh/mo): 44.98 / 34.98 AMD · Industry: 42–50 AMD by voltage level. (1 USD ≈ 395 AMD)</div>
+
+
+<div class="chart-legend" id="leg3"></div>
+<div class="chart-grid-3">
+  <div>
+    <div class="chart-title">Output by destination</div>
+    <div class="chart-wrap" style="height:155px">
+      <canvas id="c4"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~8</div><div class="chart-center-lbl">TWh total</div></div>
+    </div>
+  </div>
+  <div class="stat-note" style="grid-column:2/4">
+    <div class="stat-item"><strong>Exports ~13% of output</strong>~1.1 TWh to Iran (gas-for-electricity barter) · ~0.15 TWh to Georgia</div>
+    <div class="stat-item"><strong>Domestic ~87%</strong>Residential 55% · Industry 25% · Services 20%</div>
+    <div style="font-size:11px;color:var(--light)">Sources: PSRC, ENA, SRI Energy, IEA 2023–2024</div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 5 — Output by destination.</p>
+
+<h3>2.3 Grid and interconnections</h3>
+<p>The HV grid (220–500 kV) is operated by HVEN CJSC (state). Network losses ~11.7% (2023). The grid has two notable topological features: the backbone runs North–South connecting Metsamor (west), the Hrazdan cascade (north-central) and the Vorotan cascade (south), with the main load centre in Yerevan in the middle. The system is <strong>asynchronously connected</strong> to both Georgia and Iran — i.e. not synchronised to either the ENTSO-E grid or the Iranian grid — which limits the speed and volume of cross-border power exchange and requires dedicated back-to-back conversion capacity. The <strong>eastern half of the ring</strong> (Azerbaijan border) is physically de-energised. Cross-border links:</p>
+<table>
+  <tr><th>Country</th><th>Infrastructure</th><th>Capacity</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Georgia</strong></td><td>220 kV (~65 km)</td><td>~350 MW</td><td>Active — bidirectional, seasonal. Armenia exports in winter; imports Georgian hydro in summer. Asynchronous link.</td></tr>
+  <tr><td><strong>Iran</strong></td><td>2×220 kV existing + 3rd 400 kV line (85% complete end-2024)</td><td>350 MW → 1 200 MW (target)</td><td>Active — gas-for-elec barter. Third line (280 km) will double capacity.</td></tr>
+  <tr><td><strong>Türkiye</strong></td><td>Physical infrastructure exists</td><td>—</td><td>Inactive — border closed since 1993. Normalisation would be transformative (Turkish peak: 58+ GW).</td></tr>
+  <tr><td><strong>Azerbaijan</strong></td><td>Physical infrastructure exists</td><td>—</td><td>Inactive — political conflict. Sep 2022 strike on Armenia–Iran HV line as precedent.</td></tr>
+</table>
+
+<h3>2.4 Cross-border trade arrangements</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-flag">🇮🇷</div>
+    <div class="trade-content">
+      <div class="trade-title">Iran — gas-for-electricity barter <span class="trade-badge">Structural</span></div>
+      <p class="trade-body">In place since around 2004 and periodically renewed. Iran delivers approximately 365 million m³ of natural gas per year; Armenia returns 3 kWh of electricity per m³ received — around 1.1 TWh per year, 88% of total exports. No cash changes hands; pure in-kind exchange managed by HVEN (Armenia) and TAVANIR (Iran). The implicit gas price works out to approximately $165–180 per thousand m³ — roughly 10–15% below the Russian Gazprom rate, providing a meaningful economic hedge. The gas feeds the Yerevan CCGT and Hrazdan Unit 5, whose output is re-exported to Iran in a closed circuit. The third 400 kV line, once completed, will double the volume capacity to ~1 200 MW.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-flag">🇬🇪</div>
+    <div class="trade-content">
+      <div class="trade-title">Georgia — seasonal bilateral trade <span class="trade-badge trade-badge-grey">Opportunistic</span></div>
+      <p class="trade-body">Bidirectional flows governed by annual contracts between HVEN and ESCO (Georgia's market operator), not a long-term structural agreement. Armenia exports in winter when gas and nuclear capacity runs above domestic demand, and imports Georgian hydro in summer. Net annual volumes are modest — around 0.15 TWh — at negotiated prices broadly in the $30–45/MWh range depending on season. No long-term pricing formula.</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure</h3>
+<p>Vertically separated but <strong>fully regulated</strong>. No spot market, no retail competition. PSRC sets all tariffs. HVEN operates as <strong>single buyer</strong> — procuring from generators under annually approved quota contracts at regulated prices, then dispatching to ENA for distribution.</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Ownership</th></tr>
+  <tr><td><strong>PSRC</strong></td><td>Regulator — all tariffs, licences, capex approval</td><td>State / independent</td></tr>
+  <tr><td><strong>HVEN CJSC</strong></td><td>TSO — HV grid, dispatch, balancing</td><td>100% state</td></tr>
+  <tr><td><strong>ENA CJSC</strong></td><td>DSO — MT/LV grid, ~1M subscribers, ~5 TWh/yr</td><td>Ex-Tashir; licence revoked Nov 2025; nationalising</td></tr>
+  <tr><td><strong>Armenian NPP CJSC</strong></td><td>Metsamor Unit 2 (408 MW, VVER-440)</td><td>State; maintained by Rosatom ($65M to 2036)</td></tr>
+  <tr><td><strong>IEC + Hrazdan Energy</strong></td><td>Sevan-Hrazdan hydro (561 MW) + Hrazdan-5 TPP (440 MW)</td><td>Tashir Group (Russia)</td></tr>
+  <tr><td><strong>ContourGlobal Hydro</strong></td><td>Vorotan cascade (404 MW)</td><td>KKR (USA) since 2021</td></tr>
+  <tr><td><strong>ArmPower CJSC</strong></td><td>Yerevan CCGT (250 MW) — key for Iran barter</td><td>Private</td></tr>
+  <tr><td><strong>Gazprom Armenia</strong></td><td>Exclusive gas supply to all thermal plants</td><td>Gazprom (Russia)</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 900 510" role="img">
+<title>Armenia electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>
+.nt{font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;fill:#fff}
+.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}
+.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}
+.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}
+.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}
+</style>
+<rect x="230" y="20" width="150" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="305" y="46" text-anchor="middle" dominant-baseline="central">Ministry</text>
+<rect x="440" y="20" width="150" height="52" rx="8" fill="#5B3FA0"/>
+<text class="nt" x="515" y="36" text-anchor="middle" dominant-baseline="central">PSRC</text>
+<text class="ns" x="515" y="54" text-anchor="middle" dominant-baseline="central">Tariffs · licences</text>
+<line x1="380" y1="46" x2="438" y2="46" class="arrd"/>
+<text class="lbl" x="409" y="38" text-anchor="middle">appoints</text>
+<path d="M515 72 L515 96 L305 96 L305 118" fill="none" class="arrd"/>
+<text class="lbl" x="410" y="90" text-anchor="middle">sets tariffs</text>
+<line x1="515" y1="72" x2="515" y2="118" class="arrd"/>
+<text class="lbl" x="600" y="96" text-anchor="start">oversight</text>
+<rect x="20" y="120" width="150" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="95" y="145" text-anchor="middle" dominant-baseline="central">Generators</text>
+<text class="ns" x="95" y="165" text-anchor="middle" dominant-baseline="central">~3 200 MW total</text>
+<line x1="170" y1="155" x2="228" y2="155" class="arr"/>
+<text class="lbl" x="199" y="147" text-anchor="middle">power</text>
+<rect x="230" y="120" width="150" height="70" rx="8" fill="#2E75B6"/>
+<text class="nt" x="305" y="145" text-anchor="middle" dominant-baseline="central">HVEN CJSC</text>
+<text class="ns" x="305" y="165" text-anchor="middle" dominant-baseline="central">Transmission · State</text>
+<line x1="380" y1="155" x2="438" y2="155" class="arr"/>
+<text class="lbl" x="409" y="147" text-anchor="middle">bulk power</text>
+<rect x="440" y="120" width="150" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="515" y="145" text-anchor="middle" dominant-baseline="central">ENA CJSC</text>
+<text class="ns" x="515" y="165" text-anchor="middle" dominant-baseline="central">Distribution</text>
+<line x1="590" y1="155" x2="648" y2="155" class="arr"/>
+<text class="lbl" x="619" y="147" text-anchor="middle">retail</text>
+<rect x="650" y="120" width="150" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="725" y="141" text-anchor="middle" dominant-baseline="central">Consumers</text>
+<text class="ns" x="725" y="159" text-anchor="middle" dominant-baseline="central">~1M subscribers</text>
+<text class="ns" x="725" y="177" text-anchor="middle" dominant-baseline="central">Regulated tariffs</text>
+<line x1="95" y1="190" x2="95" y2="248" stroke="#CBD5E0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<line x1="305" y1="190" x2="305" y2="248" class="arr"/>
+<text class="lbl" x="321" y="224" text-anchor="start">~1.1 TWh/yr</text>
+<rect x="20" y="250" width="70" height="76" rx="6" fill="#B7770D"/>
+<text class="nt" x="55" y="270" text-anchor="middle" dominant-baseline="central">Metsamor</text>
+<text class="ns" x="55" y="288" text-anchor="middle" dominant-baseline="central">NPP CJSC</text>
+<text class="ns" x="55" y="306" text-anchor="middle" dominant-baseline="central">408 MW</text>
+<rect x="100" y="250" width="70" height="76" rx="6" fill="#2E75B6"/>
+<text class="nt" x="135" y="270" text-anchor="middle" dominant-baseline="central">Hydro</text>
+<text class="ns" x="135" y="288" text-anchor="middle" dominant-baseline="central">IEC · CG</text>
+<text class="ns" x="135" y="306" text-anchor="middle" dominant-baseline="central">1 369 MW</text>
+<rect x="230" y="250" width="150" height="76" rx="8" fill="#2E75B6"/>
+<text class="nt" x="305" y="278" text-anchor="middle" dominant-baseline="central">Exports</text>
+<text class="ns" x="305" y="298" text-anchor="middle" dominant-baseline="central">Iran · Georgia</text>
+<line x1="275" y1="326" x2="275" y2="348" class="arr"/>
+<line x1="335" y1="348" x2="335" y2="326" class="arrd"/>
+<text class="lbl" x="230" y="340" text-anchor="start">elec out</text>
+<text class="lbl" x="345" y="340" text-anchor="start">gas in</text>
+<rect x="20" y="350" width="70" height="76" rx="6" fill="#4A5568"/>
+<text class="nt" x="55" y="370" text-anchor="middle" dominant-baseline="central">Gas TPPs</text>
+<text class="ns" x="55" y="388" text-anchor="middle" dominant-baseline="central">Hrazdan-5</text>
+<text class="ns" x="55" y="406" text-anchor="middle" dominant-baseline="central">Erevan CCGT</text>
+<rect x="100" y="350" width="70" height="76" rx="6" fill="#1A7A4A"/>
+<text class="nt" x="135" y="370" text-anchor="middle" dominant-baseline="central">Solar+</text>
+<text class="ns" x="135" y="388" text-anchor="middle" dominant-baseline="central">IPPs · etc.</text>
+<text class="ns" x="135" y="406" text-anchor="middle" dominant-baseline="central">~800 MW</text>
+<rect x="230" y="350" width="150" height="76" rx="8" fill="#4A5568"/>
+<text class="nt" x="305" y="378" text-anchor="middle" dominant-baseline="central">Iran</text>
+<text class="ns" x="305" y="398" text-anchor="middle" dominant-baseline="central">~365 Mm³/yr gas</text>
+<line x1="55" y1="448" x2="55" y2="428" class="arrd"/>
+<text class="lbl" x="71" y="440" text-anchor="start">fuels</text>
+<rect x="20" y="450" width="150" height="50" rx="8" fill="#4A5568"/>
+<text class="nt" x="95" y="468" text-anchor="middle" dominant-baseline="central">Gazprom Armenia</text>
+<text class="ns" x="95" y="486" text-anchor="middle" dominant-baseline="central">Russian gas supply</text>
+<rect x="230" y="462" width="10" height="10" rx="2" fill="#5B3FA0"/><text class="lbl" x="244" y="471">Regulator</text>
+<rect x="320" y="462" width="10" height="10" rx="2" fill="#2E75B6"/><text class="lbl" x="334" y="471">State grid</text>
+<rect x="410" y="462" width="10" height="10" rx="2" fill="#0F7B72"/><text class="lbl" x="424" y="471">Generation</text>
+<rect x="510" y="462" width="10" height="10" rx="2" fill="#C0392B"/><text class="lbl" x="524" y="471">Distribution</text>
+<line x1="230" y1="490" x2="252" y2="490" stroke="#6B7280" stroke-width="1.4" marker-end="url(#ar)"/>
+<text class="lbl" x="258" y="494">power flow</text>
+<line x1="340" y1="490" x2="362" y2="490" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+<text class="lbl" x="368" y="494">regulatory / gas</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 6 — Actor map of the Armenian electricity sector.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 Metsamor — the nuclear succession question</h3>
+<ul>
+  <li>VVER-440 V230, commissioned 1980. One of the oldest operating NPPs globally. Life extended to 2036 via $65M Rosatom contract (Dec 2024). Currently in <strong>maintenance shutdown Apr–Sep 2026</strong> — the main operational risk of the year.</li>
+  <li>New NPP: dedicated company created early 2025. PM Pashinyan confirmed SMR decision Oct 2025 — simultaneous talks with US, France, Russia, China, South Korea. Supplier choice = geopolitical litmus test between Moscow, Washington and Paris.</li>
+</ul>
+<h3>4.2 Renewables acceleration</h3>
+<ul>
+  <li>Target: <strong>66% renewables by 2036</strong> (from 7% in 2012). Requires 2 185 MW new capacity.</li>
+  <li>Solar PV at ~15% of 2025 generation (~800 MW), feed-in tariff driven. Wind near-zero despite 4 900 MW potential.</li>
+  <li>World Bank least-cost plan (2024): 2 630 MW PV + 375 MW wind + 580 MW hydro + 130 MW storage + 600 MW NPP by 2033. Total ~$13bn.</li>
+</ul>
+<h3>4.3 ENA nationalisation — 2025 governance shock</h3>
+<ul>
+  <li>June 2025: Tashir owner Karapetyan arrested. July 3: Parliament votes. November 2025: PSRC revokes ENA licence.</li>
+  <li>~1M subscribers, 5 TWh/yr, 47–54bn AMD investment programme under temporary administrator. Final structure unclear — main governance risk for 2025–2026.</li>
+</ul>
+<h3>4.4 Supply security</h3>
+<ul>
+  <li><strong>Gas corridor risk:</strong> single Russia–Georgia pipeline. Any disruption → reliance on hydro + nuclear only.</li>
+  <li><strong>Nuclear dependency:</strong> 5-month shutdown requires compensating via imports.</li>
+  <li><strong>Infrastructure vulnerability:</strong> Sep 2022 Azerbaijani strike on the Armenia–Iran HV line as precedent.</li>
+  <li><strong>Mitigants:</strong> ~3 200 MW installed capacity vs ~1 700 MW peak demand; solar growth reducing thermal exposure.</li>
+</ul>
+<div class="callout">A normalisation with Türkiye — whose peak load exceeds 58 GW — would be the single most transformative development for Armenia's long-term energy security. It remains a geopolitical question, not a technical one.</div>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Metsamor is irreplaceable short-term. Its Apr–Sep 2026 maintenance shutdown is the main operational risk of the year. Any extension becomes a supply crisis.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The Iran barter is Armenia's most valuable bilateral energy arrangement — cheaper gas, Gazprom hedge, strategic depth. The third 400 kV line will cement it.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>ENA's nationalisation resolves a political problem but opens an operational transition of uncertain duration — the main governance risk for 2025–2026.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The new NPP supplier decision is the decade's defining energy choice — and a geopolitical litmus test between Moscow, Washington and Paris.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Solar growth is real, but the 66% target by 2036 requires ~$13bn, a functional DSO, and wind development that has not yet started. All three are uncertain.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+IEA Armenia Energy Profile (2023) · World Nuclear Association (Apr. 2026) · PSRC Armenia · German Economic Team / Agora (2024) · SRI Energy — Energy Balance 2023 · World Bank / EnergyInst Least-Cost Plan 2024–2050 · ARKA News Agency · Jamestown Foundation · IAEA CNPP · TheGlobalEconomy.com</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>May 2026</span>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const L1=['Nuclear','Large hydro','Small hydro','Gas','Solar PV','Wind'];
+const C1=['#C8A8F0','#1E9AF5','#7CC8FA','#9A7040','#FFD700','#44DAEC'];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:[408,965,390,690,800,10],backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L1,datasets:[{data:[2.7,0.9,0.4,2.7,1.2,0.05],backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh`}}}}});
+
+// Demand historical
+const years=['1995','2000','2005','2010','2015','2018','2020','2021','2022','2023','2024'];
+const dem=[3.1,5.0,5.6,5.9,6.2,6.5,6.3,6.6,7.8,7.5,7.8];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
+const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:years,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:2,max:9,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Residential','Industry','Services'];
+const C3=['#2E75B6','#1D9E75','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[55,25,20],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed}%`}}}}});
+
+const L4=['Domestic use','Export — Iran','Export — Georgia'];
+const C4=['#2E75B6','#A04000','#C0392B'];
+const leg3=document.getElementById('leg3');
+[...L4].forEach((l,i)=>{leg3.innerHTML+=`<span><span class="lsq" style="background:${C4[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c4'),{type:'doughnut',data:{labels:L4,datasets:[{data:[6.9,0.88,0.15],backgroundColor:C4,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh`}}}}});
+</script>
+</body></html>

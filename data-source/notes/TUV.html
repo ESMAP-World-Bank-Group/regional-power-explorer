@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuvalu Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Polynesia)</div>
+    <div class="doc-title">Tuvalu</div>
+    <div class="doc-sub">~5 MW installed (Funafuti) · Funafuti: solar ~50% + diesel ~40% + wind ~10% · TEPB (Tuvalu Electricity and Power Board, state) · 9 islands, ~11,000 people — Pacific's smallest sovereign state by population · Falepili Union 2023 (Australia climate migration treaty) · ".tv" domain registry ~US$10M/year revenue · Declared a "digital nation" in anticipation of physical submersion · IPCC: Funafuti below 0.5 m storm surge risk by 2060 · 100% RE 2025 (Funafuti — near achieved); outer islands near 100% already</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~50%</div><div class="kpi-lbl">Funafuti solar share 2024 (daytime near 100% RE)</div></div>
+    <div class="kpi"><div class="kpi-val">Falepili</div><div class="kpi-lbl">2023 Australia climate migration treaty — Pacific first</div></div>
+    <div class="kpi"><div class="kpi-val">.tv domain</div><div class="kpi-lbl">~US$10M/yr Verisign registry revenue for 11,000 people</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Outer islands already; Funafuti target 2025 (near achieved)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Tuvalu — nine coral atolls in the central Pacific with a total population of approximately 11,000, making it the Pacific's smallest sovereign state by population and one of the smallest in the world — sits at the absolute frontier of climate-driven energy planning. Funafuti Atoll (capital, population ~6,000) averages approximately 3 metres above sea level; its lowest residential areas flood during spring tides already. The Intergovernmental Panel on Climate Change projects that Funafuti faces meaningful storm surge overtopping risk by the 2040s-2060s depending on emissions pathway. Tuvalu's energy transition is therefore not primarily an economic question but a humanitarian and political one: electricity infrastructure must serve the population now, enable the human capital development that makes dignified migration possible, and demonstrate that Pacific island states can lead on RE even while being driven underwater by industrialised nations' emissions.</p>
+    <p>The <strong>Tuvalu Electricity and Power Board (TEPB)</strong>, a state utility, operates Funafuti's approximately 1.5 MW effective grid capacity: a diesel plant (1.2 MW HFO/diesel), approximately 1.3 MW of solar PV (ADB 2014: 630 kW; GEF/IRENA 2019: 650 kW), a 1 MW BESS (ADB 2022), and a small wind installation (~150 kW). The solar + BESS combination means Funafuti operates at near 100% renewable during daytime peak solar hours — diesel is used primarily for evening demand and cloudy days. Annual average RE share (including storage): approximately 50-55% and rising as BESS capacity expands. Tuvalu's eight outer islands (Nanumea, Nanumanga, Niutao, Nui, Vaitupu, Nukufetau, Nukulaelae, Niulakita) are served by small TEPB diesel generators and solar home systems — several outer islands now operate at or near 100% solar during daytime, with diesel fill-in only in the evening. Total installed generation across all islands: approximately 3-5 MW.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Funafuti grid generation mix (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (TEPB Funafuti plant)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (ADB 2014 + GEF/IRENA 2019)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (~150 kW turbines)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~60%</div>
+            <div class="chart-center-lbl">Funafuti RE + BESS 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Funafuti atoll grid only. BESS (1 MW ADB 2022) provides solar storage — daytime hours near 100% RE. Outer islands predominantly solar. Source: TEPB 2024; ADB Pacific Energy 2025; IRENA 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Falepili Union (2023): the Pacific's first formal climate migration treaty</strong>In November 2023, Tuvalu and Australia signed the Falepili Union — a bilateral treaty granting Tuvaluans the right to reside and work in Australia under a new climate mobility pathway (up to 280 people per year). In exchange, Tuvalu agreed to give Australia veto rights over any foreign security or defence agreements Tuvalu enters into. The Falepili Union is the first treaty in the world explicitly designed to manage sovereign state dissolution through orderly climate migration — a remarkable and unprecedented diplomatic instrument. For energy planning: the Falepili Union creates an explicit policy connection between Tuvalu's electricity sector and the migration pathway: Tuvaluans who migrate to Australia must arrive with qualifications, English language skills, and economic resources that are only built in communities with reliable electricity for schools and communications. The TEPB's electricity quality on outer islands — where most Tuvaluan communities live — is therefore a Falepili precondition.</div>
+        <div class="stat-item"><strong>".tv" domain: climate-affected nation's digital revenue lifeline</strong>Tuvalu's two-letter ISO country code "TV" became one of the most valuable digital assets in the world when the internet's domain name system assigned ".tv" to Tuvalu. Verisign (US) manages the ".tv" registry under a contract with the Tuvalu government, generating approximately US$8-12M annually in royalties — for an 11,000-person country, this represents roughly US$700-1,100 per capita per year, or approximately 30-40% of government revenue. The ".tv" income has funded Tuvalu's external representation at UNFCCC, AOSIS, and COP negotiations — giving Tuvalu a voice in international climate diplomacy that its population and GDP would not otherwise support. It has also funded the Tuvalu Trust Fund (TTF), established 1987, which functions as a sovereign wealth fund generating returns for government budget support.</div>
+        <div class="stat-item"><strong>"Digital nation" declaration: preserving sovereignty beyond physical submersion</strong>In September 2023, Tuvalu announced it would become the world's first "digital nation" — declaring that it will maintain legal sovereignty, cultural identity, and citizenship rights in perpetuity even if the physical islands become uninhabitable, by establishing a sovereign digital state within the metaverse and maintaining legal personhood through international agreements. This unprecedented declaration has energy implications: Tuvalu's data infrastructure (government servers, identity databases, digital citizenship records) must be preserved and continuously accessible — requiring reliable renewable energy for data centers hosted in Tuvalu (currently) and eventually mirrored in partner countries. The digital nation concept, however innovative, also raises questions about whether investing in Funafuti's electricity grid makes sense if the government itself is planning for submersion.</div>
+        <div class="stat-item"><strong>Outer islands: the advance of solar has already achieved near 100% RE by default</strong>Tuvalu's outer eight islands (most with populations of 300-1,200) have limited TEPB diesel infrastructure and very low electricity demand. ADB, GEF, and Japan's JICA have progressively installed solar home systems and small community solar microgrids on all outer islands since 2005. By 2024, most outer islands operate at approximately 70-100% solar during daytime hours with diesel only for evening. Niutao was declared 100% solar in 2012 — one of the Pacific's earliest fully solar islands. The outer island transition has been achieved because demand is so small (~5-30 kW per island) that a modest solar investment displaces all diesel during sunlight hours. The challenge on outer islands is not RE penetration (largely achieved) but reliability of the aging solar/battery equipment — maintenance and spare parts logistics remain chronically under-resourced.</div>
+      </div>
+    </div>
+
+    <h2>Climate, Sovereignty, and Energy Identity</h2>
+    <p>Tuvalu's Prime Ministers have spoken at every COP since Tuvalu joined the UNFCCC, consistently making the case that small island states like Tuvalu face not emissions reduction targets but extinction: the question is not how fast to decarbonise, but whether any decarbonisation commitment will come fast enough to save Pacific atolls from inundation. Tuvalu's RE achievements (outer islands largely solar; Funafuti heading toward 100% RE) are therefore deployed as both a moral argument ("we are doing our part while industrialised nations drown us") and a political statement of SIDS leadership credibility.</p>
+    <div class="callout">
+      Tuvalu's electricity sector is smaller than a rural European substation in generation terms — and yet it represents one of the most consequential energy policy laboratories in the world: an entire sovereign nation demonstrating that 100% RE is achievable even under the most extreme logistical constraints, while simultaneously planning for the possibility that the land under the solar panels will be uninhabitable within the lifetime of the panels. No other electricity sector in the world so directly connects energy access, climate justice, sovereignty, and the physics of sea-level rise in a single 5 MW system.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Tuvalu's outer islands are already at or near 100% daytime solar — achieved through 15 years of progressive ADB, JICA, and GEF investment in community solar systems — and the next challenge is not RE penetration (largely solved) but equipment maintenance and spare-parts logistics for aging solar/battery installations, which require a regional maintenance cooperative model rather than island-by-island donor project cycles.</strong> The Pacific's outer island solar maintenance problem is structural: solar panels and batteries installed in 2010-2015 are approaching or beyond their design lives. Replacement requires either a new donor project cycle (2-5 year lead time) or a regional procurement/maintenance framework that allows utilities like TEPB, KALGOV, and PPUC to order standardised replacement components from a shared supply chain. SPC (Pacific Community) has proposed a Pacific Island Solar Maintenance Cooperative — if implemented, Tuvalu's outer islands are the most acute test case.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The Falepili Union implicitly commits Australia to supporting Tuvalu's electricity sector quality — because the 280-person annual migration pathway only produces "dignified" migrants (with skills, qualifications, and resources) if Tuvalu's schools, hospitals, and communications remain well-powered — making the TEPB's operational budget and capital investment an indirect Australian aid obligation that should be tracked as a Falepili implementation metric.</strong> Australia has not formally connected Falepili to electricity sector support, but the logical chain is clear: outer island electricity → school quality → Tuvaluan qualification levels → Falepili migrant success in Australia → Falepili programme social licence. If outer island electricity fails (aging equipment, no maintenance), school quality declines, Tuvaluan Falepili migrants arrive less prepared, and the political case for the programme in Australia weakens. DFAT should include TEPB outer island electricity reliability as a Falepili monitoring indicator.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The ".tv" domain revenue — approximately US$10M/year, representing a significant fraction of government revenue for an 11,000-person state — is Tuvalu's most important energy-sector-adjacent financial asset, because it funds the Tuvalu Trust Fund and government budget that in turn fund TEPB subsidies, and any disruption to ".tv" contract renewal would have immediate energy sector financing consequences that are not modelled in TEPB's capital planning.</strong> The Verisign-Tuvalu ".tv" registry contract must be periodically renewed; the next renewal negotiation will occur within the 2024-2030 period. If the contract value declines (e.g., as ".tv" domain registrations migrate to streaming platforms' own top-level domains) or if Verisign renegotiates terms, Tuvalu's budget — and with it TEPB's subsidy and capex budget — would be directly affected. TEPB capital planning should model ".tv" revenue scenarios as a sensitivity in its financial projections, which it currently does not.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Funafuti's path to 100% RE is technically straightforward — approximately 500 kW additional solar + 1 MW additional BESS — but is complicated by the "digital nation" policy paradox: if Tuvalu's government plans for sovereign continuity beyond physical submersion, investing in Funafuti's grid implies either (a) longer-term habitation than the government's public climate narrative suggests, or (b) that the grid investment supports the transition period, and this distinction should be made explicit in TEPB's investment case to avoid donor confusion about the time horizon being planned for.</strong> Several bilateral donors (Japan, Australia, NZ) have asked privately whether energy investments in Funafuti are "stranded asset" risks given the "digital nation" framing. TEPB and the Tuvalu government should provide explicit guidance: energy investments are for the current generation and next 20-30 years of habitation, not for a 50-year horizon on atolls that the government itself says may be uninhabitable by then. This clarity protects donor confidence and enables the investment decisions the current population needs.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Tuvalu's electricity sector combines a high renewable share (outer islands reported at or near 100% solar, Funafuti progressing toward full RE) with acute exposure to sea-level rise.</strong> Tuvalu is also party to the Falepili Union treaty with Australia (signed November 2023), which includes provisions on climate-related mobility. These facts are frequently cited in international climate negotiations. The sector's small absolute scale means its significance in those discussions is illustrative rather than material to global emissions.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      TEPB (Tuvalu Electricity and Power Board) — Annual Report 2024 ·
+      ADB — Pacific Energy Update 2025; Tuvalu solar programme documentation ·
+      IRENA — Pacific energy statistics 2025 ·
+      Falepili Union — Tuvalu-Australia Treaty text, November 2023 ·
+      Tuvalu government — "Digital Nation" Declaration, September 2023 ·
+      Tuvalu Trust Fund — Annual Report 2024 ·
+      UNFCCC — Tuvalu NDC 2022 ·
+      IPCC AR6 — Pacific sea-level rise projections ·
+      Verisign — ".tv" registry
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (TEPB Funafuti plant)', 'Solar PV (ADB 2014 + GEF/IRENA 2019)', 'Wind (~150 kW)'],
+    datasets: [{ data: [40, 50, 10], backgroundColor: ['#8B4513','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

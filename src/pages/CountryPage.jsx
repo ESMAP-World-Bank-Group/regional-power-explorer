@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
@@ -258,9 +258,13 @@ export default function CountryPage() {
           fetch(`/data/cache/region_plants_${region.id}_gem.geojson`, { method: 'HEAD' })
             .then(r => setGemAvailable(r.ok))
             .catch(() => setGemAvailable(false));
-          fetch(`/data/notes/${iso}.html`, { method: 'HEAD' })
-            .then(r => setHasNote(r.ok))
-            .catch(() => setHasNote(false));
+          if (BRIEFS_ENABLED) {
+            fetch(`/data/notes/${iso}.html`, { method: 'HEAD' })
+              .then(r => setHasNote(r.ok))
+              .catch(() => setHasNote(false));
+          } else {
+            setHasNote(false);
+          }
           fetch(`/data/market/${iso}.json`, { method: 'HEAD' })
             // Dev server (and some static hosts) return 200 + index.html for
             // any unmatched path, so r.ok alone can't tell a real JSON file
@@ -1321,7 +1325,7 @@ export default function CountryPage() {
           fontSize: '0.47rem', color: t.lblMuted, textAlign: 'center',
           whiteSpace: 'nowrap', letterSpacing: '0.3px',
         }}>
-          Indicative data · Work in progress · Boundaries for reference only · Not an official WBG product
+          Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
         </div>
       </div>
 

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antigua and Barbuda Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Antigua &amp; Barbuda</div>
+    <div class="doc-sub">~285 MW installed · Diesel/HFO ~88% + solar ~10% · APUA (state) · US$0.37/kWh retail tariff · 100% RE 2030 target · Hurricane Irma 2017 (Barbuda entirely evacuated) · Water-energy nexus (seawater desalination) · OECS member · ~100,000 people (Antigua 98,000; Barbuda ~1,500 returning) · Smallest independent state in the Western Hemisphere to set 100% RE target</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~285 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~88%</div><div class="kpi-lbl">Diesel / HFO share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">US$0.37</div><div class="kpi-lbl">Retail tariff per kWh (among OECS highest)</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030 (APUA + private developers)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Antigua and Barbuda operates one of the Eastern Caribbean's most import-dependent electricity systems: approximately 285 MW of installed capacity on the main island of Antigua, almost entirely diesel and heavy fuel oil (HFO), operated by the <strong>Antigua Public Utilities Authority (APUA)</strong> — a state utility that also provides water and telecommunications. Barbuda (a flat, low-lying island ~65 km north of Antigua) has a separate diesel mini-grid of ~3-5 MW. The system's defining characteristic is its twin vulnerability: to high fuel import costs (no domestic fossil fuel production) and to hurricane destruction. <strong>Hurricane Irma (Category 5, September 2017)</strong> destroyed approximately 95% of buildings on Barbuda and forced the entire island's population (~1,700 people) to evacuate to Antigua — the first time in 300 years the island was entirely uninhabited. Barbuda's re-electrification and resettlement has been slow and contentious (involving a land tenure dispute between the Barbudan community council and the Antiguan central government). Antigua itself sustained damage from Irma's outer bands. The twin experience of Irma — and the knowledge that more intense storms are projected — has given Antigua and Barbuda a heightened commitment to both RE and resilient infrastructure as a matter of national survival.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>HFO (APUA Crabbs Power Station, Antigua)</span>
+          <span><span class="lsq" style="background:#555"></span>Diesel (Barbuda mini-grid + APUA backup)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (utility-scale + hotel rooftop)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Other RE (wind pilot)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~10%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: APUA Annual Report 2024; IRENA Caribbean 2025; IDB CCREEE energy data; OECS energy statistics</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>APUA: state utility managing electricity, water, and telecoms</strong>Antigua Public Utilities Authority provides electricity (~285 MW), water (including seawater desalination — see below), and basic telecoms under a state monopoly. Crabbs Power Station (Antigua's main plant, northeastern coast): ~200 MW HFO; older units from 1990s. APUA's financial health is chronically constrained by: (1) fuel import costs (~US$100-150M/year at current HFO prices); (2) underpriced tariffs relative to cost of service for residential customers; (3) technical losses (~20%) and collection losses. Government periodic tariff adjustments have not kept pace with fuel cost inflation. APUA's capital budget for RE investment competes with APUA's obligation to maintain aging thermal plant — a tension that has slowed grid-scale RE procurement.</div>
+        <div class="stat-item"><strong>Hurricane Irma 2017: Barbuda as the most extreme Caribbean climate case</strong>Hurricane Irma (Category 5, 295 km/h sustained winds) struck Barbuda on 5 September 2017 — the strongest Atlantic hurricane ever at landfall at that point. 95% of Barbuda's buildings were destroyed; all 1,700 residents were evacuated to Antigua within 72 hours (a mandatory evacuation ordered by the Antiguan government). Barbuda was uninhabited for several months — the first time in ~300 years. Re-electrification: diesel mini-grid partly restored 2018; solar + battery hybrid for Codrington (Barbuda's main settlement) under IDB financing (operational 2022, ~500 kW solar + 300 kWh BESS). The Barbuda solar-hybrid is the most visible symbol of Antigua and Barbuda's 100% RE commitment — though the main island of Antigua remains ~90% HFO. Land tenure controversy: the Antiguan government's attempts to attract private tourism development on Barbuda post-Irma created conflict with Barbudan communal land ownership traditions — the energy infrastructure question is embedded in this broader political dispute.</div>
+        <div class="stat-item"><strong>Water-energy nexus: desalination as electricity demand anchor</strong>Antigua has no rivers and very limited groundwater; the island relies on APUA-operated seawater reverse osmosis (SWRO) desalination for approximately 60-70% of its freshwater supply. SWRO is energy-intensive (~3-4 kWh/m³ of freshwater produced). APUA operates approximately 8,000 m³/day of SWRO capacity at Crabbs and Friars Hill — consuming an estimated 30-40 GWh/year (~10-15% of APUA's electricity generation). Solar-powered desalination (solar + SWRO without grid connection) would both reduce electricity costs and improve water security against grid outages. The nexus of water and electricity vulnerability is especially acute in Antigua given both systems rely on APUA's same fuel-import-dependent generation fleet.</div>
+        <div class="stat-item"><strong>100% RE 2030: the OECS context</strong>Antigua and Barbuda committed to 100% RE by 2030 under its 2015 NDC — one of the earliest such commitments globally. Current RE share: ~10% (dominated by ~28 MW utility-scale solar installed 2018-2024 and hotel rooftop solar at major tourism properties). Gap: 90 percentage points in 6 years. Required additions: approximately 250 MW solar + 50-100 MW BESS on a 280 km² island with significant competing land use (tourism, residential, coastal conservation areas). APUA has issued RE procurement RFPs (most recently 2023) for an additional 50 MW solar; financing through IDB and CDB (Caribbean Development Bank). Wind prospecting at Northeast Point (Antigua) has shown 6-8 m/s average wind speeds — suitable for utility-scale wind. The 100% by 2030 timeline is widely considered aspirational; 50-60% by 2030 is more realistic.</div>
+        <div class="stat-item"><strong>Hotel sector: high per-capita tourism electricity demand</strong>Antigua receives ~280,000 stopover tourists/year (predominantly upscale resort visitors) generating high per-capita energy demand; Sandals Grande, Jumby Bay, and dozens of smaller resorts consume approximately 25-30% of APUA's total electricity sales. Several major hotels (Sandals, Blue Waters) have installed rooftop solar (aggregate ~3-5 MW) and solar water heating, reducing APUA peak demand and billing. The Barbados Declaration on Net-Zero Tourism (which Antigua and Barbuda endorsed) creates pressure on Antiguan resort operators to source RE electricity — increasing demand for APUA to procure more solar. Tourism electricity demand is also highly seasonal (December-April peak), requiring either firm RE capacity or battery storage to firm variable solar output.</div>
+      </div>
+    </div>
+
+    <h2>The OECS Micro-State Energy Challenge</h2>
+    <p>Antigua and Barbuda exemplifies the energy challenge facing all OECS micro-states — Dominica, Grenada, St. Kitts and Nevis, St. Lucia, St. Vincent and the Grenadines — which share structural features that make standard RE transition frameworks partially inapplicable:</p>
+    <ul>
+      <li><strong>Scale diseconomies:</strong> At 100,000 people and 280 km², every infrastructure investment has a very small denominator. A 50 MW solar farm represents ~0.5 kW per capita — roughly the same energy impact as a 500 MW solar farm in Jamaica. The fixed costs of regulatory compliance, environmental assessment, and project management are proportionately higher per MW than in larger Caribbean economies.</li>
+      <li><strong>No grid interconnection:</strong> Antigua is an isolated island grid; Barbuda even more so. All RE must be balanced domestically with storage or curtailment — there are no neighbouring grids to export surplus or import deficit. Battery storage is not optional for high RE penetration; it is structurally required.</li>
+      <li><strong>Tourism tariff asymmetry:</strong> High-income tourism operations can cross-subsidise residential consumers — but only if APUA structures tariffs to capture tourism sector rent. Current APUA tariff structure does not adequately do this, resulting in both sectors paying tariffs that don't reflect their respective costs and demands.</li>
+    </ul>
+
+    <div class="callout">
+      Antigua and Barbuda is the Caribbean's most compelling case for the water-energy-climate nexus: an island with no rivers, dependent on diesel-powered desalination for drinking water, repeatedly threatened by intensifying hurricanes, and committed to 100% RE by 2030 — all simultaneously. The energy transition here is not an environmental preference; it is a survival strategy. The challenge is that the institutional capacity (APUA technical staff, regulatory expertise, project finance sophistication) needed to execute a 100% RE transition at speed is extremely thin for a country of 100,000 people with a small GDP, requiring disproportionate multilateral support relative to country size.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Hurricane Irma's complete destruction of Barbuda — the first time the island was uninhabited in 300 years — is the Caribbean's most visceral demonstration of climate change's existential dimension for small island states, and it has given Antigua and Barbuda's energy transition a moral urgency that distinguishes it from the cost-optimisation framing typical of larger economies.</strong> For Antigua and Barbuda, 100% RE by 2030 is not primarily about reducing fuel costs (though that matters) or meeting a Paris Agreement commitment (though that also matters) — it is about reducing the island's vulnerability to the climate system that produced Hurricane Irma and the more intense storms projected for coming decades. This framing shapes the policy calculus: resilient infrastructure (solar panels rated for 250+ km/h winds, underground cabling, battery storage) is worth paying a premium for in ways that pure LCOE optimisation would not capture.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>APUA's multi-utility structure — combining electricity, water (desalination), and telecoms under one authority — creates both an opportunity (integrated energy-water planning, shared capital budget) and a risk (chronic underfunding of electricity investment when water or telecoms crisis arises, or vice versa) that Antigua should explicitly address in its next regulatory review by separating electricity regulation from the other utility functions.</strong> The water-electricity integration is especially important: solar-powered desalination (solar powering SWRO without grid connection) could simultaneously improve water security and electricity load management — but only if APUA's capital allocation process treats desalination electricity supply as an energy investment, not just a water operations cost. A sector-specific electricity regulatory authority (separate from the current APUA board governance) would allow more focused RE procurement and tariff development without the political economy of multi-sector APUA board dynamics.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Barbuda's post-Irma solar + battery hybrid mini-grid (Codrington settlement, ~500 kW + 300 kWh BESS) is the Caribbean's most instructive demonstration of RE resilience design: it was engineered to survive Category 4 winds and restored power to Codrington faster than the diesel generators that preceded it would have been repaired after a comparable storm.</strong> The Barbuda hybrid project demonstrates that solar + battery, properly engineered for hurricane resilience (low-profile mounting, reinforced structures, underground interconnection), outperforms diesel not only on cost and emissions but on reliability after extreme weather events. This conclusion — RE infrastructure can be more resilient than thermal infrastructure in hurricane-exposed settings — runs counter to the intuition that "solar panels blow away in storms" and needs to be more widely disseminated across OECS energy planning processes.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The land tenure conflict in Barbuda — between the Barbudan communal land system (Barbuda Land Act, communal ownership tradition dating to 17th century) and the Antiguan government's desire to attract private tourism investment post-Irma — has made post-hurricane energy infrastructure planning contentious, demonstrating that social and governance dimensions of RE transitions in micro-states can be as binding as technical or financial constraints.</strong> Several proposed Barbuda RE projects were delayed or blocked by community opposition rooted not in RE technology objections but in distrust of central government land use motives — a reminder that community consent and governance legitimacy matter as much as project engineering and finance. APUA projects in Barbuda now require explicit engagement with the Barbuda Council (the island's local government body) beyond the standard regulatory approvals required on Antigua.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Antigua and Barbuda's long-term energy security path likely runs through OECS regional energy cooperation — shared grid connections (currently none), shared renewable energy procurement (joint RFPs reducing transaction costs), and shared regulatory capacity (single OECS electricity regulator) — because at 100,000 people, the fixed costs of maintaining independent energy regulation, procurement, and planning infrastructure are disproportionate to the country's economic scale.</strong> The OECS currently has no binding regional energy integration framework, though the CCREEE (Caribbean Centre for Renewable Energy and Energy Efficiency) provides technical assistance. A hypothetical Antigua-St. Kitts submarine cable (~40 km) would allow surplus solar on one island to be exported to the other, reducing battery storage requirements for both — but requires political agreement and significant capital that no bilateral or regional framework has yet mobilised. The case for OECS energy integration is strongest precisely for the smallest members, for whom transaction costs of independent RE transitions are highest.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      APUA (Antigua Public Utilities Authority) — Annual Report 2024 ·
+      IDB — Barbuda solar hybrid project documentation ·
+      CCREEE — OECS energy statistics 2024 ·
+      IRENA — Caribbean energy data 2025 ·
+      CDB (Caribbean Development Bank) — Antigua energy ·
+      NOAA — Hurricane Irma 2017 post-season report ·
+      UNFCCC — Antigua and Barbuda NDC 2021 ·
+      Barbuda Council — post-Irma resettlement documentation ·
+      WB — OECS energy integration study
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['HFO (APUA Crabbs Power Station)', 'Diesel (Barbuda + APUA backup)', 'Solar PV (utility + hotel rooftop)', 'Other RE (wind pilot)'],
+    datasets: [{ data: [78, 10, 10, 2], backgroundColor: ['#8B4513','#555','#FFD700','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -169,6 +169,14 @@ export function toggleSatLabels(map, show, theme) {
 // PANEL_WIDTH_DEFAULT (old 520px cap + 2cm) and can be dragged smaller down
 // to PANEL_WIDTH_MIN, or bigger up to PANEL_WIDTH_MAX (default + a further
 // 4cm of headroom) — both cm figures @ 96 CSS px/in ÷ 2.54cm/in, rounded.
+// Country briefing notes are disabled pending an editorial review. The notes were
+// drafted with AI assistance and carry unverified figures plus politically sensitive
+// framing (territorial status, conflict, governance), so they are not shown and are
+// not deployed: the source files live in data-source/notes/, outside public/, so the
+// build cannot copy them into dist/ and they cannot be reached by direct URL either.
+// Re-enabling means flipping this flag AND moving the folder back under public/data/.
+export const BRIEFS_ENABLED = false;
+
 export const PANEL_WIDTH_MIN = 220;
 export const PANEL_WIDTH_DEFAULT = 596;
 export const PANEL_WIDTH_MAX = 747;

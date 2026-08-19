@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trinidad and Tobago Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Trinidad and Tobago</div>
+    <div class="doc-sub">~2,200 MW installed · Natural gas ~99% (domestic reserves) · Near-zero RE · LNG exporter (Atlantic LNG, 4 trains) · T&TEC utility · NGC gas company · Very low subsidised consumer tariffs (~US$0.04/kWh) · 30% RE target 2030 · ~1.4 million population · Caribbean's largest fossil fuel producer</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~2,200 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~99%</div><div class="kpi-lbl">Natural gas share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~US$0.04</div><div class="kpi-lbl">Subsidised consumer tariff /kWh (household)</div></div>
+    <div class="kpi"><div class="kpi-val">30%</div><div class="kpi-lbl">RE electricity target 2030</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Trinidad and Tobago is the Caribbean's most unusual electricity system: a gas-rich hydrocarbon producer that generates virtually <strong>100% of its electricity from domestic natural gas</strong> at some of the world's lowest consumer tariffs (household rates of ~US$0.04/kWh, heavily subsidised from energy revenues). The country has no RE generation of significance — no utility-scale wind or solar. This is not a resource constraint (T&T has Caribbean-average solar irradiance and good northeast trade winds) but a price signal failure: subsidised gas electricity makes RE economically unviable without policy mandates. The national utility is <strong>T&TEC (Trinidad and Tobago Electricity Commission)</strong> — a state monopoly managing generation, transmission, and distribution. Gas supply is controlled by <strong>NGC (National Gas Company)</strong>. T&T is simultaneously a <strong>major LNG exporter</strong> — Atlantic LNG at Point Fortin operates 4 trains (~15 mtpa capacity), making T&T one of the Western Hemisphere's largest LNG exporters. Maturing gas fields are reducing production volumes, threatening both energy security and LNG export revenues.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + gas turbine)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (negligible)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~99%</div>
+            <div class="chart-center-lbl">natural gas 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: T&TEC annual report 2024; NGC; Ministry of Energy and Energy Industries; IRENA; WB T&T energy data 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Atlantic LNG: Western Hemisphere export hub</strong>Atlantic LNG Company (Point Fortin, southwest Trinidad); Train 1 (2.8 mtpa, 1999), Train 2 (2.8 mtpa, 2002), Train 3 (2.8 mtpa, 2003), Train 4 (5.2 mtpa, 2006); total nameplate ~15 mtpa; partners: Shell, BP, NGC. Production has declined from peak (~15 mtpa) to ~12-13 mtpa as upstream gas fields mature (2017-2024). Train 1 aging and under review. Atlantic LNG is T&T's single most important revenue source after direct hydrocarbon royalties — representing 25-35% of government revenues in peak years.</div>
+        <div class="stat-item"><strong>Gas subsidy: cheapest electricity in the Americas</strong>T&T's residential electricity tariff (~US$0.04/kWh) is among the world's lowest — a deliberate policy subsidising energy costs from gas revenues. Industrial tariffs slightly higher. The subsidy depresses conservation incentives, inflates per-capita consumption (among Caribbean's highest), and makes RE economically uncompetitive without premium policy support. Subsidy cost: estimated TT$2-3B/year (~US$300-450M), borne by the state via below-market gas transfer pricing to T&TEC. Reform is politically extremely difficult — cheap electricity is a social contract with citizens dating back to the 1970s oil boom.</div>
+        <div class="stat-item"><strong>Gas field depletion: the structural threat</strong>T&T's natural gas reserves (Columbus Basin, offshore southeast Trinidad) are mature and declining. Production fell from 4.3 BCF/day (2015 peak) to ~2.8 BCF/day (2024). Upstream investments (Shell, BP, EOG Resources) are sustaining but not reversing decline. By 2030-2035, domestic gas supply may be insufficient to maintain both LNG exports and domestic power generation at current levels. T&TEC's power demand is ~8 BCF/year; even with declining gas, domestic power supply is prioritised — but LNG train viability is threatened.</div>
+        <div class="stat-item"><strong>RE target: 30% by 2030 — against all incentives</strong>T&T's National Energy Policy (2011, updated) targets 30% RE by 2030 — an extremely ambitious target from a near-zero starting point, against a price structure that makes RE uneconomical without major policy intervention. GORTT (Government of T&T) launched a RE competitive auction programme 2022-23; first solar PPAs being signed at ~US$0.085-0.095/kWh (still higher than subsidised T&TEC tariff). Net metering programme (2017) has enabled ~30-40 MW of rooftop solar — small but growing. T&T's RE target is aspirational; achieving even 10% by 2030 would be a significant policy accomplishment.</div>
+        <div class="stat-item"><strong>Tobago: island within an island</strong>Tobago (population ~60,000) is connected to Trinidad by a 33kV submarine cable of limited capacity. Tobago generates some power locally (gas turbines) and imports from Trinidad. Tobago has strong RE potential (trade winds, tourism-driven solar rooftop) and political motivation for RE (tourism brand, environmental sensitivity). The Tobago RE pilot programme — including wind feasibility studies — is advanced of T&T's overall policy position. Tobago may become T&T's first significant RE deployment zone.</div>
+      </div>
+    </div>
+
+    <h2>The Gas Subsidy Trap and the Transition Imperative</h2>
+    <p>T&T's energy policy challenge is unusually stark: a country whose gas reserves are declining must simultaneously maintain cheap energy for citizens (who regard it as a birthright), sustain LNG export revenues, and pivot to renewables — all without a price signal that makes RE investment commercially rational:</p>
+    <ul>
+      <li><strong>The political economy of subsidy reform:</strong> Every T&T government since the 1970s has maintained cheap energy as a social contract. Citizens pay US$0.04/kWh; any increase triggers immediate political backlash. Regional comparison: T&T's tariff is 8× below Jamaica's. A tariff increase to US$0.10/kWh (still cheap by regional standards) would make solar PPAs at US$0.085/kWh immediately competitive — but would require political courage that no T&T government has yet mustered.</li>
+      <li><strong>Gas-to-power vs. LNG revenue trade-off:</strong> Every BCF of gas used for domestic power generation is one BCF not available for LNG export (higher revenue). As gas production declines, the domestic vs. export allocation decision becomes increasingly consequential. T&T has historically prioritised LNG exports (higher USD revenues) over domestic power. This will reverse as field depletion tightens the supply balance.</li>
+      <li><strong>Industrial electricity demand:</strong> T&T's petrochemical and steel industries (Arcelor Mittal Point Lisas, ammonia/methanol plants) are extremely electricity-intensive and are anchored by cheap electricity. If tariffs rise, industrial competitiveness suffers — potentially causing plant closures and employment loss in communities that have no alternative industry. The political economy of industrial tariff reform is if anything harder than residential.</li>
+    </ul>
+
+    <div class="callout">
+      Trinidad and Tobago's energy paradox is uniquely instructive for resource-rich SIDS: the country that should be best-positioned to self-finance its energy transition — with gas revenues, technical expertise, and domestic energy infrastructure — is instead the Caribbean's most locked-in fossil fuel system, because cheap energy has become embedded in the social contract in a way that makes rational reform politically impossible. The lesson for SIDS energy policy globally: abundant cheap fossil resources do not enable energy transition — they actively obstruct it by eliminating the price incentive that drives RE adoption.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>T&T's US$0.04/kWh electricity tariff is the single biggest obstacle to its 30% RE target — not technology, not financing, not resource availability — because no RE technology can compete commercially with gas at that price without policy mandates that the government has so far been unwilling to enforce.</strong> Solar at US$0.085/kWh, wind at US$0.08/kWh — both competitive globally — lose against a gas tariff that reflects a massive undisclosed subsidy. T&T's RE programme will remain marginal until either tariffs rise to cost-reflective levels (politically difficult) or RE is mandated via regulation regardless of economics (administratively difficult). The energy transition in T&T is primarily a political economy problem, not an energy engineering one.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Atlantic LNG's Train 1 viability (aging infrastructure, maturing upstream supply) represents T&T's most immediate energy revenue threat — and the timing of any LNG train retirement will determine whether gas savings can be redirected to domestic RE investment or whether gas supply simply tightens across all uses simultaneously.</strong> If Train 1 retires before 2028 (plausible given age and supply constraints), T&T loses ~2-3 mtpa of export revenue. If that revenue is not replaced by RE export value (impractical in the near term) or alternative gas development (uncertain), the government's fiscal capacity to maintain energy subsidies and fund a RE transition simultaneously is significantly constrained. Train 1's future is the bellwether for T&T's energy fiscal trajectory.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>T&T's gas engineers, geologists, and energy economists — the technical human capital built over 100 years of hydrocarbon development — are a transferable asset for the Caribbean energy transition that is being systematically underutilised because T&T's own sector has not yet transitioned.</strong> T&T's The University of the West Indies faculty, Petrotrin alumni, and NGC staff have deep energy sector expertise. This expertise is relevant to offshore wind, CCGT operation with hydrogen blending, and LNG supply chain management — all technologies relevant to neighbouring Caribbean islands. T&T could be the Caribbean's energy technical university; instead its expertise is largely directed inward at a gas sector that is in structural decline.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Tobago's distinct political status within T&T — with its own House of Assembly and growing autonomy demands — creates a potential opening for RE policy experimentation that is impossible at the national level: Tobago can pilot a carbon-neutral electricity model that demonstrates RE viability to Trinidad without requiring national tariff reform.</strong> A Tobago-specific RE programme (wind + solar + storage, targeting 80% RE for the island's 60,000 people) would cost ~US$50-80M — trivial relative to T&T's energy revenues — and would create a living demonstration of Caribbean island RE at scale. Tobago's tourism-driven economy has strong motivation (green brand, lower guest-facing energy costs) and political support. The central government's reluctance to allow Tobago energy policy divergence is the primary obstacle.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>T&T's gas field depletion is, paradoxically, the most powerful driver of renewable energy investment available: as domestic gas production falls below the level needed to sustain both LNG exports and domestic power, the government will face a forced choice between expensive imported gas (LNG) or cheap domestic RE — and RE will win on economics alone.</strong> By 2035, if current depletion trends continue, T&T may need to import LNG to supplement domestic supply for power generation — at international market prices, not subsidised domestic gas transfer prices. At that point, solar at US$0.085/kWh becomes dramatically cheaper than imported LNG at US$0.20-0.30/kWh equivalent. The energy transition T&T resists today may be imposed by geology within a decade.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      T&TEC — Trinidad and Tobago Electricity Commission, annual report 2024 ·
+      NGC — National Gas Company of Trinidad and Tobago ·
+      Ministry of Energy and Energy Industries T&T — energy sector overview ·
+      IRENA — Caribbean renewable energy data 2025 ·
+      IDB — T&T energy sector analysis ·
+      World Bank — T&T energy transition diagnostic ·
+      Atlantic LNG — production and operations data ·
+      CARILEC — Caribbean utilities data
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT + gas turbine)', 'Solar PV (negligible)'],
+    datasets: [{ data: [99, 1], backgroundColor: ['#C85020','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

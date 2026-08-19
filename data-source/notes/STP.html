@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>São Tomé and Príncipe Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">São Tomé &amp; Príncipe</div>
+    <div class="doc-sub">CAPP &amp; SIDS member · EMAE state utility · Diesel-dependent island system · Solar transition underway · 75% electrification</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~40 MW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~75%</div><div class="kpi-lbl">National electrification rate</div></div>
+    <div class="kpi"><div class="kpi-val">11 MWp</div><div class="kpi-lbl">Água Casada solar (SCATEC)</div></div>
+    <div class="kpi"><div class="kpi-val">Island SIDS</div><div class="kpi-lbl">Gulf of Guinea archipelago</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <h2>Electricity Sector Overview</h2>
+    <p>São Tomé and Príncipe is a small island state (~230,000 people) in the Gulf of Guinea with an electricity system characteristic of its SIDS context: modest total capacity (~40 MW), heavy dependence on imported diesel, a single state utility with financial difficulties, but a relatively high electrification rate (~75%) by Central African standards. The system comprises the main island of São Tomé and the smaller island of Príncipe, each with its own grid. Electricity generation has historically been entirely diesel/HFO, with the lone renewable exception being the <strong>Contador HPP (2 MW)</strong> — a 50-year-old run-of-river plant that is the country's sole conventional RE generation asset.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2024, transitional)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Diesel / HFO thermal</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Água Casada)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Micro-hydro (Contador)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~40 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EMAE, World Bank National Energy Compact 2025, IEA</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Diesel/HFO generators: ~30 MW</strong>Imported diesel; high cost; EMAE operates at structural loss due to subsidised tariffs. Main thermal plant at Trindade serves São Tomé island; separate HFO plant for Príncipe</div>
+        <div class="stat-item"><strong>Água Casada Solar: 11 MWp (SCATEC)</strong>Under commissioning as of 2024–2025; lease arrangement with EMAE; first utility-scale solar in STP; targeted to cover ~25% of São Tomé island's daytime demand</div>
+        <div class="stat-item"><strong>15 MWp solar (additional)</strong>Second solar plant in planning; would bring total solar to 26 MWp if both proceed</div>
+        <div class="stat-item"><strong>40 MW solar IPP + 12 MW biomass (sought)</strong>Government seeking independent power producers for additional solar and biomass capacity; reflects ambition to reach 100% renewable electricity</div>
+        <div class="stat-item"><strong>Contador HPP: 2 MW</strong>On the Contador River; over 50 years old; the country's only hydro plant; seasonally variable output; due for rehabilitation</div>
+      </div>
+    </div>
+
+    <h2>EMAE &amp; Market Structure</h2>
+    <p><strong>EMAE (Empresa de Água e Electricidade)</strong> — the combined water and electricity utility — is the state national operator responsible for all generation, transmission, and distribution of electricity, as well as water supply. This dual mandate is characteristic of small island states where single utilities manage multiple public services.</p>
+    <ul>
+      <li><strong>EMAE:</strong> State monopoly; financially stressed by the gap between diesel generation costs and subsidised retail tariffs; grid infrastructure old and loss-prone.</li>
+      <li><strong>Technical losses:</strong> Distribution losses are significant; the transmission and distribution network is ageing and poorly maintained; losses worsen EMAE's financial position.</li>
+      <li><strong>SCATEC partnership:</strong> The Água Casada solar plant is structured as a lease/PPA with Norwegian IPP SCATEC — a first step toward private generation in STP. SCATEC also doubled Cameroon's Maroua and Guider solar parks in 2024, demonstrating its Africa SIDS/Sahel strategy.</li>
+      <li><strong>World Bank National Energy Compact (2025):</strong> A framework for structuring donor-financed energy access and transition support; sets out STP's ambitions for renewable electricity and energy access improvement.</li>
+    </ul>
+
+    <div class="callout">
+      São Tomé and Príncipe's electricity challenge is archetypal of island SIDS: high diesel import dependence, small system scale (which makes economics difficult), a financially stretched utility, and very high solar irradiance that makes the technical case for solar transition compelling. The Água Casada solar plant — if it performs well — will validate the transition thesis and create a template for further RE procurement.
+    </div>
+
+    <h2>The Solar Transition</h2>
+    <p>STP lies at 0°N latitude in the Gulf of Guinea — among the most consistently sunny locations in the world. The solar resource is exceptional: ~4.5–5.0 kWh/m²/day GHI, year-round. The case for solar transition is straightforward:</p>
+    <ul>
+      <li><strong>Economics:</strong> Diesel generation costs $0.35–0.50/kWh landed in STP; solar + battery storage now achieves $0.20–0.35/kWh even at small island scale. The economics strongly favour solar replacement of diesel.</li>
+      <li><strong>Energy security:</strong> 100% diesel dependency means every power outage is also an import-cost crisis. A diversified solar + battery + hydro portfolio dramatically reduces this vulnerability.</li>
+      <li><strong>Government target:</strong> STP has set an ambition of 100% renewable electricity — achievable in principle with solar + battery + micro-hydro + biomass; the Água Casada plant is the first step.</li>
+      <li><strong>IRENA support:</strong> The International Renewable Energy Agency (IRENA) has provided technical assistance for STP's renewable energy transition planning.</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>The Água Casada solar project is STP's most consequential near-term energy development.</strong> Displacing diesel with solar at this scale (~25% of daytime São Tomé demand) will reduce EMAE's fuel costs, improve the utility's financial position, and demonstrate that solar IPPs can work in STP's institutional environment. Operational performance over the first 1–2 years will determine whether more projects follow.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>STP's solar resource is among the best in Central Africa — its diesel dependence is therefore particularly costly.</strong> At equatorial latitudes with minimal cloud seasonality, STP has year-round high irradiance. Diesel at $0.40+/kWh when solar is available at $0.25/kWh represents a large and unnecessary premium that the Água Casada plant begins to address.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>EMAE's dual water-electricity mandate and financial distress are structural sector constraints.</strong> As long as EMAE operates at a loss — selling electricity below cost — it cannot fund the network rehabilitation and capacity expansion the sector needs. A tariff reform pathway (ideally with targeted subsidies for low-income households rather than blanket suppression) is a prerequisite for sector financial sustainability.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Príncipe Island's energy system is a separate, smaller challenge.</strong> With ~8,000 inhabitants, Príncipe's electricity system is tiny and isolated even from São Tomé. Its near-total diesel dependence makes it a strong candidate for a 100% solar + battery off-grid island system — a project that would have both practical energy security value and significant demonstration value for SIDS globally.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>STP's energy future is inextricably linked to its offshore oil and gas prospects.</strong> Unconfirmed offshore hydrocarbon resources in the Joint Development Zone (STP–Nigeria) have been studied for decades without major commercial discoveries. If hydrocarbons were found, they would both complicate the renewable transition narrative and potentially fund grid infrastructure. The more likely scenario — continuing without a major oil windfall — means the renewable transition path is both necessary and sufficient.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EMAE (Empresa de Água e Electricidade) — sector data ·
+      World Bank — National Energy Compact for São Tomé and Príncipe, 2025 ·
+      IEA — São Tomé and Príncipe electricity profile ·
+      IRENA — São Tomé and Príncipe Statistical Profile ·
+      Africa Energy Portal — São Tomé and Príncipe ·
+      ESMAP — STP World Bank RE investment support ·
+      Worldometer — São Tomé and Príncipe electricity statistics ·
+      African Power Platform — São Tomé and Príncipe report ·
+      UNEP — Energy Profile: São Tomé and Príncipe
+    </div>
+
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO thermal', 'Solar PV (Água Casada)', 'Micro-hydro (Contador)'],
+    datasets: [{ data: [27, 11, 2], backgroundColor: ['#C85020','#FFD700','#1E9AF5'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

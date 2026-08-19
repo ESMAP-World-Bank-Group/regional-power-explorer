@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Norway Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU / Nordic Region</div>
+    <div class="doc-title">Norway</div>
+    <div class="doc-sub">40,334 MW installed · 88% hydro · 161.8 TWh (2025) · Record 22.8 TWh net exports · 87 TWh reservoir storage · 5 GW wind · NSL UK cable · Statkraft · Green hydrogen ambitions</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">40,334 MW</div><div class="kpi-lbl">Total installed capacity (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">88%</div><div class="kpi-lbl">Hydropower share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">87 TWh</div><div class="kpi-lbl">Water reservoir storage capacity</div></div>
+    <div class="kpi"><div class="kpi-val">22.8 TWh</div><div class="kpi-lbl">Record net electricity exports (2025)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Norway is Europe's largest electricity producer on a per-capita basis and the continent's premier hydropower state. Total production reached <strong>161.8 TWh in 2025</strong> — almost entirely from ~1,100 hydropower reservoirs with a combined storage capacity of <strong>87 TWh</strong>, equivalent to roughly 3–4 months of national consumption. This reservoir system functions as Europe's largest natural battery: Norway exports in surplus periods and imports in drought years. In 2025, Norway set a record with <strong>22.8 TWh net electricity exports</strong>, driven by high reservoir levels following a warm year. Wind power (5 GW, 65 wind farms) contributes ~11% and is growing, while the country has no nuclear, no coal, and minimal gas in its power mix.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydropower (large reservoirs)</span>
+          <span><span class="lsq" style="background:#6BAED6"></span>Small hydro (&lt;10 MW)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (nascent)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">161.8 TWh</div>
+            <div class="chart-center-lbl">2025 generation</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: SSB Norway; Energifaktanorge; NVE; LowCarbonPower.org 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Statkraft — Europe's largest RE generator</strong>State-owned (100% government); largest renewable energy company in Europe; operates most of Norway's large-scale hydro; international portfolio in wind, solar, and hydro across 20+ countries; increasingly active in European electricity trading</div>
+        <div class="stat-item"><strong>North Sea Link (NSL): 1,400 MW to UK</strong>Operational since 2021; 720 km HVDC cable connecting Kvilldal (Norway) to Blyth (UK); allows Norwegian hydro to firm UK offshore wind and vice versa; controversial in Norway due to price impact on domestic electricity</div>
+        <div class="stat-item"><strong>Interconnectors: SE, DK, NL, DE, UK</strong>NordLink (1,400 MW, Norway–Germany); NorNed (700 MW, Norway–Netherlands); multiple cables to Sweden; planned: NO-UK2 and Baltic cables; Norway as European hydro battery strategy depends on these links</div>
+        <div class="stat-item"><strong>Reservoir: 87 TWh strategic buffer</strong>~1,100 reservoirs with 87 TWh total capacity; this is Norway's unique asset — it provides seasonal and multi-year storage equivalent to ~20× the UK's entire grid battery capacity; managed by NVE-regulated operators</div>
+        <div class="stat-item"><strong>Domestic electricity price controversy</strong>NSL and interconnectors linked Norwegian prices to European prices post-2021; Norwegian electricity bills rose 300–400% during 2021-22 energy crisis; domestic political backlash; government introduced export restrictions and targeted subsidies for low-income households</div>
+      </div>
+    </div>
+
+    <h2>The Oil Paradox and the Green Transition</h2>
+    <p>Norway presents Europe's most striking energy paradox: the world's cleanest domestic electricity system (99%+ renewable), fully funded by the world's largest sovereign wealth fund built on oil and gas exports. Key tensions:</p>
+    <ul>
+      <li><strong>Equinor (formerly Statoil):</strong> Norway's national oil company continues to produce ~2 million barrels of oil per day from the North Sea — Norway is Europe's largest oil producer and second-largest gas exporter. The revenues fund the Government Pension Fund Global (>$1.8 trillion), which owns ~1.5% of all listed global equities.</li>
+      <li><strong>Green hydrogen ambitions:</strong> Norway aims to produce 2 GW of electrolysis capacity by 2030 and export hydrogen to Germany and the Netherlands via converted gas pipelines. Equinor and Statkraft are both active in hydrogen projects. The key question: is Norwegian hydrogen produced from hydro (green) or gas with CCS (blue)?</li>
+      <li><strong>Electrification of the oil platforms:</strong> The Norwegian government is requiring North Sea platforms to shift from gas turbines to grid electricity — "power from shore." This could add 10–15 TWh/year of domestic electricity demand, requiring new hydro or offshore wind specifically for the oil sector.</li>
+      <li><strong>Offshore wind targets:</strong> Sørlige Nordsjø II (3 GW, 2030) is Norway's first large offshore wind zone; Equinor and consortium to develop; revenue from offshore wind would be additive to the existing hydro system.</li>
+    </ul>
+
+    <div class="callout">
+      Norway's 87 TWh reservoir system is Europe's most underappreciated climate asset. As European offshore wind scales up (100+ GW by 2030), the combination of wind variability and Norwegian hydro flexibility creates a natural partnership: Norwegian reservoirs absorb European wind surplus by reducing generation (saving water), then release it during wind droughts. This "Norwegian battery" concept is real and valuable — but its value depends on having sufficient HVDC interconnector capacity to exchange energy at scale. Currently, capacity is a bottleneck; planned cables could change this fundamentally.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Norway's 87 TWh reservoir system is the largest dispatchable clean electricity asset in Europe — its value for European grid balancing is worth tens of billions of euros in avoided storage and backup gas costs.</strong> As European offshore wind scales to 300+ GW by 2035, the need for seasonal storage and rapid-response dispatchable clean power grows dramatically. Norwegian hydro — which can ramp 1,000 MW in minutes and store months of energy — is structurally irreplaceable in the European system. The political challenge is ensuring this value is distributed equitably between Norwegian consumers, the Norwegian state, and European buyers.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The domestic price shock of 2021-23 fundamentally altered Norwegian politics around electricity exports — with lasting consequences for European energy integration.</strong> When Norwegian electricity prices rose 5-10× due to interconnector coupling with European markets during the energy crisis, Norwegians experienced for the first time the cost of being part of the European electricity market. The government's export restriction debates, subsidy programmes, and political backlash have chilled enthusiasm for further interconnector expansion. This is a cautionary tale for other countries considering deep electricity market integration.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Norway is the world's most credible candidate for large-scale green hydrogen export to Europe — but only if the production model is genuinely water-based, not gas-based with CCS.</strong> Norway has cheap, abundant hydro electricity; established gas pipeline infrastructure to Germany; industrial companies (Equinor, Statkraft) with capital and execution capability; and a government willing to invest. The risk is the same as in other countries: hydrogen from electrolysis is still 3–5× more expensive than hydrogen from natural gas, even with CCS. Norwegian blue hydrogen (gas + CCS) is commercially easier but locks in fossil gas dependency.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Requiring North Sea oil platforms to run on grid electricity (power from shore) is Norway's largest single domestic decarbonisation initiative — and a policy unique in the world.</strong> No other oil-producing country is requiring its offshore production infrastructure to shift from on-site gas turbines to grid-connected electricity. This reduces offshore emissions (roughly 25% of Norway's domestic CO₂) but adds significant electricity demand to the Norwegian grid. It also creates a bizarre situation where Norway produces more oil by using clean electricity — reducing Norwegian emissions while potentially increasing global oil supply.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Norway's sovereign wealth fund (GPFG) is both the world's largest institutional investor and the world's largest embodiment of the oil-to-clean-energy transition paradox.</strong> The fund divested from pure coal companies in 2015 but continues to hold stakes in major oil companies. It has invested significantly in renewable energy infrastructure globally. The fund's ethical guidelines are the world's most scrutinised single investor governance document. As Norway debates when (not whether) to wind down oil production, the fund's transition strategy will shape global capital markets in ways that no other single government decision can match.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      SSB Norway — Electricity statistics 2024-2025 ·
+      Energifaktanorge (Norwegian Energy Facts) — Power production ·
+      NVE (Norwegian Water Resources and Energy Directorate) ·
+      Chambers and Partners — Norway Power Generation 2025 ·
+      LowCarbonPower.org — Norway generation mix 2025 ·
+      Mojanorwegia.pl — Norway record electricity production and exports 2025 ·
+      IEA — Norway country page
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower (large reservoirs)', 'Small hydro (<10 MW)', 'Wind (onshore)', 'Solar PV (nascent)'],
+    datasets: [{ data: [128, 17, 16, 1], backgroundColor: ['#1B6CA8','#6BAED6','#6AB0DE','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} TWh` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

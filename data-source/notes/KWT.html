@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuwait Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Kuwait</div>
+    <div class="doc-sub">~20 GW capacity · 18.6 GW summer peak 2025 · MEWRE state monopoly · 114 MW renewables · 3.5 GW solar deal China 2025 · Al-Zour refinery · 15% RE by 2030 · 14 GW needed by 2031</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~20 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">18.6 GW</div><div class="kpi-lbl">Summer peak load 2025</div></div>
+    <div class="kpi"><div class="kpi-val">114 MW</div><div class="kpi-lbl">Renewable installed (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">3.5 GW</div><div class="kpi-lbl">Solar deal signed with China (2025)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Kuwait operates approximately <strong>20,250 MW of installed generation capacity</strong>, dominated entirely by gas and oil-fired power plants — the Ministry of Electricity, Water and Renewable Energy (MEWRE) operates the sector as a complete state monopoly with no private generation or competitive market. Renewable capacity stands at only <strong>114 MW</strong> — less than 1% of installed capacity — making Kuwait the GCC country furthest behind in its energy transition. Summer peak demand of <strong>18,569 MW in 2025</strong> leaves extremely thin operational margins. Kuwait has signed a <strong>3.5 GW solar deal with Chinese companies</strong> (March 2025) and plans <strong>14 GW of new capacity by 2031</strong> — a recognition that the current system is critically undersized for projected demand growth.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + steam)</span>
+          <span><span class="lsq" style="background:#A0522D"></span>Heavy fuel oil / crude</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (nascent)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~20 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: GlobalData Kuwait Power Market; MEWRE; US Trade.gov; Oxford Business Group Kuwait 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>MEWRE: total sector monopoly</strong>Ministry of Electricity, Water and Renewable Energy; sole owner, operator, regulator; no IPPs; no competitive market; national utility model; government sets electricity tariffs (subsidised near-zero)</div>
+        <div class="stat-item"><strong>Al-Subiya expansion: +900 MW CCGT</strong>Combined-cycle gas turbines; CAPA tender approved April 2025; $850M; 3-year delivery schedule; urgently needed — summer margin crisis with 18.6 GW peak vs. 20 GW installed</div>
+        <div class="stat-item"><strong>3.5 GW China solar deal: March 2025</strong>Signed with Chinese companies; largest single RE commitment in Kuwait's history; specifics (location, timeline, financing) being finalised; reflects urgency to add non-fossil capacity before demand outstrips supply</div>
+        <div class="stat-item"><strong>Shagaya RE Park: 70 MW (est.)</strong>Kuwait's flagship RE project; 70 MW combined wind + solar + CSP; located in western Kuwait; started development 2012; tortuous progress — originally 2 GW ambition; exemplifies Kuwait's RE execution challenges</div>
+        <div class="stat-item"><strong>Electricity subsidies: near-total</strong>Kuwait electricity tariffs are among the lowest in the world; residential consumers pay effectively nothing; industrial tariffs also heavily subsidised; fiscal cost enormous; removes market signal for efficiency or RE self-generation</div>
+      </div>
+    </div>
+
+    <h2>Kuwait's Transition Lag</h2>
+    <p>Kuwait is the GCC's most notable energy transition laggard. While Saudi Arabia has commissioned 12+ GW of renewables, the UAE has operational nuclear and 6+ GW of solar, Oman has 1.5 GW, and Qatar has 2.5 GW — Kuwait has 114 MW. The reasons are institutional and political:</p>
+    <ul>
+      <li><strong>Parliament-government gridlock:</strong> Kuwait's elected parliament has significant oversight powers and has repeatedly blocked or delayed privatisation, IPP legislation, and energy reform bills. Energy sector reform requires parliamentary approval that has been difficult to obtain.</li>
+      <li><strong>Subsidy system:</strong> Electricity at near-zero tariff makes the economic case for consumer solar completely absent. No consumer can save money by installing solar if grid electricity is free. Only utility-scale deployment by MEWRE can drive RE growth in this environment.</li>
+      <li><strong>MEWRE capacity:</strong> As a ministry (not a commercial utility), MEWRE has limited procurement expertise for large-scale renewable tenders. The 3.5 GW China deal was government-to-government, bypassing competitive procurement — a pragmatic shortcut that sacrifices tariff competition.</li>
+      <li><strong>Oil wealth buffer:</strong> Kuwait's sovereign wealth fund (KIA, ~$800B) and oil revenues have historically eliminated the fiscal pressure for electricity reform that pushes other countries to act. The urgency is becoming real as demand approaches capacity limits.</li>
+    </ul>
+
+    <div class="callout">
+      Kuwait is approaching an electricity supply crisis in slow motion. Summer peak demand of 18.6 GW against 20 GW installed capacity leaves virtually no operational reserve — any plant outage during July–August peaks creates supply curtailment. The 14 GW needed by 2031 is a recognition that the system, without a step-change in procurement pace, will face rolling blackouts within 3–4 years. The 3.5 GW China solar deal and Al-Subiya CCGT expansion are the first serious responses to this emerging crisis — but Kuwait's track record on RE delivery (Shagaya project, announced 2012, still not fully commissioned) warrants skepticism about execution timelines.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Kuwait faces an electricity supply adequacy crisis in the near term, not just a long-term decarbonisation challenge.</strong> With 18.6 GW summer peak and 20 GW installed (much of it ageing), the reserve margin is critically thin. The Al-Subiya 900 MW CCGT expansion (3 years to delivery) and the 3.5 GW China solar deal (timeline uncertain) must both materialise by 2028 to avoid service disruptions. Kuwait's electricity challenge is fundamentally a supply adequacy problem before it is a transition problem.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Kuwait's parliamentary democracy is simultaneously a strength and a barrier to energy sector reform.</strong> No other GCC state has significant legislative oversight of energy policy. Kuwait's parliament has blocked energy privatisation, renewable IPP laws, and tariff reform repeatedly. This creates reform rigidity that autocratic neighbours do not face — but also means that when reform does happen, it has broader legitimacy and is less reversible than royal decree-based changes in Saudi Arabia or UAE.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The 3.5 GW China solar deal signals a pragmatic turn toward execution over process.</strong> Years of competitive tender planning for Kuwait's first major solar project (Dibdibba, 1.5–5 GW) have resulted in limited progress. The government-to-government China deal bypasses the competitive procurement process to accelerate delivery. The trade-off — potentially higher tariffs than a competitive process would yield — is accepted in exchange for certainty of execution. This mirrors Egypt's government-to-government approach for Benban (though Benban used a full competitive tender).</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Kuwait's electricity subsidy reform is politically unavoidable but practically delayed indefinitely.</strong> Removing near-zero electricity tariffs would unlock consumer solar, improve demand efficiency, and reduce the fiscal burden — but would be politically explosive in a country where cheap energy is treated as a social right funded by sovereign oil wealth. The Kuwaiti government has attempted partial reforms multiple times without success. Only a sustained oil price decline that threatens the sovereign budget would create sufficient political conditions for meaningful tariff reform.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Kuwait's 15% renewable target by 2030 is achievable on paper but requires delivery of the 3.5 GW China solar deal within 4 years — an unprecedented execution speed for Kuwait's RE sector.</strong> The Shagaya RE Park, Kuwait's only RE project to date, took more than a decade from announcement to partial operation. Delivering 3.5 GW in 4 years would require a 35× acceleration in RE deployment pace. If Chinese EPC contractors handle construction end-to-end (as they did in Pakistan, Bangladesh, and Egypt), it is technically achievable — but Kuwait's regulatory and land approval processes have historically been the bottleneck, not construction speed.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      GlobalData — Kuwait Power Market Trends and Analysis 2035 ·
+      Oxford Business Group — Kuwait 2025 Report: Energy ·
+      US Trade.gov — Kuwait Energy: Thermal Power Projects ·
+      US Trade.gov — Kuwait Battery Energy Storage Market ·
+      BusinessWire — Kuwait Al-Subiya Power Station expansion (Sep 2024) ·
+      BCC Research — Powering Progress: Rise of Renewable Energy in GCC ·
+      KISR — Kuwait Energy Outlook: Sustaining Prosperity Through Strategic Energy Management
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT + steam)', 'Heavy fuel oil / crude', 'Solar PV (nascent)'],
+    datasets: [{ data: [13000, 7136, 114], backgroundColor: ['#C85020','#A0522D','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

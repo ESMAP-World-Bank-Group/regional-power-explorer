@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>North Macedonia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">North Macedonia</div>
+    <div class="doc-sub">EU accession candidate · Net electricity importer · REK Bitola lignite phase-out · EVN Austrian distribution</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~2 100 MW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">6 129 GWh</div><div class="kpi-lbl">Generation 2024 (~89% of needs)</div></div>
+    <div class="kpi"><div class="kpi-val">~58%</div><div class="kpi-lbl">Coal share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">Net importer</div><div class="kpi-lbl">Structurally import-dependent</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <h2>Generation Mix (2024)</h2>
+    <p>North Macedonia is a structurally import-dependent country — domestic generation covered approximately 89% of electricity needs in 2024 (6,129 GWh produced vs. ~6,900 GWh consumed). Coal accounted for roughly 58% of domestic generation, drawn from two ageing lignite plants; hydro provided ~25%; a gas-fired combined heat and power (CHP) plant in Skopje about 13%; and wind/solar the remainder. The grid depends on imports from Serbia, Bulgaria, and Greece to cover the structural deficit.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#808890"></span>Coal (lignite)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Gas CHP</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~2 100 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: ESM, MEPSO, Energy Community IR 2024</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>REK Bitola: ~670 MW lignite</strong>Three units on the Bitola basin; provides baseload but is ageing and outdated; government has announced gradual closure plan but no binding timeline</div>
+        <div class="stat-item"><strong>REK Oslomej: ~125 MW lignite</strong>Smaller plant; older; periodically operated at reduced capacity</div>
+        <div class="stat-item"><strong>Hydro: ~695 MW</strong>Multiple ESM-owned run-of-river and storage plants; largest is Špilje (82 MW) on the Black Drin; good resource in western highlands</div>
+        <div class="stat-item"><strong>Skopje CHP: ~287 MW gas</strong>Combined heat and power plant serving Skopje district heating; gas-fired; provides baseload flexibility but exposed to gas price volatility</div>
+        <div class="stat-item"><strong>Wind: ~100 MW; Solar: ~200 MW</strong>Three wind farms operational; solar growing rapidly; most of the ~330 MW RE pipeline is solar and wind</div>
+      </div>
+    </div>
+
+    <h3>Key generation assets</h3>
+    <table>
+      <thead>
+        <tr><th>Asset</th><th>Type</th><th>Capacity (MW)</th><th>Owner</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>REK Bitola (3 units)</strong></td><td>Lignite</td><td>~670</td><td>ESM (state)</td></tr>
+        <tr><td><strong>REK Oslomej</strong></td><td>Lignite</td><td>~125</td><td>ESM (state)</td></tr>
+        <tr><td><strong>TE-TO Skopje</strong></td><td>Gas CHP</td><td>~287</td><td>EVN / private JV</td></tr>
+        <tr><td><strong>Špilje HPP</strong></td><td>Hydro (storage)</td><td>82</td><td>ESM (state)</td></tr>
+        <tr><td><strong>Kozjak HPP</strong></td><td>Hydro (storage)</td><td>112</td><td>ESM (state)</td></tr>
+        <tr><td><strong>Bogdanci Wind Farm</strong></td><td>Wind</td><td>36</td><td>EVN (Austrian)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Market Structure &amp; Key Actors</h2>
+    <p>North Macedonia has a partially liberalised power sector with the key distinction of Austrian utility EVN operating the distribution network and Bogdanci wind farm — giving foreign capital an established presence in the system.</p>
+
+    <ul>
+      <li><strong>Regulator:</strong> ERC (Energy Regulatory Commission) — sets tariffs, licences generators and distributors; oversees Energy Community compliance obligations.</li>
+      <li><strong>ESM (Elektrani na Severna Makedonija):</strong> State-owned generator; operates REK Bitola, REK Oslomej, and most hydropower plants (~1,400 MW combined); also the dominant wholesale supplier.</li>
+      <li><strong>MEPSO:</strong> Macedonian Energy Transmission System Operator — state-owned TSO; manages 110/220/400 kV grid and cross-border connections; ENTSO-E observer member.</li>
+      <li><strong>EVN Macedonia:</strong> Austrian utility EVN's Macedonian subsidiary; operates the distribution network (serving ~900,000 customers) and owns Bogdanci wind farm and the TE-TO Skopje CHP plant; present since 2006 concession award.</li>
+      <li><strong>Market liberalisation:</strong> Eligible large consumers can switch supplier; wholesale bilateral market exists; North Macedonia participates in the regional SEEPEX day-ahead platform.</li>
+    </ul>
+
+    <div class="callout">
+      North Macedonia's structural electricity import dependency — covering 10–15% of consumption from neighbours — creates exposure to regional price spikes and supply disruptions. This dependency will worsen as REK Bitola closes unless sufficient RE and interconnector capacity is developed first. The Coal Transition Investment Plan (CIF-ACT) funding approved in 2024 is a positive signal but needs to translate into projects quickly.
+    </div>
+
+    <!-- ACTOR MAP -->
+    <h2>Sector Actor Map</h2>
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif" font-size="11">
+        <rect x="0" y="0" width="760" height="280" fill="#F4F5F7" rx="8"/>
+        <text x="12" y="22" font-size="9.5" fill="#8A94A6" font-weight="600">REGULATION</text>
+        <text x="12" y="82" font-size="9.5" fill="#8A94A6" font-weight="600">TRANSMISSION</text>
+        <text x="12" y="152" font-size="9.5" fill="#8A94A6" font-weight="600">GENERATION</text>
+        <text x="12" y="232" font-size="9.5" fill="#8A94A6" font-weight="600">DISTRIBUTION / RETAIL</text>
+        <line x1="0" y1="35" x2="760" y2="35" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="95" x2="760" y2="95" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="175" x2="760" y2="175" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="250" x2="760" y2="250" stroke="#E2E6EA" stroke-width="1"/>
+
+        <rect x="300" y="42" width="160" height="38" rx="5" fill="#1B3A5C"/>
+        <text x="380" y="57" text-anchor="middle" fill="white" font-weight="600" font-size="12">ERC</text>
+        <text x="380" y="72" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">Energy Regulatory Commission</text>
+
+        <rect x="300" y="103" width="160" height="38" rx="5" fill="#2E75B6"/>
+        <text x="380" y="118" text-anchor="middle" fill="white" font-weight="600" font-size="12">MEPSO</text>
+        <text x="380" y="133" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">TSO (ENTSO-E observer)</text>
+
+        <!-- ESM coal -->
+        <rect x="50" y="183" width="185" height="60" rx="5" fill="#808890" opacity="0.85"/>
+        <text x="142" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">ESM — Coal</text>
+        <text x="142" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">REK Bitola (~670 MW) + REK Oslomej (~125 MW)</text>
+        <text x="142" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">State-owned; phase-out planned</text>
+
+        <!-- ESM hydro -->
+        <rect x="250" y="183" width="175" height="60" rx="5" fill="#1E9AF5" opacity="0.85"/>
+        <text x="337" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">ESM — Hydro</text>
+        <text x="337" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">~695 MW; Špilje, Kozjak + others</text>
+        <text x="337" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">State-owned</text>
+
+        <!-- EVN -->
+        <rect x="440" y="183" width="185" height="60" rx="5" fill="#9A7040" opacity="0.75"/>
+        <text x="532" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">EVN Macedonia</text>
+        <text x="532" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">TE-TO CHP 287 MW · Bogdanci Wind 36 MW</text>
+        <text x="532" y="229" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">Austrian (EVN); DSO ~900k customers</text>
+
+        <!-- Distribution -->
+        <rect x="180" y="258" width="400" height="16" rx="3" fill="#1B3A5C" opacity="0.8"/>
+        <text x="380" y="270" text-anchor="middle" fill="white" font-size="10" font-weight="600">EVN Macedonia — Distribution (~900k customers; Austrian concession since 2006)</text>
+
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1B3A5C"/></marker>
+          <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#808890"/></marker>
+        </defs>
+        <line x1="380" y1="80" x2="380" y2="102" stroke="#1B3A5C" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="142" y1="183" x2="320" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="337" y1="183" x2="360" y2="141" stroke="#1E9AF5" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="532" y1="183" x2="420" y2="141" stroke="#9A7040" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+      </svg>
+    </div>
+    <p class="fig-caption">ESM dominates public generation; EVN (Austrian) holds distribution concession and some generation.</p>
+
+    <!-- REK BITOLA -->
+    <h2>REK Bitola — The Coal Phase-Out Challenge</h2>
+    <p>REK Bitola is North Macedonia's dominant generation asset and its most difficult energy challenge. The three-unit lignite plant — located near the Bitola coalfield in southwest Macedonia — produces roughly 58% of domestic electricity despite ageing equipment and repeated Energy Community enforcement proceedings for exceeding emission limits.</p>
+
+    <ul>
+      <li><strong>Technical condition:</strong> The plant's boilers were partially refurbished in 2017, but its core equipment remains outdated. Unit availability is chronically below design capacity; forced outages are frequent.</li>
+      <li><strong>Closure plan:</strong> The government has announced a gradual phase-out of REK Bitola, but no binding unit-by-unit closure dates have been legally enacted as of 2026.</li>
+      <li><strong>Employment impact:</strong> The Bitola complex — plant and associated lignite mines — employs several thousand workers in a region with limited economic alternatives. Just transition planning under the CIF-ACT framework is ongoing but early-stage.</li>
+      <li><strong>CIF-ACT Investment Plan:</strong> The Climate Investment Funds' Accelerating Coal Transition (CIF-ACT) investment plan for North Macedonia, approved in 2024, provides concessional financing for RE, grid modernisation, and economic diversification in the Bitola region.</li>
+    </ul>
+
+    <div class="callout">
+      If REK Bitola's ~670 MW of coal capacity is closed without adequate replacement, North Macedonia's structural import deficit would deepen from ~10% to potentially 40–50% of consumption. The window to build replacement RE and upgrade interconnectors before closure is narrow — and the CIF-ACT programme needs to move from investment plans to commissioned projects rapidly.
+    </div>
+
+    <!-- RENEWABLES + INTERCONNECTIONS -->
+    <h2>Renewables &amp; Interconnections</h2>
+    <p>North Macedonia has meaningful solar and wind potential in its southern lowlands and eastern plateaus. RE deployment is accelerating from a low base, supported by competitive auctions introduced under Energy Community obligations. The grid connects to four neighbours, all in the ENTSO-E Continental Europe synchronous area.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">RE capacity growth (MW)</div>
+        <canvas id="reGrowthChart" height="190"></canvas>
+        <p class="fig-caption">Source: ERC, Energy Community IR 2024; estimates for 2025–26</p>
+      </div>
+      <div class="stat-note" style="padding-left:10px">
+        <div class="stat-item"><strong>Bulgaria</strong>Primary import source; Kitka interconnection; ENTSO-E synchronous; Bulgaria is a structural exporter to North Macedonia</div>
+        <div class="stat-item"><strong>Serbia</strong>Northern interconnection; secondary import route; transit flows; ENTSO-E synchronous</div>
+        <div class="stat-item"><strong>Greece</strong>Southern interconnection; ENTSO-E; access to Mediterranean market; electricity flows vary by season</div>
+        <div class="stat-item"><strong>Kosovo</strong>Eastern connection; Kosovo also net importer; trade volumes smaller; ENTSO-E synchronous</div>
+        <div class="stat-item"><strong>Albania</strong>Western connection; bidirectional; smaller volumes</div>
+      </div>
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div><strong>North Macedonia's structural electricity import dependency is its most acute energy security problem.</strong> Covering 10–15% of consumption from neighbours is manageable today; if REK Bitola closes without replacement, that dependency could triple. The sequencing of coal closure and RE buildout will determine whether the transition is manageable or destabilising.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div><strong>REK Bitola's closure is necessary but the plan is vague.</strong> Energy Community obligations, emission standards, and EU accession pressure all point toward closure in the late 2020s or early 2030s. But without a credible unit-by-unit retirement schedule with parallel RE commissioning and interconnection upgrades, the headline commitment is not yet an operational plan.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>EVN's 20-year presence makes it the most operationally capable actor in the sector.</strong> As DSO, CHP operator, and wind farm developer, EVN has built institutional knowledge and capital discipline that state operators lack. Any large RE project or grid modernisation programme would benefit from EVN's participation — or at minimum, from applying the operational standards it has demonstrated.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div><strong>CIF-ACT funding is a real opportunity — but implementation speed is everything.</strong> The 2024 Accelerating Coal Transition Investment Plan provides concessional finance for RE and just transition in the Bitola region. If projects can be structured and permits issued quickly, this funding can bridge the gap between coal closure and RE commissioning. If it moves at the pace typical of regional energy planning, the supply gap will arrive before the replacement does.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div><strong>North Macedonia's grid position makes interconnection upgrades essential for RE integration.</strong> Surrounded by five neighbours, MEPSO can leverage multiple import routes for security of supply and multiple export routes if RE surpluses develop. But current NTC capacity on several borders is constrained; investment in cross-border lines is a prerequisite for both import security and future export potential.</div>
+      </div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      ESM (Elektrani na Severna Makedonija) — generation data ·
+      MEPSO — transmission system and interconnection data ·
+      ERC (Energy Regulatory Commission of North Macedonia) — tariff decisions ·
+      Energy Community Secretariat — North Macedonia Annual Implementation Report 2024 ·
+      CIF — Accelerating Coal Transition Investment Plan for North Macedonia, 2024 ·
+      Bankwatch — Energy sector in North Macedonia ·
+      Enerdata — North Macedonia Energy Market ·
+      Low Carbon Power — North Macedonia Electricity Generation Mix 2024/2025 ·
+      Balkan Green Energy News — North Macedonia coverage ·
+      U.S. Commercial Service — North Macedonia Energy Guide
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.plugins.legend.display = false;
+
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Coal (REK Bitola + Oslomej)', 'Hydro', 'Gas CHP', 'Wind', 'Solar'],
+    datasets: [{ data: [795, 695, 287, 100, 200], backgroundColor: ['#808890','#1E9AF5','#9A7040','#44DAEC','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} MW` }
+    }},
+    layout: { padding: 4 }
+  }
+});
+
+new Chart(document.getElementById('reGrowthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2018','2019','2020','2021','2022','2023','2024','2025e','2026e'],
+    datasets: [
+      { label: 'Wind (MW)', data: [36, 36, 36, 36, 100, 100, 100, 150, 200], backgroundColor: '#44DAEC', stack: 'a' },
+      { label: 'Solar (MW)', data: [5, 10, 20, 50, 100, 150, 200, 350, 550], backgroundColor: '#FFD700', stack: 'a' }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12 } },
+      tooltip: { mode: 'index', intersect: false }
+    },
+    scales: {
+      x: { stacked: true, ticks: { font: { size: 10 } }, grid: { display: false } },
+      y: { stacked: true, ticks: { font: { size: 10 }, callback: v => v + 'MW' }, grid: { color: '#E2E6EA' } }
+    },
+    animation: { duration: 800 }
+  }
+});
+</script>
+</body>
+</html>

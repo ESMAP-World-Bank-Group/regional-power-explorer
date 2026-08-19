@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cook Islands Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Polynesia)</div>
+    <div class="doc-title">Cook Islands</div>
+    <div class="doc-sub">~25 MW installed · Rarotonga: diesel ~45% + hydro ~25% (Avatiu, Tupapa run-of-river) + solar ~25% + wind ~5% · Te Aponga Uira (TAU, state utility) · 15 inhabited islands, ~17,000 resident population (diaspora ~80,000 in NZ) · Free association with New Zealand; NZ citizenship for Cook Islanders · Tourism-driven economy (~200,000 visitors/year, Rarotonga) · Mangaia: world's first fully solar-powered island grid (ADB 2012) · 100% RE 2030 target</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~55%</div><div class="kpi-lbl">Rarotonga RE share 2024 (solar + hydro + wind)</div></div>
+    <div class="kpi"><div class="kpi-val">Mangaia</div><div class="kpi-lbl">World's first 100% solar island grid (ADB 2012)</div></div>
+    <div class="kpi"><div class="kpi-val">~200K</div><div class="kpi-lbl">Annual tourists to Rarotonga (electricity demand driver)</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030 (TAU / Cook Islands NDC)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>The Cook Islands — 15 inhabited islands across 2 million km² of the South Pacific, self-governing in free association with New Zealand — has one of the Pacific's more commercially developed electricity sectors, reflecting its tourism economy and the relative institutional maturity of <strong>Te Aponga Uira (TAU)</strong>, the state utility. Rarotonga (the main island, capital Avarua, population ~14,000) operates a hybrid grid combining run-of-river hydro from two small river systems (Avatiu and Tupapa rivers, approximately 2.5 MW combined — low-head, run-of-river, highly variable seasonally), utility-scale solar PV (approximately 3.5 MW across two farms developed 2018-2022), wind turbines (approximately 1 MW, two sites), and diesel/HFO backup (approximately 10 MW installed, ~4 MW average dispatch). Rarotonga's 2024 RE share: approximately 55%, making it one of the more advanced large Pacific island grids.</p>
+    <p>The outer islands (Northern Group: Penrhyn, Rakahanga, Manihiki, Pukapuka, Nassau; Southern Group: Aitutaki, Atiu, Mauke, Mitiaro, Mangaia, and smaller islands) each have independent small diesel generators or solar mini-grids managed by TAU outer island teams and community operators. <strong>Mangaia</strong> (southernmost Cook Island, population ~500, 2012 ADB solar project) is recognised as one of the world's first islands to operate a fully solar-powered community grid during daylight hours — an ADB and Cook Islands government landmark project that preceded similar programmes across the Pacific by several years. Aitutaki (second largest tourist destination, ~2,000 population): solar hybrid (~40% RE), with TAU-managed diesel backup. The Northern Group atolls (low-lying, remote, very small populations of 100-400) operate solar home systems and small community solar mini-grids.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Rarotonga grid generation mix (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (TAU Rarotonga Power Station)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Avatiu + Tupapa run-of-river)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (TAU solar farms)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Rarotonga turbines)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~55%</div>
+            <div class="chart-center-lbl">Rarotonga RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Rarotonga main grid only. Outer islands (Aitutaki, Mangaia, etc.) each independently managed. Source: TAU 2024; ADB Pacific Energy 2025; IRENA 2025; Cook Islands energy policy 2024</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Mangaia (2012): the world's first 100% daytime solar island grid</strong>In 2012, ADB and the Cook Islands government commissioned a solar mini-grid on Mangaia island (population ~500, southernmost Cook Island) that replaced the island's diesel generator as the primary daytime power source — the first time an inhabited island in the world operated entirely on solar power during daylight hours at community grid scale. The Mangaia solar project (250 kW solar + battery) was technically modest but symbolically transformative: it demonstrated that Pacific island electrification could leapfrog diesel dependency entirely rather than just reducing it, and its completion in 2012 preceded Tuvalu, Tokelau (2012 — which also achieved 100%), and all subsequent Pacific outer island solar projects. ADB's subsequent Pacific outer island solar programme (20+ islands across the Pacific) explicitly cited Mangaia as proof-of-concept. Mangaia now operates at approximately 90% solar across the full day (BESS extended to cover early evening demand), with diesel only as overnight backup.</div>
+        <div class="stat-item"><strong>Tourism economy and electricity demand seasonality</strong>Rarotonga receives approximately 150,000-200,000 tourists annually (pre-COVID peak: 190,000 in 2019, recovered to ~180,000 by 2023-24). Tourism accommodation, restaurants, commercial services, and tourist transport account for approximately 35-45% of Rarotonga's electricity demand — significantly more than residential demand from the ~14,000 resident population. This creates a pronounced seasonality: peak electricity demand coincides with peak tourist season (June-August — southern winter, optimal beach weather), which also coincides with the period of lower solar generation (shorter days, more cloud cover in the South Pacific winter). Rarotonga's solar + diesel grid must be sized for peak tourist-season demand — which is substantially above annual average demand — and the solar harvest in peak demand months is below annual average. This seasonality argues for BESS investment specifically sized for peak season evening demand, not for average annual solar + storage optimisation.</div>
+        <div class="stat-item"><strong>NZ free association: citizenship, remittances, and energy financing</strong>Cook Islanders are New Zealand citizens by right (the Cook Islands-NZ free association agreement, 1965). Approximately 80,000 Cook Islanders live in New Zealand — nearly 5× the resident Cook Islands population of ~17,000. Remittances from the NZ diaspora are a significant household income source. For energy: the NZ-Cook Islands relationship shapes energy financing in several ways: (1) New Zealand MFAT (Ministry of Foreign Affairs and Trade) is a significant bilateral aid donor for Cook Islands energy; (2) Cook Islanders can migrate to NZ without restriction, which creates demographic pressure on the resident population (young people leave, older residents remain — reducing the human capital available for utility technical roles); (3) NZ technical expertise (e.g., powerco regulatory frameworks, grid engineering) is available to TAU through the NZ-Cook Islands relationship in a way not available to most Pacific utilities.</div>
+        <div class="stat-item"><strong>Run-of-river hydro: seasonal variability and Rarotonga's water-energy nexus</strong>Rarotonga's two hydro schemes (Avatiu ~1.5 MW, Tupapa ~1 MW) are run-of-river: no storage reservoir, generation tracks rainfall patterns. Rarotonga receives approximately 2,000 mm/year rainfall — well distributed but with drier periods May-October (southern winter). During dry months, hydro generation can drop to 30-40% of wet season output. This seasonal variability is inverse to tourist demand (tourists peak in the dry season when hydro is lowest). TAU's grid management must compensate: in the tourist peak/hydro low season, diesel and solar must fill the gap left by reduced hydro — requiring higher diesel backup capacity in the tourist season than annual average generation planning would suggest. The Avatiu and Tupapa catchments also supply Rarotonga's drinking water (the same rivers); during drought, water-energy competition is real, though the run-of-river turbines use water flow without significant consumptive use.</div>
+      </div>
+    </div>
+
+    <h2>Path to 100% RE and TAU's Institutional Capacity</h2>
+    <p>Cook Islands has an advantage over most Pacific SIDS: TAU is widely regarded as one of the more commercially capable Pacific island utilities, with a track record of completing RE projects on time, managing outer island operations, and maintaining financial accounts to audit standard. This institutional capacity — built partly through the NZ-Cook Islands relationship and partly through TAU's own long operating history — means that Cook Islands can absorb RE financing more efficiently than peers. TAU's path to 100% RE on Rarotonga by 2030 requires: approximately 2 MW additional solar, a 2 MW BESS upgrade (current BESS: ~500 kWh, insufficient for overnight diesel replacement), and potential phased diesel plant retirement. Total capital requirement: approximately NZ$20-25M (US$12-15M) — within ADB's standard Pacific Energy programme scope.</p>
+    <div class="callout">
+      Cook Islands sits in an unusual position among Pacific SIDS: it has one of the Pacific's most capable small island utilities, a tourism economy that generates both electricity revenue and seasonal demand complexity, a NZ relationship that provides both financing access and emigration pressure, and a set of outer island solar successes (Mangaia 2012) that were Pacific firsts. TAU's 100% RE 2030 target for Rarotonga is achievable — and getting there requires sustained BESS investment and seasonal demand management, not additional generation capacity.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>TAU is one of the Pacific's most institutionally capable small island utilities and should be recognised as a regional technical assistance resource — able to host attachment programmes for utility staff from FSM (Chuuk), Nauru, and outer Kiribati, where governance and technical capacity are acutely weak — as a form of Pacific-to-Pacific capacity building that ADB and NZ MFAT should explicitly support and fund.</strong> Pacific island utility capacity building is typically delivered by external consultants (Australian, NZ, Japanese) parachuted in for 2-week assignments that transfer little durable knowledge. TAU's track record — managing 15 outer island systems, completing ADB projects on time, maintaining commercial operations — makes it a credible host for extended attachments by utility staff from weaker Pacific peers. A TAU-hosted Pacific Utility Capacity Exchange Programme (funded by NZ MFAT at ~NZ$500,000/year) could deliver more durable capacity building than an equivalent amount spent on external consulting.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Rarotonga's peak electricity demand in the tourist season (June-August) coincides precisely with its lowest hydro generation period — creating a systematic demand-supply mismatch that TAU's current 500 kWh BESS cannot bridge, and that requires a tourist-season-specific BESS strategy (2-3 MW / 4-6 MWh) that is optimised for the June-August demand peak rather than for annual average solar + storage optimisation.</strong> Standard Pacific BESS design methodology optimises storage for maximum annual solar utilisation — an approach that works well for islands without seasonal demand variation. Rarotonga's tourism demand seasonality breaks this assumption: the "average year" BESS optimum is substantially smaller than the "worst-case tourist season" BESS requirement. TAU's next BESS procurement should use tourist-season demand curves as the design load, accept a lower annual capacity factor on the BESS investment in exchange for better peak-season diesel displacement, and model the June-August tourist peak explicitly in the financial analysis.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Mangaia's 2012 100% daytime solar achievement deserves formal documentation as a Pacific energy history milestone — the first inhabited island to operate a fully solar community grid during daylight hours — including the specific technical design choices, procurement lessons, community engagement process, and 12-year operational track record that have made it a durable success, because this knowledge has not been systematically captured and is at risk of being lost as the original project team disperses.</strong> The Mangaia solar project was a Pacific first that preceded 50+ subsequent Pacific outer island solar projects across 15 countries. Its technical choices (inverter sizing, BESS chemistry, community tariff structure, TAU remote monitoring setup) were later replicated across the region. But the original project documentation — the design reasoning, the community consultation process, the lessons from the first 18 months of operation — has not been comprehensively published. A 2024/2025 Mangaia 12-year operational retrospective, commissioned jointly by TAU and ADB, would be a genuinely valuable Pacific energy reference document.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The Cook Islands diaspora in NZ (~80,000 people, 5× the resident population) creates both a remittance income stream that makes Cook Islands households more able to pay cost-reflective electricity tariffs than most Pacific peers, and a demographic drain on TAU's technical workforce pipeline — and TAU should address the workforce drain directly by offering technical career pathways for Cook Islanders that are competitive with NZ wages, funded by a tourism-sector electricity tariff premium.</strong> Cook Islands tourism accommodation pays commercial electricity tariffs that are higher than residential rates; a modest tourism sector surcharge (NZ$0.05/kWh above commercial rate) would generate approximately NZ$300,000-500,000 annually that could fund TAU technical staff salary supplements, training, and apprenticeships. This tariff structure — essentially a tourism development levy on electricity — is justifiable because tourists are the primary beneficiaries of Rarotonga's electricity-quality-dependent attractions (air conditioning, hot water, pool pumps, laundry services).</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The Northern Group atolls (Penrhyn, Rakahanga, Manihiki, Pukapuka, Nassau) — low-lying, remote, very small populations — are the Cook Islands equivalent of Kiribati's outer Gilbert Islands: nearly 100% solar capable with minimal load, but chronically under-maintained, and the most climate-vulnerable communities in the Cook Islands, where electricity reliability for schools, health posts, and communications is the primary barrier to remaining viable communities rather than to migration to Rarotonga or NZ.</strong> Northern Group electricity: each atoll has a small TAU-managed solar/diesel system with populations of 100-400. Inter-atoll support (spare parts, technical visits) is costly given the remoteness of the Northern Group (Penrhyn is 1,300 km from Rarotonga). If TAU cannot maintain Northern Group electricity reliably, communities migrate to Rarotonga or NZ — compressing population onto Rarotonga and increasing its electricity demand while depopulating atolls that are the primary cultural homelands of Northern Group Cook Islanders. Energy maintenance in the Northern Group is therefore a demographic and cultural retention policy, not just an electricity access issue.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Te Aponga Uira (TAU) — Annual Report 2024 ·
+      ADB — Pacific Energy Programme (Mangaia 2012; Rarotonga solar); Pacific Energy Update 2025 ·
+      IRENA — Pacific energy statistics 2025 ·
+      Cook Islands government — Energy Policy 2016-2025; NDC 2022 ·
+      New Zealand MFAT — Cook Islands development cooperation ·
+      Cook Islands Tourism Corporation — visitor statistics 2024 ·
+      World Bank — Pacific energy access
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (TAU Rarotonga Power Station)', 'Hydro (Avatiu + Tupapa run-of-river)', 'Solar PV (TAU solar farms)', 'Wind (Rarotonga turbines)'],
+    datasets: [{ data: [45, 25, 25, 5], backgroundColor: ['#8B4513','#1B6CA8','#FFD700','#6AB0DE'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

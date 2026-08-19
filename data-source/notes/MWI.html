@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malawi Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Malawi electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~450 MW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">1.88 TWh</div><div class="kpi-lbl">Generation (2022; 2023 data gap)</div></div>
+  <div class="kpi"><div class="kpi-val">~14%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">Cyclone Freddy</div><div class="kpi-lbl">Kapichira weir destroyed, Mar 2023</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-warn"><strong>Kapichira crisis — March 2023.</strong> Cyclone Freddy made landfall in March 2023 (its second landfall in Africa in a single season — an unprecedented meteorological event) and destroyed the weir at Kapichira Falls HPP (132 MW), Malawi's largest power station. This removed approximately 30% of Malawi's installed generation capacity at a stroke, triggering an immediate deepening of already severe load shedding (from 10–12 hours to 16–20 hours per day). Reconstruction of the Kapichira weir has been a national priority with World Bank emergency financing, but the timeline for full capacity restoration extends into 2025–2026. Malawi's already critical electricity supply position has been substantially worsened by this climate event.</div>
+
+<h2>1. Energy context</h2>
+<p>Malawi is one of the world's poorest countries (GDP per capita ~USD 600, ranked among the bottom 10 globally) and has one of the lowest electricity access rates in SAPP (~14%). An electricity system designed for 350,000 customers serves a country of 20 million — the access gap is structural, reflecting generations of underinvestment in a country with limited fiscal capacity and a turbulent macroeconomic history (severe currency crises, donor dependency). ESCOM (Electricity Supply Corporation of Malawi), the state utility, operates at a chronic deficit and is unable to finance the investment needed even to maintain existing capacity, let alone expand access.</p>
+<p>Malawi's electricity is almost entirely hydropower (90%), drawn from the Shire River (the only outflow of Lake Malawi). The Shire hydro plants — Kapichira, Nkula, Tedzani — are all on the same river, making the entire system vulnerable to a single hydrological risk: Lake Malawi level fluctuations and Shire River flows. Cyclone Freddy's destruction of the Kapichira weir in 2023 was the most severe single-event infrastructure shock to Malawi's energy system in decades, reducing an already chronically short supply situation to an acute crisis.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation assets — all Shire River</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~450 MW, 2024)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">450</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2022 est., ~1.9 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~90%</div><div class="chart-center-lbl">Hydro</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Malawi generation mix (2022 data used; 2023 OWID reports 0 TWh due to Kapichira data gap). All hydro on Shire River. Sources: ESCOM; MERA; Ember 2024; IEA MWI Profile; World Bank.</p>
+
+<table>
+  <tr><th>Plant</th><th>Capacity (MW)</th><th>Notes</th></tr>
+  <tr><td><strong>Kapichira Falls HPP</strong></td><td>132 MW (Units 1–4)</td><td>Largest plant; weir destroyed by Cyclone Freddy, March 2023. Emergency reconstruction under World Bank financing. Expected restoration timeline: 2025–2026. All 4 units offline without the weir.</td></tr>
+  <tr><td><strong>Nkula A+B</strong></td><td>124 MW (A: 24 MW, B: 100 MW)</td><td>Run-of-river; Nkula B rehabilitated 2005. Dependent on Shire River flow from Kapichira upstream.</td></tr>
+  <tr><td><strong>Tedzani I, II, III</strong></td><td>92 MW total</td><td>Run-of-river; downstream of Nkula. Reliable but flow-dependent.</td></tr>
+  <tr><td><strong>Diesel/HFO backup</strong></td><td>~80 MW (various)</td><td>ESCOM operates diesel generators in Lilongwe and Blantyre for emergency backup. Expensive to run.</td></tr>
+  <tr><td><strong>Solar IPPs</strong></td><td>~10–20 MW (growing)</td><td>Small IPP solar under ESCOM PPAs; solar market developing slowly.</td></tr>
+</table>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Malawi generation (GWh), 2015–2022. Essentially flat ~1,800–2,200 GWh reflecting system capacity constraint. 2023 data unavailable in OWID due to Kapichira crisis. Sources: ESCOM; Ember; IEA.</p>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ESCOM — Electricity Supply Corporation of Malawi <span class="trade-badge">Vertically Integrated SOE</span></div>
+      <p class="trade-body">ESCOM is the vertically-integrated state utility, responsible for generation, transmission, and distribution. ESCOM is chronically insolvent: tariffs have historically been maintained below cost recovery by the government; commercial and technical losses exceed 25%; the government and its institutions are large non-paying customers; and ESCOM lacks foreign exchange to pay for diesel imports needed for backup generation. Under a 2016 sector reform, ESCOM was notionally unbundled: EGENCO (Electricity Generating Company of Malawi) was created to manage generation assets separately. In practice, both entities operate under integrated government control with limited operational independence. ESCOM serves approximately 350,000 grid customers out of a population of 20 million.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">MERA — Malawi Energy Regulatory Authority <span class="trade-badge trade-badge-grey">Regulator</span></div>
+      <p class="trade-body">MERA regulates the electricity, liquid fuels, and rural energy sectors. It approves ESCOM's tariff applications, but tariff increases have been politically constrained — ESCOM's tariff (approximately MWK 125–150/kWh, roughly USD 0.10–0.12/kWh) is below the cost of service and well below what would be needed to fund system expansion. MERA has approved independent power producer licences for solar and small hydro projects under Malawi's Renewable Energy Feed-in Tariff framework.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Kapichira reconstruction — the immediate crisis:</strong> The destruction of the Kapichira weir by Cyclone Freddy (March 2023) removed 132 MW from a system that was already chronically short. The World Bank approved emergency financing within months, and reconstruction has been underway. However, the engineering complexity of rebuilding a weir in a river (requiring cofferdams, diversion channels, and careful scheduling around seasonal floods) means full restoration will take 2–3 years. Until Kapichira is restored, Malawi faces load shedding of 16–20 hours per day in much of the country.</li>
+  <li><strong>Single-river hydrological risk:</strong> All of Malawi's hydro generation is on the Shire River, which flows from Lake Malawi. Lake Malawi levels are driven by rainfall patterns in the catchment — in drought years, the lake level falls, reducing Shire River flow and hydro output across all plants simultaneously. This means Malawi's entire power system can be weakened by a single drought event. Adding solar generation (drought-counter-cyclical in Malawi's climate) would provide genuine portfolio resilience.</li>
+  <li><strong>14% electrification — the access gap:</strong> Malawi has one of the world's largest electricity access deficits relative to population: ~2.8 million people have electricity access out of ~20 million. Rural areas rely almost entirely on biomass (charcoal, firewood). The grid serves only Lilongwe, Blantyre, Zomba, and a few smaller towns. Rural electrification requires off-grid solar (solar home systems, mini-grids): Malawi has a growing private solar market (ZOLAR, SunnyMoney, BioLite, D.light) but no government-led programme at the required scale.</li>
+  <li><strong>EGENCO/ESCOM financial trap:</strong> No private lender will extend credit to ESCOM/EGENCO without government guarantees; the government's guarantee capacity is constrained by Malawi's fiscal position (IMF programme, debt restructuring discussions); and without new investment, generation capacity stagnates while demand grows. This is the classic low-income country power sector trap — and breaking it typically requires donor financing on very concessional terms (IDA, AfDB, MCC) rather than commercial or even semi-commercial lending.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Cyclone Freddy's destruction of the Kapichira weir in March 2023 is the most dramatic single climate-infrastructure event in SAPP in recent years — removing 30% of Malawi's capacity overnight and demonstrating that climate physical risk is not a future abstraction but a present operational reality for electricity systems in cyclone-exposed countries.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>All of Malawi's hydro generation on the same river (Shire) — fed from the same lake (Malawi) — creates a single-point-of-failure risk that no amount of operational excellence can mitigate: one drought, one cyclone, one infrastructure failure affects the entire system. Solar diversification is not an environmental choice but an engineering necessity.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Malawi's 14% electrification rate is the lowest in SAPP and one of the lowest in Africa — the grid serves 350,000 customers in a country of 20 million. Reaching the remaining 19.6 million requires off-grid solar at massive scale: the economics of SHS and mini-grids in Malawi are sound (strong solar resource, willing consumers), but donor-subsidised distribution finance is the binding constraint.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>ESCOM/EGENCO's financial collapse is not caused by bad management alone — it is caused by a political economy of tariff suppression in a country where most citizens cannot afford cost-reflective tariffs, creating a system where no commercial solution is viable without cross-subsidy, donor support, or fundamental tariff restructuring.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>The World Bank's rapid emergency financing for Kapichira reconstruction (approved within months of Cyclone Freddy) is the model for climate-resilient infrastructure finance in low-income countries — the question is whether this responsiveness can be institutionalised into advance preparedness planning (contingency financing triggers, pre-approved reconstruction designs) rather than requiring a crisis each time to unlock resources.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> ESCOM/EGENCO Malawi Annual Report 2023; MERA — Annual Report 2023; Ember Electricity Data 2024; IEA Malawi Energy Profile; World Bank Malawi Emergency Recovery Project (Kapichira, 2023); AfDB Malawi energy sector notes; OCHA Malawi — Cyclone Freddy situation reports March 2023; IRENA Malawi Country Profile 2024; Africa Energy Portal Malawi; The Nation (Malawi) / Nyasa Times — electricity coverage 2023–2024; IMF Malawi Article IV 2023.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Oil/Diesel','Solar'];
+const C1=['#0F7B72','#5B3FA0','#F59F00'];
+const GW1=[0.348,0.080,0.015];
+const L2=['Hydro','Oil','Solar'];
+const C2=['#0F7B72','#5B3FA0','#F59F00'];
+const D2=[90,4,1];
+const TWh2=[1.69,0.08,0.01];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022'];
+const gen=[2220,2200,1960,1860,1850,1800,1880,1880];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:gen,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} GWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

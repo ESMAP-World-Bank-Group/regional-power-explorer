@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senegal Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Senegal electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~1.6 GW</div><div class="kpi-lbl">Installed capacity (2024)</div></div>
+  <div class="kpi"><div class="kpi-val">8.3 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">79.3%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">GTA first LNG</div><div class="kpi-lbl">Phase 1 online 2025</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Senegal has historically been one of West Africa's most oil-dependent power systems — over 80% of electricity generation relies on heavy fuel oil (HFO) and diesel, making it acutely exposed to global oil price volatility and import bills that consume a disproportionate share of GDP. That picture is changing rapidly: first oil from the Sangomar field (June 2024, Woodside-operated) and first LNG from the Grand Tortue Ahmeyim (GTA) FLNG facility (shared with Mauritania, Phase 1 online early 2025) are transforming Senegal into a new oil and gas producer — with major implications for power sector fuel supply and fiscal space for energy investment.</p>
+<p>Concurrently, Senegal has deployed one of West Africa's largest renewable energy programmes, with the Taiba N'Diaye wind farm (158.7 MW, Africa's largest onshore wind project when commissioned in 2023) and a growing solar pipeline. The Plan Sénégal Emergent (PSE) and the electricity access programme (PNER — Programme National d'Electrification Rurale) target universal electrification by 2025, a goal that has slipped but reflects genuine political ambition.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~1.6 GW, 2024)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">1.6</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, ~8.3 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">8.3</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Senegal installed capacity (est.) and generation mix, 2023/2024. Sources: SENELEC Annual Report 2023; CRSE; Ember Electricity Data 2024; IEA Senegal Profile; IRENA Senegal Country Profile.</p>
+
+<ul>
+  <li><strong>Oil / HFO (~81% of generation):</strong> The vast majority of Senegal's electricity is produced by SENELEC's own HFO plants (Bel Air, Boubakar Barry, Cap des Biches) and by the Karpowership floating power station (36 MW LNG/HFO, Dakar Bay). Diesel and HFO imports are the dominant fuel cost item. The Tobene Power Plant (125 MW, coal, Engie/Contour Global) was commissioned in 2022 using coal — controversial given climate commitments.</li>
+  <li><strong>Solar (~7% of generation):</strong> Several utility-scale solar plants are in service: Malicounda Biomass/Solar (60 MW, SENELEC/CEB), Ten Merina Dakhar (30 MW), and several smaller IDA/AfDB-supported projects. Rooftop solar is growing in Dakar. Target of 1 GW of solar by 2030 is under active development.</li>
+  <li><strong>Wind (~5% of generation):</strong> Taiba N'Diaye wind farm (158.7 MW, CWP Global/Lekela Power, 46 km north of Thiès) was Africa's largest onshore wind project on commissioning (2023). A second phase and additional wind sites are planned.</li>
+  <li><strong>Hydro (~4% of generation):</strong> Senegal's OMVS share of the Manantali hydropower plant (200 MW total, Senegal's share ~33% = ~66 MW) provides the main domestic hydro contribution. Seasonal river flow variation is significant.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Electricity generation — historical trend (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Senegal annual generation (TWh), 2015–2023. Steady upward trend driven by demand growth and new thermal/renewable capacity additions. Sources: SENELEC; Ember; IEA.</p>
+
+<h3>2.3 Regional connections</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Notes</th></tr>
+  <tr><td><strong>Senegal → Mali</strong></td><td>225 kV; ~150 MW capacity</td><td>OMVS interconnection serving Bamako; Manantali hydro power is wheeled through Senegal to Mali. SEN also sells SENELEC generation directly to EDM-SA.</td></tr>
+  <tr><td><strong>OMVS (Senegal–Mali–Mauritania)</strong></td><td>225 kV ring; Manantali plant</td><td>Organisation pour la Mise en Valeur du fleuve Sénégal manages the Manantali 200 MW hydro plant and the associated 225 kV transmission system connecting Dakar, Bamako, and Nouakchott. Energy sharing is governed by a treaty allocation (SEN 33%, MLI 52%, MRT 15%).</td></tr>
+  <tr><td><strong>OMVG (Senegal–Gambia–Guinea-Bissau–Guinea)</strong></td><td>225 kV; in development</td><td>OMVG's planned transmission network would connect CIV/GIN Kaléta hydro power to Dakar, Banjul, and Bissau. The Kaléta line to Gambia/Guinea-Bissau reached operational status in late 2023 (limited capacity); full OMVG ring remains under construction.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">SENELEC — Société Nationale d'Electricité <span class="trade-badge">Vertically Integrated SOE</span></div>
+      <p class="trade-body">SENELEC is a state-owned enterprise that generates (~50% of output from its own plants), transmits, and distributes electricity across Senegal. Unlike CIV's affermage model, SENELEC retains direct operational control of its assets. IPPs sell electricity to SENELEC under PPAs, and SENELEC distributes to customers. SENELEC's financials are stressed by HFO import costs (~40% of operational expenditure) and tariffs that have historically been set below cost recovery — government subsidy transfers were estimated at XOF 200B+ in 2022. SENELEC also manages the SEN side of OMVS power trade.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">CRSE — Commission de Régulation du Secteur de l'Electricité <span class="trade-badge">Regulator</span></div>
+      <p class="trade-body">The CRSE is Senegal's electricity sector regulator, responsible for tariff setting, licensing, and quality-of-service standards. Tariff adjustments require CRSE approval and have periodically been delayed by cost-of-living considerations. The introduction of a "vérité des prix" (cost-reflective pricing) reform has been a recurring policy commitment but implementation has been partial.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Key IPPs — CWP/Lekela, Tobene Power, Karpowership <span class="trade-badge trade-badge-grey">Independent Producers</span></div>
+      <p class="trade-body"><strong>CWP/Lekela Power</strong> (Taiba N'Diaye wind, 158.7 MW) and several solar IPPs sell to SENELEC under 20-year PPAs at competitive tariffs. <strong>Tobene Power</strong> (Engie/Contour Global, 125 MW coal, Thiès) has been controversial for its coal fuel source. <strong>Karpowership</strong> (36 MW floating HFO/LNG unit, Dakar Bay) provides peaking capacity at relatively high cost. Under the new Electricity Code (2021), the IPP framework has been updated to facilitate renewable energy procurement through standardised contracts.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Oil-to-gas transition with GTA LNG (2025):</strong> The Grand Tortue Ahmeyim FLNG facility (BP/Kosmos/PETROSEN/SMHPM, Phase 1 capacity ~2.5 MTPA) delivered first LNG in early 2025. While the bulk of production is earmarked for export, Senegal has provisions to purchase domestic gas at preferential rates for power generation. Building out the midstream infrastructure (pipelines, regasification) to shift SENELEC's fleet from HFO to gas is now the key infrastructure challenge. Gas-to-power conversion could reduce electricity generation costs by 30–40%.</li>
+  <li><strong>Subsidy burden and tariff reform:</strong> SENELEC's HFO dependence means electricity generation costs are highly volatile. Government subsidies to keep residential tariffs affordable consumed a growing share of the budget in 2021–2023 (oil price shock). With GTA gas coming online, there is a fiscal window to restructure tariffs toward cost-reflective levels while passing fuel-cost savings to consumers.</li>
+  <li><strong>Rural access gap:</strong> Senegal's overall electrification of 79% masks a stark urban/rural gap: urban areas (Dakar, Saint-Louis, Thiès) are close to 100% electrified, while rural areas are at ~56%. The PNER programme uses SENELEC grid extension and off-grid solar (mini-grids, solar lanterns) to close this gap, but the economics of last-mile rural electrification remain challenging without sustained subsidy.</li>
+  <li><strong>OMVG interconnection and regional integration:</strong> Senegal is a member of both OMVS (with Mali and Mauritania, the Senegal River authority) and OMVG (with Gambia, Guinea, and Guinea-Bissau, the Gambia River authority). Both institutions manage regional hydropower and transmission infrastructure. The OMVG Kaléta–Gambia–Bissau link becoming operational in 2023 is a significant step toward a coherent Atlantic West Africa sub-regional grid, with Senegal as the central node.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Senegal's electricity sector is undergoing a structural transformation: the Sangomar oil field (June 2024) and GTA LNG (2025) have made Senegal an oil and gas producer for the first time, with the potential to convert the grid from expensive imported HFO to cheaper domestic gas — a once-in-a-generation cost reduction opportunity.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>SENELEC remains heavily oil-dependent (81% of generation from HFO/diesel in 2023), creating cost volatility that is managed through government subsidies rather than market reform — the GTA gas transition is an opportunity to reset this subsidy dynamic while maintaining affordability.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The Taiba N'Diaye 158.7 MW wind farm established Senegal as a benchmark for large-scale renewable energy in francophone West Africa — demonstrating that competitively-tendered RE projects can reach financial close and deliver against schedule in the WAPP zone.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Senegal plays a critical bridging role between OMVS (Mali, Mauritania) and OMVG (Gambia, Guinea-Bissau, Guinea) — the two overlapping river basin organisations — making it a potential transit hub for West Africa's hydropower-rich interior to reach the Atlantic coast grid.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>The rural electrification gap (56% rural vs. near-100% urban) is Senegal's most politically and economically consequential energy challenge — requiring a combination of grid extension, off-grid solar, and rural energy subsidy reform that is more complex and expensive than the urban supply improvements of the past decade.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> SENELEC Annual Report 2023; CRSE Rapport Annuel 2023; Ember Electricity Data 2024; IEA Senegal Energy Profile; IRENA Senegal Country Profile 2024; World Bank Senegal Electricity Access Project documents; BP — GTA Project Update 2025; Woodside — Sangomar Field FID and First Oil announcements; Lekela Power / CWP — Taiba N'Diaye wind farm project summary; Africa Energy Portal Senegal Country Profile; REN21 Africa Renewable Energy Status Report 2024; Reuters / Bloomberg — GTA LNG first cargo reporting.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Oil','Solar','Wind','Coal','Hydro'];
+const C1=['#5B3FA0','#F59F00','#1A7A4A','#5A6474','#0F7B72'];
+const GW1=[0.72,0.30,0.20,0.125,0.066];
+
+const L2=['Oil','Solar','Wind','Hydro','Other'];
+const C2=['#5B3FA0','#F59F00','#1A7A4A','#0F7B72','#8A94A6'];
+const D2=[81,7,5,4,3];
+const TWh2=D2.map(v=>+(v*8.3/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(1)} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[4.5,4.8,4.8,5.0,5.9,6.2,6.8,7.3,8.3];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#5B3FA0',backgroundColor:'rgba(91,63,160,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#5B3FA0',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

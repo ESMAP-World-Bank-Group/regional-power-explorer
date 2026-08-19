@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samoa Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Polynesia)</div>
+    <div class="doc-title">Samoa</div>
+    <div class="doc-sub">~65 MW installed · Diesel ~52% + hydro ~22% + solar ~16% + wind ~7% + biomass ~3% · EPC (Electric Power Corporation, state) · Afulilo Dam 12 MW (Upolu) · 100% RE 2030 target (2025 target missed) · Upolu + Savai'i separate grids · Cyclone Evan 2012 + Gita 2018 · Remittances ~25% GDP · ~220,000 people · ADB leading RE programme</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~65 MW</div><div class="kpi-lbl">Total installed capacity (Upolu + Savai'i)</div></div>
+    <div class="kpi"><div class="kpi-val">Afulilo</div><div class="kpi-lbl">12 MW highland hydro — Upolu baseload</div></div>
+    <div class="kpi"><div class="kpi-val">~48%</div><div class="kpi-lbl">RE share 2024 (hydro + solar + wind + biomass)</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Samoa's electricity system serves approximately 220,000 people across two main volcanic islands — Upolu (capital Apia, ~75% of population) and Savai'i (~25%, separate grid) — through the <strong>Electric Power Corporation (EPC)</strong>, a state utility that has undergone significant transformation since 2010. The Upolu grid is anchored by the <strong>Afulilo Hydroelectric Scheme</strong> (12 MW, Lake Lanoto'o watershed in the central highlands, ADB-financed, completed 2007) which provides reliable baseload year-round. Solar additions — Aleisa Solar Farm (3 MW, 2012), Vaisigano Solar (2 MW), Tagalii Solar (3 MW, 2022), and growing commercial/residential rooftop (~5 MW) — have taken solar to approximately 16% of annual generation. Wind turbines at Vailoa (Upolu, several turbines) and Savai'i contribute ~7%. EPC's Upolu diesel plant (Tanugamanono, ~40 MW HFO) remains the marginal and backup source. Savai'i Island is served by a separate EPC diesel mini-grid supplemented by the Savai'i Solar Farm (3 MW, ADB, 2018). Samoa's original 100% RE target was set for 2025 — ambitious at the time of setting (2011) and ultimately unmet, with actual RE share reaching approximately 48% by 2024. The revised target of 100% RE by 2030 is more credibly resourced, with ADB and NZ MFAT financing confirmed for additional solar and battery storage.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (Tanugamanono plant, Upolu)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Afulilo 12 MW + smaller stations)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Aleisa, Tagalii, Savai'i + rooftop)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (Vailoa + Savai'i turbines)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass / waste (Tafaigata landfill biogas)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~48%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EPC Annual Report 2024; Samoa Ministry of Finance; ADB Pacific Energy 2025; IRENA Pacific 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>The missed 2025 target: lessons for Pacific RE planning</strong>Samoa's 100% RE by 2025 commitment — made in 2011 and embedded in its NDC — became one of the Pacific's most prominent missed targets. RE share in 2025 was approximately 45-48%, not 100%. The gap reflects: (1) over-optimistic pace of solar and storage deployment; (2) ADB and EPC procurement timelines consistently longer than planned (typically 2-3 years per project from approval to commissioning); (3) El Niño-driven dry years (2015-16, 2023-24) reducing Afulilo hydro output and requiring more diesel backup. The missed 2025 target has been widely discussed in Pacific energy policy circles as a reminder that ambitious RE targets set 14 years out routinely slip because of implementation bottlenecks that are predictable but not planned for. The revised 2030 target incorporates more realistic procurement timelines and includes specific BESS deployment commitments (10 MW BESS Upolu, commissioned 2025) that are essential for high RE penetration.</div>
+        <div class="stat-item"><strong>EPC: a competent Pacific utility with improving governance</strong>Electric Power Corporation has undergone significant management and financial improvement since 2010: billing efficiency improved from ~75% to ~92%; technical losses reduced from ~25% to ~18%; Afulilo hydro fully operational; renewable energy dispatching protocols established. EPC's tariff structure (~WST 0.90/kWh, approximately US$0.33/kWh for residential) does not fully recover costs but is partially subsidised through NZ and ADB energy access grants. EPC's challenge as RE penetration approaches 50%: frequency management on an isolated island grid with no interconnection. The 10 MW BESS (ADB + NZ MFAT financed, commissioning 2025) addresses this — providing frequency regulation and solar firming without diesel backup for variability management.</div>
+        <div class="stat-item"><strong>Remittances and energy: the cost-of-living nexus</strong>Samoa receives remittances equivalent to approximately 25-30% of GDP — primarily from the Samoan diaspora in New Zealand (200,000+), Australia, and the US. High electricity costs directly reduce household disposable income for the ~30% of households dependent on wage income rather than subsistence plus remittances. EPC's Residential Lifeline Tariff (first 200 kWh/month at reduced rate) protects lower-income households. Solar panels and inverters purchased by diaspora for family homes in Samoa are a significant informal RE deployment pathway — the "remittance economy" drives rooftop solar adoption outside EPC's formal procurement programme. ADB estimates 3-5 MW of informal rooftop solar installed through this channel in the 2018-2024 period.</div>
+        <div class="stat-item"><strong>Cyclone Evan 2012 and Gita 2018: repeated infrastructure shock</strong>Cyclone Evan (Category 4, December 2012): direct hit on Upolu; 14 deaths; damage US$200M (~25% of GDP); EPC distribution infrastructure significantly damaged on the eastern coast. Cyclone Gita (Category 4, February 2018): affected both Upolu and Savai'i; winds to 230 km/h; EPC substations and distribution damaged. After Gita, EPC accelerated underground cabling in vulnerable Apia corridors. Both cyclones validated the resilience argument for solar + battery (solar farms require cleaning and minor repair post-cyclone but are generally operational within days, vs. overhead line restoration which takes weeks). EPC's post-Gita grid rebuild specification: all new Apia-area distribution as underground cable where economically feasible. Cost premium: ~40% vs. overhead, but justified by repeated restoration costs.</div>
+        <div class="stat-item"><strong>Savai'i: the separate island energy challenge</strong>Savai'i (~50,000 people, Samoa's largest island but less populated) has a separate EPC diesel mini-grid (Salelologa town plant, ~15 MW HFO) supplemented by Savai'i Solar Farm (3 MW, ADB, 2018) and scattered smaller solar. Savai'i's electricity reliability is lower than Upolu — plant maintenance challenges, fuel delivery logistics (barge from Upolu, weather-dependent). The ferry crossing between Upolu and Savai'i is 15-20 minutes — too short for a submarine power cable to be economic relative to islanding the Savai'i grid separately. Savai'i solar hybridisation target: additional 5 MW solar + 3 MW BESS by 2027, bringing Savai'i to ~50% RE — comparable to Upolu's current level. Full Savai'i transition likely requires additional hydro (small run-of-river sites identified on Savai'i interior rivers) as well as solar.</div>
+      </div>
+    </div>
+
+    <h2>The 2030 Path: Technically Achievable, Institutionally Demanding</h2>
+    <p>Samoa's confirmed pipeline for 100% RE by 2030 includes:</p>
+    <ul>
+      <li><strong>Upolu grid:</strong> 10 MW BESS (operational 2025) + 8 MW additional solar (tender awarded 2024, commissioning 2026) + Afulilo reliability upgrade (penstock rehabilitation, ADB co-financed) → ~75-80% RE on Upolu by 2027. Gap to 100%: additional 15-20 MW solar + 5 MW BESS planned for 2027-2029 procurement.</li>
+      <li><strong>Savai'i grid:</strong> 5 MW solar + 3 MW BESS → ~50% RE by 2027; further solar + small hydro by 2030 for 100% aspiration.</li>
+      <li><strong>Biomass/waste:</strong> Tafaigata landfill biogas expansion (~1-2 MW additional) — minor contribution but demonstrates waste-to-energy pathway for Apia's growing urban waste stream.</li>
+      <li><strong>Grid management:</strong> EPC's RE dispatch protocol (solar priority, hydro flexible dispatch, diesel spinning reserve reduction) needs continued development as solar exceeds 40% instantaneous penetration. ADB technical assistance for EPC's grid operations is confirmed through 2027.</li>
+    </ul>
+
+    <div class="callout">
+      Samoa's 100% RE 2025 miss is more instructive than embarrassing — it reveals that the gap between SIDS RE aspirations and SIDS institutional delivery capacity is a structural problem in Pacific energy policy that no amount of target-setting resolves. The lesson being applied in Samoa's 2030 programme: specific BESS commitments co-financed and in procurement before target dates are announced, not after. The 10 MW BESS commissioned in 2025 before any further solar additions is the clearest evidence that EPC has absorbed this lesson operationally.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Samoa's missed 100% RE 2025 target should be studied as a case study in Pacific SIDS target credibility: the original commitment was politically valuable (raised Samoa's climate profile, attracted ADB financing) but the implementation pathway — relying on a procurement pace that Pacific utilities have never historically achieved — was unrealistic, and the gap between target and outcome has modestly but measurably reduced Samoa's credibility in international climate negotiations.</strong> The target-setting lesson: ambitious RE deadlines in SIDS should be set at the horizon where confirmed project pipeline (not hoped-for projects) already accounts for 60-70% of the required RE addition, with the remaining gap representing realistic stretch. Samoa's 2030 target meets this test; the 2025 target did not. The distinction is not just about honesty — it is about whether the target creates a viable investment signal for private developers and MDB financing windows.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The Afulilo hydro scheme's 12 MW baseload — providing the Upolu grid's frequency stability anchor and enabling much higher solar penetration than would otherwise be possible — demonstrates that even modest hydro capacity (~10-15 MW) in a small SIDS grid (~35 MW peak demand) provides the system inertia and flexibility that allows solar to reach 40-50% without BESS, making hydro assets disproportionately valuable in Pacific SIDS contexts relative to their nameplate capacity.</strong> Without Afulilo, EPC's current 16% solar penetration would already be approaching frequency instability limits requiring curtailment. With Afulilo providing flexible dispatchable hydro output, solar can reach 30-35% penetration without BESS because the hydro compensates for solar variability. The BESS now being commissioned enables solar to reach 50-60%+ — at which point the solar + hydro + BESS triad is the Pacific's most cost-effective 24/7 clean electricity solution at island scale.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Samoa's informal remittance-financed rooftop solar — an estimated 3-5 MW installed outside EPC's formal procurement programme by diaspora families purchasing panels for relatives in Samoa — represents both a recognition of market demand that EPC's net metering programme has not fully captured and an integration challenge, as informally installed systems without EPC coordination can cause grid stability issues at higher penetration levels.</strong> EPC's net metering regulations (adopted 2014, updated 2022) allow formal rooftop solar interconnection but have a backlog of applications and high administrative barriers for village-scale installations (requiring EPC site inspection, formal application, metering equipment). Streamlining the net metering process to handle the informal solar market — online applications, standardised inverter specifications that auto-qualify, mobile payment metering — would transform an integration risk into a grid asset and capture the diaspora's genuine investment in Samoa's energy future.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The Savai'i–Upolu energy inequality — where Savai'i residents face lower reliability and higher effective electricity cost despite being on the same EPC tariff — replicates the pattern seen between Viti Levu and Vanua Levu in Fiji and between St. Kitts and Nevis: inter-island energy equity within a SIDS is as important as national energy targets, and EPC's capital allocation should explicitly prioritise closing the Savai'i reliability gap before pursuing marginal additional RE on Upolu.</strong> Savai'i residents cross-subsidise Upolu's lower diesel costs through the unified national tariff while receiving lower service quality. Addressing Savai'i's energy deficit (through the planned 5 MW solar + BESS) is both an equity obligation and a smart capital allocation — the avoided diesel cost on Savai'i (where fuel delivery is more expensive) is higher per kWh than equivalent investment on Upolu, making Savai'i RE the higher-return investment at the margin.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Samoa's Tafaigata landfill biogas project — the Pacific's first operational landfill-to-power scheme — demonstrates that waste-to-energy is technically viable in Pacific SIDS contexts and should be evaluated for expansion in Apia and for replication in Suva (Fiji), Port Vila (Vanuatu), and Nuku'alofa (Tonga), where growing urban populations are generating waste streams large enough to support 1-3 MW biogas plants that would simultaneously address waste management and electricity generation objectives.</strong> Landfill biogas in Pacific SIDS is particularly attractive because: (1) it generates electricity 24/7 (unlike solar), complementing variable RE; (2) the waste stream is growing with urbanisation, providing long-term fuel supply growth; (3) it displaces diesel at the margin, providing immediate financial savings; (4) it addresses odour and methane emission concerns at urban landfills that are creating community nuisance and GHG emissions regardless of whether the gas is captured for power. The 2 MW scale appropriate for Pacific SIDS landfills is small but additive on 20-40 MW island grids.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EPC (Electric Power Corporation, Samoa) — Annual Report 2024 ·
+      Samoa Ministry of Finance — energy sector data ·
+      ADB — Pacific Energy Update 2025; Samoa RE projects ·
+      NZ MFAT — Samoa energy development programme ·
+      IRENA — Pacific energy statistics 2025 ·
+      UNFCCC — Samoa NDC 2022 ·
+      NOAA — Cyclone Evan 2012 and Gita 2018 reports ·
+      World Bank — Pacific RE and energy access
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (Tanugamanono, Upolu)', 'Hydro (Afulilo 12 MW + smaller)', 'Solar PV (Aleisa, Tagalii, Savai\'i + rooftop)', 'Wind (Vailoa + Savai\'i)', 'Biomass / waste (Tafaigata biogas)'],
+    datasets: [{ data: [52, 22, 16, 7, 3], backgroundColor: ['#8B4513','#1B6CA8','#FFD700','#6AB0DE','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

@@ -4,10 +4,12 @@ An interactive web map for exploring **open-access electricity-sector data** —
 mix, installed capacity, power plants, grid infrastructure, cross-border trade, electricity
 access, tariffs, and renewable-energy resources — at world, regional, and country level.
 
-It is developed with the support of [ESMAP](https://www.esmap.org/) / World Bank. The tool aggregates and
-harmonises data from many open sources so that planners, analysts, and decision-makers can
-get a quick, sourced overview of a country's power system. It can be used to help populate
-inputs for the [Electricity Planning Model (EPM)](https://github.com/ESMAP-World-Bank-Group/EPM),
+It is a **pilot**: not an official product of any institution, not endorsed by one, and parts
+of its content were drafted with AI assistance and have not been fact-checked. The tool
+aggregates and harmonises data from many open sources so that planners, analysts, and
+decision-makers can get a quick, sourced overview of a country's power system. It can be used
+to help populate inputs for the
+[Electricity Planning Model (EPM)](https://github.com/ESMAP-World-Bank-Group/EPM),
 but it is a **standalone data-exploration tool** and is not limited to EPM.
 
 > **Scope — what it is and isn't.** The Regional Power Explorer *aggregates and visualises
@@ -83,12 +85,16 @@ For new data sources or coverage gaps, open a
 - Estimation methods (e.g. demand projections, capacity-factor derivation, wind-speed
   height correction) are documented on the Data Sources / Methods page; treat estimated
   layers accordingly.
+- Parts of the content — in particular the country briefing notes held in `data-source/notes/`
+  — were **drafted with AI language models** and have not been verified or peer-reviewed.
+  They may contain wrong figures or inaccurate statements on politically sensitive matters,
+  and are not deployed in the interface for that reason.
 - The boundaries, colours, denominations, and other information shown on any map do **not**
-  imply any judgment on the part of the World Bank Group concerning the legal status of any
-  territory or the endorsement or acceptance of such boundaries.
-- The findings and data presented here are for informational purposes and should not be
-  attributed to the World Bank, its Board of Executive Directors, or the governments they
-  represent.
+  imply any judgment concerning the legal status of any territory or the endorsement or
+  acceptance of such boundaries.
+- The findings and data presented here are for informational purposes only. They are not an
+  official product of any institution, carry no institutional endorsement, and must not be
+  attributed to any organisation or its members.
 
 ## License
 
@@ -97,4 +103,4 @@ of its respective sources (see the Data Sources page).
 
 ---
 
-*Indicative data · not an official WBG product*
+*Pilot · indicative data · partly AI-generated · unofficial*

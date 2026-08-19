@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Austria Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Austria</div>
+    <div class="doc-sub">~30 GW installed · 90.1% renewable (2024) · Hydro 57% + Wind 10% + Solar 11% + Biomass 9% · No nuclear (banned since 1978) · Verbund utility · APG TSO · Alpine pumped storage · 100% RE target 2030</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~30 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">90.1%</div><div class="kpi-lbl">Renewable electricity share (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Electricity target 2030</div></div>
+    <div class="kpi"><div class="kpi-val">No nuclear</div><div class="kpi-lbl">Banned by referendum 1978 (Zwentendorf)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Austria is among Europe's cleanest electricity systems, generating <strong>90.1% of its electricity from renewable sources in 2024</strong>, and reaching a record <strong>93.3% in Q3 2025</strong>. The system is anchored by Alpine hydropower — nearly 57% of generation — with wind (10%), solar (11%), and biomass/CHP (9%) contributing the balance. Austria has had no nuclear power since the <strong>Zwentendorf referendum of 1978</strong>, when citizens voted against commissioning a completed reactor, making Austria the only country to abandon a finished nuclear plant. This early anti-nuclear decision shaped decades of energy policy toward renewables. The dominant utility is <strong>Verbund AG</strong> — majority state-owned, one of Europe's largest hydro operators — and the TSO is <strong>APG (Austrian Power Grid)</strong>.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (run-of-river + reservoirs)</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass / CHP</span>
+          <span><span class="lsq" style="background:#C85020"></span>Fossil gas (residual)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">90.1%</div>
+            <div class="chart-center-lbl">renewable 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: IRENA 2025; E-Control (Austrian regulator) annual report; APG; Verbund</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Verbund AG — Alpine hydro giant</strong>Austria's dominant utility (51% federal state); operates 130+ hydropower plants in Austria and Germany; ~13 GW hydro capacity in Austria alone; exporter of Alpine RE electricity across CEE; also operates pumped storage (Limberg II, Malta, Kaprun); strategic role as Alpine "battery" for German RE balancing</div>
+        <div class="stat-item"><strong>APG — Austrian Power Grid TSO</strong>Operates 3,500+ km HV transmission; central European transit node; interconnects with Germany, Czech Republic, Slovakia, Hungary, Slovenia, Switzerland, Italy; APG manages significant cross-border power flows (Austria is a major transit country); subsidiary of VERBUND until unbundling; now independent</div>
+        <div class="stat-item"><strong>Pumped storage: Alpine balancing backbone</strong>Austria has ~6-7 GW of pumped hydro storage capacity — among Europe's highest relative to system size; Kaprun (1,500 MW), Limberg I+II (480 MW), Malta complex (730 MW), Reißeck-Kreuzeck (270 MW); stores German and Czech RE surplus in upper Alpine reservoirs; major source of revenue from grid balancing services</div>
+        <div class="stat-item"><strong>100% renewable 2030 target</strong>Austrian law: 100% annual electricity balance from renewables by 2030; Erneuerbaren-Ausbau-Gesetz (EAG 2021) = Renewables Expansion Act; €1B/year in feed-in premiums + investment subsidies; 27 TWh additional RE by 2030 vs 2020 baseline; wind and solar are primary growth vectors</div>
+        <div class="stat-item"><strong>Zwentendorf referendum (1978)</strong>Austria completed a nuclear power plant at Zwentendorf on the Danube — but a 1978 public referendum blocked its operation by a razor-thin majority (50.47% against). The plant was never commissioned and later dismantled. The vote embedded anti-nuclear sentiment in Austrian constitutional law and drove Europe's first major pro-renewables energy policy pivot — 40 years before the rest of Europe.</div>
+      </div>
+    </div>
+
+    <h2>Alpine Hydropower and the Central European Balancing Role</h2>
+    <p>Austria's Alpine geography creates a structural advantage that goes beyond national electricity supply: its high-altitude reservoir systems act as seasonal storage for the entire Central European grid. As Germany and Czechia add more variable solar and wind, Alpine pumped storage becomes increasingly valuable for absorbing midday solar surpluses and re-dispatching during evening peaks:</p>
+    <ul>
+      <li><strong>Run-of-river vs. reservoir hydro:</strong> Austria has both types. Run-of-river plants on the Inn, Salzach, Drau, and Danube rivers provide 40–45 TWh of baseload annually. Alpine reservoir plants (Kaprun, Malta, Reißeck) can be ramped up or down in minutes for peak balancing and provide 15–20 TWh seasonally.</li>
+      <li><strong>Export-import patterns:</strong> In high-water years, Austria is a significant net exporter (to Germany, Italy, Switzerland). In dry summers or high demand winters, Austria imports from Germany (coal/gas) or Swiss hydro. Austria's net trade position fluctuates significantly year-to-year based on Alpine snowpack and rainfall.</li>
+      <li><strong>New pumped storage development:</strong> Austria's high pumped hydro capacity is being expanded further. The <strong>Limberg III</strong> project (330 MW, Verbund, under construction) and the <strong>Tauernmoos</strong> reservoir expansion are part of a pipeline of Alpine storage projects driven by German RE balancing revenue.</li>
+      <li><strong>Gas dependency risk:</strong> Despite 90% renewable electricity, Austria is highly dependent on Russian gas for heating and industry — particularly in Vienna and industrial Linz. Austria was one of Europe's last EU members to diversify away from Russian gas after the 2022 invasion, and remains more exposed than Germany despite intensive diversification efforts (LNG terminal access via Italy/Germany, increased Norwegian contracts).</li>
+    </ul>
+
+    <div class="callout">
+      Austria's electricity sector is one of Europe's best-kept secrets in energy policy circles. A country of 9 million people generating 90%+ of its electricity from renewables — with no nuclear — is a compelling proof of concept for the Energiewende thesis. The limiting factor is not technology or cost, but gas dependence in heat and industry. Solving Austria's gas heating problem (through heat pumps, district heating, and hydrogen) is the central challenge of the 2030s — the electricity sector has already largely solved its own transition.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Austria's 90%+ renewable electricity — achieved before 2025, in a landlocked Central European economy with no coast and no nuclear power — demonstrates that geography is not destiny in the energy transition.</strong> The Zwentendorf vote of 1978, often described as a moment of anti-progress populism, in retrospect forced an early pivot to hydropower and renewables investment that left Austria 40 years ahead of its European peers. What looked like a costly mistake at the time is now an €80B infrastructure asset generating revenue from every European grid that needs balancing services.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Austria is positioned as one of Europe's most valuable grid stabilisers as Central European RE penetration accelerates — not because of its own solar or wind, but because its pumped hydro can absorb German, Czech, and Austrian solar surpluses in midday hours and return them during evening peaks.</strong> This "Alpine battery" function is worth billions of euros annually in grid balancing revenue, and its value grows with every GW of German solar added. Verbund's commercial strategy around cross-border balancing services is one of the most sophisticated in Europe.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Austria's 100% renewable electricity target by 2030 is credible because the system is already at 90% — but the last 10% (replacing fossil gas in winter peaking) is structurally harder than the first 80%.</strong> Winter heating demand spikes drive natural gas imports. Closing this gap requires either large-scale heat pumps (requiring significant grid upgrades), district heating expansion (Vienna has one of Europe's best), green hydrogen (for which Austria has limited domestic RE surplus), or accepting that 100% balance is an annual average, not an hourly guarantee. Austria's EAG 2021 uses annual balance accounting — the easiest metric to meet.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Austria's transmission system, APG, is a critical Central European transit node — but its role creates vulnerability as well as revenue: Austria cannot fully control its own grid flows.</strong> Loop flows from German RE, driven by physics rather than commercial contracts, regularly congest Austrian transmission lines. APG spends hundreds of millions of euros annually on redispatch (ordering generators to adjust output) to manage unplanned power flows. This "transit country problem" is a growing source of tension in Central European grid planning — and a reason Austria strongly supports TSO coordination through ENTSO-E.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The Austrian EAG 2021 renewables expansion scheme — feed-in premium contracts, investment grants, and renewable fuel promotion — is one of Europe's most comprehensive RE support frameworks, but its design creates perverse incentives at the municipal level.</strong> Austria's decentralised federal structure means that wind farm permitting is controlled by nine Länder (provinces), each with different rules and political attitudes. Lower Austria (home to most Austrian wind) imposed a strict minimum distance regulation in 2014 that effectively halted new onshore wind for six years. The regulation was repealed in 2020 under federal pressure, creating a rapid pipeline resurgence. Wind capacity nearly doubled 2020-2025. The lesson: national targets are meaningless without sub-national permitting alignment.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      E-Control — Austrian electricity market data and annual report 2024-2025 ·
+      APG — Austrian Power Grid statistics and grid report ·
+      Verbund AG — Annual report 2024 ·
+      IRENA — Austria renewable electricity capacity 2025 ·
+      IEA — Austria energy data ·
+      Eurostat — Austria electricity statistics ·
+      EAG 2021 — Erneuerbaren-Ausbau-Gesetz (Renewables Expansion Act) ·
+      LowCarbonPower.org — Austria 2024 generation mix
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro (run-of-river + reservoirs)', 'Wind', 'Solar PV', 'Biomass / CHP', 'Fossil gas (residual)'],
+    datasets: [{ data: [57, 10, 11, 9, 13], backgroundColor: ['#1B6CA8','#6AB0DE','#FFD700','#4CAF50','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

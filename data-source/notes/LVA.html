@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latvia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Latvia</div>
+    <div class="doc-sub">~3 GW installed · Daugava hydro cascade ~1,500 MW (dominant) · Wind ~100 MW (accelerating) · Solar minimal but growing · Gas ~30% backup · AST TSO · Latvenergo (state utility) · Inčukalns underground gas storage (2.3 BCM, northern Europe's largest) · BRELL exit 8 Feb 2025 · 80% RE target 2030 · ~1.8 million population</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~3 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~1,500 MW</div><div class="kpi-lbl">Daugava hydro cascade (Pļaviņas + Rīga + Ķegums)</div></div>
+    <div class="kpi"><div class="kpi-val">8 Feb 2025</div><div class="kpi-lbl">Baltic synchronisation with ENTSO-E</div></div>
+    <div class="kpi"><div class="kpi-val">80%</div><div class="kpi-lbl">RE electricity target 2030</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Latvia's electricity system is defined by the <strong>Daugava River hydro cascade</strong> — three large run-of-river plants on the Daugava River (Latvia's main river, flowing from Belarus through Latvia to Riga and the Gulf of Riga): <strong>Pļaviņas</strong> (900 MW, 1965), <strong>Rīga HES</strong> (402 MW, 1974), and <strong>Ķegums</strong> (266 MW, 1939). Together ~1,568 MW, they generate 40-60% of Latvian electricity depending on annual rainfall. Gas (via the Baltic Gas Interconnector and Inčukalns underground storage) provides backup and peak capacity. Wind is historically minimal (~100 MW installed by 2024) due to slow permitting — but a major pipeline (1+ GW) is now in planning and permitting. Solar is growing from near zero. Latvia imports electricity from both Estonia/Lithuania and the Nord Pool Nordic market during low-hydro periods. The dominant utility is state-owned <strong>Latvenergo</strong>; the TSO is <strong>AST (Augstsprieguma tīkls)</strong>. Latvia participated in the landmark <strong>8 February 2025</strong> BRELL exit alongside Estonia and Lithuania.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Daugava cascade)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + CHP)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass + biogas CHP</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore, growing)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV + other</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~55%</div>
+            <div class="chart-center-lbl">hydro + biomass 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: AST (Latvian TSO) annual report 2024; SPRK (energy regulator); Latvenergo; IEA; Ember Latvia 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Daugava cascade: Latvia's energy backbone</strong>Pļaviņas (900 MW) — largest hydroelectric plant in the Baltics; reservoir storage enables some operational flexibility; Rīgas HES (402 MW) — Riga suburbs; run-of-river; daily dispatch; Ķegums (266 MW) — Latvia's oldest large hydro plant (1939); Latvenergo operates all three. Annual hydro generation: 2.5-3.5 TWh depending on precipitation. Daugava output is highly variable year-to-year: 2018 drought reduced output 40%. No practical expansion possible (river fully developed); future hydro growth must come from small hydro on other rivers.</div>
+        <div class="stat-item"><strong>Inčukalns: northern Europe's largest UGS</strong>Inčukalns underground gas storage (UGS) in Gauja aquifer near Valmiera; total working volume ~2.3 BCM — the largest underground gas storage facility in Northern Europe. Operated by Conexus Baltic Grid (Latvenergo subsidiary, partly owned by Marguerite Fund). Stores gas from summer imports for winter dispatch to Latvia, Estonia, Lithuania, and Finland. Critical regional gas security infrastructure; used as the common Baltic gas buffer. Post-2022: Russian gas replaced by Norwegian LNG (via Klaipeda FSRU, Lithuania) and Finnish interconnection.</div>
+        <div class="stat-item"><strong>Wind: from near-zero to major pipeline</strong>Latvia had only ~80-100 MW of wind by 2023 — extremely low for a Baltic country with good Latvian coast and inland wind resource. Causes: restrictive permitting (Nature Protection Board objections, bird migration corridors, distance regulations); Latvenergo's hydro sufficiency reducing urgency. Post-2022 energy crisis unlocked a policy shift: Latvia's Wind Energy Strategy 2023 targets 2 GW onshore wind by 2030. Pipeline of 20+ onshore projects in EIA stage. Latvian Baltic offshore wind: >5 GW pipeline, first auctions 2025-26.</div>
+        <div class="stat-item"><strong>AST and Nordic-Baltic market integration</strong>AST (Augstsprieguma tīkls) operates 1,200 km of HV transmission; interconnects with Estonia (NordBalt-Latvia section), Lithuania (Latvian-Lithuanian AC tie), and indirectly with Finland via Estonia. Post-BRELL, Latvia is part of Continental European frequency zone, pricing zone coupling with Nord Pool continuing. NordBalt (Lithuania-Sweden HVDC) combined with Baltic AC grid gives Latvia access to Scandinavian hydro and wind. Harmonic integration of Nordic-Baltic-Continental zones is the most complex grid management challenge facing AST in 2025-2030.</div>
+        <div class="stat-item"><strong>Latvenergo: state utility transformation</strong>100% state-owned; generates ~2.5 GW (hydro + gas CHP + some wind/biomass); distribution (Sadales tīkls subsidiary) serves 1.1M customers; listed on Nasdaq Riga (Latvia) and Nasdaq Tallinn. Latvenergo's post-BRELL strategy: aggressive RE investment to reach 80% domestic RE + Nordic/Baltic balancing via interconnection. CHP district heating portfolio (Riga, Daugavpils) being converted from gas to biomass and heat pumps.</div>
+      </div>
+    </div>
+
+    <h2>The Daugava Variable and Latvian Energy Security</h2>
+    <p>Latvia's heavy dependence on a single hydro resource — the Daugava cascade — creates a distinctive energy security vulnerability: a river whose flow is determined by precipitation patterns in Russia and Belarus upstream:</p>
+    <ul>
+      <li><strong>Geopolitical hydrology:</strong> The Daugava (Западная Двина in Russian) rises in the Valdai Hills of Russia, flows through Belarus, and enters Latvia near Daugavpils. The river's flow is partially controlled by upstream reservoir management in Russia and Belarus — a factor that, while never weaponised, represents a theoretically exploitable dependency. Latvia's energy security planning now explicitly considers upstream flow manipulation as a risk scenario, particularly given that Belarusian and Russian authorities control flow at multiple reservoirs upstream.</li>
+      <li><strong>Precipitation variability:</strong> Annual hydro output swings between 2 TWh (dry year) and 3.5 TWh (wet year) — a 75% variation that drives Latvia's import/export position more than any market factor. In dry years, Latvia imports 30-40% of its electricity. In wet years, it exports surplus to Estonia and Lithuania. This variability makes Latvia's electricity system less predictable than its neighbors and creates bilateral balancing challenges within the Baltic price zone.</li>
+      <li><strong>Gas backup concentration:</strong> Gas CHP in Riga (Rīgas Siltums district heating with combined heat and power) provides Riga's winter heating simultaneously with electricity. This CHP dependence means that in cold, dry winters — the worst-case scenario — Latvia simultaneously faces low hydro output and high gas demand for heating, requiring maximum gas imports at peak winter prices.</li>
+      <li><strong>Wind as the structural solution:</strong> Onshore wind production is anti-correlated with both drought events and cold calm winter periods (wind tends to blow in Baltic winter storms, exactly when hydro is low and heating demand is high). Growing Latvia's wind fleet from 100 MW to 2 GW by 2030 dramatically reduces dry-year import dependence and cold-winter gas demand — providing the structural complement to Daugava hydro that Latvia's system currently lacks.</li>
+    </ul>
+
+    <div class="callout">
+      Latvia's energy story is the quietest of the three Baltics — no dramatic oil shale phase-out, no nuclear closure, no giant offshore wind programme yet announced — but it contains one of Europe's most underappreciated energy security assets: the Inčukalns gas storage. The single largest underground gas storage facility in Northern Europe, sitting in a Latvian aquifer, is the reason Finland, Estonia, and Lithuania can weather winter gas supply disruptions. Inčukalns is Latvia's strategic contribution to Baltic and Nordic energy security — a role that becomes more valuable as Russian gas is permanently replaced with more diverse, intermittent supply chains.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Latvia's Daugava hydro cascade — three plants built 1939-1974, still the dominant source of national electricity — demonstrates both the extraordinary longevity of well-built hydraulic infrastructure and the strategic risk of dependence on a single resource whose upstream flow is influenced by potentially hostile states.</strong> Pļaviņas was built to Soviet standards in 1965 and is still Latvia's largest generator 60 years later. The technical case for life extension is strong; the geopolitical case for upstream flow diversification (through Baltic wind + interconnection) is equally strong. Latvia's hydro is an asset to preserve, not replace — but it cannot remain the dominant energy security pillar without complementary variable resources that are independent of Daugava flow.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Inčukalns Underground Gas Storage is the Baltic region's most strategically important energy security infrastructure after the BRELL synchronisation — and Latvia's custodianship of this asset gives it a regional energy diplomacy role disproportionate to its population of 1.8 million.</strong> Without Inčukalns, the Baltic gas system would require much larger pipeline capacities and LNG import volumes to meet winter peak demand. The storage facility allows the entire Baltic-Finnish region to inject gas in summer (from LNG, Norwegian pipeline, Baltic connector) and withdraw in winter as needed. Latvia's ownership and management of this facility is a structural contribution to regional energy security that Nordic and Baltic partners recognise and value.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Latvia's wind capacity of ~100 MW in 2024 — in a country with Baltic coast access and good wind resources — represents one of the EU's largest gaps between resource endowment and deployment, driven by permitting restrictions that are now being dismantled at speed following the post-2022 energy security imperative.</strong> Latvia's wind permitting bottleneck (Nature Protection Board objections, bird migration zones covering ~40% of Latvian territory, municipal distance rules) has been the primary constraint, not resource or cost. Post-2022 regulatory reforms (simplified EIA procedures, pre-designated wind development zones) are beginning to unlock the pipeline. If Latvia reaches 2 GW onshore wind by 2030, it will add more wind capacity in 7 years than it built in the previous 30 — a pace that requires consistent regulatory follow-through.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The 8 February 2025 BRELL exit was Latvia's most complex operational challenge of the three Baltic states — because Latvia sits in the geographic centre of the Baltic grid, with the most complex web of AC interconnections to Estonia and Lithuania, making synchronisation phase management more difficult than for the endpoint countries.</strong> Lithuania desynchronised at the LitPol Link (HVDC, naturally isolated from BRELL); Estonia desynchronised at the Estonian-Russian border (simple cut). Latvia in the middle had to manage both borders simultaneously while maintaining frequency stability across its own grid. AST's preparation — synchronous condensers, battery storage, operator training — was validated by the successful switch. The smoothness of Latvia's February 2025 transition reflected years of meticulous technical planning.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Latvia's 80% RE target by 2030 is achievable but requires that its wind permitting acceleration delivers at least 1.5-2 GW of new wind capacity in 5 years — a pace that Latvia has never attempted and that will require sustained political commitment to override local objections that have blocked wind development for two decades.</strong> The regulatory reforms are in place; the grid (AST) is ready to connect new generation; the economics are compelling (Baltic electricity prices post-BRELL are set by Continental European markets, making wind PPA prices bankable). The binding constraint is permitting pace: EIA processing, grid connection studies, and municipal coordination for 20+ projects simultaneously. Latvia's energy ministry's permitting office is the single most consequential bottleneck in the national energy transition.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      AST (Augstsprieguma tīkls) — Latvian TSO, annual report 2024 ·
+      SPRK (Public Utilities Commission Latvia) — energy regulatory report ·
+      Latvenergo — annual report 2024 ·
+      Conexus Baltic Grid — Inčukalns UGS operational data ·
+      IEA — Baltic energy security report ·
+      Ember — Latvia electricity mix 2025 ·
+      Ministry of Economics Latvia — National Energy and Climate Plan 2030 ·
+      European Commission — Baltic synchronisation project documentation
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro (Daugava cascade)', 'Natural gas (CCGT + CHP)', 'Biomass + biogas CHP', 'Wind (onshore, growing)', 'Solar PV + other'],
+    datasets: [{ data: [47, 28, 14, 7, 4], backgroundColor: ['#1B6CA8','#C85020','#4CAF50','#6AB0DE','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

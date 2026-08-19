@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nauru Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Pacific (Micronesia)</div>
+    <div class="doc-title">Nauru</div>
+    <div class="doc-sub">~15 MW installed · Diesel ~80% + solar ~20% · NUC (Nauru Utilities Corporation, state) · 21 km² island, ~10,000 people — world's smallest island nation by area · Phosphate mining stripped the interior; population lives on coastal fringe · Post-phosphate economic collapse: once world's richest nation per capita (1970s), now aid-dependent · Australian offshore immigration processing centre (significant electricity load) · Taiwan to PRC recognition switch January 2024 · 100% RE 2030 target</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">21 km²</div><div class="kpi-lbl">World's smallest island nation by land area</div></div>
+    <div class="kpi"><div class="kpi-val">~20%</div><div class="kpi-lbl">Solar RE share 2024 (ADB 2016 + 2019 farms)</div></div>
+    <div class="kpi"><div class="kpi-val">Post-peak</div><div class="kpi-lbl">Phosphate reserves depleted; once per-capita richest nation</div></div>
+    <div class="kpi"><div class="kpi-val">100% RE</div><div class="kpi-lbl">Target by 2030 (NUC / Nauru NDC)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Nauru — at 21 km², the world's smallest island nation by land area, and with approximately 10,000 inhabitants the third smallest by population — presents one of the most unusual electricity sector contexts in the Pacific: a nation whose interior has been almost entirely strip-mined for phosphate (leaving a desolate "topside" of coral pinnacles and abandoned mining equipment), whose population is squeezed into a narrow coastal fringe, whose per-capita wealth briefly made it the world's richest nation in the 1970s before phosphate depletion and financial mismanagement produced complete fiscal collapse, and whose electricity load now includes a major Australian government offshore immigration detention and processing centre that adds perhaps 15-25% to baseline electricity demand.</p>
+    <p>The <strong>Nauru Utilities Corporation (NUC)</strong>, a state utility, operates Nauru's single-grid electricity system from the Aiwo Power Station (approximately 10 MW HFO diesel capacity, operating at ~60% load factor). Solar PV: two ADB-financed farms total approximately 3 MW (Phase 1: 1 MW, 2016; Phase 2: 2 MW, 2019), with a 1 MW BESS (ADB 2019). Solar's 2024 generation share: approximately 20% of total. NUC supplies the Australian-operated Regional Processing Centre (RPC) — now called the Nauru Regional Processing Centre — which at peak housed ~1,200 asylum seekers and staff, though capacity has varied significantly with Australian immigration policy cycles (2012-present). NUC's effective tariff (unsubsidised): approximately US$0.46/kWh; subsidised residential rate: significantly lower. NUC's finances have been historically fragile due to Nauru's fiscal position.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Nauru generation mix (2024 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (NUC Aiwo Power Station)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (ADB Phase 1 2016 + Phase 2 2019)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~20%</div>
+            <div class="chart-center-lbl">Solar RE 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Single island grid. Load includes Regional Processing Centre (immigration) operated by Australian government. Source: NUC 2024; ADB Pacific Energy 2025; IRENA 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>The phosphate story: from world's richest to aid-dependent in 30 years</strong>Nauru's phosphate deposits (ancient seabird guano converted to calcium phosphate over millennia) made the island extraordinarily wealthy during the mining boom of the 1960s-1970s. At peak, Nauru's per-capita GDP exceeded that of Saudi Arabia — Nauruan citizens received near-universal free services (no income tax, subsidised housing, food, electricity, healthcare) funded by phosphate royalties. The Nauru Phosphate Royalties Trust was established in 1968 to save for the post-phosphate era. By the 1990s, phosphate was depleting and the Trust had been largely exhausted through combination of financial mismanagement, investments in speculative musical theatre productions in London (the Nauru Australia Musical), and lending to entities that defaulted. By 2004, Nauru was effectively bankrupt — relying on Australian aid and, later, on payment for hosting the Regional Processing Centre. For energy: the phosphate era left NUC with subsidised electricity entitlements that the post-phosphate fiscal position can no longer support — creating a structural mismatch between public expectation of cheap electricity and NUC's actual cost base.</div>
+        <div class="stat-item"><strong>Regional Processing Centre: Australia's immigration policy load on NUC's grid</strong>Australia's "Pacific Solution" — offshore processing of asylum seekers who arrive by boat — has used Nauru as a processing centre continuously since 2001 (with a gap 2008-2012). The RPC at peak (2013-2015) housed approximately 1,200 people; it has operated at lower capacity since 2016 as Australian maritime interception reduced boat arrivals. The RPC provides revenue to Nauru's government (hosting fees, land rent), which in turn flows partly to NUC subsidies. The RPC also provides a significant base load for NUC: approximately 500-1,000 kW continuous (RPC residential, commercial, water treatment, and processing infrastructure). This creates an unusual dependency: NUC's grid economics partially depend on a political decision (Australian immigration detention policy) that has nothing to do with electricity demand fundamentals. If Australia changes RPC policy and closes the centre, NUC loses both government revenue and base load — both of which affect electricity tariff sustainability.</div>
+        <div class="stat-item"><strong>PRC recognition switch (January 2024): the Pacific's latest geopolitical pivot</strong>Nauru switched diplomatic recognition from Taiwan to the People's Republic of China on 15 January 2024 — timing its announcement to coincide with the day after Taiwan's 2024 presidential election result (a win for William Lai, a Taiwan independence-leaning candidate). China's post-election diplomatic campaign to shift Taiwan's remaining allies accelerated Nauru's switch, which China had been preparing with economic incentives. For energy: PRC recognition switches typically include infrastructure financing offers (roads, buildings, sometimes power). Nauru's 2024 PRC deal included promises of development assistance. Whether China finances energy infrastructure in Nauru is a near-term question — if so, Chinese solar/battery components may replace or supplement ADB-financed equipment, which has governance implications for NUC's procurement and tariff-setting processes.</div>
+        <div class="stat-item"><strong>Island topography: phosphate-mined interior as solar siting constraint</strong>Nauru's interior "topside" — the elevated plateau where phosphate was extracted — is a landscape of coral pinnacles (called "tombstones") 10-20 metres high, with abandoned mining equipment, leaching phosphate waste, and virtually no flat land. The coastal fringe (approximately 500m wide, 19 km circumference) is where all 10,000 Nauruans live. Solar siting on a 21 km² island where half the land is unusable coral pinnacle topography and the other half is residential is genuinely constrained. ADB's two solar farms occupy some of the limited flat coastal land near the airport; the 2019 Phase 2 farm included a rooftop component on public buildings to overcome land constraints. Reaching 100% RE requires either offshore floating solar (technically feasible but expensive at Nauru scale), demand reduction, or substantial BESS + wind investment — all constrained by the tiny land area and extreme remoteness.</div>
+      </div>
+    </div>
+
+    <h2>Path to 100% RE: Constraints and Opportunities</h2>
+    <p>NUC's 100% RE by 2030 target requires moving from ~20% solar to 100% — on a 21 km² island with limited flat land, 10,000 people and significant base-load from the Australian RPC. The technical pathway: additional rooftop solar (~1 MW potential on RPC and commercial buildings), wind assessment (trade wind conditions on the island rim potentially suitable), and BESS expansion from 1 MW to 3-4 MW for overnight solar substitution. Nauru has no hydro (no rivers — flat atoll), no geothermal (not volcanic), and no significant biomass. The 2030 target is achievable but requires ADB Pacific Energy Phase 3 for Nauru plus a government commitment to capital investment that Nauru's fiscal position makes challenging without direct budget support.</p>
+    <div class="callout">
+      Nauru's energy sector sits at the confluence of its post-phosphate fiscal collapse, its geopolitical balancing act between Australia (RPC revenue), PRC (recognition switch 2024), and ADB (RE financing), and the physical constraint of a 21 km² mined-out island with limited solar siting. NUC's path to 100% RE is technically straightforward but financially and politically complex — requiring sustained external financing in a context where Nauru's government fiscal position is perpetually uncertain and its diplomatic relationships are in active flux.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>NUC's grid economics are structurally dependent on Australian Regional Processing Centre fees and base load — making Nauru's electricity sector sustainability a function of Australian immigration policy, which is a fiscal risk that NUC's capital planning does not adequately model and which ADB should require NUC to stress-test in its RE investment business case.</strong> If Australia changes its offshore processing policy (as it has done repeatedly since 2001), NUC loses both government budget support and approximately 500-1,000 kW of base load simultaneously — potentially requiring NUC to raise tariffs sharply to maintain grid viability. The ADB RE investment reduces NUC's per-unit fuel cost, which partly offsets this risk, but the revenue dependency on RPC fees is not captured in standard utility financial models. ADB's programme appraisal should include a "RPC closure" scenario.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The PRC recognition switch in January 2024 creates energy sector uncertainty: if PRC follows its standard infrastructure financing pattern (as in Solomon Islands and Kiribati after recognition switches), Chinese concessional finance for Nauru energy infrastructure may emerge in 2025-2026, which could be a genuine financing opportunity for NUC's RE programme but also introduces procurement governance and equipment standards questions that ADB and Australia must engage proactively rather than reactively.</strong> PRC infrastructure offers post-recognition-switch typically include visible physical projects (roads, government buildings, sports facilities) that establish presence and leverage. Energy is a secondary priority in most PRC Pacific engagement, but NUC's grid modernisation is visible and has clear development impact — making it an attractive PRC showcase. ADB and Australia DFAT should proactively fill the NUC capital programme gap with committed RE financing before PRC financing fills it on PRC terms (lower governance standards, non-transparent procurement, potential strategic conditionality).</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The phosphate-era electricity subsidy culture — in which Nauruans expect near-zero residential tariffs funded by phosphate royalties that no longer exist — is NUC's most intractable structural problem and cannot be resolved without either (a) sustained budget support from Australia or PRC to bridge the gap between residential tariffs and cost-reflective rates, or (b) a politically managed tariff reform with low-income exemptions that has not yet been attempted.</strong> NUC's unsubsidised cost of supply (~US$0.46/kWh) is approximately 3-5× what Nauruan residential customers pay under subsidy. The subsidy gap is funded by government transfers that are themselves funded by RPC fees and external aid — a chain of funding dependencies that makes NUC's finances non-self-sustaining and prevents it from raising capital for RE investment on its own balance sheet. Tariff reform is politically toxic given phosphate-era entitlement expectations, but it is the only route to a financially viable NUC that can maintain and expand its RE portfolio without perpetual donor dependency.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Nauru's 21 km² land area makes solar siting the primary physical constraint on the 100% RE pathway — and the mined-out "topside" interior (coral pinnacle landscape) is not a siting option — meaning that Nauru must pursue rooftop solar on public and commercial buildings, floating solar (if technically feasible in the lagoon), and potentially wind turbines on the coastal rim as the only viable RE expansion pathway on an island where flat land is genuinely scarce.</strong> ADB Phase 2's inclusion of rooftop solar on public buildings was a recognition of this constraint. A systematic Nauru rooftop solar cadastre (mapping all government, commercial, and institutional rooftops with solar installation potential) should be completed as a prerequisite for the Phase 3 programme design. The RPC itself — a large complex with significant flat roof area — is a potentially major rooftop solar site that Australia (as RPC operator) should be required to develop as part of its DFAT climate commitments, reducing NUC's grid supply obligation to the RPC and freeing capacity for residential use.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The post-phosphate economic collapse of Nauru — from world's highest per-capita income in the 1970s to aid-dependency by 2000 — is the Pacific's most extreme resource curse case study and carries direct lessons for Papua New Guinea, Timor-Leste, and other Pacific resource-dependent economies: revenues from exhaustible resources must be invested in diversified income streams (not consumed as universal subsidies) or the post-resource fiscal collapse will undermine all public services including electricity for decades.</strong> The Nauru Phosphate Royalties Trust, established in 1968 precisely to prevent post-phosphate collapse, was largely liquidated by 2004 through a combination of governance failures including speculative investments and lending to politically connected borrowers. PNG's Sovereign Wealth Fund (established 2012 from LNG revenues) and Timor-Leste's Petroleum Fund (US$14B at peak) both face analogous resource revenue management challenges. Nauru's experience is the cautionary tale at scale: electricity subsidies funded by exhaustible resource revenues are not a social policy — they are a future liability.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      NUC (Nauru Utilities Corporation) — Annual Report 2024 ·
+      ADB — Pacific Energy Programme (Nauru phases 1-2); Pacific Energy Update 2025 ·
+      IRENA — Pacific energy statistics 2025 ·
+      Nauru government — NDC 2022 ·
+      Australian Department of Home Affairs — Regional Processing Centre ·
+      IPCC AR6 — Pacific energy and climate ·
+      World Bank — Pacific energy access; Nauru fiscal review ·
+      OECD — Nauru resource curse case studies
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel / HFO (NUC Aiwo Power Station)', 'Solar PV (ADB Phase 1 2016 + Phase 2 2019)'],
+    datasets: [{ data: [80, 20], backgroundColor: ['#8B4513','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

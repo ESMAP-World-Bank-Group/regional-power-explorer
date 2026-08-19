@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belize Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Belize</div>
+    <div class="doc-sub">~240 MW installed · Hydro ~50% (Macal River cascade, Fortis Canada) · Bagasse ~15% (sugar cane cogeneation) · Diesel/HFO ~25% + Mexico CFE imports ~10% · BEL (Belize Electricity Limited, Fortis 67%) · ~450,000 people · Chalillo dam controversy (jaguar habitat) · High tariffs despite hydro dominance · Solar emerging 2023-2025</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~240 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~65%</div><div class="kpi-lbl">RE share (hydro + bagasse, 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">Fortis Inc.</div><div class="kpi-lbl">Canadian utility, 67% BEL owner</div></div>
+    <div class="kpi"><div class="kpi-val">Macal River</div><div class="kpi-lbl">90 MW cascade: Mollejon + Chalillo + Vaca</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Belize is one of the Caribbean's greenest electricity systems by generation share — approximately 65% renewable — yet has among the region's highest residential tariffs despite this RE dominance. The apparent paradox is explained by the system's structure: the <strong>Macal River hydroelectric cascade</strong> (Mollejon 25 MW, Chalillo 7 MW, Vaca 40 MW — total ~72 MW) generates reliable year-round baseload, but is owned by <strong>BECOL (Belize Electricity Company Ltd.)</strong>, a Fortis subsidiary that sells power to <strong>BEL (Belize Electricity Limited)</strong> under a Power Purchase Agreement. BEL, 67% owned by Fortis Inc. (St. John's, Newfoundland, Canada), distributes electricity across Belize. Sugarcane bagasse cogeneration at the Belize Sugar Industries (BSI/ASR) plant at Tower Hill provides ~15% of generation seasonally (January-May). Mexico CFE imports via a 115 kV interconnection provide approximately 10% of supply and serve as the marginal price-setter — when CFE prices are high (as in 2022-23), Belize's electricity costs rise correspondingly. Diesel and HFO generation at BEL's Belize City plant (~50 MW) fills dry-season hydro gaps and peak demand.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro (Macal River: Mollejon + Chalillo + Vaca)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Bagasse cogeneration (BSI/ASR, Tower Hill)</span>
+          <span><span class="lsq" style="background:#8B4513"></span>Diesel / HFO (BEL Belize City plant)</span>
+          <span><span class="lsq" style="background:#8080C0"></span>Mexico CFE imports (115 kV interconnection)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (growing 2023-25)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~65%</div>
+            <div class="chart-center-lbl">RE share 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: BEL Annual Report 2024; PUC Belize; Fortis Inc. investor disclosures; IDB; IRENA Caribbean 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Fortis Inc. and BEL: Canadian utility in Central America</strong>Fortis Inc. (St. John's, Newfoundland) is one of North America's largest investor-owned utilities; its Belize operations (BEL 67% + BECOL 100%) have been held since 1999-2001. Fortis profits from its Belize operations — BEL's tariff structure (set by Public Utilities Commission, PUC) allows Fortis a regulated return on rate base. The government of Belize holds 20% of BEL; employee pension 9%; other shareholders 4%. The Fortis relationship has been periodically contentious: the Chalillo dam controversy (below) and periodic tariff disputes have strained the commercial relationship, and the Government of Belize nationalisation rhetoric (not acted upon) creates investment uncertainty. Fortis has indicated interest in Belize solar expansion — the regulated return model is compatible with capital-intensive RE assets.</div>
+        <div class="stat-item"><strong>Chalillo dam: Central America's most controversial energy project</strong>Chalillo dam (7 MW, commissioned 2005) on the upper Macal River was contested by environmental groups including the Belize Coalition to Save Our Natural Heritage and the Natural Resources Defense Council (NRDC) for flooding 17 km² of primary forest in a jaguar conservation corridor. The Caribbean Court of Justice upheld Chalillo's legality (2004 ruling), but the controversy established Belize's environmental civil society as an active force in energy planning. The dam's 7 MW output is relatively modest — its primary role is flow regulation for the downstream Vaca (40 MW) and Mollejon (25 MW) plants. The Chalillo precedent has made additional large hydro development in Belize politically very difficult despite remaining river flow potential.</div>
+        <div class="stat-item"><strong>Bagasse cogeneration: seasonal but critical</strong>Belize Sugar Industries (BSI) at Tower Hill (Orange Walk District) — majority owned by ASR (American Sugar Refining, a Florida-based company) — operates cogeneration turbines burning sugarcane bagasse (the fibrous residue after juice extraction). Generation: approximately 30-35 MW during the sugar season (January-May); NIL during off-season. BSI sells surplus electricity to BEL under a long-standing PPA (~BZ$0.22/kWh). Bagasse cogeneration is seasonal and essentially free marginal cost; its exit from the supply mix in June creates a ~100 GWh/year gap that diesel and imports fill. Sugar production volumes in Belize have declined since 2018 (soil productivity issues, labour costs), reducing bagasse availability — a long-term concern for this generation source.</div>
+        <div class="stat-item"><strong>Mexico CFE interconnection: price risk and grid stability</strong>Belize imports from CFE (Comisión Federal de Electricidad, Mexico) via a 115 kV interconnection from Chetumal (Quintana Roo). Imports: ~150-200 GWh/year (~10% of Belize electricity). CFE pricing is tied to Mexico's natural gas markets — which spiked sharply in 2022 when US LNG exports tightened North American gas supply. PUC passthrough of fuel cost surcharges to BEL customers caused public anger in 2022-23. The Mexico interconnection simultaneously provides useful flexibility (import during dry-season hydro deficit) and introduces price risk (Mexico energy prices passed through to Belize tariffs). A second 115 kV line (Belmopan-Orange Walk extension) is planned to increase import capacity and reduce congestion.</div>
+        <div class="stat-item"><strong>Solar emerging: utility-scale and commercial rooftop</strong>BEL utility-scale solar: Corozal Solar Farm (20 MW, commissioned 2023) — Belize's first large utility-scale solar; IDB-financed; serves as dry-season hydro supplement. Additional 50 MW solar procurement underway (2025 RFP). Commercial rooftop solar: approximately 5-8 MW across Belize City businesses and resorts. Net metering regulations (2020) allow residential solar interconnection, but adoption has been slow due to high upfront cost and BEL administrative barriers. Government target: 85% RE by 2035 (current: ~65%), achievable with 50-70 MW additional solar and improved energy efficiency. Solar + storage for rural communities (Caye Caulker, Placencia) under IDB pilot.</div>
+      </div>
+    </div>
+
+    <h2>High Tariffs Despite High RE: The Belize Paradox</h2>
+    <p>Belize generates ~65% of its electricity from renewables — primarily low-marginal-cost hydro — yet residential tariffs are approximately BZ$0.37/kWh (US$0.18/kWh), higher than many Caribbean peers with lower RE shares. The structural reasons:</p>
+    <ul>
+      <li><strong>BECOL PPA pricing:</strong> Fortis' BECOL sells hydro power to BEL at a regulated PPA price that recovers capital costs and provides Fortis a return on investment — unlike state-owned hydro where the dam is "free" once built. The PPA cost (~BZ$0.15-0.18/kWh) plus BEL's distribution and overhead brings the final tariff to ~BZ$0.37/kWh even before diesel or import costs are added.</li>
+      <li><strong>Small system diseconomies:</strong> Belize's 450,000 people and 1,500 km of transmission lines spread across a large territory (23,000 km²) create high per-unit fixed costs that a larger country could spread across more customers. Administrative and maintenance costs per kWh delivered are inherently high at this scale.</li>
+      <li><strong>Diesel marginal pricing:</strong> Even when hydro is the majority source, BEL's tariff is set at the average cost including diesel and imports, not at hydro marginal cost. The diesel and CFE import component (~35%) dominates the marginal pricing signal.</li>
+    </ul>
+
+    <div class="callout">
+      Belize is the Caribbean's clearest example of the difference between RE share and electricity affordability: ~65% renewable generation does not translate to low tariffs when the hydro is owned by a profit-seeking private utility operating under a regulated return model and the system is so small that fixed costs per kWh are structurally high. The policy lesson is that RE ownership structure matters as much as RE technology: the same hydro dam owned by a state utility vs. a regulated private utility can produce tariffs that differ by 30-50%.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Belize's Macal River hydro cascade — built by Fortis under regulated return PPAs — generates cheap renewable energy but sells it to BEL (and ultimately to consumers) at regulated prices that include Fortis' capital recovery and profit margin, demonstrating that RE ownership structure can be as important as RE technology in determining electricity affordability.</strong> A government-owned hydro scheme with the same 90 MW capacity could deliver electricity at BZ$0.06-0.08/kWh marginal cost; Fortis' regulated PPA delivers it at BZ$0.15-0.18/kWh to recover construction debt and provide investor returns. Neither structure is inherently wrong — private capital funded the dams without sovereign debt — but the tariff consequences of that financing choice persist for the life of the assets (30-40 years).</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The Chalillo dam controversy established a lasting constraint on additional large hydro development in Belize regardless of technical feasibility — making solar the only realistic pathway for additional RE capacity — and demonstrates how environmental civil society litigation can effectively block energy infrastructure in a small country even when government and private capital are aligned in favour of a project.</strong> Upper Macal River and Vaca Valley have additional hydro potential (estimated 50-80 MW) that is now effectively off-limits politically. The Chalillo precedent means that solar (on degraded agricultural land, brownfields, or rooftops) is the politically low-risk RE expansion pathway — even though solar requires more land per MW than additional run-of-river hydro would on already-flooded land.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Belize's Mexico CFE import dependency introduces a structural energy price risk — linking Belize electricity tariffs to North American gas markets — that will grow as the CFE interconnection is expanded, and can only be managed by developing sufficient domestic RE capacity to reduce the need for imported energy during hydro deficit periods.</strong> The 2022-23 CFE price shock (North American gas tightened by LNG export surge) passed through to Belize consumers via PUC fuel surcharges, demonstrating that import reliance creates price volatility even when imports are relatively small (10%). The Corozal solar farm (20 MW, 2023) was partly motivated by the desire to reduce this CFE dependency during dry season. An additional 50 MW solar would likely make CFE imports unnecessary except in extreme drought years.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Bagasse cogeneration at BSI/Tower Hill — Belize's second-largest RE source — is at structural risk from declining sugar production, and replacing this seasonal ~100 GWh/year of generation (equivalent to ~30 MW firm capacity during January-May) with solar + storage is the energy sector planning challenge that BEL, the PUC, and the government have not yet adequately addressed.</strong> Belize sugar production has fallen ~20% since 2018 due to declining soil productivity in the Orange Walk District, labour emigration, and low global sugar prices. BSI has indicated that without rehabilitation investment, bagasse generation capacity could decline further. A 30 MW solar + BESS addition sized to the bagasse seasonal deficit would be the logical replacement — providing year-round generation vs. bagasse's 5-month seasonal output — but requires ~US$30-40M capital that no procurement process has yet initiated.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Belize's small population and large forested territory make it one of the region's most significant REDD+ partners and carbon credit sources — Norway has paid Belize for forest conservation services — and there is an unrealised opportunity to link Belize's electricity sector (solar expansion, rural electrification) to its carbon credit revenues in a way that reduces both electricity costs and forest conversion pressure from off-grid communities using fuelwood and diesel.</strong> Rural communities in the Cayo, Toledo, and Stann Creek districts — where BEL grid extension is uneconomic — use fuelwood, kerosene, and diesel for energy. Solar mini-grids for these communities (15-20 villages, ~5,000 households) could be financed partially from REDD+ carbon revenues, creating a direct co-benefit between forest preservation and energy access. The institutional mechanism (REDD+ agency to energy ministry transfer) requires government coordination that has not yet been designed.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      BEL (Belize Electricity Limited) — Annual Report 2024 ·
+      Fortis Inc. — Belize investor disclosures 2024 ·
+      PUC (Public Utilities Commission, Belize) — tariff orders ·
+      IDB — Belize Corozal Solar Farm project documentation ·
+      IRENA — Caribbean energy statistics 2025 ·
+      WB — Belize energy access ·
+      Natural Resources Defense Council (NRDC) — Chalillo dam documentation ·
+      UNFCCC — Belize NDC 2022
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydro (Macal River cascade)', 'Bagasse cogeneration (BSI/ASR)', 'Diesel / HFO (BEL plant)', 'Mexico CFE imports', 'Solar PV'],
+    datasets: [{ data: [50, 15, 25, 7, 3], backgroundColor: ['#1B6CA8','#4CAF50','#8B4513','#8080C0','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

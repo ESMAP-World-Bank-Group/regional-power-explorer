@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yemen Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Yemen</div>
+    <div class="doc-sub">1.5 GW pre-war → ~1 GW remaining · Grid serves Aden only · Solar surge in war · Aden 120 MW UAE-funded · Houthi vs. STC split · Off-grid expansion · 30M population</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~1 GW</div><div class="kpi-lbl">Available supply capacity</div></div>
+    <div class="kpi"><div class="kpi-val">120 MW</div><div class="kpi-lbl">Aden Solar (UAE, Jul 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">30M</div><div class="kpi-lbl">Population in electricity crisis</div></div>
+    <div class="kpi"><div class="kpi-val">Aden</div><div class="kpi-lbl">Only city with grid electricity</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>War's Impact on Yemen's Grid</h2>
+    <p>Yemen's electricity system has been catastrophically damaged by over a decade of civil war. Pre-war installed capacity of ~<strong>1.5 GW</strong> has been reduced to approximately <strong>1 GW of available supply</strong> — and even this serves only <strong>Aden and nearby southern governorates</strong>. The national grid, which once reached all major cities, is effectively non-functional. Yemen is divided between Houthi control of the north (including Sana'a) and the Saudi-backed Presidential Leadership Council / STC control of the south; each zone has its own fragmented electricity supply arrangements. For a population of 30 million, this means the vast majority live without reliable grid electricity — many without any at all.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity supply by source (est. 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Diesel generation (Aden + south)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (utility + off-grid)</span>
+          <span><span class="lsq" style="background:#3A3A3A"></span>Other / Houthi north (minimal)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~1 GW</div>
+            <div class="chart-center-lbl">available</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: The National (UAE); Modern Diplomacy; South24; UNDP; IGC / Yemen electricity crisis</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Aden Solar: 120 MW (Jul 2024)</strong>UAE-funded; operational July 2024; supplies up to 170,000 homes daily; largest solar plant in Yemen; phase 2 (60 MW+) planned for 2026; Abu Dhabi Fund for Development</div>
+        <div class="stat-item"><strong>Ataq/Shabwah Solar: 53 MW (2025)</strong>UAE-funded; inaugurated 2025; Ataq city, Shabwah governorate; collaborative with Yemen Ministry of Electricity; second major UAE solar intervention in southern Yemen</div>
+        <div class="stat-item"><strong>UNDP off-grid: 152 facilities</strong>EU + Sweden funded; solar for schools, healthcare centres, local administration; decentralised, community-scale; not grid-connected; most reliable electricity for rural populations</div>
+        <div class="stat-item"><strong>Private solar market: booming</strong>Consumer solar panel imports surging despite war; households and businesses self-funding 50W–5 kW systems; Yemen developing a de facto solar economy independent of state infrastructure</div>
+        <div class="stat-item"><strong>Houthi north: near-zero grid supply</strong>Sana'a and northern governorates have sporadic hours of grid electricity; Houthi parallel tax collection for fuel; Saudi air strikes have targeted power infrastructure; private generators dominant</div>
+      </div>
+    </div>
+
+    <h2>Solar as War-Zone Energy Solution</h2>
+    <p>Yemen has become an unlikely case study in solar energy adoption under conflict conditions. As the national grid collapsed, two parallel solar energy developments emerged:</p>
+    <ul>
+      <li><strong>UAE donor-funded utility-scale solar:</strong> The Abu Dhabi Fund for Development has financed 120 MW (Aden) and 53 MW (Ataq) of utility-scale solar in STC-controlled areas — using solar to provide basic electricity to constituencies that support Saudi-led coalition governance. These projects serve real humanitarian needs while reinforcing political alignments.</li>
+      <li><strong>Bottom-up private solar:</strong> Across Yemen — including Houthi-controlled territories — individual consumers, businesses, and local mosques have purchased solar panels, batteries, and inverters. The solar panel import market operates through informal channels. Yemen's south24.net reported a thriving solar market economy as one of the few growing economic sectors during the war.</li>
+      <li><strong>Humanitarian off-grid:</strong> UNDP's programme powering 152 public service facilities with solar demonstrates that critical infrastructure (hospitals, water, schools) can be solar-powered even in active conflict zones, without any grid connection.</li>
+    </ul>
+
+    <div class="callout">
+      Yemen is developing the world's most extreme case of solar energy as a conflict-zone survival tool. In the absence of any functioning state electricity system across most of the country, individual Yemenis have become some of the most innovative off-grid solar adopters in the world — not out of environmental commitment but because solar panels are the only reliable source of electricity available. This bottom-up solar economy, however chaotic, is building the consumer literacy, supply chains, and technical expertise that any future Yemeni electricity system will need.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Yemen's electricity crisis will not be solved until the political conflict is resolved — but solar deployment can reduce humanitarian costs in the interim.</strong> No reconstruction programme, however well-funded, can rebuild a national grid in an active conflict zone where infrastructure is a strategic target. The focus should be on hardened, decentralised solar + battery systems that cannot be easily disrupted by a single strike — not on rebuilding vulnerable centralised grid infrastructure that has been repeatedly destroyed.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The UAE's strategic use of solar diplomacy in Yemen — Aden 120 MW, Ataq 53 MW — demonstrates that energy infrastructure can be deployed as geopolitical currency in conflict zones.</strong> Abu Dhabi is investing in electricity for STC-controlled areas where its political allies govern. The projects deliver real electricity to real people; they also reinforce political loyalty and demonstrate UAE influence at a fraction of the cost of direct military operations. This model of "energy diplomacy" is being replicated across the Horn of Africa and the Sahel.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Yemen's post-conflict electricity reconstruction will require the largest per-capita solar deployment of any country in history.</strong> With the national grid destroyed, the most cost-effective path to universal electricity access is not rebuilding a centralised system but deploying distributed solar + storage at every level — village micro-grids, household systems, municipal solar plants. This is faster, cheaper, and more resilient than central grid reconstruction. Yemen's geography (dispersed population, difficult terrain) and irradiance (5.5+ kWh/m²/day) make distributed solar optimal.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Yemen's pre-war gas reserves (Marib) could anchor post-conflict gas-fired generation if peace is achieved — but are currently controlled by tribal and conflict actors.</strong> The Marib gas field was Yemen's pre-war electricity backbone; the Marib power complex (400 MW) used associated gas for generation. Control of Marib has been contested throughout the war; Houthi capture attempts and tribal dynamics have kept it unstable. Post-conflict, Marib gas + new solar could serve as the twin pillars of Yemen's electricity reconstruction.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Yemen's informal solar economy is building human capital that formal reconstruction programmes will need.</strong> The technicians installing, repairing, and trading solar equipment across Yemen — in both Houthi and STC territories — are developing skills that no pre-war training programme could have delivered. A post-conflict skills recognition and certification programme for Yemen's solar workforce would convert this informal capacity into a formal electricity sector asset. Similar spontaneous technical development occurred in post-conflict Sierra Leone and Liberia.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      The National — UAE company opens solar plant in Yemen to power 330,000 homes (Aug 2025) ·
+      Modern Diplomacy — Solar Power Brings Light to Yemen's Energy Crisis (Sep 2025) ·
+      South24 — The Solar Energy Revolution in Yemen ·
+      UNDP — Lighting the path to recovery with renewable energy in Yemen ·
+      IGC — Reinvigorating Yemen's electricity system: avenues for reform ·
+      Arab Reform Initiative — Energy Transition in Yemen: A Path to Justice and Sustainable Development ·
+      IMPACT Consulting — Yemen Electricity Crisis: Challenges and Potential Solutions
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel generation (Aden + south)', 'Solar PV (utility + off-grid)', 'Other / Houthi north (minimal)'],
+    datasets: [{ data: [650, 250, 100], backgroundColor: ['#C85020','#FFD700','#3A3A3A'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

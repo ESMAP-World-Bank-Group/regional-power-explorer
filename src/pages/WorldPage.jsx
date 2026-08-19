@@ -377,7 +377,7 @@ export default function WorldPage() {
         fontSize: '0.47rem', color: t.lblMuted, textAlign: 'center',
         whiteSpace: 'nowrap', letterSpacing: '0.3px',
       }}>
-        Indicative data · Work in progress · Boundaries for reference only · Not an official WBG product
+        Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
       </div>
     </div>
   );

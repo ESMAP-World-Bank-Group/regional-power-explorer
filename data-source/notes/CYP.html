@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyprus Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Cyprus</div>
+    <div class="doc-sub">~1.6 GW installed · Isolated island grid (no grid interconnection) · Oil + gas ~78% of generation · Solar ~450 MW + Wind ~175 MW · Vasilikos LNG FSRU (2023) · EAC utility / TSOC TSO · EuroAsia Interconnector (2 GW HVDC planned) · 22.9% RE target 2030 · High electricity prices · ~1.2 million population</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~1.6 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~78%</div><div class="kpi-lbl">Fossil (oil + gas) share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~22%</div><div class="kpi-lbl">Renewable share (solar + wind) 2024</div></div>
+    <div class="kpi"><div class="kpi-val">Isolated</div><div class="kpi-lbl">No grid interconnection to Europe</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div style="background:#EEF3F8;border-bottom:1px solid #C9D6E4;padding:12px 56px;font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.6;color:#33465C"><strong style="color:#1B3A5C">Status note.</strong> Figures describe the areas under the effective control of the Government of the Republic of Cyprus. The electricity system in the northern part of the island is operated separately and is not covered. Nothing in this note implies a position on status.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Cyprus is the EU's most energy-isolated member state — a 1,200 km² island with no electrical connection to any neighbouring country, generating nearly all its electricity from oil and gas on an isolated grid. The electricity system is dominated by the <strong>Vasilikos power station</strong> complex (heavy fuel oil and gas CCGT units), which accounts for the majority of generation. Renewable energy is growing — solar (~450 MW, growing rapidly with excellent 1,700+ kWh/m²/year irradiance), wind (~175 MW, limited by topography and land area) — but RE penetration is constrained by island grid stability challenges: without the inertia of large synchronous machines or mainland interconnection, high instantaneous RE penetration risks frequency instability. The electricity authority is <strong>EAC (Electricity Authority of Cyprus)</strong> — a state utility managing both generation and distribution — while <strong>TSOC (Transmission System Operator of Cyprus)</strong> manages the grid. Vasilikos LNG import terminal (FSRU) became operational in 2023, switching some generation from heavy oil to gas — reducing costs and emissions. Cyprus's electricity prices are among the EU's highest.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT, Vasilikos)</span>
+          <span><span class="lsq" style="background:#8B4513"></span>Heavy fuel oil (HFO, residual)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Other RE (biogas + biomass)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~22%</div>
+            <div class="chart-center-lbl">renewable 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: TSOC (Cyprus TSO) annual report 2024; RAECM (Cyprus energy regulator); IEA; Eurostat Cyprus; Ember 2025</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>EAC: state utility, generation + distribution</strong>Electricity Authority of Cyprus; fully state-owned; operates all conventional generation (Vasilikos HFO + CCGT, Moni HFO), transmission infrastructure, and distribution network; ~1.3 GW conventional capacity; retains dominant market position despite nominal liberalisation; CERA (Competition and Energy Regulation Authority) regulates market; private RE producers sell to EAC under FiT or compete in auctions</div>
+        <div class="stat-item"><strong>Vasilikos LNG FSRU (2023): fuel switch milestone</strong>ETYFA (natural gas utility) commissioned the Vasilikos Floating Storage and Regasification Unit (FSRU) in January 2023 — Cyprus's first natural gas import terminal. LNG imports (from Egypt, USA, Middle East) allow Vasilikos gas CCGT units to run on gas rather than expensive HFO, reducing fuel costs by 20-30% and CO₂ emissions per kWh generated. The FSRU has capacity of ~300,000 m³ LNG; terminal also serves as anchor for potential gas hub development in Cypriot EEZ.</div>
+        <div class="stat-item"><strong>EuroAsia Interconnector: lifeline not yet built</strong>The EuroAsia Interconnector — Israel → Cyprus → Crete → Greece → Italy — would be transformational for Cyprus: ending energy isolation, enabling surplus RE export, accessing cheap Greek and Italian electricity during supply gaps, and dramatically reducing electricity prices. Cyprus has PCI status from the EU; EAC is a co-developer. Key challenge: funding a €5-6B cable with a ~€800M Cypriot endpoint requires EU and EIB financing that has been slow to materialise. The interconnector has been "imminent" for years; latest timeline suggests construction start 2026-27 if financing closes.</div>
+        <div class="stat-item"><strong>Solar: EU's highest irradiance per capita</strong>Cyprus receives 1,700-1,900 kWh/m²/year of solar irradiance — the highest annual average of any EU member state. Solar has grown from ~150 MW (2018) to ~450 MW (2024) and is on track for 1+ GW by 2030. The constraint is not resource or cost — it is the isolated grid's ability to absorb high instantaneous solar penetration without frequency instability. Utility-scale battery storage (50-100 MW projects) is beginning to address this: TSOC has procured storage under auction frameworks.</div>
+        <div class="stat-item"><strong>Aphrodite gas field: offshore natural gas</strong>Cyprus's offshore EEZ contains the Aphrodite gas field (~4 trillion cubic feet, Block 12); operated by Shell, ExxonMobil, Noble Energy (now Chevron) consortium. Development repeatedly delayed since discovery in 2011 due to low gas prices, Israel competition (Leviathan field), and Cyprus-Türkiye EEZ disputes. New development agreement signed 2023; FID still pending. If developed, Aphrodite would provide domestic gas supply for Cypriot power generation — reducing import dependency. Could also supply Egypt for LNG export via existing Egyptian facilities.</div>
+      </div>
+    </div>
+
+    <h2>Island Grid Isolation: Constraint and Opportunity</h2>
+    <p>Cyprus's electricity challenge is fundamentally one of isolation. An island grid without interconnection must maintain all its own frequency regulation, inertia, and backup capacity — preventing RE from scaling as fast as resources and cost would otherwise allow:</p>
+    <ul>
+      <li><strong>Frequency regulation without interconnection:</strong> A synchronous island grid (no HVDC interconnection) must maintain frequency (50 Hz) entirely through its own generators. When a large unit trips suddenly, only on-island spinning reserves can respond. This requires TSOC to keep significant conventional generation online at all times as spinning reserve — even when solar and wind could theoretically provide all instantaneous demand. This "minimum conventional generation" constraint limits solar + wind to ~35-40% instantaneous penetration without storage.</li>
+      <li><strong>Battery storage as the transition solution:</strong> Grid-scale lithium-ion storage (4-hour discharge) can provide the fast-response frequency regulation that allows higher RE penetration on an isolated grid. TSOC's first storage auction (2022-23) procured ~50 MW of BESS (Battery Energy Storage Systems). With 200-400 MW of storage, Cyprus could safely operate at 60-70% instantaneous RE penetration — dramatically reducing gas/oil generation. Storage investment is the most urgent grid investment priority.</li>
+      <li><strong>Electricity prices: structural disadvantage:</strong> Cyprus's isolated, oil-and-gas-dependent system produces electricity at among the EU's highest costs (~€0.25-0.35/kWh household, varying with oil price). This is a structural competitive disadvantage for Cypriot industry and tourism. EuroAsia interconnection would expose Cyprus to EU wholesale prices (~€0.08-0.12/kWh in high-RE periods) — potentially halving industrial electricity costs. The economic case for the interconnector is overwhelming; the financing remains the barrier.</li>
+      <li><strong>Tourism demand seasonality:</strong> Cyprus has one of the EU's most extreme tourism demand profiles: summer demand (June-September, peak tourism) is 2.5× winter demand. Solar production peaks in summer — an excellent match. But summer also drives peak grid stress (maximum cooling demand, maximum tourist occupancy). Peak demand management and demand response from tourist accommodation are under-exploited flexibility resources.</li>
+    </ul>
+
+    <div class="callout">
+      Cyprus is the EU's clearest case of island energy poverty: not a lack of renewable resource (it has the EU's best solar irradiance), not a lack of political will (RE targets are ambitious), but the absence of interconnection that keeps the island trapped in an expensive, polluting oil-and-gas system. The EuroAsia Interconnector, if and when built, will be the single most valuable piece of energy infrastructure ever built for Cyprus — not because it brings electricity, but because it ends isolation and allows Cyprus's solar resource to export value rather than constrain itself.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Cyprus's energy isolation is a European energy security failure: an EU member state generates 78% of its electricity from fossil fuels not by choice or resource constraint but because no EU infrastructure investment has yet connected it to the European electricity network — despite 15 years of EuroAsia Interconnector proposals.</strong> The EU has approved Cyprus's interconnector as a Project of Common Interest twice; the European Commission has repeatedly cited Cyprus's isolation as a priority; EIB has expressed interest. Yet the €1B EU grant and EIB loan needed to make the Cypriot endpoint financeable have not been structured and closed. This is a governance and financing process failure, not a project or political failure.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Cyprus's ~450 MW of solar on a 1.6 GW system already represents one of the EU's highest per-capita solar penetrations — yet the island is still 78% fossil-fuelled, because solar without storage cannot displace gas on an isolated grid without risking blackout.</strong> This paradox — high RE capacity, high fossil dependence — illustrates a universal truth about island electricity systems: RE installation is necessary but insufficient; storage and grid management capability determine what RE can actually displace. Cyprus has invested in RE without equivalent investment in the grid infrastructure to use it. Catching up on storage investment is the most cost-effective near-term decarbonisation action available.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Vasilikos LNG FSRU — commissioned in 2023, a full decade after initial proposals — demonstrates both the potential and the timeline realism for Cyprus's energy infrastructure: projects that appear simple take 10+ years, and EuroAsia Interconnector's financing and construction will not be complete before 2030 under any realistic scenario.</strong> This means Cyprus's electricity system will remain isolated and fossil-dependent through the late 2020s regardless of interconnector ambition. The practical implication: grid-scale battery storage, rooftop solar maximisation, and demand response are the only tools available to meaningfully decarbonise Cyprus's electricity in the 2025-2030 period. Waiting for the interconnector is not a strategy.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The Aphrodite offshore gas field — 4 trillion cubic feet of gas, discovered 2011, still undeveloped in 2026 — represents both a potential domestic energy security asset and a risk of locking Cyprus into fossil infrastructure at exactly the moment European gas demand is peaking.</strong> If Aphrodite is developed (FID likely 2025-27), it would supply domestic Cypriot gas generation for 20-30 years and potentially fund the EuroAsia Interconnector through gas revenues. But gas revenue dependency creates a fiscal incentive to slow the electricity transition — producing the same "oil curse" dynamic seen in Gulf states, at a much smaller scale. Cyprus must manage the Aphrodite windfall with explicit energy transition ringfencing.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Cyprus's political division — the northern third under Turkish occupation since 1974 — complicates energy infrastructure planning in ways that are largely invisible in EU energy policy discussions: transmission routes, wind farm siting, offshore zones, and grid operator coordination all hit the Green Line boundary as a hard constraint.</strong> TSOC operates only in the Republic of Cyprus (southern ~60%); the north's electricity is supplied via a separate distribution company with different tariffs, standards, and limited coordination. Reunification would create a unified Cypriot electricity market, enable northern wind farm development (better wind resource in the Kyrenia range), and potentially alter the routing of the EuroAsia Interconnector. Energy infrastructure is one of the most tangible economic incentives for reunification — and remains largely absent from political negotiations.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      TSOC — Transmission System Operator of Cyprus, annual report 2024 ·
+      RAECM / CERA — Cyprus Energy Regulatory Authority ·
+      EAC (Electricity Authority of Cyprus) — annual report ·
+      IEA — Cyprus energy data ·
+      Eurostat — Cyprus electricity statistics ·
+      Ember — Cyprus electricity mix 2025 ·
+      Ministry of Energy, Commerce and Industry Cyprus — NECP 2021-2030
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas (CCGT, Vasilikos)', 'Heavy fuel oil (HFO, residual)', 'Solar PV', 'Wind', 'Other RE'],
+    datasets: [{ data: [45, 33, 14, 6, 2], backgroundColor: ['#C85020','#8B4513','#FFD700','#6AB0DE','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

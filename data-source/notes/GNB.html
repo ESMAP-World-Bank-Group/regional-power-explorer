@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guinea-Bissau Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-crit{background:#FDECEA;border-left:4px solid var(--coral);padding:13px 17px;margin:14px 0;font-size:13px;color:#7A1A12;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-amber{background:#B7770D}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Guinea-Bissau electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~30 MW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">0.08 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~40%</div><div class="kpi-lbl">Electrification rate (mainly Bissau)</div></div>
+  <div class="kpi"><div class="kpi-val">OMVG pipeline</div><div class="kpi-lbl">Kaléta hydro link, late 2023</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-warn"><strong>Chronic political instability.</strong> Guinea-Bissau has experienced 9 coups or coup attempts since independence in 1974 — one of the highest rates globally. The most recent significant crisis was in February 2022 when President Embaló survived an armed attack on the presidential palace. The country remains fragile: frequent government turnovers, drug trafficking (Guinea-Bissau is a major cocaine transit hub), and weak institutional capacity have made sustainable development extremely difficult. Despite this instability, the country has not experienced the jihadist insurgency affecting Sahel neighbours. The electricity sector, while extremely small, benefits from OMVG's multilateral structure as a relative island of technocratic stability.</div>
+
+<h2>1. Energy context</h2>
+<p>Guinea-Bissau has one of the smallest and most fragile electricity systems in the world, let alone WAPP. A population of ~2 million is served by approximately 30 MW of installed HFO/diesel capacity, almost all concentrated in the capital Bissau. The state utility EAGB (Empresa de Electricidade e Águas da Guiné-Bissau) operates at a near-permanent deficit — HFO fuel costs exceed revenue, billing collection is poor, and government budget support is irregular. Most of Bissau receives electricity for only a few hours per day; provincial towns have essentially no grid service.</p>
+<p>The November 2023 commissioning of the OMVG (Organisation pour la Mise en Valeur du fleuve Gambie) transmission link — carrying Guinea's Kaléta hydropower toward Bissau — represents by far the most significant electricity sector development in the country's recent history. Like The Gambia, Guinea-Bissau is expected to transition from essentially 100% diesel to a mix of hydro (OMVG) and solar over the next 2–3 years, pending commercial agreement finalisations and grid upgrade work.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~30 MW, 2024 est.)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~30</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Domestic generation (2023, ~80 GWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">80</div><div class="chart-center-lbl">GWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Guinea-Bissau capacity and generation, 2023. Almost entirely HFO/diesel confined to Bissau. OMVG hydro is not yet counted in the OWID 2023 data. Sources: EAGB; Ember Electricity Data 2024; IEA GNB Profile; OMVG.</p>
+
+<ul>
+  <li><strong>HFO / diesel (effectively 100% of domestic generation):</strong> EAGB operates two small HFO generators at the Bandim and Braima Seide power stations in Bissau, supplemented by a Karpowership floating HFO barge (~25 MW). The total available capacity fluctuates significantly depending on plant maintenance status and HFO fuel availability. Routine failures mean Bissau residents experience daily supply interruptions of 12+ hours.</li>
+  <li><strong>OMVG hydro (from late 2023):</strong> The OMVG 225 kV transmission line from Guinea's Kaléta dam (via Senegal and The Gambia) reached partial operational status in late 2023. For Guinea-Bissau, this means the possibility of accessing up to ~15–20 MW of Kaléta hydro power for Bissau — which would be transformative given current domestic generation of only ~30 MW total. Commercial and metering arrangements for the Bissau connection are still being finalised.</li>
+  <li><strong>Solar (nascent):</strong> Several small solar installations at health centres, schools, and ECOWAS-funded mini-grids in provincial towns. A 10 MWp solar plant for Bissau has been discussed in donor funding rounds but has not yet reached financial close. The off-grid solar market (solar lanterns, SHS) has grown through NGO-funded programmes and private importers.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Domestic electricity generation (GWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Guinea-Bissau domestic generation (GWh), 2015–2023. Essentially flat at 60–80 GWh/year, reflecting stagnant capacity constrained by HFO availability and funding. Sources: EAGB; Ember; IEA.</p>
+
+<h3>2.3 Regional connections — OMVG</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Notes</th></tr>
+  <tr><td><strong>OMVG (Guinea Kaléta → Guinea-Bissau)</strong></td><td>225 kV; via Senegal and Gambia; ~15–20 MW contracted for GNB</td><td>Guinea-Bissau is the terminal end of the OMVG transmission network. As OMVG is fully commissioned, Bissau would receive Kaléta/Souapiti hydro power for the first time. EAGB's payment capacity for bulk power purchase is extremely limited — OMVG commercial terms will need to reflect this. ECOWAS/donor financial support for the GNB leg of the commercial arrangement may be required.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">EAGB — Empresa de Electricidade e Águas da Guiné-Bissau <span class="trade-badge trade-badge-amber">Financially Non-viable</span></div>
+      <p class="trade-body">EAGB is the vertically-integrated state utility responsible for electricity and water. Its financial position is arguably the most precarious of any WAPP member utility: fuel costs routinely exceed revenue; billing collection is very low (~30–40%); government budget transfers are irregular and insufficient; and technical losses exceed 40%. EAGB has virtually no capital investment capacity and relies entirely on donor and government financing for any new assets. Multiple World Bank and AfDB utility reform operations have supported EAGB with limited sustained impact. The Karpowership contract, while expensive, has been EAGB's only reliable source of dispatchable power — a perverse dependency.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Financial non-viability of EAGB:</strong> EAGB cannot function as a going concern under current conditions. HFO fuel costs consume revenues multiple times over. Tariffs are low (to protect the poorest consumers) but even full collection at current tariff levels would not cover EAGB's costs. This is a structural failure requiring either tariff reform + efficiency improvements, or sustained subsidy transfer from an already-constrained government budget. The OMVG lower-cost hydro could theoretically break this cycle by reducing the fuel cost component, if the commercial structure is right.</li>
+  <li><strong>Political instability as sector constraint:</strong> No electricity sector reform can be sustained across the frequent government changes Guinea-Bissau experiences. PPAs cannot be signed, tariff reform cannot be implemented, and donor programme continuity is disrupted every time the government changes. The electricity sector requires at minimum 10–15 years of consistent policy direction to transition meaningfully — a duration that has never been achieved under the post-independence political system.</li>
+  <li><strong>OMVG — the transformative but fragile hope:</strong> OMVG power reaching Bissau is genuinely transformational: it could replace essentially all of EAGB's expensive diesel generation. But EAGB's financial capacity to pay for bulk power is nearly zero. Without a concessional payment arrangement (subsidised tariff for OMVG power to GNB, financed by ECOWAS or multilateral donors), the commercial logic of OMVG for Guinea-Bissau is severely constrained. The institutional architecture of OMVG must explicitly account for Guinea-Bissau's payment incapacity.</li>
+  <li><strong>Provincial energy poverty:</strong> Outside Bissau, Guinea-Bissau has essentially no electricity service. Rural populations rely on candles, kerosene lamps, and increasingly on small off-grid solar lanterns (imported from China). There is no grid to extend — provincial towns would require either stand-alone diesel mini-grids or off-grid solar mini-grids to have any electricity service. The donor community has funded several such mini-grids in Bafatá, Gabu, and other towns, but coverage remains extremely sparse.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Guinea-Bissau has the smallest electricity system in WAPP (80 GWh/year, essentially all confined to Bissau city) and arguably the most financially non-viable utility in the region — EAGB exists as a functioning institution only because of Karpowership's contract, government subsidies, and donor life support.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The OMVG Kaléta link (late 2023) is Guinea-Bissau's most significant electricity sector development in decades — but converting physical line availability into reliable, affordable, commercially-contracted power supply requires solving EAGB's payment capacity problem, which is as much a financing challenge as an infrastructure one.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Political instability is the root cause of the electricity sector's dysfunction: nine coups since 1974, frequent government changes, and a political economy dominated by drug trafficking interests have made it impossible to sustain the decade-plus policy continuity that electricity sector transformation requires.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>OMVG's multilateral governance structure (Guinea, Senegal, Gambia, Guinea-Bissau) provides relative institutional stability for Guinea-Bissau's energy future — the OMVG secretariat is a more durable anchor than any bilateral arrangement with EAGB, and donors should channel electricity support through OMVG rather than EAGB wherever possible.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Off-grid solar is Guinea-Bissau's most realistic near-term rural electrification pathway: provincial towns are beyond any affordable grid extension, the OMVG line serves only Bissau city, and the solar SHS market is growing through private channels — what is missing is a structured government or donor programme to accelerate and quality-control this organic transition.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> EAGB Guinea-Bissau operational data (irregular publication); Ember Electricity Data 2024; IEA Guinea-Bissau Energy Profile; World Bank Guinea-Bissau Energy Sector Assessment; AfDB OMVG Guinea-Bissau financing documents; OMVG Secretariat — project progress reports 2023; UNDP Guinea-Bissau — energy access programme reports; UNODC — Guinea-Bissau as drug transit hub (background on state fragility); Africa Energy Portal Guinea-Bissau Country Profile; IRENA Guinea-Bissau Renewable Energy Profile 2024; Radio Sol Mansi (local media) — electricity sector coverage 2023–2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Oil/HFO'];
+const C1=['#5B3FA0'];
+const GW1=[0.030];
+
+const L2=['Oil/HFO'];
+const C2=['#5B3FA0'];
+const D2=[100];
+const TWh2=[0.08];
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} GWh (100%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[60,80,80,80,80,80,80,80,80];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#5B3FA0',backgroundColor:'rgba(91,63,160,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#5B3FA0',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} GWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

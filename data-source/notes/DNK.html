@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denmark Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Denmark</div>
+    <div class="doc-sub">~17 GW installed · 92%+ low-carbon 2025 · Wind 60% share · 4 GW solar (2024) · 100% RE target 2030 · Thor 1 GW offshore · Viking Link (UK) · Nordpool · Energinet TSO</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~17 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">92%+</div><div class="kpi-lbl">Low-carbon electricity share (2025)</div></div>
+    <div class="kpi"><div class="kpi-val">4 GW</div><div class="kpi-lbl">Solar installed (end 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">2030</div><div class="kpi-lbl">Target: 100% renewable electricity</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Denmark is one of the world's most advanced wind energy systems — the country generates approximately <strong>60% of its electricity from wind</strong>, with biomass/bioenergy at ~19% and a rapidly growing solar contribution (~14%) making up most of the remainder. In 2025, <strong>more than 92% of Denmark's electricity came from low-carbon sources</strong>, one of the highest shares among large European economies. Fossil fuel use in power generation has fallen to near zero. Denmark has set a legally binding target of <strong>100% renewable electricity by 2030</strong> and a solar target of <strong>20 GW by 2030</strong>, up from 4 GW at end-2024.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2025 est.)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore + offshore)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Bioenergy / biomass</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#A0C4FF"></span>Other (hydro, imports)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Fossil (gas, residual)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">92%+</div>
+            <div class="chart-center-lbl">low-carbon</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Energinet; IEA Denmark 2023; LowCarbonPower.org 2025; State of Green</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Energinet — TSO + market operator</strong>State-owned TSO for electricity and gas; operates the Danish grid; runs the Nordpool-connected balancing market; manages offshore grid connections; publishes real-time data portal (energidataservice.dk)</div>
+        <div class="stat-item"><strong>Ørsted — offshore wind global leader</strong>Danish state-linked company; world's largest offshore wind developer; operates Hornsea (UK), Borssele (NL), Gode Wind (DE) among others; recently restructured after offshore cost pressures (2023-24) but remains dominant</div>
+        <div class="stat-item"><strong>Thor offshore wind: 1 GW (2027–28)</strong>Largest Danish offshore wind project to date; 833 MW to 1 GW; located 22 km off Thyborøn; developer: RWE; will push Denmark past its 2030 target years ahead</div>
+        <div class="stat-item"><strong>Viking Link: 700 MW UK–DK HVDC</strong>Operational since December 2023; direct HVDC cable connecting Jutland to Lincolnshire; enables Danish wind export to UK and UK import cover in low-wind periods; 1,400 km of cable</div>
+        <div class="stat-item"><strong>Solar: 4 GW (2024) → 20 GW (2030)</strong>Extraordinary growth trajectory; 545 MW added in 2024 alone (75% utility-scale); government NECP target 20 GW solar by 2030; agrivoltaics and ground-mounted large-scale projects driving growth</div>
+      </div>
+    </div>
+
+    <h2>The Wind-First Energy Model</h2>
+    <p>Denmark's energy model is built around onshore wind as baseload, offshore wind as growth driver, and strong European interconnection for balancing. The system routinely exports electricity during high-wind periods and imports during low-wind periods — net exporter in most years:</p>
+    <ul>
+      <li><strong>Onshore wind (~12.5 GW):</strong> Mature, highly efficient fleet; most turbines modern (5–10 MW); feed-in premium system phased out in favour of market contracts; community ownership model (vindmøllelaug) remains prevalent.</li>
+      <li><strong>Offshore wind (~3.5 GW operational):</strong> Vesterhav Nord and Sud (350 MW, 2023), Kriegers Flak (605 MW), Horns Rev III (407 MW); Thor (1 GW) under construction targeting 2027-28; Danish government aiming for 35 GW offshore by 2050.</li>
+      <li><strong>Interconnectors as a core asset:</strong> Denmark connects to Norway, Sweden, Germany, and now the UK (Viking Link). These connections allow Denmark to balance variable wind output through Norwegian hydro (pumped storage equivalent) and the broader European market.</li>
+      <li><strong>District heating integration:</strong> Denmark's uniquely high district heating penetration (~63% of buildings) means electricity and heat markets are tightly coupled; heat pumps and CHP plants serve as flexible demand that absorbs wind surplus.</li>
+    </ul>
+
+    <div class="callout">
+      Denmark demonstrates that 100% renewable electricity is not a theoretical target but an engineering reality in a market economy. The system already exceeds 92% clean electricity in 2025, with the remaining 8% covered by backup gas and biomass during prolonged low-wind periods. The 2030 target of 100% RE is achievable with the Thor offshore project alone — the challenge is not generation but balancing and cross-border integration with neighbouring grids that are less flexible.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Denmark is the world's clearest proof of concept for a wind-dominant electricity system at scale — 60% wind share in a market economy with no blackouts and competitive prices.</strong> This is not achieved through autocratic planning or massive subsidy distortions, but through decades of technology learning, grid investment, interconnector development, and market design. Denmark's experience is the primary reference case for countries planning 40–70% variable RE shares — the critical lesson being that interconnection and demand flexibility matter as much as generation capacity.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The solar buildout from 4 GW to 20 GW by 2030 is the next major policy bet — and represents an entirely different deployment challenge from offshore wind.</strong> Offshore wind is utility-scale, well-understood in Denmark, and planned by the state. Reaching 20 GW of solar in 6 years requires permitting hundreds of smaller projects, managing land-use conflicts in a flat agricultural country, and upgrading distribution networks not designed for bi-directional power flows. The bottleneck will be permitting and grid connection speed, not technology cost.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Viking Link (700 MW to the UK) is a template for the next generation of European offshore interconnectors — and Denmark is well-positioned to benefit from UK decarbonisation.</strong> The UK's offshore wind buildout creates periods of massive surplus that, without interconnectors, are either curtailed or create negative prices. Viking Link provides an export route from Danish offshore surplus to UK demand — particularly valuable during UK winter peaks when UK offshore wind generation often falls short. Denmark stands to be a net electricity exporter to the UK for decades.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Ørsted's financial difficulties in 2023-24 (US project write-downs, cost overruns) reflect a sector-wide cost problem for offshore wind — not a Danish policy failure.</strong> The company's retreat from some US projects does not undermine the domestic Danish offshore programme, which benefits from shorter supply chains, established port infrastructure, and a government-backed long-term investment framework. Ørsted remains the world's dominant offshore developer and its difficulties highlight the global supply chain constraints that all offshore wind markets will face in the 2025-2030 period.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Denmark's green hydrogen ambitions — aiming to produce 4–6 GW of electrolysis capacity by 2030 — depend entirely on whether surplus offshore wind can be converted competitively.</strong> The business case requires very low-cost, high-utilisation electricity. Denmark's geography (North Sea access), existing gas infrastructure (potential for repurposing), and European pipeline connections (to Germany and the Netherlands) make it structurally well-suited for export-oriented green hydrogen production. The 2030 timeline is ambitious but the fundamentals are stronger than in most European countries.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Energinet — Danish electricity market annual data ·
+      IEA — Denmark Energy Policy Review 2023 ·
+      State of Green — Denmark's energy mix 2024 ·
+      LowCarbonPower.org — Denmark generation mix 2025 ·
+      Strategic Energy Europe — Denmark reaches 4 GW solar 2024 ·
+      Forsyningstilsynet — National Report 2024 (electricity markets) ·
+      Danish Energy Agency (DEA) — NECP 2030 targets
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Wind (onshore + offshore)', 'Bioenergy / biomass', 'Solar PV', 'Other (hydro, imports)', 'Fossil (gas, residual)'],
+    datasets: [{ data: [60, 19, 14, 3, 4], backgroundColor: ['#6AB0DE','#4CAF50','#FFD700','#A0C4FF','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

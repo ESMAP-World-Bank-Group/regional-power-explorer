@@ -56,5 +56,4 @@ licence is documented on the Data Sources page.
 
 ## Code of conduct
 
-Please be respectful and constructive. This project follows the World Bank Group's open
-source community expectations; harassment or abusive behaviour is not tolerated.
+Please be respectful and constructive. Harassment or abusive behaviour is not tolerated.

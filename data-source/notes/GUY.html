@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guyana Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · SIDS — Caribbean</div>
+    <div class="doc-title">Guyana</div>
+    <div class="doc-sub">~550 MW installed · HFO/diesel ~85% · Gas-to-Shore project (300 MW, ExxonMobil pipeline) commissioning 2025 · Stabroek offshore: 11+ Bbbl discovered (ExxonMobil/Hess/CNOOC) · 650,000+ bbl/day production 2024 · GPL utility (state) · Amaila Falls hydro (165 MW) long-stalled · ~800,000 population · World's fastest-growing oil economy</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~550 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">650k bbl/d</div><div class="kpi-lbl">Oil production 2024 (Stabroek block)</div></div>
+    <div class="kpi"><div class="kpi-val">300 MW</div><div class="kpi-lbl">Gas-to-Shore CCGT (Wales, commissioning 2025)</div></div>
+    <div class="kpi"><div class="kpi-val">&gt;60%</div><div class="kpi-lbl">World's highest GDP growth rate 2022-2024</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Guyana's electricity sector is undergoing the most rapid transformation of any Caribbean SIDS — driven not by renewable energy policy but by the largest oil discovery in the Western Hemisphere in decades. The <strong>Stabroek Block</strong> (offshore Guyana, operated by ExxonMobil with Hess and CNOOC as partners) has yielded 11+ billion barrels of discovered recoverable oil since 2015, transforming Guyana from one of South America's poorest countries to one of the fastest-growing economies on earth. Oil production reached 650,000+ bbl/day in 2024, generating government revenues that exceed the entire previous national budget. The electricity sector — dominated by <strong>GPL (Guyana Power and Light)</strong>, a state utility — has historically run on expensive heavy fuel oil and diesel, with poor reliability and high tariffs for a country of only ~800,000 people. The transformative project: a <strong>Gas-to-Shore pipeline</strong> from the Stabroek block to a new 300 MW CCGT plant at Wales (west of Georgetown), set to radically reduce electricity costs and expand generation capacity from 2025 onward.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024 — transitional)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#8B4513"></span>Heavy fuel oil + diesel (GPL plants)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (growing, IDB-funded)</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Small hydro (Madhia + others)</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass (sugar cane bagasse)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~85%</div>
+            <div class="chart-center-lbl">HFO/diesel 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: GPL annual report 2024; Guyana Energy Agency; WB Guyana energy data; ExxonMobil Guyana operations; IDB project data</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Stabroek Block: Guyana's transformative resource</strong>ExxonMobil (45% operator) + Hess Corp (30%) + CNOOC (25%); discoveries beginning 2015 (Liza-1 well); 30+ discoveries by 2024; 11+ billion barrels certified recoverable; Liza Phase 1 (120 kbbl/d, 2019), Liza Phase 2 (220 kbbl/d, 2022), Payara (220 kbbl/d, 2024); additional phases in development. Guyana's production reached 650,000+ bbl/d in 2024 — making it a significant OPEC-equivalent producer for a country of 800,000. Government take: ~50% production sharing, generating US$1.5-2B+ annual revenues at current oil prices.</div>
+        <div class="stat-item"><strong>Gas-to-Shore: electricity transformation</strong>ExxonMobil/Hess/CNOOC building 220 km subsea + onshore pipeline from Stabroek FPSO vessels to Wales (west of Georgetown); associated natural gas (currently flared or re-injected) piped to shore to feed: (1) 300 MW CCGT power plant at Wales (GPL-owned, GPL/GPL subsidiary operating), (2) natural gas liquid (NGL) processing plant, (3) potential petrochemical/fertiliser facility. CCGT commissioning: 2025 (delayed from 2024). At 300 MW, the Wales plant will more than double Guyana's current reliable generation capacity — reducing electricity tariffs an estimated 30-50%.</div>
+        <div class="stat-item"><strong>GPL: reliability crisis and modernisation</strong>Guyana Power and Light; state utility; serves Georgetown (Demerara-Berbice coastland, ~600,000 people) and regional centres; interior Amerindian communities served by standalone diesel mini-grids or off-grid SHS. GPL reliability historically poor — outages of 4-8 hours/day common in Georgetown due to aging HFO generators and distribution network. GPL's generation fleet (Kingston, Garden of Eden, Vreed-en-Hoop plants) consists of aging MAN and Caterpillar HFO units. Gas-to-Shore will displace most HFO generation, dramatically improving reliability.</div>
+        <div class="stat-item"><strong>Amaila Falls: the stalled hydro giant</strong>Amaila Falls Hydroelectric Project (165 MW, Kuribrong River, interior Guyana); proposed since the 1990s; SITHE Global (private developer), then IDB/WB/China financing rounds. Multiple false starts: 2013 cancelled by parliament; revived 2021; feasibility study update 2022-23. Key challenges: remote interior location requiring 85 km access road construction; Amerindian community consultation; high cost ($800M+); political controversy over developer selection. If built, Amaila would provide ~750 GWh/year of firm hydro — transformative for Guyana's electricity mix. Likelihood of FID before 2030: uncertain.</div>
+        <div class="stat-item"><strong>Interior communities: off-grid diesel + solar</strong>~170 interior Amerindian communities (Rupununi, Northwest District, Pakaraima Mountains) served by Guyana's Hinterland Electrification Programme — standalone diesel generators (monthly fuel delivery by boat/aircraft) and growing solar home systems (WB-funded). Gov target: 100% hinterland electricity access by 2025 (partially achieved through SHS). High-cost, high-logistics electricity serving Indigenous communities in one of South America's most biodiverse regions.</div>
+      </div>
+    </div>
+
+    <h2>Oil Wealth and the Energy Transition Paradox</h2>
+    <p>Guyana's oil discovery creates a specific version of the resource curse paradox for energy transition policy:</p>
+    <ul>
+      <li><strong>Gas-to-Shore is not a climate transition:</strong> The Wales CCGT plant will run on associated natural gas for 25-30 years. It replaces HFO (dirtier) with gas (cleaner per kWh) — a genuine emission reduction and cost reduction for Guyanese consumers. But it is not a pathway to the RE-dominated electricity system that Guyana's climate commitments envision. LCDS 2030 (Guyana's Low Carbon Development Strategy) commits to 70% RE by 2030 — yet the flagship electricity project being commissioned in 2025 is a gas plant.</li>
+      <li><strong>Natural Wealth Fund and electricity investment:</strong> Guyana's Natural Resource Fund (NRF) — oil revenue savings vehicle — had accumulated ~US$2B by 2024 and is governed by legislation mandating long-term savings and intergenerational equity. A portion of NRF revenues is being allocated to infrastructure including energy. With US$1.5-2B/year in oil revenues, Guyana has — for the first time in its history — genuine fiscal capacity to fund large-scale energy infrastructure (Amaila hydro, solar roll-out) without donor dependency.</li>
+      <li><strong>Deforestation risk and energy:</strong> Guyana's ~18 million hectares of tropical forest (87% of land area) are one of the world's largest intact forest carbon stocks. The Guyana-Norway REDD+ agreement (2009 onwards, US$250M) compensates Guyana for maintaining low deforestation rates. As oil production drives economic growth and population increases, forest-clearing pressure from agriculture, mining, and infrastructure grows. Electricity infrastructure — both Grid extension to reduce wood fuel use, and RE to displace diesel in gold mining operations — is a direct REDD+ co-benefit.</li>
+    </ul>
+
+    <div class="callout">
+      Guyana is the Caribbean's most striking energy paradox in 2026: a country whose offshore oil production will generate more revenue in one year than its entire GDP a decade ago, yet whose citizens in Georgetown endure daily power outages from aging HFO generators. The Gas-to-Shore project is the bridge — gas-fired electricity replacing diesel as the national fuel for electricity, funded by oil revenues, while the longer-term RE transition (Amaila hydro, solar) remains dependent on political and project development timelines that have slipped for 20+ years. Guyana's energy challenge is now a capacity and governance challenge, not a financing challenge.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Guyana's Gas-to-Shore project — replacing expensive HFO with associated gas from Stabroek — is the right near-term electricity decision for Guyanese consumers (lower costs, higher reliability, lower emissions per kWh), but it should not be counted as progress toward the 70% RE by 2030 target in Guyana's LCDS, because a 25-year gas plant is a 25-year gas commitment.</strong> The transition from HFO to gas is a genuine improvement — HFO emits ~40% more CO₂ per kWh than natural gas CCGT. But the Wales plant will still be operating in 2050. Guyana's climate commitments require that gas is a bridge, not a destination — which means planning for renewable capacity additions (Amaila hydro, utility solar) that can displace Wales gas generation within 10-15 years of commissioning.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Guyana's oil revenues — US$1.5-2B/year and growing — give it the fiscal capacity to fund Amaila Falls hydro (~US$800M) as a national investment without donor dependency, for the first time in the project's 30-year history, making the political obstacles to Amaila now exclusively governance and procurement failures rather than financing constraints.</strong> Amaila has been proposed, cancelled, and revived multiple times since the 1990s. In every previous iteration, the financing was the constraint. In 2026, the NRF has sufficient capital to fund Amaila directly or to provide sovereign guarantees that unlock private financing. If Amaila fails again in this fiscal environment, the failure is definitively political and procurement-related — not financial. This distinction matters for WB/IDB advisory engagement.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Guyana's 170+ interior Amerindian communities — currently served by expensive diesel mini-grids — represent both a social equity priority and a REDD+ co-benefit opportunity: solar-powered electricity in hinterland communities reduces wood fuel consumption, displaces diesel (high cost, high logistics), and supports the economic activity that makes maintaining forest cover compatible with development.</strong> Each interior community converted from diesel to solar saves roughly US$0.25-0.40/kWh in fuel cost and logistics, reduces CO₂ emissions, and eliminates the monthly aircraft or boat fuel delivery that is the logistics backbone of hinterland service. A systematic solar electrification programme (financed from NRF, implemented by GPL Hinterland division, with community ownership models) is the highest-return social investment available from oil revenues for the most marginalised Guyanese communities.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>The Hess Corporation acquisition by Chevron — contested by ExxonMobil under pre-emption rights in the Stabroek PSC — is the most consequential pending corporate decision for Guyana's energy sector, because it determines whether ExxonMobil acquires Hess's 30% Stabroek stake (concentrating operator control) or whether Chevron enters as a major Stabroek partner (diversifying corporate governance).</strong> ExxonMobil claimed pre-emption rights over Hess's 30% Stabroek stake in the Chevron-Hess merger (2024-25 arbitration). The outcome determines the governance structure of Guyana's most important economic asset for decades. The Guyana government's ability to negotiate with a concentrated ExxonMobil-CNOOC partnership differs from its options with three separate major oil companies — making the corporate structure of Stabroek governance a national energy security issue.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Guyana's electricity sector transformation — from 550 MW of aging HFO to 850+ MW including gas CCGT, with Amaila hydro potentially adding 165 MW more — will occur in the 2025-2035 decade at a pace unprecedented for any Caribbean country, and GPL's institutional capacity to manage this transformation (procurement, operations, financial management) is the binding constraint, not capital.</strong> GPL has spent its entire institutional history managing 500 MW of aging diesel and HFO units, serving 100,000 customers in Georgetown. In 10 years it must operate a 850+ MW gas-dominated system with potential hydro addition, serve a rapidly growing population and industrial base (mining, services), and manage interconnection with interior mini-grids. GPL's human capital — engineering, operations, finance, regulation — must be dramatically upgraded simultaneously with the physical infrastructure build-out. Technical assistance and capacity building are as important as equipment procurement.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      GPL (Guyana Power and Light) — annual report 2024 ·
+      Guyana Energy Agency — energy statistics ·
+      ExxonMobil Guyana — Stabroek development updates ·
+      Government of Guyana — Natural Resource Fund; LCDS 2030 ·
+      World Bank — Guyana electricity access and energy efficiency project ·
+      IDB — Guyana energy sector technical assistance ·
+      IEA — Guyana energy profile 2024 ·
+      IRENA — Caribbean energy data 2025
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Heavy fuel oil + diesel (GPL plants)', 'Solar PV (growing)', 'Small hydro', 'Biomass (bagasse)'],
+    datasets: [{ data: [85, 8, 4, 3], backgroundColor: ['#8B4513','#FFD700','#1B6CA8','#4CAF50'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

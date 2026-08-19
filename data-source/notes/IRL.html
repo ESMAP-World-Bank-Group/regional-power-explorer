@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ireland Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026 · EU Region</div>
+    <div class="doc-title">Ireland</div>
+    <div class="doc-sub">~14 GW installed · ~40% wind + ~40% gas (2024) · No nuclear · EirGrid TSO · SONI (Northern Ireland) · Data centre demand surge · 5 GW Celtic Sea offshore target · 80% RE by 2030 · Synchronous condensers for grid stability</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~14 GW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~40%</div><div class="kpi-lbl">Wind share of generation (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">80% RE</div><div class="kpi-lbl">Electricity target 2030</div></div>
+    <div class="kpi"><div class="kpi-val">5 GW</div><div class="kpi-lbl">Celtic Sea offshore wind target (Phase 1)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Sector Overview</h2>
+    <p>Ireland has one of Europe's best wind resources — average wind speeds of 7–9 m/s across the island, driven by North Atlantic storms — and has built roughly <strong>4.8 GW of onshore wind</strong> (one of Europe's highest per-capita). Wind generates approximately <strong>40% of Ireland's electricity</strong>, with natural gas (primarily via CCGT plants) providing the other 40% backup. Solar (~6%), biomass (~5%), and hydro (~3%) make up the remainder. Ireland has no nuclear power and no coal remaining. The system is operated by <strong>EirGrid</strong> (Republic of Ireland TSO) and <strong>SONI</strong> (System Operator for Northern Ireland), which jointly operate the all-island electricity grid as part of the SEM (Single Electricity Market) arrangement that covers both the Republic and Northern Ireland since 2007.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity generation mix (2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#6AB0DE"></span>Wind (onshore)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Natural gas (CCGT + OCGT)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#4CAF50"></span>Biomass / biogas</span>
+          <span><span class="lsq" style="background:#1B6CA8"></span>Hydro + pumped storage</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~40%</div>
+            <div class="chart-center-lbl">wind 2024</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EirGrid Grid Information Report 2024; SEAI (Sustainable Energy Authority of Ireland) 2025; CRU; IEA Ireland</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>EirGrid: all-island TSO</strong>EirGrid operates the Republic of Ireland transmission system; jointly manages all-island grid with SONI (Northern Ireland) through the Single Electricity Market (SEM); 2,500 km HV transmission; two DC interconnectors to Great Britain (East-West 500 MW, Moyle 500 MW Northern Ireland); Celtic Interconnector to France (700 MW; commissioning ~2026-27) will reduce Ireland's energy isolation significantly</div>
+        <div class="stat-item"><strong>Data centre demand explosion</strong>Ireland hosts more Microsoft, Google, Apple, Meta, Amazon data centres than any other EU country (favourable tax regime, EU membership, Atlantic fibre cables); data centres accounted for ~21% of total Irish electricity consumption in 2023 — highest proportion in the EU; EirGrid issued moratorium on new Dublin data centre connections 2021-22 due to grid saturation; demand growth continues to stress the system despite more offshore wind; data centres projected to reach 30%+ of demand by 2030</div>
+        <div class="stat-item"><strong>Synchronous condensers: grid stability solution</strong>As wind displaces gas, Ireland loses synchronous inertia (spinning mass that stabilises grid frequency during faults). EirGrid's solution: install large synchronous condensers (spinning flywheel + electrical machine) at key substations to provide inertia without fuel. Multiple units operational from 2020 onwards. Ireland is a global leader in synchronous condenser deployment for high-RE grids — a technology solution now being studied by Australia, UK, and others.</div>
+        <div class="stat-item"><strong>Celtic Sea offshore pipeline</strong>Ireland's offshore wind potential is enormous — the Celtic Sea has water depths 50-100m, sustained 10-11 m/s winds, and is one of Europe's largest underdeveloped offshore zones. Government target: 5 GW by 2030 (Phase 1); 7 GW by 2035. Designated Maritime Area Plan (DMAP) approved 2025. Key projects: Codling Wind Park (2.2 GW, ESB), DP Energy floating (500 MW), Oriel Offshore. First power 2029-30 at earliest. Floating wind being evaluated for deeper western Atlantic sites (>60m).</div>
+        <div class="stat-item"><strong>Gas import vulnerability: no domestic reserves</strong>Ireland has no domestic gas production (Corrib field in decline since 2015, near depletion). 100% dependent on UK gas interconnectors (Moffat and Twynholm pipelines). If UK-Ireland gas interconnection failed, Ireland would face a gas emergency within days. The Celtic Interconnector and LNG terminal proposal (Shannon LNG — stalled since 2010 over planning) are both part of Ireland's long-term strategy to reduce gas import dependency and diversify electricity supply during wind lulls.</div>
+      </div>
+    </div>
+
+    <h2>Celtic Sea Offshore Wind and the Data Centre Dilemma</h2>
+    <p>Ireland faces a characteristic tension of successful energy transitions: the growth of clean electricity demand from data centres is outpacing grid expansion, threatening to slow RE deployment by saturating the grid it's meant to use:</p>
+    <ul>
+      <li><strong>EirGrid's capacity constraint:</strong> The Dublin region transmission network is saturated — the 2021 moratorium on new data centre connections in the greater Dublin area reflects EirGrid's inability to build transmission fast enough to accommodate both RE generation and large new loads simultaneously. Grid upgrades (HVDC north-south link, substation expansions) take 7-10 years to deliver, while data centre demand grew 4-5 GW in a decade.</li>
+      <li><strong>North Sea/Celtic Sea disconnect:</strong> Ireland's best onshore wind is in the west and northwest — Clare, Mayo, Galway, Donegal — while load is concentrated in Dublin (east). The transmission corridor from west to east is constrained. Several 400kV line upgrades are in planning/construction (Kilkenny–Galway, Western HVDC) but face permitting delays. Without this grid, Celtic Sea offshore wind connecting to the southern and western coast cannot reach Dublin.</li>
+      <li><strong>Celtic Interconnector (Ireland-France, 700 MW):</strong> This submarine cable under the Celtic Sea, connecting Crusteen (Cork) to La Martyre (Brittany), is Ireland's biggest energy infrastructure investment. It will give Ireland direct access to French nuclear power during wind lulls, and allows Irish wind surplus to reach Continental Europe during storm events. Commissioning expected 2026-27.</li>
+      <li><strong>Wind curtailment cost:</strong> Ireland already curtails 10-15% of available wind generation — paying wind farms to switch off because the grid cannot absorb their output or because gas must remain online for grid stability. This curtailment cost (€200-400M/year) would be greatly reduced by new storage, interconnection, and synchronous condenser deployment. The data centre load, paradoxically, reduces curtailment by consuming wind electricity that would otherwise be wasted — but at the cost of creating a very high-emissions demand segment.</li>
+    </ul>
+
+    <div class="callout">
+      Ireland is the clearest case in Europe of the data centre economy stress-testing an electricity system designed for 5 million people. The Republic of Ireland has roughly the electricity demand of Denmark or Austria — but has attracted hyperscaler investment that has added a third of Danish total demand in under 10 years. This is not a grid failure; it is an economic success creating infrastructure demand beyond what any small EU country could have anticipated or planned for. The lesson for smaller economies hosting digital infrastructure: data centre policy is energy policy.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Ireland's wind resource is among the world's best for its latitude — average annual capacity factors of 35-40% onshore — but the island's physical isolation (limited interconnection) means every TWh generated must be consumed domestically or wasted.</strong> Until the Celtic Interconnector to France is operational and the Grids for Future project (potential North Sea interconnection) is developed, Ireland cannot export wind surpluses to the wider European market. This forces curtailment rather than export during storm events, reducing the economics of wind investment and wasting clean electricity. Ireland's energy transition is constrained more by interconnection than by wind resource.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The SEM (Single Electricity Market) — the all-island electricity market covering both the Republic and Northern Ireland — is one of the few post-Brexit EU-UK arrangements that continues to function effectively, and its preservation is a mutual interest that transcends political tensions over the Northern Ireland Protocol.</strong> Electricity markets require instant coordination and do not respect political borders. The SEM allocates generation and transmission efficiently across both jurisdictions, lowering costs for consumers on both sides. Any breakdown of the SEM (driven by Brexit regulatory divergence or political conflict) would harm both Irish and Northern Irish electricity consumers simultaneously — a powerful mutual incentive for the arrangement's preservation.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>EirGrid's synchronous condenser programme makes Ireland one of the world's most technically sophisticated grid operators relative to its size — and positions it as a laboratory for the inertia management challenges that every high-RE power system will eventually face.</strong> By 2025, Ireland regularly operates at 80-90% instantaneous non-synchronous penetration (wind + solar + HVDC imports) — a level that most European systems haven't yet encountered. EirGrid's DS3 programme (Delivering a Secure, Sustainable Electricity System) has developed operationally validated solutions for frequency control, inertia management, and ramp rate control that are now referenced in grid code development globally.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Ireland's data centre boom is simultaneously its biggest energy challenge and its most powerful economic argument for RE investment — but it requires active management to prevent the digital economy from crowding out the energy transition rather than enabling it.</strong> If data centres simply displace gas peakers with direct gas supply contracts (as some have proposed using on-site diesel + gas backup), Ireland's RE deployment is undermined. If instead data centres sign long-term PPAs directly with Celtic Sea offshore wind projects, they become de facto co-financiers of Ireland's most important RE infrastructure. Government PPA policy, data centre energy certification, and offshore wind tender design must be deliberately aligned to ensure the latter outcome.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Ireland's 80% renewable electricity target by 2030 requires roughly doubling total RE capacity in six years — achievable in generation terms but critically constrained by grid and planning timelines.</strong> The offshore wind pipeline (5 GW Celtic Sea Phase 1 + onshore additions) is physically sufficient. The constraint is: grid upgrades take 7-10 years, planning permissions for HV lines face community opposition, and offshore auction winners face permitting uncertainty. If 2-3 major grid upgrades slip their commissioning dates by 2-3 years, the 2030 target slips with them. Ireland's energy transition is ultimately limited not by technology, cost, or resource — but by permitting speed and grid investment timelines.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      EirGrid — Grid Information Report 2024; Tomorrow's Energy Scenarios ·
+      SEAI — Sustainable Energy Authority of Ireland, energy statistics 2024-2025 ·
+      CRU — Commission for Regulation of Utilities, electricity market data ·
+      IEA — Ireland energy policy review ·
+      Eurostat — Ireland electricity statistics ·
+      OPAL-RT / EirGrid — DS3 programme documentation ·
+      Department of the Environment, Climate and Communications — Climate Action Plan 2024
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Wind (onshore)', 'Natural gas (CCGT + OCGT)', 'Solar PV', 'Biomass / biogas', 'Hydro + pumped storage'],
+    datasets: [{ data: [40, 40, 6, 7, 7], backgroundColor: ['#6AB0DE','#C85020','#FFD700','#4CAF50','#1B6CA8'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed}%` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

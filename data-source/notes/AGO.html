@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angola Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · Southern African Power Pool</div>
+  <div class="doc-title">Angola electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~6.9 GW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">15.8 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~47%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">Laúca 2,070 MW</div><div class="kpi-lbl">Largest hydro in Angola</div></div>
+</div>
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Angola is sub-Saharan Africa's second-largest oil producer and, increasingly, one of the continent's most significant hydropower developers. The commissioning of the Laúca hydropower plant (2,070 MW, on the Kwanza River) between 2017–2020 transformed Angola's generation mix: for the first time, the country generates more electricity from hydro than from imported oil — a reversal of the colonial-era diesel dependence that persisted through the 27-year civil war (1975–2002) and its reconstruction aftermath. With Caculo Cabaça (2,172 MW, also on the Kwanza, under construction by China Three Gorges, expected 2025–2027) nearing completion, Angola is on a path to become a significant electricity exporter in southern and central Africa.</p>
+<p>Yet the paradox of Angola's energy sector remains acute: 71% hydro generation at the national level coexists with urban diesel generator dependence in Luanda and other cities (grid reliability remains poor, compelling middle-class households to run diesel backup generators) and near-total energy poverty in rural areas (electrification: ~3%). The grid — destroyed during the civil war and rebuilt with Chinese financing — remains fragmented: the Northern, Southern, and Benguela grids were only recently interconnected, and many provincial capitals still rely on isolated diesel systems. Angola's energy challenge is not a generation capacity problem but a distribution and reliability problem.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~6.9 GW, 2024 est.)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">6.9</div><div class="chart-center-lbl">GW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023, 15.8 TWh)</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">15.8</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Angola installed capacity and 2023 generation. Laúca (2,070 MW) and Cambambe (960 MW) dominate hydro; gas-to-power at Soyo; oil/diesel for isolated grids. Sources: PRODEL/ENDE; Ember 2024; IEA AGO Profile; IRENA.</p>
+
+<ul>
+  <li><strong>Hydro (~5 GW, ~71% of generation):</strong> Laúca (2,070 MW, Kwanza River, China Three Gorges/Sinohydro, commissioned 2017–2020), Cambambe (960 MW, upgraded 2012–2016), Capanda (520 MW, commissioned 2007), Gove (66 MW), plus smaller run-of-river stations. The Kwanza River basin is Angola's hydro heartland. Caculo Cabaça (2,172 MW, CTG-funded, under construction) will exceed Laúca when complete — potentially making Angola a major SAPP exporter.</li>
+  <li><strong>Oil/diesel (~17% of generation, ~1 GW):</strong> Distributed diesel generators across provincial capitals, Luanda diesel/HFO thermal plants (GAMEK), and isolated systems not yet integrated into the national grid. The high diesel share despite large hydro capacity reflects grid connectivity failures — the Kwanza hydro is in the north-central highlands while provincial towns across Angola's vast territory remain off-grid.</li>
+  <li><strong>Gas-to-power (~9% of generation, ~750 MW):</strong> Soyo combined-cycle gas plant (Luanda North, 750 MW, operated under concession, using associated gas from offshore Cabinda/Block 0 fields). ANGOGAS (state gas company) supplies pipeline gas. Gas-to-power is expanding as Angola seeks to reduce gas flaring from oil production — the power sector represents a commercially attractive use of associated gas that would otherwise be flared (flaring is declining but Angola still flares significant volumes from Cabinda).</li>
+  <li><strong>Solar (emerging, ~2.5% of generation):</strong> Several utility-scale solar plants are operational (100–150 MW aggregate) under the government's Distributed Solar Electrification Programme (PRODESI) — mainly targeting peri-urban and rural electrification in provinces unreachable by the main grid. ENDE has tendered solar IPPs; several Chinese-backed 50–100 MW projects are in various stages of development.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+<p class="fig-caption">Fig. 3 — Angola generation and demand (TWh), 2015–2023. Strong upward trend driven by Laúca commissioning (2017–2020). Slight dip in 2023 reflects hydrology variability. Sources: PRODEL; Ember; IEA.</p>
+
+<h3>2.3 Grid structure and regional ambitions</h3>
+<table>
+  <tr><th>System</th><th>Coverage</th><th>Status</th></tr>
+  <tr><td><strong>Sistema Interligado Nacional (SIN)</strong></td><td>Luanda, Malanje, Kwanza provinces</td><td>Main national grid, fed by Laúca, Cambambe, Capanda. Recently interconnected with southern Angola. 400 kV + 220 kV backbone.</td></tr>
+  <tr><td><strong>Sistema Interligado do Norte (SIAN)</strong></td><td>Cabinda, Zaire province</td><td>Isolated northern system; supplied by local gas-to-power and diesel. Potential connection to DRC grid.</td></tr>
+  <tr><td><strong>Southern grid</strong></td><td>Huíla, Namibe, Cunene</td><td>Interconnected to SIN since 2022. Potential future export link to Namibia (Ruacana HPP/NamPower cooperation).</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ENDE — Empresa Nacional de Distribuição de Electricidade <span class="trade-badge">State Utility (distribution)</span></div>
+      <p class="trade-body">ENDE manages electricity distribution across Angola. The sector was restructured in 2014: generation (PRODEL — Produção de Electricidade) and distribution (ENDE) were separated, with RNT (Rede Nacional de Transporte) managing transmission. MINEA (Ministry of Energy and Water) provides sector oversight. ENDE operates at a significant financial loss due to subsidised tariffs, billing inefficiencies, and grid losses (~40% technical + commercial). The Angolan government heavily subsidises electricity — household tariffs are among the lowest in Africa (below USD 0.03/kWh in many categories) — a subsidy regime that is fiscally costly and benefits wealthy urban consumers disproportionately.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Sonangol / ANGOGAS — Oil and Gas sector <span class="trade-badge trade-badge-grey">State Oil Company</span></div>
+      <p class="trade-body">Sonangol (oil) and ANGOGAS (natural gas) manage Angola's hydrocarbon resources. Oil production has declined from a peak of 1.8 million bpd (2015) to ~1.1–1.2 million bpd (2023), reducing fiscal revenues that historically funded electricity sector investment. ANGOGAS is developing the gas-to-power value chain — supplying associated gas from offshore blocks to the Soyo CCGT and planning pipeline extensions to new power plants. The integration of declining oil revenues with growing electricity investment needs (Caculo Cabaça, distribution expansion) is Angola's core energy-fiscal challenge.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Caculo Cabaça — the regional game-changer:</strong> When Caculo Cabaça (2,172 MW) comes online (expected 2025–2027, by China Three Gorges), Angola's hydro capacity will reach ~7+ GW — more than South Africa's entire non-coal fleet. At that point, Angola will have surplus generation capacity that could be exported to DRC, Namibia, and potentially South Africa via new transmission infrastructure. Caculo Cabaça positions Angola as a future regional electricity hub, but only if transmission interconnections are built simultaneously.</li>
+  <li><strong>Distribution gap — the unsolved puzzle:</strong> Angola has 6.9 GW of installed capacity but only 47% electrification — testament to the distribution infrastructure gap. Luanda city alone has unreliable supply despite being 60 km from Laúca. Provincial capitals operate on isolated diesel grids. The root causes: civil war destruction of distribution infrastructure, inadequate investment in 11 kV/LV networks, and billing/collection failures that make distribution commercially unviable without subsidy.</li>
+  <li><strong>Oil fiscal dependency and energy investment:</strong> Angola's electricity sector has been funded primarily by oil revenues channelled through Chinese loans (repaid in oil). As oil production declines and Chinese financing shifts, Angola must transition to multilateral and private financing for energy investment — a transition that requires tariff reform, improved governance, and creditworthy offtakers, none of which is straightforward given ENDE's financial position.</li>
+  <li><strong>Regional interconnection — the missing link:</strong> Angola's vast hydro capacity could serve DRC (an enormous potential market), Namibia (which imports 70% of its electricity), and beyond. But the transmission links do not yet exist. The Angola-DRC interconnection is a long-discussed project with no firm financing. The Namibia-Angola link (via the Cunene River corridor near Ruacana) is closer to feasibility. Building these interconnections is Angola's path to becoming a regional energy exporter — and requires multilateral investment in cross-border transmission.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Laúca (2,070 MW, 2017–2020) is the most significant electricity infrastructure achievement in post-war Angola — it shifted the country from diesel dependence to hydro majority in a single project and established Angola as a potential electricity exporter for the first time in its history.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Caculo Cabaça (2,172 MW, under construction) will make Angola the second-largest hydro power country in SAPP after the DRC — when combined with Laúca and Cambambe, total installed hydro will exceed 7 GW, dwarfing domestic demand and creating the physical basis for regional electricity export.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Angola's electricity paradox — 6.9 GW of installed capacity with only 47% electrification — is a distribution infrastructure problem, not a generation problem. Solving it requires investment in 11 kV and LV networks across a country the size of Western Europe, at a cost that Angola's oil-constrained fiscal position cannot finance alone.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>The Angola–DRC interconnection is one of the highest-impact, least-progressed energy infrastructure projects in southern Africa: DRC (SAPP's largest potential market, 100 million population, less than 20% electrification) lies adjacent to Angola's surplus hydro — the barrier is not technical but financial and political, requiring multilateral commitment that has not yet materialised.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Angola's electricity subsidy regime (tariffs below USD 0.03/kWh) is fiscally unsustainable and regressive — it benefits Luanda's wealthier connected households while leaving 53% of the population without access. Subsidy reform, redirected toward grid extension and rural electrification, is the structural reform that would most benefit Angola's energy equity outcomes.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> PRODEL/ENDE Angola Annual Report 2023; MINEA Angola — sector data; Ember Electricity Data 2024; IEA Angola Energy Profile; IRENA Angola Country Profile 2024; China Three Gorges — Caculo Cabaça project updates; Sonangol — Annual Report 2023; World Bank Angola Energy Sector notes; AfDB Angola infrastructure financing; OSINERG Angola — regulatory data; Xinhua / Angop — Laúca and Caculo Cabaça construction updates 2022–2024; SAPP Pool Statistics 2023; Business Angola / AllAfrica — electricity sector coverage 2023–2024.
+</div>
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Oil','Gas','Solar'];
+const C1=['#0F7B72','#5B3FA0','#2E75B6','#F59F00'];
+const GW1=[5.00,1.00,0.75,0.15];
+const L2=['Hydro','Oil','Gas','Solar'];
+const C2=['#0F7B72','#5B3FA0','#2E75B6','#F59F00'];
+const D2=[71,17,9,2];
+const TWh2=[11.22,2.70,1.39,0.39];
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} GW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed.toFixed(2)} TWh (${D2[c.dataIndex]}%)`}}}}});
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const gen=[9.82,11.03,10.86,13.19,15.87,16.86,16.90,17.36,15.80];
+const dem=[9.5,10.5,10.5,12.0,14.0,14.5,14.5,15.0,15.75];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{label:'Generation',data:gen,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2},{label:'Demand',data:dem,borderColor:'#2E75B6',backgroundColor:'transparent',fill:false,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)} TWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

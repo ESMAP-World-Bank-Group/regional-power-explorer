@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Libya Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FEF3C7;border-left:4px solid #B7770D;padding:13px 17px;margin:14px 0;font-size:13px;color:#78350F;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-badge-green{background:#1A7A4A}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}.actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Libyan electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~8.2 GW</div><div class="kpi-lbl">Nominal installed capacity</div></div>
+  <div class="kpi"><div class="kpi-val">~33 TWh</div><div class="kpi-lbl">Generation (2024 estimate)</div></div>
+  <div class="kpi"><div class="kpi-val">73%</div><div class="kpi-lbl">Electrification rate (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">$0.008</div><div class="kpi-lbl">Residential tariff (per kWh)</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Libya is an oil and gas-rich state whose electricity sector has been in a state of near-permanent crisis since the 2011 revolution and the subsequent decade of civil war. With nominal installed capacity of ~8.2 GW, Libya should be able to deliver reliable electricity to its population of ~7 million — but chronic outages of <strong>8 to 18 hours per day</strong> remain the norm in much of the country, particularly in summer when air conditioning demand peaks. Despite the theoretical installed base, effective and dispatchable capacity is estimated at only ~4–5 GW in best-case political conditions, and often substantially less.</p>
+<p>Libya's electricity sector is defined by two interconnected pathologies: a <strong>dual governance structure</strong> (the internationally recognised Government of National Unity in Tripoli controls the western grid while the Government of National Stability/House of Representatives in Tobruk operates the eastern grid) and a <strong>fiscal subsidy trap</strong> that makes the sector commercially unviable. The <strong>General Electricity Company of Libya (GECOL)</strong> — nominally a single national utility — operates effectively as two separate organisations aligned with the competing governments. Retail electricity tariffs of ~USD 0.008/kWh are among the lowest in the world, with the IMF estimating Libya's total energy subsidies at ~USD 17 billion in 2024, equivalent to approximately 20% of GDP.</p>
+<p>Despite some diplomatic progress (2024 ceasefire consolidation, renewed UN mediation), the structural barriers to sector reform — political fragmentation, subsidy dependency, and oil revenue patronage dynamics — remain essentially intact. First serious renewable energy investment is emerging: <strong>1 MW of solar</strong> at Kufra was commissioned in 2025 (Libya's first utility solar project), and TotalEnergies' <strong>Sadada 500 MW</strong> project is the most advanced large-scale renewable pipeline.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~8.2 GW nominal)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~8.2</div><div class="chart-center-lbl">GW nominal</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2024 estimate)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~33</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation mix. Libya's generation is almost entirely fossil-fuel based. Renewables are less than 0.1% of generation. Sources: IEA, GECOL (limited publications), IRENA 2024, Ember.</p>
+
+<ul>
+  <li><strong>Gas-fired generation (~74% of generation):</strong> Combined-cycle (CCGT) and open-cycle gas turbines (OCGT) concentrated around Tripoli (Khoms 1,280 MW, Zawiya 1,038 MW, Al-Wahda 1,002 MW) and the eastern grid (Benghazi North, Barka). Fuel supply from NOC pipelines; disruptions to gas supply during conflict periods directly cut power output.</li>
+  <li><strong>Oil / diesel (~25% of generation):</strong> Older steam turbine units and diesel generators, including isolated mobile generators used to compensate for grid failures. HFO (heavy fuel oil) is a primary fuel for many turbines due to Libya's relative oil surplus. Oil-fired generation is expensive and polluting but dispatched to fill supply gaps.</li>
+  <li><strong>Renewables (&lt;0.1%):</strong> As of end-2024, Libya has a nominal renewable capacity of approximately 5–7 MW (small solar installations in Sebha, Ghadames). The Kufra 1 MW solar plant commissioned in 2025 is the first utility-scale solar project. Libya has among the highest solar irradiance levels on earth (Saharan desert, &gt;2,400 kWh/m²/year) but essentially no renewable generation.</li>
+</ul>
+<div class="callout-warn"><strong>Nominal vs effective capacity:</strong> Libya's nominal ~8.2 GW masks severe discrepancy between nameplate and dispatchable capacity. Many plants are in disrepair, lack fuel, or are located in contested areas with unreliable fuel supply chains. Effective dispatchable capacity is estimated at ~4–5 GW maximum under best-case conditions, far less in periods of political disruption. Summer peak demand approaches 6–7 GW, creating a structural deficit even on paper, and actual outages confirm this gap.</div>
+
+<h3>2.2 Demand — historical trend</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity generation — historical trend (TWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">33</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Generation trend (2014–2023) and end-use breakdown. High residential share driven by near-universal air conditioning and subsidised tariffs incentivising overconsumption. Sources: IEA, GECOL, IRENA, Ember.</p>
+<p>Libya's electricity demand profile is characterised by extreme summer peaking (air conditioning in the Saharan climate) and a very high residential share (~60–65% of consumption) driven by near-zero tariffs. At USD 0.008/kWh there is essentially no price signal to manage demand. Per capita consumption of ~4,500–5,000 kWh/year is higher than most Sub-Saharan African countries but comparable to lower-middle-income MENA peers. Demand growth has been erratic due to conflict; the underlying trend under stable conditions would be 3–5%/year.</p>
+<div class="callout"><strong>The subsidy trap:</strong> GECOL charges residential consumers approximately USD 0.008/kWh — roughly 6–7 cents per month for a typical urban household. The true cost of supply is ~USD 0.15–0.20/kWh. The ~95–97% subsidy rate means GECOL collects only 4–5% of cost recovery revenues, with the rest covered by NOC fuel at below-market prices and state budget transfers. The IMF estimates Libya's total energy subsidies (electricity + fuel) at ~USD 17 billion in 2024 — approximately 20% of GDP and a direct drain from oil revenues that could otherwise fund public investment or diversification.</div>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Capacity</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Libya–Egypt (Tobruk–Salum)</strong></td><td>~150 MW active; plans for 2,000 MW</td><td>220 kV AC interconnection operational. Egypt exports to eastern Libya in deficit periods. PIDA project for large-scale upgrade (1,000+ MW). Currently modest flows.</td></tr>
+  <tr><td><strong>Libya–Tunisia</strong></td><td>~200 MW active</td><td>220 kV AC. Libya imports from Tunisia's Société Tunisienne de l'Électricité et du Gaz (STEG). Revenue-generating for Tunisia. Libya has imported increasingly as domestic supply deteriorated.</td></tr>
+  <tr><td><strong>Libya–Algeria</strong></td><td>Planned</td><td>Proposed 400 kV AC interconnection; feasibility under discussion. Not yet operational.</td></tr>
+  <tr><td><strong>West–East internal grid</strong></td><td>N/A (internally divided)</td><td>Western (Tripoli/GNU-GECOL) and eastern (Benghazi/GNS-GECOL) grids are technically connected but operational coordination between the two administrations is limited and politically sensitive.</td></tr>
+</table>
+
+<h3>2.4 Renewable pipeline — first-mover projects</h3>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">TotalEnergies Sadada Solar — 500 MW <span class="trade-badge trade-badge-grey">Pre-FID</span></div>
+      <p class="trade-body">TotalEnergies signed a framework agreement with the GNU for the Sadada solar project — potentially 500 MW near Tripoli — in 2023 with expected commercial operations in 2026–2027. The project is one of the largest renewable energy announcements in Libya's history and would, if built, represent a fundamental break in Libya's fossil-fuel-only generation mix. However, Libya's political fragmentation, GECOL's financial weakness (inability to sign bankable PPAs), and the lack of a creditworthy off-taker create severe execution risk. Pre-FID status as of mid-2026. Site surveys and permitting are reported to be underway.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">Kufra 1 MW solar — Libya's first utility project <span class="trade-badge trade-badge-green">Commissioned 2025</span></div>
+      <p class="trade-body">The Kufra solar installation (1 MW) in southeastern Libya was commissioned in 2025, representing the first utility-scale solar project ever completed in Libya. While symbolically significant, 1 MW is negligible against a ~33 TWh system and should be understood as a proof-of-concept rather than a scaling inflection. Libya's solar resource (~2,400+ kWh/m²/year in the Saharan interior) is world-class; the technical case for solar is overwhelming. The binding constraint is not the technology — it is the political and institutional environment that makes bankable PPAs and utility-scale investment nearly impossible in the current environment.</p>
+    </div>
+  </div>
+</div>
+
+<h2>3. Sector organisation and actors</h2>
+<h3>3.1 Market structure — the dual governance problem</h3>
+<p>Libya's electricity sector is theoretically structured as a regulated monopoly under <strong>GECOL</strong> (General Electricity Company of Libya), with a subordinate regulatory body, REET (Renewable Energy Authority of Libya). In practice, since 2014, the sector operates under two parallel administrations aligned with the two competing governments. The GNU (Government of National Unity, Tripoli, PM Dbeibah, recognised by the UN and most Western governments) controls GECOL-West and the Tripolitania grid. The GNS/HoR (Government of National Stability, Tobruk, PM Osama Hammad, backed by General Khalifa Haftar's LNA) controls GECOL-East and the Cyrenaica/eastern grid. Investments and contracts signed by one GECOL are not recognised by the other, creating legal and commercial paralysis for any private investor.</p>
+
+<h3>3.2 Key actors</h3>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Alignment</th></tr>
+  <tr><td><strong>GECOL-West (Tripoli)</strong></td><td>Generation, transmission, distribution — Tripolitania region and western Libya</td><td>GNU / UN-recognised government (Tripoli)</td></tr>
+  <tr><td><strong>GECOL-East (Benghazi)</strong></td><td>Generation, transmission, distribution — Cyrenaica and eastern Libya</td><td>GNS/HoR / LNA (Tobruk/Benghazi)</td></tr>
+  <tr><td><strong>REAOL (Renewable Energy Authority of Libya)</strong></td><td>Renewable energy policy and licensing — limited operational capacity; dual alignment risk</td><td>GNU nominally; contested</td></tr>
+  <tr><td><strong>National Oil Corporation (NOC)</strong></td><td>Fuel supply to power plants (gas and oil at heavily subsidised prices). Controls ~1.2 million bbl/day oil output. Both factions seek NOC revenue.</td><td>Nominally unified; contested internally</td></tr>
+  <tr><td><strong>TotalEnergies</strong></td><td>Sadada 500 MW solar project (pre-FID). Also active in upstream oil in Libya.</td><td>International private (French)</td></tr>
+  <tr><td><strong>IMF</strong></td><td>Article IV surveillance; energy subsidy reform advocacy. No active financing programme due to Libya's oil-state status.</td><td>International</td></tr>
+  <tr><td><strong>EU / Italy / UNSMIL</strong></td><td>Diplomatic stabilisation; Libya-Europe energy corridor interest (migration-energy linkage). Italian ENI major upstream oil producer.</td><td>International</td></tr>
+</table>
+
+<h3>3.3 Actor map</h3>
+<div class="actor-map-wrap">
+<svg width="100%" viewBox="0 0 920 360" role="img">
+<title>Libyan electricity sector actor map</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>.nt{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;fill:#fff}.ns{font-family:'DM Sans',sans-serif;font-size:10px;fill:rgba(255,255,255,.7)}.arr{stroke:#6B7280;stroke-width:1.4;fill:none;marker-end:url(#ar)}.arrd{stroke:#6B7280;stroke-width:1.2;stroke-dasharray:5 3;fill:none;marker-end:url(#ar)}.lbl{font-family:'DM Sans',sans-serif;font-size:10px;fill:#9CA3AF}</style>
+
+<rect x="20"  y="18" width="155" height="52" rx="8" fill="#9A7040"/>
+<text class="nt" x="98" y="34" text-anchor="middle" dominant-baseline="central">GNU (Tripoli)</text>
+<text class="ns" x="98" y="54" text-anchor="middle" dominant-baseline="central">UN-recognised · West</text>
+<rect x="195" y="18" width="155" height="52" rx="8" fill="#808890"/>
+<text class="nt" x="273" y="34" text-anchor="middle" dominant-baseline="central">GNS / HoR (Tobruk)</text>
+<text class="ns" x="273" y="54" text-anchor="middle" dominant-baseline="central">LNA · Haftar · East</text>
+<rect x="560" y="18" width="145" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="633" y="34" text-anchor="middle" dominant-baseline="central">NOC</text>
+<text class="ns" x="633" y="54" text-anchor="middle" dominant-baseline="central">Fuel supply to GECOL</text>
+<rect x="725" y="18" width="145" height="52" rx="8" fill="#4A5568"/>
+<text class="nt" x="798" y="34" text-anchor="middle" dominant-baseline="central">TotalEnergies / EU</text>
+<text class="ns" x="798" y="54" text-anchor="middle" dominant-baseline="central">Sadada · upstream oil</text>
+
+<rect x="20"  y="120" width="155" height="70" rx="8" fill="#0F7B72"/>
+<text class="nt" x="98"  y="145" text-anchor="middle" dominant-baseline="central">GECOL-West</text>
+<text class="ns" x="98"  y="163" text-anchor="middle" dominant-baseline="central">Tripolitania gen+T+D</text>
+<line x1="98" y1="70" x2="98" y2="118" class="arr"/>
+<rect x="195" y="120" width="155" height="70" rx="8" fill="#C0392B"/>
+<text class="nt" x="273" y="145" text-anchor="middle" dominant-baseline="central">GECOL-East</text>
+<text class="ns" x="273" y="163" text-anchor="middle" dominant-baseline="central">Cyrenaica gen+T+D</text>
+<line x1="273" y1="70" x2="273" y2="118" class="arr"/>
+<line x1="175" y1="155" x2="193" y2="155" class="arrd"/>
+<rect x="380" y="120" width="145" height="70" rx="8" fill="#1B3A5C"/>
+<text class="nt" x="453" y="145" text-anchor="middle" dominant-baseline="central">Consumers</text>
+<text class="ns" x="453" y="163" text-anchor="middle" dominant-baseline="central">~73% electrified</text>
+<line x1="350" y1="155" x2="378" y2="155" class="arr"/>
+
+<line x1="98" y1="190" x2="98" y2="228" stroke="#CBD5E0" stroke-width="0.8" stroke-dasharray="3 3"/>
+<rect x="20"  y="230" width="130" height="68" rx="6" fill="#9A7040"/>
+<text class="nt" x="85"  y="251" text-anchor="middle" dominant-baseline="central">Gas CCGT/OCGT</text>
+<text class="ns" x="85"  y="267" text-anchor="middle" dominant-baseline="central">Khoms · Zawiya</text>
+<text class="ns" x="85"  y="283" text-anchor="middle" dominant-baseline="central">Al-Wahda · Benghazi</text>
+<rect x="160" y="230" width="130" height="68" rx="6" fill="#808890"/>
+<text class="nt" x="225" y="251" text-anchor="middle" dominant-baseline="central">Oil / HFO steam</text>
+<text class="ns" x="225" y="267" text-anchor="middle" dominant-baseline="central">Aging ST units</text>
+<text class="ns" x="225" y="283" text-anchor="middle" dominant-baseline="central">+ emergency diesel</text>
+<rect x="300" y="230" width="130" height="68" rx="6" fill="#FFD700"/>
+<text class="nt" x="365" y="251" text-anchor="middle" dominant-baseline="central" fill="#1A2332">Solar</text>
+<text class="ns" x="365" y="267" text-anchor="middle" dominant-baseline="central" fill="rgba(0,0,0,.55)">Kufra 1 MW (2025)</text>
+<text class="ns" x="365" y="283" text-anchor="middle" dominant-baseline="central" fill="rgba(0,0,0,.55)">Sadada 500 MW pre-FID</text>
+
+<rect x="500" y="230" width="145" height="68" rx="6" fill="#1A7A4A"/>
+<text class="nt" x="573" y="251" text-anchor="middle" dominant-baseline="central">Tunisia / Egypt</text>
+<text class="ns" x="573" y="267" text-anchor="middle" dominant-baseline="central">Libya imports ~200 MW</text>
+<text class="ns" x="573" y="283" text-anchor="middle" dominant-baseline="central">from STEG and EETC</text>
+<line x1="453" y1="155" x2="480" y2="230" class="arrd"/>
+
+<rect x="20"  y="320" width="10" height="10" rx="2" fill="#0F7B72"/><text class="lbl" x="34"  y="329">GECOL-West</text>
+<rect x="130" y="320" width="10" height="10" rx="2" fill="#C0392B"/><text class="lbl" x="144" y="329">GECOL-East</text>
+<rect x="240" y="320" width="10" height="10" rx="2" fill="#808890"/><text class="lbl" x="254" y="329">Oil/gas plants</text>
+<rect x="340" y="320" width="10" height="10" rx="2" fill="#FFD700"/><text class="lbl" x="354" y="329">Solar (planned/nascent)</text>
+<rect x="475" y="320" width="10" height="10" rx="2" fill="#1A7A4A"/><text class="lbl" x="489" y="329">Imports</text>
+</svg>
+</div>
+<p class="fig-caption">Fig. 5 — Actor map of the Libyan electricity sector. The split between GNU and GNS governance creates parallel GECOL structures.</p>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 The dual-government electricity crisis</h3>
+<ul>
+  <li>Libya's political division since 2014 has left the electricity sector institutionally paralysed. GECOL nominally operates as a single company but is functionally divided along political lines: GECOL-West (Tripoli) and GECOL-East (Benghazi/Tobruk) plan, invest, and negotiate separately, creating a patchwork of incompatible contracts, standards, and tariff regimes. Coordination on the interconnecting grid is minimal.</li>
+  <li>Armed groups maintain informal control over substations and distribution infrastructure in some areas, using electricity as leverage — cutting supply to rival areas or extorting GECOL for payments. This complicates any technical or operational improvement at the field level.</li>
+  <li>External actors (Türkiye, Russia, UAE, Egypt) back competing factions and have periodically funded power sector works in their respective spheres, but these interventions are politically motivated and technically disjointed. No coherent national investment programme has been possible since 2014.</li>
+</ul>
+
+<h3>4.2 Fossil fuel subsidies — structural fiscal drain</h3>
+<ul>
+  <li>The IMF estimated Libya's energy subsidies at approximately USD 17 billion in 2024 — ~20% of GDP. This is financed by Libya's oil revenues (~USD 20–25 billion/year from 1–1.2 million bbl/day of production). In a country of 7 million people, the energy subsidy expenditure (~USD 2,400/person/year) dwarfs most public investment in education, health, or infrastructure.</li>
+  <li>Electricity retail tariffs of USD 0.008/kWh — unchanged since the Gaddafi era — create perverse incentives: there is no price signal for efficiency; overconsumption is rational; GECOL cannot fund its own operations; and cross-subsidisation of very high consumers (wealthy Tripoli households with large villas and extensive air conditioning) from oil revenues is redistributively regressive.</li>
+  <li>Political economy makes reform almost impossible: subsidies are one of the few tangible benefits Libyan citizens receive from oil wealth, and any government that attempts reform risks popular backlash. The competing governments use subsidy commitments to demonstrate sovereignty and legitimacy to their populations.</li>
+</ul>
+
+<h3>4.3 Solar potential — world-class resource, near-zero exploitation</h3>
+<ul>
+  <li>Libya's Saharan interior records solar irradiance of 2,400–2,600 kWh/m²/year — among the highest anywhere on earth. The country has essentially unlimited land and solar resource. For comparison, Germany's average solar irradiance is ~1,000 kWh/m²/year, yet Germany has ~90 GW of solar installed. Libya has less than 10 MW.</li>
+  <li>The physical case for large-scale solar is overwhelming. The political case is more complex: at USD 0.008/kWh retail, there is no domestic revenue model for solar IPPs. Any solar development requires either (a) the government as a counterparty paying cost-reflective prices (requiring subsidy reform), (b) export-oriented solar (Libya-Europe cables, which require the EU relationship to stabilise and significant infrastructure), or (c) donor/development-finance funded projects with concessional terms.</li>
+  <li>The TotalEnergies Sadada 500 MW project is structured as a government-to-utility arrangement; its financing requires at least partial tariff reform and GECOL credit enhancement from the Libyan state. This explains the pre-FID delay.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Libya has 8.2 GW of nominal installed capacity for a population of 7 million — yet chronic blackouts of 8–18 hours per day are the norm. The failure is not a resource problem but an institutional one: political fragmentation (GNU vs GNS), GECOL operating as two parallel utilities, armed groups controlling grid infrastructure, and deferred maintenance since 2011 have hollowed out effective dispatch capacity to roughly 4–5 GW at best.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>The USD 0.008/kWh electricity tariff — among the lowest on earth — is the centrepiece of Libya's subsidy regime (estimated at USD 17 billion annually, 20% of GDP). This pricing makes the sector completely financially unsustainable, crowds out public investment, and eliminates any price signal for efficiency. Reform is politically toxic: no Libyan government has been able to raise electricity prices since 1969.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>The dual-government structure makes any sector-wide investment or reform essentially impossible. PPAs signed with GNU-GECOL are not recognised by GNS-GECOL and vice versa; international investors face the unacceptable commercial risk of a counterparty whose authority is contested. TotalEnergies' Sadada project has remained pre-FID for over two years partly for this reason. Political unification — or at minimum a functioning power-sharing mechanism for the electricity sector — is a prerequisite for meaningful investment.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>Libya's solar resource (~2,400+ kWh/m²/year across the Saharan interior) is world-class and paired with abundant land. In a stable country with cost-reflective tariffs, Libya could realistically develop 5–10 GW of solar within a decade — displacing expensive oil-fired generation and potentially exporting clean electricity to Europe via undersea cable. The technical case is compelling; the political and institutional case will not be ready for years.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Libya's electricity electrification rate of ~73% is lower than expected for a middle-income oil state, reflecting the geographic fragmentation of infrastructure (coastal urban centres vs remote southern provinces) and the breakdown of rural grid investment since 2011. This gap is a proxy for state legitimacy and service delivery — in many rural and southern areas, communities have effectively disconnected from GECOL's grid entirely and rely on diesel generators as the de facto utility.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+IEA Country Analysis Brief — Libya &nbsp;·&nbsp; GECOL Annual Statistical Report (last available 2021) &nbsp;·&nbsp; IRENA Libya country profile (2024) &nbsp;·&nbsp; IMF Libya Article IV Consultation 2024 — energy subsidies data &nbsp;·&nbsp; Ember Libya country data &nbsp;·&nbsp; LowCarbonPower Libya 2021–23 &nbsp;·&nbsp; World Bank — Libya Electrification Data &nbsp;·&nbsp; MEES — Libya electricity crisis analysis &nbsp;·&nbsp; Carnegie Endowment — Libya political economy of energy &nbsp;·&nbsp; Energy Monitor — TotalEnergies Sadada project (2023) &nbsp;·&nbsp; Reuters — Libya electricity outages (2023 and 2024) &nbsp;·&nbsp; UN SMIL — Libya energy sector reports &nbsp;·&nbsp; Oxford Institute for Energy Studies — Libya power sector reform challenges &nbsp;·&nbsp; AFDB — North Africa electricity integration
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Gas (CCGT/OCGT)','Oil / HFO steam','Renewables'];
+const C1=['#9A7040','#808890','#FFD700'];
+const D1=[74,25.9,0.1];
+const MW1=D1.map(v=>+(v*8200/100).toFixed(0));
+
+const L2=['Gas','Oil / HFO','Renewables'];
+const C2=['#9A7040','#808890','#FFD700'];
+const D2=[74,25.9,0.1];
+const TWh2=D2.map(v=>+(v*33/100).toFixed(1));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:MW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed} MW (${D1[c.dataIndex]}%)`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed} TWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[34,34,34.2,32,30,32,30,34.6,30,33];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} TWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:26,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'TWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Residential','Commercial / govt','Industry'];
+const C3=['#1B3A5C','#2E75B6','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[62,26,12],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>

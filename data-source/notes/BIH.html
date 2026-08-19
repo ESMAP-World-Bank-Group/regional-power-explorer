@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bosnia and Herzegovina Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}
+  .actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Bosnia &amp; Herzegovina</div>
+    <div class="doc-sub">Energy Community member · Three Elektroprivreda companies · Highest coal share in Western Balkans · Net electricity exporter</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~5.4 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~62%</div><div class="kpi-lbl">Coal share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~33%</div><div class="kpi-lbl">Hydro share</div></div>
+    <div class="kpi"><div class="kpi-val">3 utilities</div><div class="kpi-lbl">Split along entity lines</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <h2>Generation Mix (2024)</h2>
+    <p>Bosnia and Herzegovina has the highest coal share of any country in the Western Balkans. In 2024, lignite accounted for approximately 62% of generation, hydro ~33%, and solar/wind the remainder. Coal generation has remained stable at ~8.5 TWh/yr despite growing EU pressure to phase out fossil fuels. The sector is split between two political entities — the Federation of BiH (FBiH) and Republika Srpska (RS) — each with its own utility, creating a uniquely fragmented governance structure.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Generation by source — 2024</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#808890"></span>Coal (lignite)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~14 TWh</div>
+            <div class="chart-center-lbl">total</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Enerdata, Low Carbon Power 2024/2025</p>
+      </div>
+      <div>
+        <div class="chart-title">Installed capacity by source — 2024</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#808890"></span>Coal (lignite)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro (large)</span>
+          <span><span class="lsq" style="background:#6EC8F0"></span>Small hydro</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~5.4 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Enerdata 2024; Energy Community IR 2024</p>
+      </div>
+    </div>
+
+    <h3>Key generation assets</h3>
+    <table>
+      <thead>
+        <tr><th>Asset</th><th>Type</th><th>Capacity (MW)</th><th>Entity / Owner</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>TPP Tuzla</strong></td><td>Lignite</td><td>~715</td><td>FBiH — EP BiH</td></tr>
+        <tr><td><strong>TPP Kakanj</strong></td><td>Lignite</td><td>~330</td><td>FBiH — EP BiH</td></tr>
+        <tr><td><strong>TPP Ugljevik</strong></td><td>Lignite</td><td>~300</td><td>RS — ERS</td></tr>
+        <tr><td><strong>TPP Gacko</strong></td><td>Lignite</td><td>~300</td><td>RS — ERS</td></tr>
+        <tr><td><strong>HPP Jablanica / Rama</strong></td><td>Hydro (Neretva cascade)</td><td>~210 + 168</td><td>FBiH — EP BiH</td></tr>
+        <tr><td><strong>HPP Višegrad / Trebinje</strong></td><td>Hydro</td><td>~315 + 228</td><td>RS — ERS</td></tr>
+        <tr><td><strong>HPP Mostar / Čapljina</strong></td><td>Hydro (Neretva)</td><td>~217 + 420</td><td>FBiH — EPHZHB</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Market Structure — The Three-Utility System</h2>
+    <p>Bosnia and Herzegovina's electricity sector is legally defined by the country's post-Dayton constitutional structure. Three separate state-owned utilities operate largely independently, aligned with the two entities and the Croat political constituency within FBiH.</p>
+
+    <ul>
+      <li><strong>EP BiH (Elektroprivreda BiH):</strong> Largest utility; ~1,780 MW capacity (37% of national total); serves the Bosniak-majority Federation; owns Tuzla and Kakanj TPPs and the Neretva hydro cascade.</li>
+      <li><strong>ERS (Elektroprivreda RS):</strong> RS-entity utility; ~1,300 MW (30%); owns Ugljevik and Gacko TPPs; strong political backing from RS government. Generated 4.7 TWh in 2024 (−16% YoY).</li>
+      <li><strong>EPHZHB (Elektroprivreda HZ HB):</strong> Croat-majority FBiH areas; owns Čapljina and Mostar HPPs (~640 MW); smaller but significant in hydro.</li>
+      <li><strong>NOS BiH:</strong> Independent System Operator — the nominally independent TSO. Operates transmission jointly across both entities; perpetually underfunded and politically contested.</li>
+      <li><strong>DERK:</strong> State Electricity Regulatory Commission — national regulator; entity regulators (FERK and KERS) also exist, creating overlapping jurisdictions.</li>
+    </ul>
+
+    <div class="callout">
+      The three-utility structure mirrors Bosnia's political divisions. Coordination failures between EPBiH, ERS, and EPHZHB have blocked a functioning wholesale market, stalled Energy Community compliance, and made large infrastructure investments (new interconnectors, grid upgrades) politically contentious. This fragmentation is the defining governance challenge of the sector.
+    </div>
+
+    <!-- ACTOR MAP -->
+    <h2>Sector Actor Map</h2>
+    <div class="actor-map-wrap">
+      <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans, sans-serif" font-size="11">
+        <rect x="0" y="0" width="760" height="320" fill="#F4F5F7" rx="8"/>
+        <text x="12" y="22" font-size="9.5" fill="#8A94A6" font-weight="600">REGULATION</text>
+        <text x="12" y="82" font-size="9.5" fill="#8A94A6" font-weight="600">TRANSMISSION</text>
+        <text x="12" y="152" font-size="9.5" fill="#8A94A6" font-weight="600">GENERATION (FBiH)</text>
+        <text x="12" y="232" font-size="9.5" fill="#8A94A6" font-weight="600">GENERATION (RS)</text>
+        <line x1="0" y1="35" x2="760" y2="35" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="95" x2="760" y2="95" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="175" x2="760" y2="175" stroke="#E2E6EA" stroke-width="1"/>
+        <line x1="0" y1="255" x2="760" y2="255" stroke="#E2E6EA" stroke-width="1"/>
+
+        <!-- DERK -->
+        <rect x="300" y="42" width="160" height="38" rx="5" fill="#1B3A5C"/>
+        <text x="380" y="57" text-anchor="middle" fill="white" font-weight="600" font-size="12">DERK / FERK / KERS</text>
+        <text x="380" y="72" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="10">National + Entity Regulators</text>
+
+        <!-- NOS BiH -->
+        <rect x="300" y="103" width="160" height="38" rx="5" fill="#2E75B6"/>
+        <text x="380" y="118" text-anchor="middle" fill="white" font-weight="600" font-size="12">NOS BiH</text>
+        <text x="380" y="133" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">TSO (Independent Sys. Op.)</text>
+
+        <!-- EP BiH -->
+        <rect x="50" y="183" width="185" height="60" rx="5" fill="#2E75B6" opacity="0.8"/>
+        <text x="142" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">EP BiH</text>
+        <text x="142" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">Tuzla, Kakanj (lignite)</text>
+        <text x="142" y="230" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">Jablanica, Rama (hydro) · ~1 780 MW</text>
+
+        <!-- EPHZHB -->
+        <rect x="250" y="183" width="180" height="60" rx="5" fill="#1E9AF5" opacity="0.8"/>
+        <text x="340" y="200" text-anchor="middle" fill="white" font-weight="600" font-size="11">EPHZHB</text>
+        <text x="340" y="215" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">Čapljina, Mostar (hydro)</text>
+        <text x="340" y="230" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="9">~640 MW</text>
+
+        <!-- ERS -->
+        <rect x="100" y="263" width="220" height="47" rx="5" fill="#808890" opacity="0.85"/>
+        <text x="210" y="281" text-anchor="middle" fill="white" font-weight="600" font-size="11">ERS (Elektroprivreda RS)</text>
+        <text x="210" y="296" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="9.5">Ugljevik, Gacko (lignite) · Višegrad, Trebinje (hydro) · ~1 300 MW</text>
+
+        <!-- RE IPPs -->
+        <rect x="520" y="183" width="210" height="60" rx="5" fill="#44DAEC" opacity="0.8"/>
+        <text x="625" y="200" text-anchor="middle" fill="#1B3A5C" font-weight="600" font-size="11">RE IPPs</text>
+        <text x="625" y="215" text-anchor="middle" fill="#1B3A5C" font-size="9.5">Wind 219 MW · Solar 608 MW</text>
+        <text x="625" y="230" text-anchor="middle" fill="#1B3A5C" font-size="9">Small hydro 169 MW</text>
+
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1B3A5C"/></marker>
+          <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#808890"/></marker>
+        </defs>
+        <line x1="380" y1="80" x2="380" y2="102" stroke="#1B3A5C" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="142" y1="183" x2="340" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="340" y1="183" x2="370" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+        <line x1="625" y1="183" x2="420" y2="141" stroke="#808890" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+      </svg>
+    </div>
+    <p class="fig-caption">Three separate utilities aligned with political entities; NOS BiH is nominally independent TSO.</p>
+
+    <!-- COAL -->
+    <h2>Coal — Energy Community's Compliance Flashpoint</h2>
+    <p>Bosnia and Herzegovina is home to four large lignite power plants, all operating well beyond their originally planned lifetimes. The sector is the single largest source of emissions in the Western Balkans and has been the subject of repeated enforcement proceedings under the Energy Community Treaty for violating Large Combustion Plant (LCP) emission limits.</p>
+
+    <ul>
+      <li><strong>TPP Tuzla:</strong> Units 4, 5, and 7 are operational; Unit 7 (450 MW) was the subject of a controversial loan attempt from the China Development Bank. EU objected; financing collapsed. Tuzla 7 new-build was cancelled by 2024.</li>
+      <li><strong>TPP Ugljevik (RS):</strong> 300 MW; among the most polluting plants per MWh in Europe by historical SOx/NOx measures; subject to Energy Community enforcement.</li>
+      <li><strong>TPP Gacko (RS):</strong> ~300 MW; older plant; scheduled decommissioning repeatedly deferred.</li>
+      <li><strong>TPP Kakanj:</strong> ~330 MW; partially rehabilitated; some units decommissioned.</li>
+    </ul>
+
+    <div class="callout">
+      BiH has been in persistent non-compliance with Energy Community environmental acquis on large combustion plants for over a decade. The EU has pursued infringement-style proceedings, but political deadlock between the entities has blocked coordinated responses. Coal plant operators benefit from low domestic lignite prices and lack of a functioning carbon pricing mechanism in BiH.
+    </div>
+
+    <!-- RENEWABLES -->
+    <h2>Renewables &amp; Export Potential</h2>
+    <p>Despite its coal-heavy grid, Bosnia and Herzegovina has significant hydropower resources and growing wind and solar deployment. The country is a net electricity exporter in most years, selling surpluses primarily to Serbia and Croatia. RE capacity reached 827 MW of wind and solar combined by end-2024.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Wind + Solar capacity growth (MW)</div>
+        <canvas id="reGrowthChart" height="190"></canvas>
+        <p class="fig-caption">Source: Energy Community IR 2024; Enerdata</p>
+      </div>
+      <div class="stat-note" style="padding-left:10px">
+        <div class="stat-item"><strong>Wind: 219 MW (end-2024)</strong>Mainly in Herzegovina (RS and FBiH border zone); significant additional pipeline; good resource in Dinaric karst highlands</div>
+        <div class="stat-item"><strong>Solar: 608 MW (end-2024)</strong>Fastest-growing segment; includes 372 MW utility + rooftop; Tuzla 7 cancellation frees grid capacity for RE projects</div>
+        <div class="stat-item"><strong>Hydro potential</strong>Only ~40% of Bosnia's hydro potential is developed; major rivers (Neretva, Vrbas, Una, Drina) have additional sites — though EIA and social licence challenges are significant</div>
+        <div class="stat-item"><strong>Net exporter status</strong>BiH typically exports 2–4 TWh/yr net; coal and large hydro baseload generate structural surpluses despite ageing fleet</div>
+      </div>
+    </div>
+
+    <!-- INTERCONNECTIONS -->
+    <h2>Cross-Border Interconnections</h2>
+    <table>
+      <thead>
+        <tr><th>Neighbour</th><th>Approx. NTC</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Serbia</strong></td><td>~1 000 MW</td><td>Primary export route; EPS ↔ ERS RS bilateral flows; Energy Community synchronous area</td></tr>
+        <tr><td><strong>Croatia</strong></td><td>~400 MW</td><td>ENTSO-E connection; access to Central European market</td></tr>
+        <tr><td><strong>Montenegro</strong></td><td>~600 MW</td><td>Southern connection; important for Monita cable transit potential</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt">
+        <div class="pt-n">1</div>
+        <div><strong>The three-utility structure is the root of BiH's energy governance failure.</strong> EPBiH, ERS, and EPHZHB operate as political instruments of their respective entities, blocking market reform, Energy Community compliance, and coordinated investment. Any energy sector reform requires political solutions that transcend the Dayton architecture.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">2</div>
+        <div><strong>BiH has the highest coal dependency in the Western Balkans and the worst emissions compliance record.</strong> Decade-long Energy Community enforcement proceedings have produced minimal change. Without a binding coal phase-out timeline aligned with EU standards — which would require entity-level consensus — this will remain a chronic accession obstacle.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">3</div>
+        <div><strong>The Tuzla 7 cancellation and Ugljevik's decline represent the start — not the end — of coal restructuring.</strong> No comprehensive just transition plan exists. The Tuzla region and Gacko valley are mono-industrial economies where coal closure will require sustained investment in alternative livelihoods.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">4</div>
+        <div><strong>Untapped hydro and wind potential could make BiH a significant green electricity exporter.</strong> With less than half its hydro potential developed and strong wind resources in the Dinaric highlands, BiH has a credible renewable energy future — but realising it requires governance reform and streamlined permitting that currently do not exist.</div>
+      </div>
+      <div class="pt">
+        <div class="pt-n">5</div>
+        <div><strong>BiH is a structural electricity exporter today, but ageing coal plants create a supply-cliff risk in the 2030s.</strong> If coal plants close faster than RE projects are built — as Energy Community pressure intensifies — BiH could flip from exporter to importer within a decade. Managing this transition without blackouts or political crisis requires planning that has not yet started.</div>
+      </div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Energy Community Secretariat — Bosnia and Herzegovina Annual Implementation Report 2024 ·
+      Elektroprivreda BiH (EPBiH) — Annual Report ·
+      Elektroprivreda RS (ERS) — Annual Report ·
+      Bankwatch — Energy sector in Bosnia and Herzegovina ·
+      Enerdata — Bosnia and Herzegovina Energy Market Report 2024 ·
+      IEA — Bosnia and Herzegovina Energy Profile ·
+      Low Carbon Power — Bosnia &amp; Herzegovina Electricity Generation Mix 2024/2025 ·
+      U.S. Commercial Service — Bosnia and Herzegovina Energy Guide ·
+      Climatescope 2024 — Bosnia and Herzegovina ·
+      Euracoal — Bosnia and Herzegovina Country Profile
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.plugins.legend.display = false;
+
+const FUEL = { coal:'#808890', hydro:'#1E9AF5', hydroS:'#6EC8F0', solar:'#FFD700', wind:'#44DAEC' };
+
+const dOpts = { type:'doughnut', options:{ cutout:'62%', animation:{duration:900}, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed/ctx.dataset.data.reduce((a,b)=>a+b,0)*100)}%)` }}}, layout:{padding:4} }};
+
+new Chart(document.getElementById('genMixChart'), { ...dOpts, data:{ labels:['Coal (lignite)','Hydro','Solar','Wind'], datasets:[{ data:[8.68,4.62,0.56,0.14], backgroundColor:[FUEL.coal,FUEL.hydro,FUEL.solar,FUEL.wind], borderWidth:2, borderColor:'#fff' }]}});
+
+new Chart(document.getElementById('capMixChart'), { type:'doughnut', data:{ labels:['Coal','Hydro (large)','Small hydro','Wind','Solar'], datasets:[{ data:[1965,2129,169,219,608], backgroundColor:[FUEL.coal,FUEL.hydro,FUEL.hydroS,FUEL.wind,FUEL.solar], borderWidth:2, borderColor:'#fff' }]}, options:{ cutout:'62%', animation:{duration:900}, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.label}: ${(ctx.parsed/1000).toFixed(2)} GW` }}}, layout:{padding:4}}});
+
+new Chart(document.getElementById('reGrowthChart'), { type:'bar', data:{ labels:['2020','2021','2022','2023','2024','2025e'], datasets:[ { label:'Wind (MW)', data:[90,100,110,150,219,320], backgroundColor:FUEL.wind, stack:'a' }, { label:'Solar (MW)', data:[20,40,100,220,608,900], backgroundColor:FUEL.solar, stack:'a' } ]}, options:{ plugins:{ legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:12}}, tooltip:{mode:'index',intersect:false}}, scales:{ x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}}, y:{stacked:true,ticks:{font:{size:10},callback: v => v+'MW'},grid:{color:'#E2E6EA'}}}, animation:{duration:800}}});
+</script>
+</body>
+</html>

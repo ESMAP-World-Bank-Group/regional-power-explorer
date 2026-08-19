@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equatorial Guinea Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Equatorial Guinea</div>
+    <div class="doc-sub">CAPP member · SEGESA state utility · Oil &amp; gas economy · Djibloho hydro · Sendje HPP under construction · Bioko–mainland split</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~349 MW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~67%</div><div class="kpi-lbl">Gas share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">120 MW</div><div class="kpi-lbl">Djibloho HPP (2012)</div></div>
+    <div class="kpi"><div class="kpi-val">~67%</div><div class="kpi-lbl">National electrification rate</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Equatorial Guinea has approximately 349 MW of installed capacity across two geographically separated grids — Bioko Island (capital Malabo) and the mainland region (Bata). Gas-fired plants — burning associated gas from the Gulf of Guinea offshore fields — account for roughly 67% of generation (~0.98 TWh/yr), with hydropower at 33% (~0.48 TWh/yr) and negligible oil. The <strong>Djibloho HPP (120 MW)</strong> — commissioned in 2012 on the Wele River in the mainland interior — was the country's biggest clean energy addition; the larger <strong>Sendje HPP (200 MW)</strong> downstream is now under construction.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Generation by source (2023)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9A7040"></span>Gas</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro</span>
+          <span><span class="lsq" style="background:#C85020"></span>Oil</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="genMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~1.47 TWh</div>
+            <div class="chart-center-lbl">total</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Enerdata, Wikipedia — Energy in Equatorial Guinea</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Djibloho HPP: 120 MW</strong>Wele River, mainland; commissioned 2012; first large domestic hydro plant; run-of-river with seasonal variation</div>
+        <div class="stat-item"><strong>Sendje HPP: 200 MW (under construction)</strong>Downstream of Djibloho on the Wele; when complete, will more than double hydro capacity and shift the generation mix decisively toward renewables</div>
+        <div class="stat-item"><strong>Punta Europa gas plants (Bioko)</strong>Associated gas from LNG operations on Bioko Island; serves the capital Malabo; linked to Marathon Oil and Noble Energy gas supply chain</div>
+        <div class="stat-item"><strong>Gas plants (mainland — Bata)</strong>Several gas units serving the mainland grid; gas from offshore associated production</div>
+        <div class="stat-item"><strong>ExxonMobil exit (2024)</strong>ExxonMobil transferred the giant Zafiro field to GEPetrol (national oil company) in 2024; Marathon and Chevron remain; gas supply for power generation relies partly on associated gas from these operators</div>
+      </div>
+    </div>
+
+    <h2>The Bioko–Mainland Grid Split</h2>
+    <p>Equatorial Guinea's electricity system is divided into two structurally separate grids with different supply profiles:</p>
+    <ul>
+      <li><strong>Bioko Island grid (Malabo):</strong> Powered primarily by gas plants fed by associated offshore gas; relatively reliable supply in the capital; benefits from proximity to the LNG complex at Punta Europa.</li>
+      <li><strong>Mainland grid (Bata region):</strong> More dependent on hydro (Djibloho, and eventually Sendje); also has gas backup; mainland electrification rate significantly lower than Bioko; significant rural population without grid access.</li>
+    </ul>
+    <p>Bioko Island and the mainland are physically separated by 20+ km of ocean, making a grid interconnection between them extremely costly. Each operates independently; shortfalls on one cannot be balanced from the other.</p>
+
+    <div class="callout">
+      Equatorial Guinea's oil-funded economy has not translated into comprehensive electricity access. Despite being one of sub-Saharan Africa's highest-income countries per capita (from oil), the national electrification rate sits at ~67% and rural mainland access remains far lower. The same governance patterns that have concentrated oil wealth in a narrow elite have limited investment in public infrastructure, including electricity.
+    </div>
+
+    <h2>Market Structure &amp; Key Actors</h2>
+    <ul>
+      <li><strong>SEGESA (Sociedad de Electricidad de Guinea Ecuatorial):</strong> State national utility; operates through three subsidiaries — SEGESA Generation, SEGESA Transmission, SEGESA Commercial. Monopoly on all power sector activities.</li>
+      <li><strong>Ministry of Mines and Hydrocarbons:</strong> Oversees both the oil &amp; gas sector and energy policy; electricity sector governance is closely tied to hydrocarbon policy.</li>
+      <li><strong>GEPetrol:</strong> National oil company; expanded role following ExxonMobil's 2024 exit from the Zafiro field; gas supply for power generation is partly dependent on associated gas from GEPetrol-operated or joint-venture fields.</li>
+      <li><strong>International oil companies:</strong> Marathon and Chevron remain the primary offshore operators producing associated gas used in Bioko Island power generation.</li>
+    </ul>
+
+    <h2>Sendje HPP — The Sector-Defining Project</h2>
+    <p>The <strong>Sendje Hydroelectric Project (200 MW)</strong> on the Wele River downstream of Djibloho is the most important near-term energy investment in Equatorial Guinea. When complete, it will:</p>
+    <ul>
+      <li>Nearly double the country's hydropower capacity (from 120 MW to ~320 MW hydro)</li>
+      <li>Shift the mainland grid from gas-dominant to hydro-dominant generation — significantly reducing fuel costs and import dependency</li>
+      <li>Improve supply reliability in the Bata region and create capacity for expanded rural electrification</li>
+      <li>Reduce the sector's vulnerability to gas supply disruptions from aging offshore infrastructure</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Sendje HPP (200 MW) is the single most transformative energy project Equatorial Guinea has underway.</strong> When completed, it doubles hydro capacity and could shift the generation mix to majority-renewable — a significant step for a country whose power sector has been historically locked into gas. Commissioning timeline and construction progress are the key metrics to watch.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The ExxonMobil exit (2024) creates uncertainty about long-term gas supply for Bioko power generation.</strong> Associated gas from offshore fields is the fuel source for Bioko's gas plants; as IOC positions change — ExxonMobil out, GEPetrol expanded — the reliability and cost of gas supply to SEGESA's Bioko plants will evolve. This is particularly relevant as offshore fields mature and gas volumes decline.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Bioko–mainland separation is a structural constraint that no affordable technology can overcome.</strong> The 20+ km ocean gap means both islands/regions must be self-sufficient in generation. Any supply crisis on one cannot be relieved by the other. This argues for diverse, resilient generation portfolios on each side — not a single dominant source.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Equatorial Guinea's electrification gap is primarily political, not technical.</strong> At ~67% national access in a high-income-per-capita country, the gap is a reflection of governance priorities rather than resource constraints. Oil revenues are sufficient to fund universal access; the question is whether political will exists to prioritise it.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>SEGESA's vertically integrated monopoly limits private investment in the sector.</strong> Without IPP frameworks, competitive generation procurement, or regulatory independence, Equatorial Guinea cannot attract the private capital needed to diversify beyond gas and hydro into solar and storage — technologies that would be well-suited to both Bioko and the mainland given their equatorial solar resource.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      SEGESA — institutional data·
+      Enerdata — Equatorial Guinea Energy Market Report ·
+      Africa Energy Portal — Equatorial Guinea ·
+      Energy Capital &amp; Power — Equatorial Guinea energy security 2024 ·
+      The Energy Year — Power shifts in Equatorial Guinea ·
+      Key Facts Energy — Equatorial Guinea country profile ·
+      IEA — Equatorial Guinea Energy Profile
+    </div>
+
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('genMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Gas', 'Hydro', 'Oil'],
+    datasets: [{ data: [0.98, 0.48, 0.01], backgroundColor: ['#9A7040','#1E9AF5','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} TWh (${Math.round(ctx.parsed/1.47*100)}%)` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

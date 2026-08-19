@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maldives Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Maldives</div>
+    <div class="doc-sub">~600 MW capacity · 200 inhabited islands · Diesel dominant · STELCO (Malé) + Fenaka (outer islands) · 68.5 MW solar · 70% RE target 2030 · Energy Roadmap 2024–2033</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~600 MW</div><div class="kpi-lbl">Total installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">68.5 MW</div><div class="kpi-lbl">Solar PV installed (Jun 2024)</div></div>
+    <div class="kpi"><div class="kpi-val">200</div><div class="kpi-lbl">Inhabited islands (separate grids)</div></div>
+    <div class="kpi"><div class="kpi-val">70%</div><div class="kpi-lbl">Renewable target by 2030</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>Electricity Sector Overview</h2>
+    <p>The Maldives is an archipelago of ~1,200 islands of which ~200 are inhabited, each operating its own isolated electricity system. Total installed capacity is approximately <strong>600 MW</strong>, of which <strong>68.5 MW (11.4%) is solar PV</strong> — the remainder being diesel generators. This extreme geographic fragmentation makes the Maldives one of the most complex electricity systems per capita in the world: not one grid but 200 mini-grids, each with its own generation, storage (increasingly), and distribution infrastructure. Diesel import dependency is near-total, making electricity costs (~$0.35–0.45/kWh) among the highest in Asia, heavily subsidised by the state through FENAKA and STELCO transfers.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (June 2024)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Diesel generators</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~600 MW</div>
+            <div class="chart-center-lbl">total</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Maldives Energy Roadmap 2024–2033; STELCO; ADB Renewables Roadmap</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>STELCO (State Electric Co.): Greater Malé + 30 islands</strong>State-owned; serves the capital and surrounding atolls; most commercially developed operations; PPAs with private solar IPPs; Malé demand ~200 MW peak</div>
+        <div class="stat-item"><strong>FENAKA: 157 inhabited islands</strong>State-owned; outer island utility; operates predominantly diesel mini-grids; most financially stressed; subsidised tariff below cost; adding solar + battery storage across islands</div>
+        <div class="stat-item"><strong>Solar PV: 68.5 MW (11.4%)</strong>STELCO rooftop + ground-mounted in Malé region; Fenaka island mini-grid solar; growing rapidly; solar provides ~6% of national electricity</div>
+        <div class="stat-item"><strong>Energy Roadmap 2024–2033</strong>Government framework for 70% renewable electricity by 2030; prioritises solar + storage on every island; battery hybridisation; demand-side management; phased diesel displacement</div>
+        <div class="stat-item"><strong>Floating solar (planned)</strong>Shallow lagoon systems; STELCO tender includes lagoon-mounted arrays; unique to Maldivian geography; ADB and World Bank support ongoing</div>
+      </div>
+    </div>
+
+    <h2>The 200-Island Challenge</h2>
+    <p>The Maldives' geography is its defining electricity challenge. Each inhabited island — ranging from Malé (population ~150,000) to atolls with a few hundred residents — requires a self-sufficient energy system:</p>
+    <ul>
+      <li><strong>Malé &amp; Hulhumalé:</strong> The capital is served by STELCO with interconnected generation across the Malé metropolitan area; the most sophisticated system in the country; solar + battery hybridisation most advanced here.</li>
+      <li><strong>Resort islands:</strong> Private resort islands typically operate their own diesel generation with increasing solar + storage; some achieve 80–100% renewable electricity during daylight hours. These are the testing ground for island-scale RE integration.</li>
+      <li><strong>Outer atolls (FENAKA):</strong> Dispersed populations, expensive diesel logistics, highest subsidy per kWh; solar home systems and mini-grid solar + batteries are being deployed; transformative for communities receiving them but slow to scale across 157 islands simultaneously.</li>
+      <li><strong>Inter-island cable projects:</strong> Selected clusters of nearby islands are being connected by submarine cables, allowing single generation systems to serve multiple islands — reducing the per-unit infrastructure cost significantly.</li>
+    </ul>
+
+    <div class="callout">
+      The Maldives faces a uniquely dual existential threat: rising sea levels threaten the physical existence of most islands (average elevation 1.5 m above sea level) while diesel-dependent electricity is one of the highest per-capita sources of CO₂ emissions among SIDS. The Maldives has been a vocal advocate for 1.5°C climate ambition globally while still generating 89% of its electricity from diesel domestically. The Energy Roadmap 2024–2033 is the country's attempt to close this gap — transforming every island's energy system from diesel to solar + storage within a decade.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>The 70% renewable by 2030 target requires adding ~350–400 MW of solar + storage across 200 islands in 4 years — an unprecedented logistics challenge.</strong> It is technically achievable: solar + battery mini-grids are now cost-competitive with diesel even at small island scale. But deploying them on 150+ outer islands simultaneously requires procurement frameworks, installation capacity, and O&amp;M training that have historically been the bottleneck in Maldivian energy projects. Execution speed and logistics are the binding constraints, not technology or economics.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>FENAKA's financial distress is the structural barrier to outer-island renewable deployment.</strong> As the utility serving 157 outer islands at subsidised tariffs below diesel generation cost, FENAKA runs persistent operating losses. New solar + battery assets reduce per-unit costs once installed, but the upfront capital requires grants or concessional loans — which FENAKA cannot service at cost-reflective rates. Structuring solar deployment as donor-financed capital grants with FENAKA as operator is the viable model; pure commercial financing is not.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Maldivian resort islands are the world's most advanced proving ground for 100% renewable island electricity systems.</strong> High-end resorts with solar panels, battery storage, and (increasingly) desalination integration have demonstrated that 80–100% renewable electricity is commercially viable on small islands. The technology stack, O&amp;M models, and economics validated in resort islands are directly transferable to inhabited outer atolls — the main difference being willingness to pay.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Floating and lagoon-mounted solar is a Maldives-specific solution that could unlock significant RE capacity without land use conflict.</strong> With extremely limited land area on most islands, ground-mounted solar competes with housing and vegetation. Floating solar on shallow lagoons — which the Maldives has in abundance — avoids this conflict and can achieve large capacities close to demand centres. STELCO's tender for lagoon-mounted installations is the first step toward commercialising this opportunity at scale.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The Maldives is simultaneously a climate victim, a climate advocate, and a climate laggard — and resolving this contradiction is its most important energy policy challenge.</strong> As a country that will be uninhabitable with 2°C of warming, Maldives has unmatched moral authority in climate negotiations. Converting that authority into domestic action — replacing diesel with solar across all 200 islands — would make the country's advocacy credible and provide a global demonstration model for SIDS energy transitions that currently lack successful examples at scale.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Maldives Ministry of Environment — Energy Roadmap 2024–2033 ·
+      STELCO — Renewable Energy portfolio ·
+      The Arrival — Powering the Maldives: The Story of STELCO ·
+      ADB — Renewables Roadmap for the Energy Sector of Maldives ·
+      World Bank — Maldives Accelerating Renewable Energy Integration and Sustainable Energy Project ·
+      PV Magazine — Maldives launches renewables tender for solar, storage, grid upgrades (Aug 2024) ·
+      USAID SARI/Energy — Maldives Energy Overview ·
+      JCM — Energy efficiency installation of energy systems in Maldives
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Diesel generators', 'Solar PV'],
+    datasets: [{ data: [531.5, 68.5], backgroundColor: ['#C85020','#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

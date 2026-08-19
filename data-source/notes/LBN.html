@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanon Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Lebanon</div>
+    <div class="doc-sub">EDL &lt;2 hrs/day · Total blackout Aug 2024 · 1,200–1,300 MW distributed solar (10× since 2021) · Diesel generator cartels · ERA appointed Sept 2025 · Three-tier system</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">&lt;2 hrs</div><div class="kpi-lbl">EDL supply per day (avg)</div></div>
+    <div class="kpi"><div class="kpi-val">~1,250 MW</div><div class="kpi-lbl">Distributed solar installed (2024)</div></div>
+    <div class="kpi"><div class="kpi-val">10×</div><div class="kpi-lbl">Solar growth since 2021</div></div>
+    <div class="kpi"><div class="kpi-val">$1.7B</div><div class="kpi-lbl">EDL accumulated losses (est.)</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+    <h2>The Three-Tier Electricity System</h2>
+    <p>Lebanon no longer has a functioning national electricity system in the conventional sense. What exists is a <strong>three-tier de facto system</strong> that has evolved through crisis:</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Electricity supply sources (est. 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C85020"></span>Private diesel generators</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Distributed solar PV</span>
+          <span><span class="lsq" style="background:#3A3A3A"></span>EDL (state utility)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~3.5 GW</div>
+            <div class="chart-center-lbl">de facto total</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: HRW (Aug 2024 blackout); MERIP; The Century Foundation; Arab Reform Initiative</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Tier 1: EDL (state utility) — near-zero</strong>Électricité du Liban; avg &lt;2 hrs/day nationwide; Aug 17 2024: complete nationwide blackout (ran out of fuel); max output ~1,600 MW when operational; $320/month for premium Beirut generator service</div>
+        <div class="stat-item"><strong>Tier 2: Private diesel generators — dominant</strong>Neighbourhood-level generator "mafias" supplying 18–20 hrs/day at $0.40–0.50/kWh; ~$2B/year market; politically protected cartel; perverse incentive against EDL reform</div>
+        <div class="stat-item"><strong>Tier 3: Distributed solar — fastest-growing</strong>1,200–1,300 MW installed 2024 (from ~100 MW pre-2021); households and businesses self-financing solar + battery; eliminating generator dependence for daytime hours; Lebanon's accidental solar revolution</div>
+        <div class="stat-item"><strong>EDL's Zouk &amp; Jieh plants</strong>Oil-fired thermal plants; chronic maintenance failures; fuel procurement subject to political interference and foreign exchange shortages; source of the Aug 2024 total blackout</div>
+        <div class="stat-item"><strong>ERA appointed Sept 2025</strong>Lebanon's Electricity Regulatory Authority finally constituted after years of political deadlock; first step toward sector restructuring; conditions set by IMF and international donors</div>
+      </div>
+    </div>
+
+    <h2>The 2024 Blackout &amp; Political Economy</h2>
+    <p>Lebanon's electricity crisis is inseparable from its political economy crisis. On <strong>August 17, 2024</strong>, EDL's last operational power plant shut down entirely after the company ran out of fuel — a complete nationwide blackout that left even the airport, prisons, and water pumping stations without power. The root causes are systemic:</p>
+    <ul>
+      <li><strong>Tariff trap:</strong> Lebanese electricity tariffs have been set at prices that do not cover EDL's fuel costs — a political decision to maintain cheap electricity as a patronage instrument. The gap between tariffs and costs accumulates as EDL debt, which the Treasury covers — until the financial system collapsed in 2019.</li>
+      <li><strong>Generator cartel:</strong> Private diesel generator operators have an explicit financial interest in EDL's failure — every hour EDL provides power is an hour their customers don't pay generator fees. This cartel has systematically blocked EDL reform through political connections.</li>
+      <li><strong>Hezbollah electricity:</strong> In southern Lebanon and parts of Beirut, Hezbollah operates parallel electricity networks independent of EDL, supplied partly via Syria (Assad-era agreements). These survive political transitions better than the state grid.</li>
+      <li><strong>The IMF path:</strong> EDL reform — cost-reflective tariffs, anti-corruption procurement, private sector participation — is an explicit IMF conditionality for any Lebanon rescue programme. No EDL reform, no IMF deal. No IMF deal, no international financial support for the broader economic recovery.</li>
+    </ul>
+
+    <div class="callout">
+      Lebanon's solar revolution — 1,200+ MW of distributed solar installed in three years by households and businesses responding to blackouts — is the accidental prototype for resilient electricity provision in failed-state conditions. Lebanese consumers, unable to rely on any state institution, have privately financed the equivalent of a utility-scale solar fleet. This bottom-up energy transition is real, functional, and expanding without any government programme. But it cannot address industrial electricity needs, grid infrastructure, or equitable access for low-income households who cannot afford upfront solar investment.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Lebanon's electricity crisis is a proof of concept for distributed solar resilience — and an indictment of what state failure does to infrastructure.</strong> The 1,200 MW of household and commercial solar installed since 2021 is a testament to Lebanese ingenuity under duress, not a policy success. It provides electricity for those who can afford panels; it does nothing for the elderly, the poor, or industrial energy users. Lebanon's solar revolution is equitable nowhere and adequate nowhere — it is just less bad than the alternative.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>The diesel generator cartel is the primary political economy obstacle to Lebanon's electricity reform.</strong> Generator operators collect $2B+/year from Lebanese consumers — more than EDL's entire revenue. They are embedded in local politics, financially sponsor political patrons, and have consistently blocked EDL tariff reform, fuel procurement transparency, and private utility licensing. Any real electricity reform will disrupt a $2B/year rent economy, which is why every previous reform attempt has failed.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The Electricity Regulatory Authority (ERA, Sept 2025) is necessary but insufficient for real sector reform.</strong> Appointing a regulator is the prerequisite for everything that follows — licensing private utilities, setting transparent tariffs, enforcing procurement rules. But Lebanon has a long history of creating institutions without empowering them. The ERA's effectiveness depends entirely on whether the political conditions that blocked its establishment for 15 years have genuinely changed — which the post-war context with a new president suggests is possible, but not certain.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Lebanon's electricity reconstruction is the largest unmet financing need in the country's recovery agenda.</strong> EDL needs $5B+ in capital investment over a decade — new generation, transmission upgrades, metering, billing systems — just to return to unreliable state. International donors (World Bank, AFD, EIB) have offered financing conditional on governance reform. Lebanon's inability to meet those conditions has kept the financing locked. This is a deliberate political equilibrium maintained by those who profit from the current dysfunction.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Lebanon's offshore gas potential (Qana block, Block 9) could transform the electricity equation — but is years from production and dependent on geopolitical resolution.</strong> Lebanon's EEZ contains proven hydrocarbon resources; TotalEnergies and ENI are the licensed operators. If production commences (earliest realistic date: 2028–2030), associated gas could fuel domestic power generation, reducing fuel import costs and potentially enabling EDL restructuring. But Lebanese domestic politics, boundary disputes with Israel, and the complexity of offshore development mean this is aspirational, not a near-term electricity sector solution.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Human Rights Watch — Lebanon: Nationwide Electricity Blackout (Aug 2024) ·
+      The Century Foundation — The Future of Lebanon's Unlikely Solar Revolution ·
+      MERIP — Off the Grid: Why Solar Won't Solve Lebanon's Electricity Crisis (2024) ·
+      Arab Reform Initiative — Stakeholder Mapping for Electricity Sector Reform in Lebanon ·
+      New Arab — Lebanon's electricity crisis: Generator cartels vs. solar energy ·
+      Libnanews — Electricity in Lebanon: EDL, generators and solar ·
+      Arab Reform Initiative — Unlocking Solar Energy Access in Lebanon
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Private diesel generators', 'Distributed solar PV', 'EDL (state utility)'],
+    datasets: [{ data: [1900, 1250, 350], backgroundColor: ['#C85020','#FFD700','#3A3A3A'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

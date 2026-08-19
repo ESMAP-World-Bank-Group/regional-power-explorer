@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liberia Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FFF9DB;border-left:4px solid #F59F00;padding:13px 17px;margin:14px 0;font-size:13px;color:#5C4A00;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .trade-item{display:flex;gap:17px;padding:18px 20px}
+  .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge-grey{background:#8A94A6}
+  .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
+  .trade-divider{height:1px;background:var(--border);margin:0 20px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note · West African Power Pool</div>
+  <div class="doc-title">The Liberia electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~190 MW</div><div class="kpi-lbl">Installed capacity (2024 est.)</div></div>
+  <div class="kpi"><div class="kpi-val">0.61 TWh</div><div class="kpi-lbl">Domestic generation (2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~28%</div><div class="kpi-lbl">Electrification rate</div></div>
+  <div class="kpi"><div class="kpi-val">USD 0.30/kWh</div><div class="kpi-lbl">Typical end-user tariff</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<h2>1. Energy context</h2>
+<p>Liberia's electricity sector bears the deep imprint of two civil wars (1989–2003) that destroyed most of the country's infrastructure, including the 64 MW Mount Coffee hydropower plant (commissioned 1966, demolished 1990). The story of the Liberian electricity sector over the past two decades has been a slow, costly, and incomplete reconstruction — with the rehabilitation of Mount Coffee (88 MW, completed 2018 by Sinohydro with USAID/World Bank funding) as the most significant milestone. Even so, approximately 72% of the population lacks grid electricity access in 2024.</p>
+<p>Liberia is part of the CLSG interconnection framework — the 225 kV ring connecting Côte d'Ivoire, Liberia, Sierra Leone, and Guinea. The Liberia section has been completed, allowing some CIV power to flow toward the Guinea border. When the Sierra Leone section of CLSG is completed, Liberia would be connected to a regional mesh grid for the first time, potentially accessing cheaper CIV hydropower at scale. Liberia's electricity tariff — around USD 0.30/kWh — is among the highest in the WAPP zone, reflecting the high cost of diesel thermal generation.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~190 MW, 2024 est.)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">190</div><div class="chart-center-lbl">MW</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Domestic generation mix (2023, ~0.61 TWh)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">0.61</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Liberia domestic generation, 2023. The 2023 jump from 2022 (0.39 TWh) likely reflects improved Mount Coffee output in a good rainfall year. Sources: LEC; Ember Electricity Data 2024; IEA LBR Profile; World Bank.</p>
+
+<ul>
+  <li><strong>Hydro (~56% of domestic generation):</strong> <strong>Mount Coffee</strong> (88 MW, St. Paul River, 40 km east of Monrovia) was rehabilitated by Sinohydro under a World Bank/USAID/AfDB/EIB funded project and re-commissioned in 2018. It is by far Liberia's largest generator. Mount Coffee is a run-of-river plant sensitive to rainfall seasonality: output can drop sharply in the dry season, requiring diesel backup. Potential for additional hydro on the St. Paul and Cavalla rivers exists but is unexplored.</li>
+  <li><strong>Diesel/HFO (~42% of domestic generation):</strong> LEC operates diesel/HFO thermal plants in Monrovia (Bushrod Island station, ~80 MW HFO) and several smaller diesel sets for backup. These are expensive to run and have contributed to Liberia's among-the-highest electricity tariffs in the region. Emergency rental units (Aggreko) have been used during peak demand periods. Provincial towns served by RREA are even more diesel-dependent.</li>
+  <li><strong>Solar (~2%):</strong> Several small solar systems for off-grid rural communities (RREA programmes, NGO-funded), rooftop at LEC facilities, and a small utility-scale project. Solar expansion is in LEC's planning pipeline but financing remains the constraint.</li>
+</ul>
+
+<h3>2.2 Historical generation trend</h3>
+<div>
+  <div class="chart-title">Domestic electricity generation (TWh, 2015–2023)</div>
+  <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+</div>
+<p class="fig-caption">Fig. 3 — Liberia domestic generation (TWh), 2015–2023. The 2021 dip likely reflects COVID-19 demand reduction and/or dry season constraints. The 2023 jump reflects improved hydrology. Sources: LEC; Ember; IEA.</p>
+
+<h3>2.3 Interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Infrastructure</th><th>Notes</th></tr>
+  <tr><td><strong>CLSG (CIV→LBR section)</strong></td><td>225 kV; ~100 MW; Monrovia–Guinea border</td><td>Liberia's CLSG section is the most complete in the ring. It allows limited CIV power transit toward Guinea (Kaléta/CLSG GIN end). The Liberia–Guinea border crossing is operational. Reverse power from CIV to Monrovia requires the SLE section to close the ring.</td></tr>
+  <tr><td><strong>Ivory Coast–Liberia interconnection</strong></td><td>225 kV; bilateral</td><td>CIV power enters Liberia at the border with Côte d'Ivoire (Tabou-Grand Cess corridor). Liberia receives modest volumes of CIV electricity when contractual and capacity conditions align. The CIV–LBR supply agreement is managed by CIE/CI-ENERGIES and LEC.</td></tr>
+  <tr><td><strong>Guinea (CLSG GIN end)</strong></td><td>225 kV; limited</td><td>The Liberia–Guinea segment of CLSG allows transit of Guinea's Kaléta power toward Liberia. In a fully operational CLSG ring, Guinea could supply Liberia directly with cheap hydro power.</td></tr>
+</table>
+
+<h2>3. Sector organisation</h2>
+<div class="trade-box">
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">LEC — Liberia Electricity Corporation <span class="trade-badge">State Utility</span></div>
+      <p class="trade-body">LEC is the state-owned vertically-integrated electricity utility, managing generation, transmission, and urban distribution (Monrovia). LEC was reorganised after the civil war with USAID and World Bank support and has benefited from significant donor technical assistance. LEC's financial position is stressed: tariffs at ~USD 0.30/kWh are high but do not fully cover costs (diesel fuel is the dominant expense), and collection efficiency from government entities and informal settlements is poor. LEC serves approximately 70,000 registered customers, a small fraction of Monrovia's estimated 1.5 million population. A management contract with Manitoba Hydro International (2010–2016) was partially successful in improving operational practices.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">RREA — Rural and Renewable Energy Agency <span class="trade-badge trade-badge-grey">Rural Off-grid</span></div>
+      <p class="trade-body">RREA manages rural electrification through a combination of diesel mini-grids in provincial towns and off-grid solar programmes in rural communities. RREA's approach to renewable energy, including several donor-funded solar mini-grid projects, has expanded access in areas LEC cannot economically serve. Provincial towns like Buchanan, Gbarnga, Tubmanburg, and Zwedru have small RREA-managed diesel mini-grids.</p>
+    </div>
+  </div>
+  <div class="trade-divider"></div>
+  <div class="trade-item">
+    <div class="trade-content">
+      <div class="trade-title">ArcelorMittal Liberia <span class="trade-badge trade-badge-grey">Industrial Self-generator</span></div>
+      <p class="trade-body">ArcelorMittal Liberia's iron ore mining operations at Nimba Mountain (production paused 2016, resuming ~2024) operated a dedicated HFO/diesel power plant for their mine and rail infrastructure. The mine's power plant is entirely self-sufficient and not connected to LEC. If AML iron ore mining resumes at full scale (~5 mtpa), it would represent the largest power demand in Liberia, entirely self-generated — representing a missed opportunity for LEC grid supply if grid extension to Nimba was ever feasible.</p>
+    </div>
+  </div>
+</div>
+
+<h2>4. Key issues and challenges</h2>
+<ul>
+  <li><strong>Highest tariff in WAPP — affordability vs. cost recovery:</strong> Liberia's electricity tariff (~USD 0.30/kWh) is among the highest in West Africa, reflecting the high cost of diesel generation. This makes electricity inaccessible to most households and SMEs and limits productive electricity use. Despite high tariffs, LEC still requires subsidies due to collection inefficiencies and high operational costs. A transition to cheaper supply sources (Mount Coffee, CLSG imports) would allow tariff reduction — the most impactful pro-poor energy intervention available.</li>
+  <li><strong>Mount Coffee seasonality — the hydrology trap:</strong> Like Bumbuna in Sierra Leone, Mount Coffee is a run-of-river plant that is highly seasonal. In the dry season, Mount Coffee output drops significantly, forcing LEC to increase diesel dispatch sharply. The combination of lower hydro generation and higher diesel costs creates a seasonal affordability spike — further pushing customers off the grid or into self-generation. A reservoir regulation component for Mount Coffee, or complementary solar to offset seasonal hydro gaps, would be transformative.</li>
+  <li><strong>CLSG ring completion dependency:</strong> Liberia has completed its section of the CLSG ring, but the ring remains open at the Sierra Leone section. Until SLE completes its segment, Liberia cannot access CIV hydro power through Monrovia (the ring connects CIV→LBR→SLE→GIN; power from CIV to Monrovia requires the full loop via SLE to close). This is a structural dependency on another country's infrastructure completion schedule — an unusual exposure for a country that has done its own part of the investment.</li>
+  <li><strong>Post-war reconstruction pace:</strong> Liberia's reconstruction has been one of the slower in West Africa, constrained by limited government fiscal capacity, a small tax base (mineral-dependent), and persistent governance challenges. Two Ebola epidemics (2014–2016, minor 2021) disrupted development trajectories just as the country was recovering from civil war. The electricity sector reflects this — 28% access after 20 years of post-war reconstruction is a sobering benchmark, even relative to other post-conflict peers.</li>
+</ul>
+
+<h2>5. Five key takeaways</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Liberia's Mount Coffee rehabilitation (88 MW, completed 2018) is the most significant post-conflict electricity reconstruction achievement in the WAPP zone — bringing clean, cheap hydro power back to Monrovia 28 years after the civil war destroyed the original dam — yet 72% of the population still lacks access.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>Liberia has the highest electricity tariff in the WAPP core zone (~USD 0.30/kWh) despite having only 28% electrification — a combination that reflects the high cost of diesel backup and the fragility of a system where cheap hydro supply is seasonal and alternative sources are absent.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Liberia has completed its section of the CLSG ring — the most commercially crucial WAPP investment it could make — but cannot benefit from cheap CIV hydro power until Sierra Leone's section is complete. This is perhaps the clearest example in WAPP of how regional infrastructure's benefits are hostage to the slowest member's completion pace.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>ArcelorMittal Liberia's iron ore mine at Nimba operates (when active) entirely on self-generated power, disconnected from LEC — the country's single largest potential industrial customer chooses self-generation over grid supply, a stark reflection of LEC's reliability limitations and the opportunity cost of unreliable electricity for national resource mobilisation.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>Completing CLSG's SLE section and reducing Liberia's exposure to Mount Coffee's seasonal output variability through complementary solar are the two most impactful near-term interventions for the Liberian electricity sector — both require donor and development bank continuity at a time when WAPP as a whole is competing for limited infrastructure capital.</div></div>
+</div>
+
+<div class="sources">
+  <strong>Sources:</strong> LEC Liberia Annual Report 2023; RREA Liberia Project Portfolio; IEA Liberia Energy Profile; Ember Electricity Data 2024; World Bank — Mount Coffee Hydropower Rehabilitation Project ICR; USAID Power Africa Liberia Country Profile; AfDB CLSG Phase 2 Liberia country component; Sinohydro — Mount Coffee rehabilitation project summary; ArcelorMittal Liberia — mine and power operations; Africa Energy Portal Liberia Country Profile; IRENA Liberia Renewable Energy Profile 2024; The Bush Chicken / FrontPageAfrica — LEC electricity coverage 2023–2024.
+</div>
+
+</div>
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+<script>
+const L1=['Hydro','Oil','Solar'];
+const C1=['#0F7B72','#5B3FA0','#F59F00'];
+const GW1=[0.088,0.088,0.015];
+
+const L2=['Hydro','Oil','Solar'];
+const C2=['#0F7B72','#5B3FA0','#F59F00'];
+const D2=[56,42,2];
+const TWh2=D2.map(v=>+(v*0.61/100).toFixed(3));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:GW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:TWh2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${(c.parsed*1000).toFixed(0)} GWh (${D2[c.dataIndex]}%)`}}}}});
+
+const yrs=['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[0.31,0.30,0.35,0.41,0.42,0.45,0.38,0.39,0.61];
+const gc='rgba(0,0,0,.06)';const tc='#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#0F7B72',backgroundColor:'rgba(15,123,114,.10)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#0F7B72',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${(c.parsed.y*1000).toFixed(0)} GWh`}}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:false}}}});
+</script>
+</body>
+</html>

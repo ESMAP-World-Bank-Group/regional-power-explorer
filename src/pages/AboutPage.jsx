@@ -168,7 +168,7 @@ const SOURCES = [
         updated: 'Continuous',
         freq:    'On demand (API)',
         coverage:'Global',
-        quality: 'Good — ESMAP/World Bank product. Point query REST API.',
+        quality: 'Good — established public dataset. Point query REST API.',
         anchor:  '#method-solar',
         url:     'https://globalsolaratlas.info',
       },
@@ -329,6 +329,29 @@ export default function AboutPage() {
             The Regional Explorer aggregates open-access data from multiple sources.
             Coverage and accuracy vary by region; all figures are indicative.
           </p>
+          {/* Pilot / AI banner — deliberately the first thing on the page. This is an
+              unofficial pilot, and parts of it are machine-generated; readers need that
+              before they read any figure. */}
+          <div style={{
+            marginTop: 18, padding: '14px 16px', borderRadius: 8,
+            border: '1px solid rgba(252,196,25,0.55)',
+            borderLeft: '4px solid rgba(252,196,25,0.95)',
+            background: t.isDark ? 'rgba(252,196,25,0.07)' : 'rgba(252,196,25,0.08)',
+          }}>
+            <div style={{ fontSize: '0.78rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+              Pilot — unofficial, experimental, and partly AI-generated
+            </div>
+            <p style={{ fontSize: '0.7rem', color: t.muted, lineHeight: 1.65, margin: 0 }}>
+              This is an exploratory pilot, not a published product and not an official product of
+              any institution. Parts of the content — including narrative text and country
+              summaries — were drafted with the assistance of AI language models and have
+              <strong> not been fully fact-checked or peer-reviewed</strong>. AI-generated text can
+              be confidently wrong, and can mis-state contested or politically sensitive matters.
+              Treat every figure and statement as indicative and unverified, and check anything
+              consequential against the underlying source before relying on it.
+            </p>
+          </div>
+
           {meta && (
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 14,
@@ -599,8 +622,9 @@ export default function AboutPage() {
               'Grid and infrastructure layers from OpenStreetMap are community-maintained: coverage and currency vary by region — some areas are richly mapped and current, others sparse or several years out of date.',
               'Electricity tariff data sourced from GlobalPetrolPrices.com is indicative only and may not reflect current regulated rates. Licence terms are under review.',
               'Load profiles are available only for countries with ENTSO-E hourly data. For all other countries the Load tab shows no intraday profile.',
-              'Country boundaries are sourced from Natural Earth (110m resolution) for reference purposes only. Boundaries and names shown do not imply official endorsement or acceptance by the World Bank Group of any territorial delimitation.',
-              'The findings, interpretations, and conclusions expressed in this tool are those of the author(s) and do not necessarily reflect the views of the World Bank, its Board of Executive Directors, or the governments they represent.',
+              'Parts of this tool — narrative text and country summaries in particular — were drafted with AI assistance and have not been fully fact-checked. AI-generated text can state wrong figures confidently and can mis-handle contested or politically sensitive topics. Do not cite it as a source.',
+              'Country boundaries are sourced from Natural Earth (110m resolution) for reference purposes only. Boundaries, names, colours and any other information shown do not imply any judgement on the legal status of any territory, or any endorsement or acceptance of any boundary or territorial delimitation.',
+              'The findings, interpretations, and conclusions expressed in this tool are those of the author(s) alone. They do not represent the views of any institution, its governing bodies, or the governments they represent, and carry no institutional endorsement.',
             ].map((item, i) => (
               <li key={i} style={{ position: 'relative', paddingLeft: 18, fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
                 <span style={{ position: 'absolute', left: 0, top: 7, width: 6, height: 6, borderRadius: '50%', backgroundColor: 'rgba(252,196,25,0.75)' }} />
@@ -612,7 +636,7 @@ export default function AboutPage() {
 
         {/* Footer */}
         <p style={{ fontSize: '0.55rem', color: t.lblMuted, marginTop: 32, lineHeight: 1.7 }}>
-          Regional Power Explorer · Indicative data · not an official WBG product ·{' '}
+          Regional Power Explorer · Pilot · Indicative data · partly AI-generated · unofficial ·{' '}
           Data licences: OSM (ODbL), GPPD (CC BY 4.0), GEM (CC BY 4.0), Natural Earth (Public Domain)
         </p>
       </div>

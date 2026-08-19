@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rwanda Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .callout-warn{background:#FEF3C7;border-left:4px solid #B7770D;padding:13px 17px;margin:14px 0;font-size:13px;color:#78350F;line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}tr:last-child td{border-bottom:none}td strong{color:var(--navy)}
+  .actor-map-wrap{margin:11px 0;overflow-x:auto}.actor-map-wrap svg{min-width:700px}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="label">Sector Briefing Note</div>
+  <div class="doc-title">The Rwandan electricity<br>sector</div>
+  <div class="doc-sub">Structure, actors and key dynamics &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">~282 MW</div><div class="kpi-lbl">Installed capacity (end-2023)</div></div>
+  <div class="kpi"><div class="kpi-val">~0.9 TWh</div><div class="kpi-lbl">Net generation (2023 estimate)</div></div>
+  <div class="kpi"><div class="kpi-val">72%</div><div class="kpi-lbl">Electrification rate (World Bank 2023)</div></div>
+  <div class="kpi"><div class="kpi-val">26 MW</div><div class="kpi-lbl">KivuWatt methane-to-power</div></div>
+</div>
+
+<div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+<div class="callout-warn"><strong>Data quality note:</strong> Rwanda publishes reasonably comprehensive energy sector statistics through REG (Rwanda Energy Group) and MININFRA. However, the granular generation and access data cited here is estimated from REG Annual Reports (2022–23), IRENA, and World Bank sources. Some figures — particularly the electrification rate and installed capacity — are subject to definitional variation across sources.</div>
+
+<h2>1. Energy context</h2>
+<p>Rwanda's electricity sector is one of the most remarkable access and institutional development stories in Sub-Saharan Africa. In 2010, electrification stood at approximately 10%; by 2023, the World Bank measured it at ~72%. This 62-percentage-point improvement in 13 years — achieved through a combination of aggressive grid extension, solar mini-grids, and PAYGo off-grid deployment — is without parallel on the continent. It reflects Rwanda's unusually high state capacity, strong central government commitment under Vision 2020/2050, and effective implementation through the <strong>Electricity Access Rollout Programme (EARP)</strong>.</p>
+<p>The system is small: roughly <strong>282 MW installed capacity</strong> and ~0.9 TWh of annual generation (2023), serving a country of ~14 million. Rwanda is a net electricity importer, receiving power from Uganda (~28 MW), DRC (via EGL Ruzizi I/II ~15 MW share), and Kenya (small flows). The generation mix is diversified across small hydro, peat-to-power, methane-to-power (the unique KivuWatt Lake Kivu project), solar, and diesel backup. The <strong>Rusumo Falls</strong> project (80 MW total, Rwanda-Tanzania-Burundi shared, commissioned 2023) was a significant addition, providing Rwanda ~26.7 MW of new hydro.</p>
+<p>The dominant institutional actor is <strong>REG (Rwanda Energy Group)</strong>, formed in 2014 by merging EWSA (Energy, Water, and Sanitation Authority) and RECO (Rwanda Electricity Company) to consolidate the sector under a single vertically-integrated state holding company. RURA (Rwanda Utilities Regulatory Authority) provides independent regulation. The sector is characterised by strong institutional alignment with government priorities and high execution capacity relative to regional peers.</p>
+
+<h2>2. The electricity system</h2>
+<h3>2.1 Generation mix</h3>
+<div class="chart-legend" id="leg1"></div>
+<div class="chart-grid-2">
+  <div>
+    <div class="chart-title">Installed capacity (~282 MW, end-2023)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c1"></canvas>
+      <div class="chart-center"><div class="chart-center-val">282</div><div class="chart-center-lbl">MW total</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="chart-title">Generation mix (2023 estimate)</div>
+    <div class="chart-wrap" style="height:185px">
+      <canvas id="c2"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~0.9</div><div class="chart-center-lbl">TWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 1–2 — Capacity and generation mix. Sources: REG Annual Report 2022–23, IRENA Rwanda 2024, World Bank, MININFRA.</p>
+
+<ul>
+  <li><strong>Hydro (~50% of capacity):</strong> Rwanda has ~130–145 MW of hydro from a network of small rivers. Key plants: Nyabarongo I (28 MW, 2010), Nyabarongo II (43 MW, completed 2023), Mukungwa (12.8 MW), Ntaruka (11 MW), Rwaza (2 MW), Nkora (2.2 MW), Gihira (1.2 MW), Birunga, and others. Rusumo Falls (80 MW total, shared equally with Tanzania and Burundi, commissioned 2023) adds ~26.7 MW to Rwanda. Most are run-of-river; seasonal hydrology variation creates dry-season supply gaps.</li>
+  <li><strong>KivuWatt methane (26 MW, ContourGlobal):</strong> Lake Kivu contains ~65 BCM of dissolved methane — a geological hazard (risk of limnic eruption) and an energy resource. KivuWatt (ContourGlobal, since acquired by BW Energy) extracts deep-lake methane and generates electricity on floating platforms anchored to the lake. 26 MW since 2016 (expandable to 100 MW or more). Unique globally and among Rwanda's most strategic assets: inexhaustible fuel at zero import cost, with the dual benefit of reducing limnic eruption risk. The <strong>Mamba Energy project</strong> aims to expand methane extraction to an additional 56 MW by 2028.</li>
+  <li><strong>Peat-to-power (~15 MW, Gishoma):</strong> Rwanda has significant peat deposits in the Gishoma area (Western Province). The Gishoma peat plant (15 MW) uses locally mined peat as fuel. Peat is a carbon-emitting fuel but displaces diesel imports. Environmental sustainability of continued peat mining is debated.</li>
+  <li><strong>Solar (~8% of capacity):</strong> GigaWatt Global Rwamagana (8.5 MWp, 2014 — first utility-scale solar in East Africa), several smaller installations, and a growing rooftop/commercial solar base. New utility solar auctions (Akagera 60 MW, Kigali 20 MW) are in the pipeline.</li>
+  <li><strong>Diesel/HFO (~5% of capacity):</strong> Emergency backup. Rwanda aims to phase this out entirely.</li>
+  <li><strong>Imports (~15% of supply):</strong> Uganda via Kikagati–Nsho 220 kV (28 MW), DRC/EGL via Ruzizi I+II (Rwanda share ~15 MW), Kenya (small flows). Rwanda's import dependence is a strategic vulnerability; domestic generation expansion aims to reduce it.</li>
+</ul>
+
+<h3>2.2 Demand — historical trend</h3>
+<div class="chart-grid-3">
+  <div style="grid-column:1/3">
+    <div class="chart-title">Electricity generation + imports — historical trend (GWh)</div>
+    <div class="chart-wrap" style="height:180px"><canvas id="cDemand"></canvas></div>
+  </div>
+  <div>
+    <div class="chart-legend" id="leg2"></div>
+    <div class="chart-title" style="margin-top:14px">End-use by sector</div>
+    <div class="chart-wrap" style="height:140px">
+      <canvas id="c3"></canvas>
+      <div class="chart-center"><div class="chart-center-val">~900</div><div class="chart-center-lbl">GWh</div></div>
+    </div>
+  </div>
+</div>
+<p class="fig-caption">Fig. 3–4 — Total supply trend (GWh, 2014–2023) and end-use breakdown. Strong growth trend reflects both access rollout and per-capita consumption growth. Sources: REG, IRENA, World Bank.</p>
+
+<h3>2.3 Grid and interconnections</h3>
+<table>
+  <tr><th>Link</th><th>Capacity</th><th>Status / Notes</th></tr>
+  <tr><td><strong>Rwanda–Uganda (Kikagati–Nsho)</strong></td><td>~28 MW active</td><td>220 kV AC. Uganda exports to Rwanda. Revenue earner for Uganda, strategic import for Rwanda in dry season.</td></tr>
+  <tr><td><strong>Rwanda–DRC (EGL)</strong></td><td>~15 MW Rwanda share</td><td>Ruzizi I+II operated by Énergie des Grands Lacs (EGL). DRC 46%, Rwanda 27%, Burundi 27%. Limited but strategically significant for eastern Congo border population.</td></tr>
+  <tr><td><strong>Rwanda–Kenya</strong></td><td>Small, variable flows</td><td>Via Tanzania and Uganda; indirect. Kenya Power sell-through to Rwanda during surplus periods.</td></tr>
+  <tr><td><strong>Rusumo Falls (Rwanda–Tanzania–Burundi)</strong></td><td>80 MW total / 26.7 MW Rwanda share</td><td>Tripartite project on Kagera River, commissioned 2023. Managed by NELSAP/NBI. Key EAPP sub-regional integration project.</td></tr>
+</table>
+
+<h2>3. Sector organisation and actors</h2>
+<table>
+  <tr><th>Actor</th><th>Role</th><th>Notes</th></tr>
+  <tr><td><strong>MININFRA</strong></td><td>Policy — electricity strategy, EARP, Vision 2050 targets, sector investment promotion</td><td>Rwanda government ministry</td></tr>
+  <tr><td><strong>RURA</strong></td><td>Independent regulator — tariffs, licensing, quality of supply, consumer protection</td><td>Rwanda Utilities Regulatory Authority. Functions independently from REG.</td></tr>
+  <tr><td><strong>REG (Rwanda Energy Group)</strong></td><td>Vertically integrated state holding company — generation (EUCL), transmission (RLSF), distribution (EUCL); also manages grid investment programme</td><td>State-owned (GOR 100%). Formed 2014 by merger of EWSA + RECO.</td></tr>
+  <tr><td><strong>KivuWatt / BW Energy (ContourGlobal)</strong></td><td>IPP — 26 MW methane-to-power, Lake Kivu. PPA with REG/EUCL.</td><td>International private (BW Energy, formerly ContourGlobal)</td></tr>
+  <tr><td><strong>GigaWatt Global</strong></td><td>IPP — Rwamagana 8.5 MW solar (2014); new projects in pipeline</td><td>International private (US-based)</td></tr>
+  <tr><td><strong>World Bank / AfDB / KfW</strong></td><td>EARP financing, rural electrification, mini-grid funding, REG institutional support</td><td>Primary multilateral financiers</td></tr>
+  <tr><td><strong>EGL (Énergie des Grands Lacs)</strong></td><td>Tripartite utility — Ruzizi I+II; Rwanda 27% equity. Ruzizi III (147 MW) under advanced financing.</td><td>DRC 46%, Rwanda 27%, Burundi 27%</td></tr>
+</table>
+
+<h2>4. Key issues and dynamics</h2>
+<h3>4.1 The EARP achievement — and what comes next</h3>
+<ul>
+  <li>Rwanda's Electricity Access Rollout Programme transformed a country from ~10% to ~72% electrified in 13 years. The tools used: targeted grid extension to all 14,837 villages, mini-grid solar for remote areas, and last-mile PAYGo solar for the lowest-income households. The program used a sophisticated targeting model to assign each village to the least-cost access technology. This is now studied as a model for electrification programme design globally.</li>
+  <li>The remaining 28% unelectrified population is predominantly rural and remote — the hardest and most expensive to serve. Getting from 72% to 100% will cost more per household and require sustained subsidy. Rwanda's target of 100% electrification by 2030 is ambitious; reaching 90%+ is achievable with current momentum.</li>
+</ul>
+<h3>4.2 KivuWatt expansion — the Lake Kivu opportunity</h3>
+<ul>
+  <li>Lake Kivu holds an estimated 65 BCM of dissolved methane (and 256 BCM of CO2) — a geological hazard created by volcanic activity. Extraction reduces the limnic eruption risk while generating electricity at near-zero fuel cost. KivuWatt's 26 MW Phase I has operated successfully since 2016. The Mamba Energy project (56 MW additional, under financing 2025–2026) would expand Rwanda's methane-to-power base substantially, adding clean baseload generation without any fuel import dependency.</li>
+  <li>The methane resource is shared with DRC; both countries have rights to exploit it. The total extractable resource could support 200–400 MW across both countries — far more than current plans. Cross-border coordination (via EGL or bilateral agreement) is required for sustainable joint development.</li>
+</ul>
+<h3>4.3 Regional integration — Rwanda's structural import dependency</h3>
+<ul>
+  <li>Rwanda imports ~15% of its electricity from Uganda, DRC/EGL, and Kenya — a structural vulnerability for a landlocked country with limited domestic resources. The Rusumo Falls tripartite project and Nyabarongo II commissioning have reduced this dependency modestly. Ruzizi III (147 MW EGL, ~40 MW Rwanda share) is the next major domestic-equivalent resource if financed.</li>
+  <li>Rwanda actively supports EAPP integration as a way to access larger-scale clean resources from the region (Ethiopia HVDC, Tanzania gas-to-power, Uganda hydro) and is a consistent advocate for multilateral power trading frameworks.</li>
+</ul>
+
+<h2>5. Five things to take away</h2>
+<div class="five-pts">
+  <div class="pt"><div class="pt-n">1</div><div>Rwanda's electricity access achievement — from ~10% (2010) to ~72% (2023) — is the most rapid electrification trajectory in Sub-Saharan Africa. The EARP's systematic village-by-village targeting, least-cost technology assignment, and strong government execution capacity are the primary explanations. This is not a resource story (Rwanda has limited domestic hydro) but a governance and program design story.</div></div>
+  <div class="pt"><div class="pt-n">2</div><div>KivuWatt (26 MW, Lake Kivu methane) is one of the most technically innovative electricity projects in Africa — extracting dissolved methane from a geologically hazardous lake and converting it to baseload power. The resource (65 BCM across Rwanda-DRC) is effectively inexhaustible on planning horizons and requires no fuel imports. The planned Mamba expansion (56 MW additional) is Rwanda's highest-priority generation investment for the 2025–2028 period.</div></div>
+  <div class="pt"><div class="pt-n">3</div><div>Rwanda imports roughly 15% of its electricity from Uganda, DRC (via EGL Ruzizi I/II), and Kenya — a strategic vulnerability for a landlocked country. Ruzizi III (EGL, ~147 MW total, Rwanda share ~40 MW) is the most important near-term project to reduce this dependency. Rwanda's advocacy for EAPP interconnection is driven by rational self-interest: as a small landlocked country, it benefits more from regional power trade than almost any other EAPP member.</div></div>
+  <div class="pt"><div class="pt-n">4</div><div>REG (Rwanda Energy Group) is the most institutionally capable state electricity utility in the Great Lakes sub-region. Its merger of generation and distribution under a single entity (with RURA as independent regulator) has produced measurable improvements in billing, loss reduction, and investment execution. This institutional model — and Rwanda's track record of attracting IPPs with credible PPA frameworks — is studied by neighbours as a reform template.</div></div>
+  <div class="pt"><div class="pt-n">5</div><div>The remaining challenge — reaching 28% of unelectrified Rwandans — is the hardest part. These households are remote, poor, and expensive to serve via any technology. Rwanda's 100% electrification target by 2030 will require sustained concession subsidy, innovative off-grid finance, and continued strong government execution. The EARP model works at scale; the question is whether it works all the way to the last mile in the most remote communities.</div></div>
+</div>
+
+<div class="sources"><strong>Sources</strong><br>
+REG (Rwanda Energy Group) Annual Report 2022–23 &nbsp;·&nbsp; MININFRA Rwanda — Electricity Access Rollout Programme &nbsp;·&nbsp; World Bank — Access to Electricity, Rwanda (2023) &nbsp;·&nbsp; IRENA Rwanda country profile (2024) &nbsp;·&nbsp; KivuWatt / ContourGlobal / BW Energy project documentation &nbsp;·&nbsp; NELSAP — Rusumo Falls hydropower project &nbsp;·&nbsp; IEA Africa Energy Outlook 2022 &nbsp;·&nbsp; GigaWatt Global — Rwamagana solar project &nbsp;·&nbsp; African Development Bank — Rwanda energy sector support &nbsp;·&nbsp; EGL — Ruzizi project updates &nbsp;·&nbsp; EAPP Master Plan 2035 &nbsp;·&nbsp; Ember Rwanda country data &nbsp;·&nbsp; Energypedia — Rwanda electricity sector
+</div>
+</div>
+
+<div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+const L1=['Hydro','Methane (KivuWatt)','Peat','Solar','Diesel / HFO'];
+const C1=['#1E9AF5','#0F7B72','#9A7040','#FFD700','#808890'];
+const D1=[50,9,5,8,4];
+const MW1=[142,26,15,22,12];
+
+const L2=['Hydro','Imports','Methane','Solar','Peat','Diesel'];
+const C2=['#1E9AF5','#5B3FA0','#0F7B72','#FFD700','#9A7040','#808890'];
+const D2=[44,15,12,10,11,8];
+const TWh2=D2.map(v=>+(v*0.9/100).toFixed(3));
+
+const leg1=document.getElementById('leg1');
+L1.forEach((l,i)=>{leg1.innerHTML+=`<span><span class="lsq" style="background:${C1[i]}"></span>${l}</span>`});
+const base={responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false}},layout:{padding:6}};
+new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:L1,datasets:[{data:MW1,backgroundColor:C1,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} MW`}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:L2,datasets:[{data:D2,backgroundColor:C2,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+
+const yrs=['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+const dem=[350,400,450,510,580,630,680,760,840,900];
+const isDark=matchMedia('(prefers-color-scheme:dark)').matches;
+const gc=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';const tc=isDark?'#c2c0b6':'#3d3d3a';
+new Chart(document.getElementById('cDemand'),{type:'line',data:{labels:yrs,datasets:[{data:dem,borderColor:'#2E75B6',backgroundColor:'rgba(46,117,182,.12)',fill:true,tension:0.35,pointRadius:3,pointBackgroundColor:'#2E75B6',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y} GWh`}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false},border:{display:false}},y:{min:250,ticks:{color:tc,font:{size:10}},grid:{color:gc},border:{display:false},title:{display:true,text:'GWh',color:tc,font:{size:10}}}}}});
+
+const L3=['Residential','Industry / SME','Services / other'];
+const C3=['#1B3A5C','#2E75B6','#EF9F27'];
+const leg2=document.getElementById('leg2');
+L3.forEach((l,i)=>{leg2.innerHTML+=`<span><span class="lsq" style="background:${C3[i]}"></span>${l}</span>`});
+new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:L3,datasets:[{data:[45,33,22],backgroundColor:C3,borderWidth:1.5,borderColor:'rgba(255,255,255,.3)',hoverOffset:5}]},options:{...base,plugins:{...base.plugins,tooltip:{callbacks:{label:c=>` ${c.label}: ~${c.parsed}%`}}}}});
+</script>
+</body>
+</html>

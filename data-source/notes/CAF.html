@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central African Republic Electricity Sector — Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --navy:#1B3A5C; --blue:#2E75B6; --lblue:#D6E8F5;
+    --teal:#0F7B72; --amber:#B7770D; --coral:#C0392B;
+    --green:#1A7A4A; --purple:#5B3FA0;
+    --grey:#F4F5F7; --border:#E2E6EA;
+    --text:#1A2332; --muted:#5A6474; --light:#8A94A6; --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:7px 0 14px}
+  th{background:var(--navy);color:var(--white);padding:8px 11px;text-align:left;font-weight:500;font-size:12px}
+  td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:var(--grey)}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--navy)}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing · June 2026</div>
+    <div class="doc-title">Central African Republic</div>
+    <div class="doc-sub">CAPP member · ENERCA state utility · ~17% electrification · Danzi solar 2023 · Conflict-constrained development</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~131 MW</div><div class="kpi-lbl">Installed capacity (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~17%</div><div class="kpi-lbl">National electrification rate</div></div>
+    <div class="kpi"><div class="kpi-val">25 MWp</div><div class="kpi-lbl">Danzi Solar (Nov 2023)</div></div>
+    <div class="kpi"><div class="kpi-val">2%</div><div class="kpi-lbl">Rural electrification rate</div></div>
+  </div>
+
+  <div style="background:#FFF4D6;border-bottom:2px solid #E8B923;padding:13px 56px;font-family:'DM Sans',sans-serif;font-size:12.5px;line-height:1.6;color:#5A4A18"><strong style="display:block;font-size:13px;margin-bottom:3px;color:#3D3210">Pilot document &mdash; drafted with AI assistance, not fact-checked</strong>This note was produced with AI language models and has not been verified, peer-reviewed, or cleared by any institution. Figures may be wrong and statements on contested or politically sensitive matters may be inaccurate or one-sided. It carries no institutional endorsement, is not an official product, and must not be cited as a source.</div>
+<div class="body">
+
+    <h2>Electricity Sector Overview</h2>
+    <p>The Central African Republic (CAR) is one of the world's least electrified countries. With a national electrification rate of approximately <strong>17%</strong> — and rural access of just <strong>2%</strong> — over 80% of the population has no grid connection. The sector has been severely damaged by decades of political instability and armed conflict; much of the country outside Bangui is effectively ungoverned, with no realistic prospect of grid extension in the near term. Installed capacity reached ~131 MW by 2023, having risen sharply from ~41 MW as World Bank-financed solar projects came online — notably the <strong>25 MWp Danzi Solar Plant</strong> commissioned in November 2023.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (2023)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV (Danzi)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro (Boali)</span>
+          <span><span class="lsq" style="background:#C85020"></span>Diesel / HFO</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~131 MW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: World Bank, REN21 GSR 2024, ENERCA</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Danzi Solar Plant: 25 MWp</strong>Commissioned November 2023; World Bank-financed (PURACELL project); fed into ENERCA grid in Bangui; largest solar installation in CAR; 15 MWp expansion financed by World Bank + IFC</div>
+        <div class="stat-item"><strong>Boali HPP: ~18 MW</strong>On the Mbali River; CAR's primary hydro asset; partially rehabilitated; seasonal output varies significantly with river levels</div>
+        <div class="stat-item"><strong>Diesel generators: ~80 MW</strong>Scattered across Bangui and provincial towns; mostly old and poorly maintained; high fuel costs; primary generation source before Danzi</div>
+        <div class="stat-item"><strong>Electrification geography</strong>Bangui: ~35%; major provincial cities: ~8%; rural communities: ~2%. Enormous urban-rural gap; conflict-affected areas have effectively zero formal electricity</div>
+        <div class="stat-item"><strong>2030 target: 50% access</strong>From 17% — requires massive off-grid deployment; achievable only with sustained peace and donor funding</div>
+      </div>
+    </div>
+
+    <h2>ENERCA &amp; Market Structure</h2>
+    <p><strong>ENERCA (Energie Centrafricaine)</strong> is the state-owned national utility responsible for generation, transmission, distribution, and commercialisation of electricity. It operates exclusively in Bangui and a small number of provincial capitals where grid infrastructure exists. ENERCA is financially distressed: tariff revenues do not cover generation costs, and the government cannot provide adequate transfers due to chronic fiscal constraints.</p>
+
+    <ul>
+      <li><strong>ENERCA:</strong> Vertically integrated monopoly; ~900 staff; operations concentrated in Bangui; effectively unable to extend services to conflict-affected provinces.</li>
+      <li><strong>ASER (Agence de Stimulation Economique des Régions):</strong> Rural electrification agency; limited capacity; dependent on donor programmes.</li>
+      <li><strong>World Bank (PURACELL programme):</strong> The most consequential active actor in CAR's electricity sector — financing the Danzi solar plant, the distribution network rehabilitation in Bangui, and the 15 MWp Danzi expansion. Without World Bank support, the sector would have barely evolved in the last decade.</li>
+      <li><strong>Other donors:</strong> EU, AFD (French), AfDB — active in mini-grid and solar home system programmes for rural communities.</li>
+    </ul>
+
+    <div class="callout">
+      CAR's energy sector cannot be understood without the conflict context. Armed groups control significant portions of the national territory; the national army (FACA) and Russian Wagner Group (now Africa Corps) forces are the de facto security providers in much of the country. Infrastructure investment outside Bangui faces existential security risks. The World Bank's PURACELL programme — focused on the capital — represents the pragmatic ceiling of what can be achieved in the current environment.
+    </div>
+
+    <h2>Danzi Solar — A Turning Point</h2>
+    <p>The commissioning of the <strong>25 MWp Danzi Solar Plant in November 2023</strong> was the most significant electricity sector development in CAR in decades. Located near Bangui, the plant more than doubled the capital's reliable generation capacity and reduced dependence on expensive diesel generation. Key facts:</p>
+    <ul>
+      <li>Financed by the World Bank under the Emergency Project for Access to Electricity (PURACELL)</li>
+      <li>Connected directly to the ENERCA grid; supplies Bangui's residential and commercial consumers</li>
+      <li>A further <strong>15 MWp expansion</strong> is being financed by the World Bank and IFC; when complete, Danzi will total 40 MWp — by far the largest generation asset in CAR</li>
+      <li>Demonstrates that utility-scale solar is viable in CAR despite governance challenges, creating a template for future donor-financed RE projects</li>
+    </ul>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Peace is the prerequisite for energy development in CAR.</strong> Every energy access metric — electrification rate, grid coverage, investment volume — is constrained by armed conflict. The 2% rural electrification rate is not primarily a financing or technology problem; it is a security problem. No energy programme can scale while conflict prevents infrastructure deployment and maintenance.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Danzi Solar (2023) is the most consequential energy investment CAR has seen in a generation.</strong> The 25 MWp plant — with 15 MWp more in the pipeline — is transforming Bangui's power supply from diesel-dependent and unreliable to increasingly solar-anchored. This is a real improvement for the capital's ~1 million residents and a proof of concept for future donor-financed RE in CAR.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Off-grid solar is the only realistic electrification pathway for rural CAR.</strong> With 2% rural access and vast areas under armed group control, grid extension is impossible at scale. Solar home systems and mini-grids — delivered through NGOs and donors in areas with some security — are the only viable rural electrification technology. The 2030 target of 50% access is achievable only through massive off-grid deployment.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>ENERCA is financially unviable without sustained donor support.</strong> Cost-reflective tariffs are politically impossible in one of the world's poorest countries; ENERCA's operating deficit is structural. The sector will remain donor-dependent for the foreseeable future. The question is not how to make ENERCA financially independent but how to structure donor support most effectively.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>CAR has real hydro potential that cannot be developed under current conditions.</strong> The Ubangi and Sangha rivers have significant untapped hydro capacity. Under a stable governance environment, CAR could develop hydro resources that provide reliable baseload for a future national grid. That scenario is a decade or more away — but it should inform how donor programmes today (particularly mini-grid standards and grid architecture) are designed to enable future integration.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      World Bank — Central African Republic Electricity Sector Strengthening and Access Project ·
+      World Bank — PURACELL programme documentation ·
+      REN21 — Global Status Report 2024: Central African Republic snapshot ·
+      Africa Energy Portal — Central African Republic ·
+      ESMAP — CAR support leverages World Bank RE investment ·
+      World Bank — Electrification data, Sub-Saharan Africa ·
+      CIA World Factbook — Central African Republic Energy 2024 ·
+      PVknowhow — Central African Republic Solar Report 2025
+    </div>
+
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;·&nbsp; Not for citation</span>
+  <span>June 2026</span>
+</div>
+</div>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Solar PV (Danzi)', 'Hydro (Boali)', 'Diesel / HFO'],
+    datasets: [{ data: [25, 18, 88], backgroundColor: ['#FFD700','#1E9AF5','#C85020'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>
