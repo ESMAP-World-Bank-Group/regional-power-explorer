@@ -33,7 +33,7 @@ export const VOLTAGE_BRACKETS = [
     colors: { fog: '#3CC8D8', paper: '#5578EE', slate: '#00B0D0', ink: '#C8A000', forest: '#98B800', dusk: '#00B878' } },
   { min: 110_000, max: 220_000, width: 0.65, label: '110–220 kV', key: '110',
     colors: { fog: '#80DDE8', paper: '#8FAAEE', slate: '#007090', ink: '#906C00', forest: '#608000', dusk: '#007850' } },
-  { min: 33_000,  max: 110_000, width: 0.45, label: '33–110 kV',  key: '33',
+  { min: 20_000,  max: 110_000, width: 0.45, label: '20–110 kV',  key: '20',
     colors: { fog: '#A8E8F0', paper: '#B4C6F4', slate: '#005070', ink: '#6A5000', forest: '#456000', dusk: '#005838' } },
   { min: 0,       max: 1,       width: 0.4,  label: 'Voltage n/a', key: 'unknown', untagged: true,
     colors: { fog: '#9FB0BC', paper: '#B0A894', slate: '#5A6675', ink: '#5E6068', forest: '#4A5A4E', dusk: '#565070' } },
