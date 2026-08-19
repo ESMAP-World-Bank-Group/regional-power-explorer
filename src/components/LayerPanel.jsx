@@ -79,6 +79,8 @@ export default function LayerPanel({
   linesOn, plantsOn, subsOn,
   loadCentersOn, lcMinPop, lcCircleScale,
   minMw, circleScale,
+  minKv = 0, kvFloor = 110, onMinKvChange,
+  presentKvs,
   plantSource, gppdAvailable, gemAvailable, regionId, iso,
   presentFuels,
   basemap, onBasemap, satLabels, onSatLabels,
@@ -350,7 +352,23 @@ export default function LayerPanel({
         )}
       </div>
 
-      {VOLTAGE_BRACKETS.map(({ colors, label, key }) => {
+      {onMinKvChange && kvFloor < 500 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '2px 0 7px',
+          opacity: linesOn ? 1 : 0.35 }}>
+          <span style={{ fontSize: '0.57rem', color: t.lblMuted, flexShrink: 0 }}>min</span>
+          <input type="range" min={kvFloor} max={500} step={1} value={minKv}
+            onChange={e => onMinKvChange(Number(e.target.value))}
+            style={{ flex: 1, minWidth: 0, accentColor: t.lblRow, cursor: 'pointer' }} />
+          <span style={{ fontSize: '0.57rem', color: t.lblMuted, flexShrink: 0,
+            width: 42, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+            {minKv} kV
+          </span>
+        </div>
+      )}
+
+      {VOLTAGE_BRACKETS
+        .filter(({ key }) => !presentKvs || presentKvs.has(key))
+        .map(({ colors, label, key }) => {
         const off = kvsOff.has(key);
         const lineColor = colors[theme] ?? colors.fog;
         return (

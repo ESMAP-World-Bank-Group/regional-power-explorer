@@ -21,16 +21,142 @@ export const FUEL_LABELS = {
   biogas: 'Biogas', wood: 'Wood',
 };
 
+// `min`/`max` drive the MapLibre layer filters (see kvFilter below), so adding a
+// bracket here is enough — the map pages derive everything from this list.
+// v === 0 means the OSM way carries no voltage tag.
 export const VOLTAGE_BRACKETS = [
-  { min: 500_000, width: 2.2,  label: '500 kV+',    key: '500',
+  { min: 500_000, max: Infinity, width: 2.2,  label: '500 kV+',    key: '500',
     colors: { fog: '#0B7A85', paper: '#1A35A0', slate: '#AAEEFF', ink: '#FFEE33', forest: '#EAFF70', dusk: '#70FFD0' } },
-  { min: 330_000, width: 1.5,  label: '330–500 kV', key: '330',
+  { min: 330_000, max: 500_000, width: 1.5,  label: '330–500 kV', key: '330',
     colors: { fog: '#0DA8B8', paper: '#2B52D8', slate: '#44D8F8', ink: '#FFD040', forest: '#C8E830', dusk: '#28E8A8' } },
-  { min: 220_000, width: 1.0,  label: '220–330 kV', key: '220',
+  { min: 220_000, max: 330_000, width: 1.0,  label: '220–330 kV', key: '220',
     colors: { fog: '#3CC8D8', paper: '#5578EE', slate: '#00B0D0', ink: '#C8A000', forest: '#98B800', dusk: '#00B878' } },
-  { min: 0,       width: 0.65, label: '110–220 kV', key: '110',
+  { min: 110_000, max: 220_000, width: 0.65, label: '110–220 kV', key: '110',
     colors: { fog: '#80DDE8', paper: '#8FAAEE', slate: '#007090', ink: '#906C00', forest: '#608000', dusk: '#007850' } },
+  { min: 33_000,  max: 110_000, width: 0.45, label: '33–110 kV',  key: '33',
+    colors: { fog: '#A8E8F0', paper: '#B4C6F4', slate: '#005070', ink: '#6A5000', forest: '#456000', dusk: '#005838' } },
+  { min: 0,       max: 1,       width: 0.4,  label: 'Voltage n/a', key: 'unknown', untagged: true,
+    colors: { fog: '#9FB0BC', paper: '#B0A894', slate: '#5A6675', ink: '#5E6068', forest: '#4A5A4E', dusk: '#565070' } },
 ];
+
+/** MapLibre filter for one voltage bracket. Untagged lines (v === 0) are their own
+ *  bracket, so every other one has to exclude them explicitly. */
+export function kvFilter({ min, max, untagged }) {
+  if (untagged) return ['==', ['get', 'v'], 0];
+  return max === Infinity
+    ? ['>=', ['get', 'v'], min]
+    : ['all', ['>=', ['get', 'v'], min], ['<', ['get', 'v'], max]];
+}
+
+/** Bracket filter plus the min-kV slider floor. Untagged lines are exempt: v === 0
+ *  means "OSM doesn't say", not "0 kV", so a numeric floor can't judge them — they
+ *  answer to their own legend checkbox alone. */
+export function kvFilterWithFloor(bracket, minKv) {
+  const base = kvFilter(bracket);
+  if (!minKv || bracket.untagged) return base;
+  return ['all', base, ['>=', ['get', 'v'], minKv * 1000]];
+}
+
+/** Bracket a raw voltage falls into (v === 0 → the untagged bracket). */
+export function bracketFor(v) {
+  return VOLTAGE_BRACKETS.find(b => (b.untagged ? !v : v >= b.min && v < b.max))
+    || VOLTAGE_BRACKETS[VOLTAGE_BRACKETS.length - 1];
+}
+
+/** Human-readable line attributes, shared by the hover popup and the downloads.
+ *  Keys are the short ones written by tools/prepare_region_data.py. */
+export const LINE_ATTR_LABELS = {
+  nm: 'Name', op: 'Operator', c: 'Circuits', f: 'Frequency',
+  l: 'Location', st: 'Status', oid: 'OSM id',
+};
+
+/** OSM tag values are user-supplied, so everything reaching setHTML goes through this. */
+function escHtml(str) {
+  return String(str).replace(/[&<>"']/g, ch => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
+  ));
+}
+
+/** Hover popup for a transmission line: OSM name, the substations it runs between,
+ *  voltage, and whatever else OSM knows about it. */
+export function linePopupHTML(props, endpointNames = []) {
+  const title = props.nm
+    ? `<b>${escHtml(props.nm)}</b><br>`
+    : (endpointNames.filter(Boolean).length
+        ? `<b>${endpointNames.filter(Boolean).map(escHtml).join(' — ')}</b><br>` : '');
+  const volts = props.v
+    ? `${Math.round(props.v / 1000)} kV`
+    : 'voltage not tagged in OSM';
+  const rest = ['op', 'c', 'f', 'l', 'st']
+    .filter(k => props[k] !== undefined && props[k] !== null && props[k] !== '')
+    .map(k => `${LINE_ATTR_LABELS[k]}: ${escHtml(lineAttrText(k, props[k]))}`);
+  const lines = [volts, ...rest].join('<br>');
+  return `${title}<span style="opacity:.75">${lines}</span>`;
+}
+
+/** The lines currently drawn on the map, in map order — what a download should
+ *  contain, since the legend filters sit right next to the download button. */
+export function visibleLineFeatures(features, { minKv = 0, kvsOff } = {}) {
+  const off = kvsOff || new Set();
+  return (features || []).filter(f => {
+    const bracket = bracketFor(f.properties.v);
+    if (off.has(bracket.key)) return false;
+    if (bracket.untagged) return true;   // no voltage to compare a floor against
+    return (f.properties.v || 0) >= minKv * 1000;
+  });
+}
+
+/** Short storage keys → self-describing column names, and volts → kV. */
+export function expandLineProps(props) {
+  const out = {};
+  if (props.oid) out.osm_id = props.oid;
+  if (props.nm)  out.name = props.nm;
+  if (props.op)  out.operator = props.op;
+  out.voltage_kv = props.v ? Math.round(props.v / 1000) : '';
+  if (props.c)   out.circuits = props.c;
+  if (props.f)   out.frequency = props.f === '0' ? 'DC' : `${props.f} Hz`;
+  if (props.l)   out.location = props.l;
+  if (props.st)  out.status = props.st;
+  return out;
+}
+
+export const LINE_CSV_COLUMNS =
+  ['osm_id', 'name', 'operator', 'voltage_kv', 'circuits', 'frequency', 'location', 'status'];
+
+/** RFC4180 quoting — OSM names and operators carry commas, quotes and newlines. */
+export function csvCell(value) {
+  const str = value == null ? '' : String(value);
+  return /[",\n\r]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+}
+
+/** GeoJSON with readable property names, for the download only — the map keeps
+ *  the short keys so the fetched file stays small. */
+export function linesToDownloadGeoJSON(features) {
+  return {
+    type: 'FeatureCollection',
+    features: features.map(f => ({
+      type: 'Feature',
+      geometry: f.geometry,
+      properties: expandLineProps(f.properties),
+    })),
+  };
+}
+
+export function linesToCSV(features) {
+  const header = [...LINE_CSV_COLUMNS, 'geometry_wkt'].join(',');
+  const rows = features.map(f => {
+    const p = expandLineProps(f.properties);
+    const wkt = `LINESTRING(${f.geometry.coordinates.map(([x, y]) => `${x} ${y}`).join(', ')})`;
+    return [...LINE_CSV_COLUMNS.map(c => csvCell(p[c])), csvCell(wkt)].join(',');
+  });
+  return [header, ...rows].join('\n');
+}
+
+export function lineAttrText(key, value) {
+  if (key === 'f') return value === '0' ? 'DC' : `${value} Hz AC`;
+  if (key === 'st') return value === 'construction' ? 'Under construction' : value;
+  return String(value);
+}
 
 export const THEMES = {
   fog: {

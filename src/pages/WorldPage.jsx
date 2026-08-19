@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT, mapStyle } from '../constants';
-import { fetchCountries, addCountriesSource, addBaseLayers } from '../utils/basemap';
+import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, regionFilter, raiseBoundaries } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -103,6 +103,9 @@ export default function WorldPage() {
     if (!containerRef.current || !regions) return;
 
     const isoToRegions = {};
+    // Areas the Bank attributes to no country carry no code, so they are keyed
+    // on WB_NAME instead. See regionFilter() in src/utils/basemap.js.
+    const areaToRegions = {};
     const available = regions.filter(r => r.status === 'available');
     for (const r of available) {
       if (r.type === 'meta') continue;
@@ -110,8 +113,15 @@ export default function WorldPage() {
         if (!isoToRegions[c.iso]) isoToRegions[c.iso] = [];
         isoToRegions[c.iso].push({ id: r.id, name: r.name, color: r.color, countryName: c.name });
       }
+      for (const area of r.non_determined || []) {
+        if (!areaToRegions[area]) areaToRegions[area] = [];
+        areaToRegions[area].push({ id: r.id, name: r.name, color: r.color, countryName: area });
+      }
     }
     const availableIsos = Object.keys(isoToRegions);
+    const availableAreas = Object.keys(areaToRegions);
+    const regionsFor = p =>
+      (p.STATUS === 'non-determined' ? areaToRegions[p.WB_NAME] : isoToRegions[p.ISO_A3]) || [];
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -128,20 +138,28 @@ export default function WorldPage() {
 
     map.on('load', async () => {
       const countries = await fetchCountries('110m');
+      const boundaries = await fetchBoundaries('110m');
 
       addCountriesSource(map, countries);
-      addBaseLayers(map, t);
+      addBaseLayers(map, t, boundaries);
 
       if (availableIsos.length) {
-        const colorExpr = ['match', ['get', 'ISO_A3'],
+        const byIso = ['match', ['get', 'ISO_A3'],
           ...availableIsos.flatMap(iso => [iso, isoToRegions[iso][0].color]),
           'transparent',
         ];
+        const colorExpr = availableAreas.length
+          ? ['case', ['==', ['get', 'STATUS'], 'non-determined'],
+              ['match', ['get', 'WB_NAME'],
+                ...availableAreas.flatMap(a => [a, areaToRegions[a][0].color]),
+                'transparent'],
+              byIso]
+          : byIso;
         map.addLayer({
           id: 'region-fill',
           type: 'fill',
           source: 'countries',
-          filter: ['in', ['get', 'ISO_A3'], ['literal', availableIsos]],
+          filter: regionFilter(availableIsos, availableAreas),
           paint: {
             'fill-color': colorExpr,
             'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.55, 0.28],
@@ -169,9 +187,9 @@ export default function WorldPage() {
         hoveredId = e.features[0].id;
         map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: true });
 
-        const iso = e.features[0].properties.ISO_A3;
-        const rs = isoToRegions[iso] || [];
-        const countryName = rs[0]?.countryName || iso;
+        const props = e.features[0].properties;
+        const rs = regionsFor(props);
+        const countryName = rs[0]?.countryName || props.WB_NAME || props.ISO_A3;
         const subtitle = rs.length > 1
           ? rs.map(r => r.name).join(' · ') + ' · click to choose'
           : (rs[0]?.name || '') + ' · click to explore';
@@ -189,9 +207,10 @@ export default function WorldPage() {
       });
 
       map.on('click', 'region-fill', e => {
-        const iso = e.features[0].properties.ISO_A3;
-        const rs = isoToRegions[iso];
-        if (!rs || rs.length === 0) return;
+        const props = e.features[0].properties;
+        const iso = props.ISO_A3 || props.WB_NAME;
+        const rs = regionsFor(props);
+        if (rs.length === 0) return;
         if (rs.length === 1) {
           navigate(`/region/${rs[0].id}`);
         } else {
@@ -199,6 +218,8 @@ export default function WorldPage() {
           setDisambig({ x: pixel.x, y: pixel.y, iso, regions: rs });
         }
       });
+
+      raiseBoundaries(map);
 
       // Restore meta markers after map rebuild (e.g., theme change)
       if (metaActiveRef.current) applyMetaMarkers(metaActiveRef.current, map);
