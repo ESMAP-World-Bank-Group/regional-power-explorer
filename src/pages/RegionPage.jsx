@@ -13,6 +13,7 @@ import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
 import MetaRegionPage from './MetaRegionPage';
+import { fetchCountries, addCountriesSource, addBaseLayers } from '../utils/basemap';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -298,7 +299,7 @@ export default function RegionPage() {
 
     map.on('load', async () => {
       const [countries, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
-        fetch('/data/countries_10m.geojson').then(r => r.json()),
+        fetchCountries('10m'),
         fetch(`/data/cache/region_plants_${regionId}.geojson`).then(r => r.json()),
         fetch(`/data/cache/region_lines_${regionId}.geojson`).then(r => r.json()),
         fetch(`/data/cache/region_substations_${regionId}.geojson`)
@@ -307,8 +308,6 @@ export default function RegionPage() {
           .then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
       ]);
 
-      countries.features.forEach((f, i) => { f.id = i; });
-
       const bounds = fitBounds(isos, countries);
       if (bounds) map.fitBounds(bounds, { padding: 40, duration: 0 });
 
@@ -316,17 +315,14 @@ export default function RegionPage() {
       const adaptMin = adaptiveMinMw(plantsGJ.features, 150);
       setMinMw(adaptMin);
 
-      map.addSource('countries',    { type: 'geojson', data: countries, generateId: false });
+      addCountriesSource(map, countries);
       map.addSource('plants',       { type: 'geojson', data: plantsGJ });
       map.addSource('lines',        { type: 'geojson', data: linesGJ  });
       map.addSource('substations',  { type: 'geojson', data: subsGJ   });
       map.addSource('load-centers', { type: 'geojson', data: lcGJ     });
 
       const tv = getT(theme);
-      map.addLayer({ id: 'land',    type: 'fill', source: 'countries',
-        paint: { 'fill-color': tv.land, 'fill-opacity': 1 } });
-      map.addLayer({ id: 'borders', type: 'line', source: 'countries',
-        paint: { 'line-color': tv.worldBdr, 'line-width': tv.worldBdrW } });
+      addBaseLayers(map, tv);
 
 
       // Transmission lines

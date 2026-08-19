@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT, mapStyle } from '../constants';
+import { fetchCountries, addCountriesSource } from '../utils/basemap';
 
 export default function MetaRegionPage({ region }) {
   const { theme }  = useTheme();
@@ -34,8 +35,8 @@ export default function MetaRegionPage({ region }) {
     mapRef.current = map;
 
     map.on('load', async () => {
-      const countries = await fetch('/data/countries_110m.geojson').then(r => r.json());
-      map.addSource('countries', { type: 'geojson', data: countries });
+      const countries = await fetchCountries('110m');
+      addCountriesSource(map, countries);
       map.addLayer({ id: 'sids-fill', type: 'fill', source: 'countries',
         filter: ['in', ['get', 'ISO_A3'], ['literal', allIsos]],
         paint: { 'fill-color': region.color, 'fill-opacity': 0.18 },
