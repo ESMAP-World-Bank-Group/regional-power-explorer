@@ -24,6 +24,7 @@ from pathlib import Path
 from shapely.geometry import shape
 from shapely.wkb import loads as wkb_loads
 from shapely.ops import unary_union
+from shapely.validation import make_valid
 
 _ROOT    = Path(__file__).resolve().parents[1]
 GPKG     = _ROOT.parent / "maps" / "worldwide.gpkg"
@@ -61,7 +62,7 @@ def load_regions(only=None):
 def load_countries_gdf():
     with open(DATA_DIR.parent / "public" / "data" / "countries_110m.geojson", encoding="utf-8") as f:
         gj = json.load(f)
-    rows = []
+    rows, repaired = [], 0
     for feat in gj["features"]:
         p = feat["properties"]
         # Skip the areas the Bank does not attribute to a country; they carry no
@@ -73,7 +74,23 @@ def load_countries_gdf():
             geom = shape(feat["geometry"])
         except Exception:
             continue
+        # A few boundary polygons self-intersect, and GEOS refuses to union them
+        # ("side location conflict"). make_valid repairs them while keeping the
+        # area, unlike buffer(0) which can quietly swallow slivers.
+        if not geom.is_valid:
+            geom = make_valid(geom)
+            # It can hand back a collection with 1D leftovers; only the polygonal
+            # parts mean anything for a region union.
+            if geom.geom_type not in ("Polygon", "MultiPolygon"):
+                polys = [g for g in geom.geoms
+                         if g.geom_type in ("Polygon", "MultiPolygon")]
+                if not polys:
+                    continue
+                geom = unary_union(polys)
+            repaired += 1
         rows.append({"ISO_A3": iso, "geometry": geom})
+    if repaired:
+        print(f"Repaired {repaired} invalid country polygon(s)")
     return rows
 
 
@@ -211,10 +228,20 @@ def build_lines(region_id, region_union, min_kv=LINE_MIN_KV):
             v     = int(row.get("max_voltage") or 0)   # 0 = voltage unknown
             attrs = _line_attrs(row)
             for coords in _geom_to_segments(simplified):
+                lats = [round(y, COORD_PREC) for x, y in coords]
+                lons = [round(x, COORD_PREC) for x, y in coords]
+                # Rounding to ~110 m makes neighbouring vertices coincide. Drop the
+                # duplicates, and the whole segment when a single point is all that
+                # survives (10% of EAPP's): invisible on the map, but dead weight in
+                # the file and in every download made from it.
+                keep = [i for i in range(len(lats))
+                        if i == 0 or (lats[i], lons[i]) != (lats[i - 1], lons[i - 1])]
+                if len(keep) < 2:
+                    continue
                 out_segments.append({
                     "v":    v,
-                    "lats": [round(y, COORD_PREC) for x, y in coords],
-                    "lons": [round(x, COORD_PREC) for x, y in coords],
+                    "lats": [lats[i] for i in keep],
+                    "lons": [lons[i] for i in keep],
                     **attrs,
                 })
         return out_segments
@@ -366,6 +393,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--regions", nargs="+", metavar="ID",
                         help="Only process these region IDs (e.g. --regions asean eu)")
+    parser.add_argument("--layers", nargs="+", default=["lines", "plants", "subs"],
+                        choices=["lines", "plants", "subs"],
+                        help="Only rebuild these layers (default: all three). The GPKG "
+                             "moves faster than the committed cache, so rebuilding "
+                             "everything mixes unrelated data changes into one commit.")
     args = parser.parse_args()
 
     if not GPKG.exists():
@@ -383,8 +415,11 @@ if __name__ == "__main__":
             print("  No matching countries, skipping")
             continue
         region_union = unary_union([c["geometry"] for c in region_countries])
-        build_lines(region["id"], region_union, region.get("min_kv", LINE_MIN_KV))
-        build_plants(region["id"], region_union, region_countries)
-        build_substations(region["id"], region_union)
+        if "lines" in args.layers:
+            build_lines(region["id"], region_union, region.get("min_kv", LINE_MIN_KV))
+        if "plants" in args.layers:
+            build_plants(region["id"], region_union, region_countries)
+        if "subs" in args.layers:
+            build_substations(region["id"], region_union)
 
     print("\nDone.")
