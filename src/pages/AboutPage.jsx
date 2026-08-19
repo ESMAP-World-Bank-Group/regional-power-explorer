@@ -351,29 +351,6 @@ export default function AboutPage() {
             The Regional Explorer aggregates open-access data from multiple sources.
             Coverage and accuracy vary by region; all figures are indicative.
           </p>
-          {/* Pilot / AI banner — deliberately the first thing on the page. This is an
-              unofficial pilot, and parts of it are machine-generated; readers need that
-              before they read any figure. */}
-          <div style={{
-            marginTop: 18, padding: '14px 16px', borderRadius: 8,
-            border: '1px solid rgba(252,196,25,0.55)',
-            borderLeft: '4px solid rgba(252,196,25,0.95)',
-            background: t.isDark ? 'rgba(252,196,25,0.07)' : 'rgba(252,196,25,0.08)',
-          }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
-              Pilot — unofficial, experimental, and partly AI-generated
-            </div>
-            <p style={{ fontSize: '0.7rem', color: t.muted, lineHeight: 1.65, margin: 0 }}>
-              This is an exploratory pilot, not a published product and not an official product of
-              any institution. Parts of the content — including narrative text and country
-              summaries — were drafted with the assistance of AI language models and have
-              <strong> not been fully fact-checked or peer-reviewed</strong>. AI-generated text can
-              be confidently wrong, and can mis-state contested or politically sensitive matters.
-              Treat every figure and statement as indicative and unverified, and check anything
-              consequential against the underlying source before relying on it.
-            </p>
-          </div>
-
           {meta && (
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 14,
