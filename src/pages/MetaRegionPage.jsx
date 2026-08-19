@@ -35,13 +35,6 @@ export default function MetaRegionPage({ region }) {
 
     map.on('load', async () => {
       const countries = await fetch('/data/countries_110m.geojson').then(r => r.json());
-      countries.features.forEach(f => {
-        const p = f.properties;
-        let iso = p.ISO_A3 || '-99';
-        if (iso === '-99') iso = p.ISO_A3_EH || '-99';
-        p.ISO_A3 = iso;
-      });
-
       map.addSource('countries', { type: 'geojson', data: countries });
       map.addLayer({ id: 'sids-fill', type: 'fill', source: 'countries',
         filter: ['in', ['get', 'ISO_A3'], ['literal', allIsos]],

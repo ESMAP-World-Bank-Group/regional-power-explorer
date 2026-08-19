@@ -202,14 +202,14 @@ const SOURCES = [
     rows: [
       {
         layer:   'Country boundaries',
-        source:  'Natural Earth',
-        abbr:    'Natural Earth',
-        version: '110m',
-        updated: '2024',
+        source:  'World Bank Official Boundaries',
+        abbr:    'WB Admin 0',
+        version: '10m',
+        updated: '2025',
         freq:    'Ad hoc',
         coverage:'Global',
-        quality: 'Standard for web mapping. 110 m resolution. Includes disputed territories.',
-        url:     'https://www.naturalearthdata.com',
+        quality: 'World Bank approved Admin 0 boundaries, consistent with WB cartographic policy on disputed areas.',
+        url:     'https://datacatalog.worldbank.org/search/dataset/0038272',
       },
     ],
   },
@@ -623,7 +623,7 @@ export default function AboutPage() {
               'Electricity tariff data sourced from GlobalPetrolPrices.com is indicative only and may not reflect current regulated rates. Licence terms are under review.',
               'Load profiles are available only for countries with ENTSO-E hourly data. For all other countries the Load tab shows no intraday profile.',
               'Parts of this tool — narrative text and country summaries in particular — were drafted with AI assistance and have not been fully fact-checked. AI-generated text can state wrong figures confidently and can mis-handle contested or politically sensitive topics. Do not cite it as a source.',
-              'Country boundaries are sourced from Natural Earth (110m resolution) for reference purposes only. Boundaries, names, colours and any other information shown do not imply any judgement on the legal status of any territory, or any endorsement or acceptance of any boundary or territorial delimitation.',
+              'Country boundaries are sourced from the World Bank Official Boundaries dataset (Admin 0) and are shown for reference purposes only. Boundaries, colours, denominations and any other information shown do not imply any judgement on the legal status of any territory, or any endorsement or acceptance of any boundary or territorial delimitation.',
               'The findings, interpretations, and conclusions expressed in this tool are those of the author(s) alone. They do not represent the views of any institution, its governing bodies, or the governments they represent, and carry no institutional endorsement.',
             ].map((item, i) => (
               <li key={i} style={{ position: 'relative', paddingLeft: 18, fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
@@ -637,7 +637,7 @@ export default function AboutPage() {
         {/* Footer */}
         <p style={{ fontSize: '0.55rem', color: t.lblMuted, marginTop: 32, lineHeight: 1.7 }}>
           Regional Power Explorer · Pilot · Indicative data · partly AI-generated · unofficial ·{' '}
-          Data licences: OSM (ODbL), GPPD (CC BY 4.0), GEM (CC BY 4.0), Natural Earth (Public Domain)
+          Data licences: OSM (ODbL), GPPD (CC BY 4.0), GEM (CC BY 4.0), World Bank Official Boundaries (CC BY 4.0)
         </p>
       </div>
     </div>
