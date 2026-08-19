@@ -9,13 +9,14 @@ Usage:
     python tools/prepare_region_data.py --regions asean eu # specific regions only
 
 Outputs (data-source/cache/):
-    region_lines_{id}.json       -- HV segments with voltage
+    region_lines_{id}.json       -- HV segments with voltage + OSM attributes
     region_plants_{id}.json      -- power plants with fuel/capacity
     region_capacity_{id}.json    -- capacity summary per country
     region_substations_{id}.json -- HV substations
 """
 import argparse
 import json
+import math
 import sqlite3
 import yaml
 from pathlib import Path
@@ -30,9 +31,23 @@ DATA_DIR = _ROOT / "data-source"
 OUT_DIR  = DATA_DIR / "cache"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-LINE_MIN_KV    = 110_000
+LINE_MIN_KV    = 110_000        # fallback when a region has no min_kv in regions.yaml
 LINE_TOLERANCE = 0.04
 COORD_PREC     = 3
+
+# OSM columns carried through to the map/download layer
+LINE_COLUMNS = ["id", "name", "name_en", "ref", "operator", "max_voltage",
+                "frequency", "circuits", "location", "construction"]
+
+# Lines with no voltage tag are the bulk of the network in poorly-mapped countries
+# (WAPP: 2,692 untagged vs 1,206 >=110 kV) but pure noise in dense ones (EU: 330k).
+# Same idea as UNTAGGED_CAP for substations: keep them only where they stay countable.
+UNKNOWN_KV_CAP = 15_000
+
+# Untagged lines are dominated by tiny fragments (EAPP: 80% under 1 km, 1% carrying
+# any name or operator — service drops and distribution stubs). Requiring 1 km drops
+# 80% of the segments while keeping 93% of the untagged network length.
+UNKNOWN_MIN_KM = 1.0
 
 
 def load_regions(only=None):
@@ -129,39 +144,100 @@ def _geom_to_segments(geom):
             yield list(part.coords)
 
 
-def build_lines(region_id, region_union):
+def _segment_km(coords):
+    total = 0.0
+    for (x1, y1), (x2, y2) in zip(coords, coords[1:]):
+        mid_lat = math.radians((y1 + y2) / 2)
+        total += math.hypot((x2 - x1) * 111 * math.cos(mid_lat), (y2 - y1) * 111)
+    return total
+
+
+def _line_attrs(row):
+    """OSM tags worth showing on hover / carrying into the download. Empties are
+    dropped so sparsely-tagged regions pay almost nothing for them."""
+    attrs = {}
+    name = (row.get("name") or row.get("name_en") or row.get("ref") or "").strip()
+    if name:
+        attrs["nm"] = name
+    operator = (row.get("operator") or "").strip()
+    if operator:
+        attrs["op"] = operator
+    circuits = row.get("circuits")
+    if circuits:
+        try:
+            attrs["c"] = int(circuits)
+        except (ValueError, TypeError):
+            pass
+    freq = (row.get("frequency") or "").strip()
+    if freq:
+        attrs["f"] = freq                      # "0" = DC link
+    location = (row.get("location") or "").strip()
+    if location and location != "overhead":    # overhead is 95% of rows — implied by absence
+        attrs["l"] = location
+    if (row.get("construction") or "").strip():
+        attrs["st"] = "construction"
+    osm_id = row.get("id")
+    if osm_id:
+        attrs["oid"] = int(osm_id)
+    return attrs
+
+
+def build_lines(region_id, region_union, min_kv=LINE_MIN_KV):
     bbox = region_union.bounds
     print(f"  Lines: reading GPKG...")
-    rows = _gpkg_query("power_line", bbox, ["max_voltage"])
-    rows = [r for r in rows if r.get("max_voltage") is not None and r["max_voltage"] >= LINE_MIN_KV]
-    print(f"  {len(rows):,} lines >= {LINE_MIN_KV//1000} kV in bbox")
+    rows = _gpkg_query("power_line", bbox, LINE_COLUMNS)
 
-    segments = []
-    for row in rows:
-        geom = row["geometry"]
-        if geom is None or geom.is_empty:
-            continue
-        try:
-            clipped = geom.intersection(region_union)
-        except Exception:
-            continue
-        if clipped.is_empty:
-            continue
-        simplified = clipped.simplify(LINE_TOLERANCE, preserve_topology=False)
-        if simplified is None or simplified.is_empty:
-            continue
-        v = int(row.get("max_voltage") or 0)
-        for coords in _geom_to_segments(simplified):
-            segments.append({
-                "v":    v,
-                "lats": [round(y, COORD_PREC) for x, y in coords],
-                "lons": [round(x, COORD_PREC) for x, y in coords],
-            })
+    tagged  = [r for r in rows if r.get("max_voltage") is not None
+               and r["max_voltage"] >= min_kv]
+    unknown = [r for r in rows if r.get("max_voltage") is None]
+    print(f"  {len(tagged):,} lines >= {min_kv//1000} kV in bbox "
+          f"({len(unknown):,} with no voltage tag)")
+
+    def clip_to_segments(rows_in):
+        out_segments = []
+        for row in rows_in:
+            geom = row["geometry"]
+            if geom is None or geom.is_empty:
+                continue
+            try:
+                clipped = geom.intersection(region_union)
+            except Exception:
+                continue
+            if clipped.is_empty:
+                continue
+            simplified = clipped.simplify(LINE_TOLERANCE, preserve_topology=False)
+            if simplified is None or simplified.is_empty:
+                continue
+            v     = int(row.get("max_voltage") or 0)   # 0 = voltage unknown
+            attrs = _line_attrs(row)
+            for coords in _geom_to_segments(simplified):
+                out_segments.append({
+                    "v":    v,
+                    "lats": [round(y, COORD_PREC) for x, y in coords],
+                    "lons": [round(x, COORD_PREC) for x, y in coords],
+                    **attrs,
+                })
+        return out_segments
+
+    segments = clip_to_segments(tagged)
+    # Cap the untagged ones on the post-clip count: a region bbox drags in whole
+    # neighbouring countries (EAPP's reaches into Arabia), so the bbox count is
+    # no measure of how well the region itself is mapped.
+    unknown_segments = [
+        seg for seg in clip_to_segments(unknown)
+        if _segment_km(list(zip(seg["lons"], seg["lats"]))) >= UNKNOWN_MIN_KM
+    ]
+    if len(unknown_segments) > UNKNOWN_KV_CAP:
+        print(f"  Dropping {len(unknown_segments):,} untagged segments — "
+              f"well-mapped region, over the {UNKNOWN_KV_CAP:,} cap")
+    else:
+        print(f"  Keeping {len(unknown_segments):,} untagged segments")
+        segments += unknown_segments
 
     print(f"  {len(segments):,} segments after clip")
     out = OUT_DIR / f"region_lines_{region_id}.json"
     with open(out, "w", encoding="utf-8") as f:
-        json.dump({"segments": segments}, f, separators=(",", ":"))
+        json.dump({"segments": segments}, f, separators=(",", ":"), ensure_ascii=False)
     print(f"  Saved {out.name}  ({out.stat().st_size/1024:.0f} KB, {len(segments):,} segments)")
 
 
@@ -307,7 +383,7 @@ if __name__ == "__main__":
             print("  No matching countries, skipping")
             continue
         region_union = unary_union([c["geometry"] for c in region_countries])
-        build_lines(region["id"], region_union)
+        build_lines(region["id"], region_union, region.get("min_kv", LINE_MIN_KV))
         build_plants(region["id"], region_union, region_countries)
         build_substations(region["id"], region_union)
 
