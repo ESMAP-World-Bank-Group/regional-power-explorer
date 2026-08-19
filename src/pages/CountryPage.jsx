@@ -11,7 +11,7 @@ import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
-import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers } from '../utils/basemap';
+import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, raiseBoundaries } from '../utils/basemap';
 
 // Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
 // Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
@@ -732,6 +732,7 @@ export default function CountryPage() {
 
       mapReadyRef.current = true;
 
+      raiseBoundaries(map);
     });
 
     return () => { mapReadyRef.current = false; popup.remove(); mapRef.current?.remove(); };

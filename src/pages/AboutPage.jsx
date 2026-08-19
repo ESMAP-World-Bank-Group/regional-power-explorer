@@ -219,7 +219,18 @@ const SOURCES = [
         updated: '2025',
         freq:    'Ad hoc',
         coverage:'Global',
-        quality: 'Areas the Bank attributes to no country. Drawn as land with a dashed outline and no country fill.',
+        quality: 'Areas the Bank attributes to no country. Drawn as land, with no country of their own.',
+        url:     'https://datacatalog.worldbank.org/search/dataset/0038272',
+      },
+      {
+        layer:   'Boundary line styles',
+        source:  'World Bank Global Administrative Divisions',
+        abbr:    'WB-GAD Admin 0 boundaries',
+        version: 'Medium res.',
+        updated: '2025',
+        freq:    'Ad hoc',
+        coverage:'Global',
+        quality: "The Bank's own dashed, tightly dashed and dotted styles, traced onto the Admin 0 edges above.",
         url:     'https://datacatalog.worldbank.org/search/dataset/0038272',
       },
     ],
@@ -634,7 +645,7 @@ export default function AboutPage() {
               'Electricity tariff data sourced from GlobalPetrolPrices.com is indicative only and may not reflect current regulated rates. Licence terms are under review.',
               'Load profiles are available only for countries with ENTSO-E hourly data. For all other countries the Load tab shows no intraday profile.',
               'Parts of this tool — narrative text and country summaries in particular — were drafted with AI assistance and have not been fully fact-checked. AI-generated text can state wrong figures confidently and can mis-handle contested or politically sensitive topics. Do not cite it as a source.',
-              'Country boundaries are sourced from the World Bank Official Boundaries dataset (Admin 0) and are shown for reference purposes only. Areas the Bank attributes to no country — Western Sahara, Abyei, Arunachal Pradesh, the Kashmir area north of the line of control, the Kuril Islands and the UN buffer zone in Cyprus — are drawn without a country fill and with a dashed outline. Boundaries, colours, denominations and any other information shown do not imply any judgement on the legal status of any territory, or any endorsement or acceptance of any boundary or territorial delimitation.',
+              'Country boundaries are sourced from the World Bank Official Boundaries dataset (Admin 0) and are shown for reference purposes only. Areas the Bank attributes to no country — Western Sahara, Abyei, Arunachal Pradesh, the Kashmir area north of the line of control, the Kuril Islands and the UN buffer zone in Cyprus — are drawn as land belonging to no country. Their land boundaries, and the national boundaries the Bank itself draws broken, carry the dashed, tightly dashed and dotted styles of the Bank’s own reference map. Boundaries, colours, denominations and any other information shown do not imply any judgement on the legal status of any territory, or any endorsement or acceptance of any boundary or territorial delimitation.',
               'The findings, interpretations, and conclusions expressed in this tool are those of the author(s) alone. They do not represent the views of any institution, its governing bodies, or the governments they represent, and carry no institutional endorsement.',
             ].map((item, i) => (
               <li key={i} style={{ position: 'relative', paddingLeft: 18, fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>

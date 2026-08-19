@@ -352,19 +352,6 @@ export default function LayerPanel({
         )}
       </div>
 
-      {onMinKvChange && kvFloor < 500 && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '2px 0 7px',
-          opacity: linesOn ? 1 : 0.35 }}>
-          <span style={{ fontSize: '0.57rem', color: t.lblMuted, flexShrink: 0 }}>min</span>
-          <input type="range" min={kvFloor} max={500} step={1} value={minKv}
-            onChange={e => onMinKvChange(Number(e.target.value))}
-            style={{ flex: 1, minWidth: 0, accentColor: t.lblRow, cursor: 'pointer' }} />
-          <span style={{ fontSize: '0.57rem', color: t.lblMuted, flexShrink: 0,
-            width: 42, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-            {minKv} kV
-          </span>
-        </div>
-      )}
 
       {VOLTAGE_BRACKETS
         .filter(({ key }) => !presentKvs || presentKvs.has(key))
@@ -384,6 +371,20 @@ export default function LayerPanel({
           </div>
         );
       })}
+
+      {onMinKvChange && kvFloor < 500 && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '5px 0 1px',
+          opacity: linesOn ? 1 : 0.35 }}>
+          <span style={{ fontSize: '0.57rem', color: t.lblMuted, flexShrink: 0 }}>min</span>
+          <input type="range" min={kvFloor} max={500} step={1} value={minKv}
+            onChange={e => onMinKvChange(Number(e.target.value))}
+            style={{ flex: 1, minWidth: 0, accentColor: t.lblRow, cursor: 'pointer' }} />
+          <span style={{ fontSize: '0.57rem', color: t.lblMuted, flexShrink: 0,
+            width: 42, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+            {minKv} kV
+          </span>
+        </div>
+      )}
 
       {/* Substations */}
       {onToggleSubs && (
