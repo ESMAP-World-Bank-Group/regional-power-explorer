@@ -7,6 +7,8 @@ const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010' };
 const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the series color — stays out of the way
 const GRANULARITIES = [['multiyear', 'Multi-year'], ['year', 'Year'], ['month', 'Month'], ['day', 'Day']];
 const SUB_TABS = [['prices', 'Prices']];
+// DAM-only — only that series has EUR/USD alternatives in the data (dam_eur, dam_usd).
+const CURRENCIES = [['try', 'TL'], ['eur', 'EUR'], ['usd', 'USD']];
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -15,10 +17,10 @@ const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'Jul
 const AXIS_TITLE = { multiyear: 'Year', year: 'Month', month: 'Day', day: 'Hour' };
 
 // All timestamps in the source JSON are UTC (fixed-width ISO strings with a
-// "+00:00" suffix, and the daily/monthly aggregates are grouped by UTC
-// calendar day) — we display everything in UTC too, via plain string slicing,
-// rather than shifting to Turkey local time, so labels never disagree with
-// how the underlying periods were actually bucketed.
+// "+00:00" suffix), but the daily/monthly/yearly aggregates are bucketed by
+// Turkey local time (UTC+3) on the backend — we display everything in UTC via
+// plain string slicing regardless, since the hourly points themselves are
+// still UTC-stamped; only the daily/monthly/yearly grouping is local-time.
 function monthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_ABBR[+m - 1]} ${y}`; }
 function dayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_ABBR[+m - 1]} ${y}`; }
 // Full-word versions, used in the chart tooltip (e.g. "4 August 2026").
@@ -247,6 +249,7 @@ export default function MarketTab({ iso, theme }) {
   const [data,        setData]        = useState(null);
   const [loading,      setLoading]     = useState(true);
   const [series,       setSeries]      = useState('dam');
+  const [currency,     setCurrency]    = useState('try'); // 'try' | 'eur' | 'usd' — DAM only, remembered across series switches
   const [granularity,  setGranularity] = useState('multiyear');
   const [period,       setPeriod]      = useState(null);
   const [tip,          setTip]         = useState(null);
@@ -255,14 +258,18 @@ export default function MarketTab({ iso, theme }) {
   useEffect(() => {
     if (!iso) return;
     setLoading(true); setData(null);
-    setSeries('dam'); setGranularity('multiyear'); setPeriod(null); setTip(null);
+    setSeries('dam'); setCurrency('try'); setGranularity('multiyear'); setPeriod(null); setTip(null);
     fetch(`/data/market/${iso}.json`)
       .then(r => { if (!r.ok) throw new Error('404'); return r.json(); })
       .then(d => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, [iso]);
 
-  const block = data?.[series] ?? null;
+  // dam_eur / dam_usd are separate top-level keys with the same shape as dam
+  // (and their own unit) — idm/bpm have no currency alternatives, so this
+  // only kicks in for series === 'dam'.
+  const dataKey = series === 'dam' && currency !== 'try' ? `dam_${currency}` : series;
+  const block = data?.[dataKey] ?? null;
 
   const periods = useMemo(() => getPeriods(block, granularity), [block, granularity]);
 
@@ -289,7 +296,7 @@ export default function MarketTab({ iso, theme }) {
   if (loading) return <p style={{ fontSize: '0.7rem', color: t.lblMuted, marginTop: 8 }}>Loading…</p>;
   if (!data)   return <p style={{ fontSize: '0.7rem', color: t.lblMuted, marginTop: 8, fontStyle: 'italic' }}>No market data available for this country.</p>;
 
-  const unit = data.unit || 'TL/MWh';
+  const unit = block?.unit || 'TL/MWh';
   const periodIdx = periods.indexOf(period);
 
   // Underline-style sub-tabs (a tab strip, not standalone pill buttons) —
@@ -338,7 +345,7 @@ export default function MarketTab({ iso, theme }) {
     const days = Object.keys(block.daily.mean).sort();
     const header = 'date,mean,min,max';
     const rows = days.map(d => [d, block.daily.mean[d], block.daily.min[d], block.daily.max[d]].join(','));
-    downloadBlob([header, ...rows].join('\n'), `market_${series}_daily_${iso}.csv`, 'text/csv');
+    downloadBlob([header, ...rows].join('\n'), `market_${dataKey}_daily_${iso}.csv`, 'text/csv');
   };
 
   const kpi1Label = granularity === 'multiyear'
@@ -454,6 +461,15 @@ export default function MarketTab({ iso, theme }) {
             <KpiCard label="Latest Price" value={fmtPrice(latestHourly?.value)} unit={unit}
               sub={latestHourly ? hourTimestampLabel(latestHourly.ts) : 'No data'} t={t} />
           </div>
+
+          {/* Currency toggle — DAM only, IDM/BPM have no EUR/USD in the data */}
+          {series === 'dam' && (
+            <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+              {CURRENCIES.map(([c, lbl]) => (
+                <button key={c} onClick={() => setCurrency(c)} style={toggleBtnStyle(currency === c)}>{lbl}</button>
+              ))}
+            </div>
+          )}
 
           {/* Chart */}
           {noHourlyDetail ? (
