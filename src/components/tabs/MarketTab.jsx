@@ -42,8 +42,12 @@ function niceTicks(maxVal) {
   const raw = maxVal / 4;
   const mag = Math.pow(10, Math.floor(Math.log10(raw)));
   const nice = [1, 2, 2.5, 5, 10].find(f => f * mag >= raw) * mag;
-  const ticks = [0];
-  for (let v = nice; v <= maxVal + nice; v += nice) ticks.push(Math.round(v));
+  // Round the axis top UP to the next nice step — never one full step beyond it.
+  // Keeps niceTicks idempotent: niceTicks(niceTicks(x).pop()) === niceTicks(x),
+  // so a tick can never land above the plot area.
+  const top = Math.ceil(maxVal / nice - 1e-9) * nice;
+  const ticks = [];
+  for (let v = 0; v <= top + nice * 1e-9; v += nice) ticks.push(Math.round(v));
   return ticks;
 }
 
