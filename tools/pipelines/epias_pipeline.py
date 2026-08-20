@@ -181,10 +181,17 @@ def _stats_by(hourly: pd.Series, group_keys) -> dict:
 
 
 def _aggregate(hourly: pd.Series) -> dict:
+    """hourly's index is UTC. EPIAS prices are inherently on Turkey local time
+    (UTC+3, no DST since Sep 2016), so bucket by the Europe/Istanbul-converted
+    index — otherwise every "day" would actually span 21:00 UTC the previous
+    day through 20:00 UTC that day, a 3-hour-shifted window that doesn't match
+    the real Turkish trading day. The values themselves are unaffected; only
+    which day/month/year each hour is grouped into changes."""
+    local = hourly.tz_convert('Europe/Istanbul')
     return {
-        'daily':   _stats_by(hourly, hourly.index.date),
-        'monthly': _stats_by(hourly, hourly.index.to_period('M')),
-        'yearly':  _stats_by(hourly, hourly.index.year),
+        'daily':   _stats_by(hourly, local.index.date),
+        'monthly': _stats_by(hourly, local.index.to_period('M')),
+        'yearly':  _stats_by(hourly, local.index.year),
     }
 
 
