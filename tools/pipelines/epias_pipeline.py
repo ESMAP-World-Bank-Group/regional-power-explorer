@@ -208,7 +208,11 @@ def _recent_hourly(hourly: pd.Series, old_hourly: dict) -> dict:
     win on overlap) rather than replacing it outright — otherwise a run whose
     fetch window doesn't reach up to "today" (e.g. a backfill for one older
     month) would wipe out already-saved hours it didn't touch."""
-    cutoff = pd.Timestamp.now(tz='UTC') - pd.Timedelta(days=HOURLY_RETENTION_DAYS)
+    # Floored to midnight so the retention window always starts on a clean day
+    # boundary — an un-floored "now - 90 days" cutoff lands at whatever hour
+    # the pipeline happens to run at, truncating the oldest retained day to
+    # start partway through instead of at 00:00 like every other day.
+    cutoff = pd.Timestamp.now(tz='UTC').normalize() - pd.Timedelta(days=HOURLY_RETENTION_DAYS)
     merged = dict(old_hourly)
     if len(hourly):
         recent = hourly[hourly.index >= cutoff]
