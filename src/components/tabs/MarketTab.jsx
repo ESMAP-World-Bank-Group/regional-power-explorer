@@ -9,6 +9,7 @@ const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the ser
 // — only the display labels changed, to match what AXIS_TITLE already says
 // each chart's points represent (one per year/month/day/hour respectively).
 const GRANULARITIES = [['multiyear', 'Yearly'], ['year', 'Monthly'], ['month', 'Daily'], ['day', 'Hourly']];
+const GRANULARITY_LABEL = Object.fromEntries(GRANULARITIES);
 // Above this many bars, the Daily (per-day) bar+whisker chart gets visually
 // cluttered — fall back to a plain mean line instead, same idea as Hourly.
 const DAILY_BAR_MAX_POINTS = 60;
@@ -331,12 +332,22 @@ export default function MarketTab({ iso, theme }) {
 
   const periods = useMemo(() => getPeriods(block, granularity), [block, granularity]);
 
-  // Default range whenever granularity changes (the previous start/end won't
-  // be a valid option in the new granularity's periods, so this always
-  // resets); on a series switch with the same granularity a still-valid
-  // custom range stays put instead of snapping back to the default.
+  // Default range whenever granularity changes; on a series switch with the
+  // same granularity a still-valid custom range stays put instead of
+  // snapping back to the default. Can't tell these apart just by checking
+  // periods.includes(prev) — Daily and Hourly both key on plain 'YYYY-MM-DD'
+  // strings, so a Daily range can look like a "still valid" Hourly one even
+  // though it's a different granularity entirely — so granularity changes
+  // are tracked explicitly instead of inferred from key format collisions.
+  const prevGranularityRef = useRef(granularity);
   useEffect(() => {
     const [defStart, defEnd] = defaultRange(periods, granularity);
+    if (prevGranularityRef.current !== granularity) {
+      prevGranularityRef.current = granularity;
+      setPeriodStart(defStart);
+      setPeriodEnd(defEnd);
+      return;
+    }
     setPeriodStart(prev => (prev && periods.includes(prev)) ? prev : defStart);
     setPeriodEnd(prev => (prev && periods.includes(prev)) ? prev : defEnd);
   }, [periods, granularity]);
@@ -392,12 +403,33 @@ export default function MarketTab({ iso, theme }) {
     setTip({ i, x: e.clientX - r.left, y: e.clientY - r.top });
   };
 
+  // Exports whatever granularity + range is currently on screen, using the
+  // same range-filter logic as the chart/KPIs — not always the full daily
+  // history regardless of what's selected.
   const handleDownload = () => {
-    if (!block) return;
-    const days = Object.keys(block.daily.mean).sort();
-    const header = 'date,mean,min,max';
-    const rows = days.map(d => [d, block.daily.mean[d], block.daily.min[d], block.daily.max[d]].join(','));
-    downloadBlob([header, ...rows].join('\n'), `market_${dataKey}_daily_${iso}.csv`, 'text/csv');
+    if (!block || !periodStart || !periodEnd) return;
+    let header, keys, rows;
+    if (granularity === 'multiyear') {
+      keys = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+      header = 'year,mean,min,max';
+      rows = keys.map(k => [k, block.yearly.mean[k], block.yearly.min[k], block.yearly.max[k]].join(','));
+    } else if (granularity === 'year') {
+      keys = Object.keys(block.monthly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+      header = 'month,mean,min,max';
+      rows = keys.map(k => [k, block.monthly.mean[k], block.monthly.min[k], block.monthly.max[k]].join(','));
+    } else if (granularity === 'month') {
+      keys = Object.keys(block.daily.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+      header = 'date,mean,min,max';
+      rows = keys.map(k => [k, block.daily.mean[k], block.daily.min[k], block.daily.max[k]].join(','));
+    } else {
+      keys = Object.keys(block.hourly).filter(k => {
+        const day = k.slice(0, 10);
+        return day >= periodStart && day <= periodEnd;
+      }).sort();
+      header = 'timestamp,price';
+      rows = keys.map(k => [k, block.hourly[k]].join(','));
+    }
+    downloadBlob([header, ...rows].join('\n'), `market_${dataKey}_${granularity}_${iso}.csv`, 'text/csv');
   };
 
   const kpi1Label = `Average · ${rangeLabel(granularity, periodStart, periodEnd)}`;
@@ -543,7 +575,7 @@ export default function MarketTab({ iso, theme }) {
             <span style={{ fontSize: '0.47rem', letterSpacing: '2px', fontWeight: 700, color: t.lblMuted, textTransform: 'uppercase', display: 'block', marginBottom: 7 }}>
               Export Data
             </span>
-            <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} daily CSV</button>
+            <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} {GRANULARITY_LABEL[granularity]} CSV</button>
           </div>
         </>
       )}
