@@ -310,6 +310,7 @@ export default function MarketTab({ iso, theme }) {
   const [granularity,  setGranularity] = useState('multiyear');
   const [periodStart,  setPeriodStart] = useState(null);
   const [periodEnd,    setPeriodEnd]   = useState(null);
+  const [exportScope,  setExportScope] = useState('selected'); // 'selected' | 'full' — CSV export range
   const [tip,          setTip]         = useState(null);
   const chartRef = useRef(null);
 
@@ -317,7 +318,7 @@ export default function MarketTab({ iso, theme }) {
     if (!iso) return;
     setLoading(true); setData(null);
     setSeries('dam'); setCurrency('try'); setGranularity('multiyear');
-    setPeriodStart(null); setPeriodEnd(null); setTip(null);
+    setPeriodStart(null); setPeriodEnd(null); setExportScope('selected'); setTip(null);
     fetch(`/data/market/${iso}.json`)
       .then(r => { if (!r.ok) throw new Error('404'); return r.json(); })
       .then(d => { setData(d); setLoading(false); })
@@ -405,31 +406,38 @@ export default function MarketTab({ iso, theme }) {
 
   // Exports whatever granularity + range is currently on screen, using the
   // same range-filter logic as the chart/KPIs — not always the full daily
-  // history regardless of what's selected.
+  // history regardless of what's selected. exportScope picks between the
+  // range currently on screen and the full range available for this
+  // granularity (periods[0]..periods[last] — for Hourly that's still
+  // capped to the 90-day window, since nothing wider actually exists).
   const handleDownload = () => {
-    if (!block || !periodStart || !periodEnd) return;
+    if (!block || !periods.length) return;
+    const [fromKey, toKey] = exportScope === 'full'
+      ? [periods[0], periods[periods.length - 1]]
+      : [periodStart, periodEnd];
+    if (!fromKey || !toKey) return;
     let header, keys, rows;
     if (granularity === 'multiyear') {
-      keys = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+      keys = Object.keys(block.yearly.mean).filter(k => k >= fromKey && k <= toKey).sort();
       header = 'year,mean,min,max';
       rows = keys.map(k => [k, block.yearly.mean[k], block.yearly.min[k], block.yearly.max[k]].join(','));
     } else if (granularity === 'year') {
-      keys = Object.keys(block.monthly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+      keys = Object.keys(block.monthly.mean).filter(k => k >= fromKey && k <= toKey).sort();
       header = 'month,mean,min,max';
       rows = keys.map(k => [k, block.monthly.mean[k], block.monthly.min[k], block.monthly.max[k]].join(','));
     } else if (granularity === 'month') {
-      keys = Object.keys(block.daily.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+      keys = Object.keys(block.daily.mean).filter(k => k >= fromKey && k <= toKey).sort();
       header = 'date,mean,min,max';
       rows = keys.map(k => [k, block.daily.mean[k], block.daily.min[k], block.daily.max[k]].join(','));
     } else {
       keys = Object.keys(block.hourly).filter(k => {
         const day = k.slice(0, 10);
-        return day >= periodStart && day <= periodEnd;
+        return day >= fromKey && day <= toKey;
       }).sort();
       header = 'timestamp,price';
       rows = keys.map(k => [k, block.hourly[k]].join(','));
     }
-    downloadBlob([header, ...rows].join('\n'), `market_${dataKey}_${granularity}_${iso}.csv`, 'text/csv');
+    downloadBlob([header, ...rows].join('\n'), `market_${dataKey}_${granularity}_${exportScope}_${iso}.csv`, 'text/csv');
   };
 
   const kpi1Label = `Average · ${rangeLabel(granularity, periodStart, periodEnd)}`;
@@ -575,6 +583,15 @@ export default function MarketTab({ iso, theme }) {
             <span style={{ fontSize: '0.47rem', letterSpacing: '2px', fontWeight: 700, color: t.lblMuted, textTransform: 'uppercase', display: 'block', marginBottom: 7 }}>
               Export Data
             </span>
+            <div style={{ display: 'flex', gap: 4, marginBottom: 7 }}>
+              <button onClick={() => setExportScope('selected')} style={toggleBtnStyle(exportScope === 'selected')}>Selected Range</button>
+              <button onClick={() => setExportScope('full')} style={toggleBtnStyle(exportScope === 'full')}>Full Range</button>
+            </div>
+            <p style={{ fontSize: '0.46rem', color: t.lblMuted, margin: '0 0 7px' }}>
+              {exportScope === 'full' && periods.length
+                ? `Full range · ${periodOptionLabel(granularity, periods[0])} – ${periodOptionLabel(granularity, periods[periods.length - 1])}`
+                : `Selected range · ${rangeLabel(granularity, periodStart, periodEnd)}`}
+            </p>
             <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} {GRANULARITY_LABEL[granularity]} CSV</button>
           </div>
         </>
