@@ -2,10 +2,17 @@
 Turkiye electricity market prices — EPIAS Transparency Platform pipeline.
 https://seffaflik.epias.com.tr
 
-Generates public/data/market/TUR.json with three hourly price series:
-  - dam: Day-Ahead Market — Market Clearing Price (MCP)
-  - idm: Intraday Market — Weighted Average Price (WAP)
-  - bpm: Balancing Power Market — System Marginal Price (SMP)
+Generates public/data/market/TUR.json with five hourly price series:
+  - dam:     Day-Ahead Market — Market Clearing Price (MCP), in TL/MWh
+  - dam_eur: Day-Ahead Market — Market Clearing Price (MCP), in EUR/MWh
+  - dam_usd: Day-Ahead Market — Market Clearing Price (MCP), in USD/MWh
+  - idm:     Intraday Market — Weighted Average Price (WAP), in TL/MWh
+  - bpm:     Balancing Power Market — System Marginal Price (SMP), in TL/MWh
+
+dam/dam_eur/dam_usd all come from the same "mcp" endpoint response — it
+returns price, priceEur and priceUsd columns per hour (confirmed against
+the EPIAS PtfResponseDataDto schema). idm and bpm only carry a TL price in
+their respective schemas, so they have no EUR/USD counterpart.
 
 Good to know:
   - Auth is handled by the eptr2 client (logs in with username/password,
@@ -41,7 +48,6 @@ warnings.filterwarnings('ignore')
 
 ROOT       = Path(__file__).resolve().parents[2]
 OUT_MARKET = ROOT / 'public' / 'data' / 'market' / 'TUR.json'
-UNIT       = 'TL/MWh'
 
 # A normal run only needs to look back this far — enough to catch late
 # corrections plus fill in "today". Pass --start-date for a one-off backfill.
@@ -56,10 +62,17 @@ HOURLY_RETENTION_DAYS = 90
 #   endpoint    : eptr2 call name (see eptr2 docs / seffaflik technical guide)
 #   label       : human-readable name, shown in the output json and the UI
 #   value_field : column in the eptr2 response holding the price number
+#   unit        : shown in the output json, per series
+#
+# dam / dam_eur / dam_usd share the same "mcp" endpoint response — it returns
+# price (TL), priceEur and priceUsd columns per hour — so they're fetched
+# together in one API call per month rather than three (see run()).
 SERIES = {
-    'dam': {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price',        'value_field': 'price'},
-    'idm': {'endpoint': 'wap', 'label': 'Intraday Market — Weighted Average Price',        'value_field': 'wap'},
-    'bpm': {'endpoint': 'smp', 'label': 'Balancing Power Market — System Marginal Price',  'value_field': 'systemMarginalPrice'},
+    'dam':     {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price',        'value_field': 'price',                'unit': 'TL/MWh'},
+    'dam_eur': {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price (EUR)',  'value_field': 'priceEur',             'unit': 'EUR/MWh'},
+    'dam_usd': {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price (USD)',  'value_field': 'priceUsd',             'unit': 'USD/MWh'},
+    'idm':     {'endpoint': 'wap', 'label': 'Intraday Market — Weighted Average Price',        'value_field': 'wap',                  'unit': 'TL/MWh'},
+    'bpm':     {'endpoint': 'smp', 'label': 'Balancing Power Market — System Marginal Price',  'value_field': 'systemMarginalPrice',  'unit': 'TL/MWh'},
 }
 
 
@@ -102,9 +115,12 @@ def _timestamp_column(df: pd.DataFrame) -> str:
     return next((c for c in df.columns if 'date' in c.lower() or 'time' in c.lower()), df.columns[0])
 
 
-def _fetch_series(client, endpoint: str, value_field: str, start: date, end: date) -> pd.Series:
-    """Returns one hourly pd.Series (UTC-indexed) for a single eptr2 endpoint,
-    fetched month by month so we never ask the API for too much at once."""
+def _fetch_endpoint(client, endpoint: str, start: date, end: date) -> pd.DataFrame:
+    """Returns one hourly pd.DataFrame (UTC-indexed, all response columns kept)
+    for a single eptr2 endpoint, fetched month by month so we never ask the
+    API for too much at once. Called once per distinct endpoint even when
+    several series (e.g. dam / dam_eur / dam_usd) read different columns out
+    of the same response."""
     frames = []
     year, month = start.year, start.month
     while (year, month) <= (end.year, end.month):
@@ -119,14 +135,10 @@ def _fetch_series(client, endpoint: str, value_field: str, start: date, end: dat
             df = None
 
         if df is not None and not df.empty:
-            if value_field not in df.columns:
-                print(f'  [epias] {endpoint} {label}: WARNING — expected column "{value_field}" not found. '
-                      f'Available columns: {list(df.columns)}. Fix SERIES["{endpoint}"]["value_field"] and re-run.')
-            else:
-                ts_col = _timestamp_column(df)
-                s = pd.Series(df[value_field].values, index=pd.to_datetime(df[ts_col], utc=True))
-                frames.append(s)
-                print(f'  [epias] {endpoint} {label}: {len(s)} rows')
+            ts_col = _timestamp_column(df)
+            df = df.set_index(pd.to_datetime(df[ts_col], utc=True))
+            frames.append(df)
+            print(f'  [epias] {endpoint} {label}: {len(df)} rows')
         else:
             print(f'  [epias] {endpoint} {label}: no data')
 
@@ -136,9 +148,22 @@ def _fetch_series(client, endpoint: str, value_field: str, start: date, end: dat
         time.sleep(0.5)  # be polite to the API
 
     if not frames:
-        return pd.Series(dtype=float)
+        return pd.DataFrame()
     combined = pd.concat(frames).sort_index()
     return combined[~combined.index.duplicated(keep='first')]
+
+
+def _extract_series(df: pd.DataFrame, endpoint: str, value_field: str) -> pd.Series:
+    """Pulls one column out of an endpoint's fetched DataFrame as an hourly
+    pd.Series. Returns an empty series (with a warning) if the column isn't
+    there, e.g. because the API response shape changed."""
+    if df.empty:
+        return pd.Series(dtype=float)
+    if value_field not in df.columns:
+        print(f'  [epias] {endpoint}: WARNING — expected column "{value_field}" not found. '
+              f'Available columns: {list(df.columns)}. Fix SERIES[...]["value_field"] and re-run.')
+        return pd.Series(dtype=float)
+    return df[value_field]
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -156,10 +181,17 @@ def _stats_by(hourly: pd.Series, group_keys) -> dict:
 
 
 def _aggregate(hourly: pd.Series) -> dict:
+    """hourly's index is UTC. EPIAS prices are inherently on Turkey local time
+    (UTC+3, no DST since Sep 2016), so bucket by the Europe/Istanbul-converted
+    index — otherwise every "day" would actually span 21:00 UTC the previous
+    day through 20:00 UTC that day, a 3-hour-shifted window that doesn't match
+    the real Turkish trading day. The values themselves are unaffected; only
+    which day/month/year each hour is grouped into changes."""
+    local = hourly.tz_convert('Europe/Istanbul')
     return {
-        'daily':   _stats_by(hourly, hourly.index.date),
-        'monthly': _stats_by(hourly, hourly.index.to_period('M')),
-        'yearly':  _stats_by(hourly, hourly.index.year),
+        'daily':   _stats_by(hourly, local.index.date),
+        'monthly': _stats_by(hourly, local.index.to_period('M')),
+        'yearly':  _stats_by(hourly, local.index.year),
     }
 
 
@@ -176,7 +208,11 @@ def _recent_hourly(hourly: pd.Series, old_hourly: dict) -> dict:
     win on overlap) rather than replacing it outright — otherwise a run whose
     fetch window doesn't reach up to "today" (e.g. a backfill for one older
     month) would wipe out already-saved hours it didn't touch."""
-    cutoff = pd.Timestamp.now(tz='UTC') - pd.Timedelta(days=HOURLY_RETENTION_DAYS)
+    # Floored to midnight so the retention window always starts on a clean day
+    # boundary — an un-floored "now - 90 days" cutoff lands at whatever hour
+    # the pipeline happens to run at, truncating the oldest retained day to
+    # start partway through instead of at 00:00 like every other day.
+    cutoff = pd.Timestamp.now(tz='UTC').normalize() - pd.Timedelta(days=HOURLY_RETENTION_DAYS)
     merged = dict(old_hourly)
     if len(hourly):
         recent = hourly[hourly.index >= cutoff]
@@ -184,10 +220,11 @@ def _recent_hourly(hourly: pd.Series, old_hourly: dict) -> dict:
     return {t: v for t, v in merged.items() if pd.Timestamp(t) >= cutoff}
 
 
-def _build_series_block(old_block: dict, label: str, hourly: pd.Series) -> dict:
+def _build_series_block(old_block: dict, label: str, unit: str, hourly: pd.Series) -> dict:
     agg = _aggregate(hourly) if len(hourly) else {'daily': {}, 'monthly': {}, 'yearly': {}}
     return {
         'label':   label,
+        'unit':    unit,
         'hourly':  _recent_hourly(hourly, old_block.get('hourly', {})),
         'daily':   _merge_stats(old_block.get('daily'),   agg['daily']),
         'monthly': _merge_stats(old_block.get('monthly'), agg['monthly']),
@@ -217,16 +254,25 @@ def run(start_date: str | None = None, end_date: str | None = None) -> None:
 
     market = {
         'country': 'Turkiye',
-        'unit':    UNIT,
         'source':  'EPIAS Transparency Platform (seffaflik.epias.com.tr)',
         'updated': date.today().isoformat(),
     }
+
+    # Fetch each distinct endpoint once, then let every series that reads
+    # from it (e.g. dam / dam_eur / dam_usd all read "mcp") pull its own
+    # column out of the same fetched data instead of re-fetching.
+    endpoints = dict.fromkeys(cfg['endpoint'] for cfg in SERIES.values())
+    endpoint_frames = {}
+    for endpoint in endpoints:
+        print(f'[epias] fetching endpoint "{endpoint}" ...')
+        endpoint_frames[endpoint] = _fetch_endpoint(client, endpoint, start, end)
+
     for key, cfg in SERIES.items():
         print(f'[epias] {cfg["label"]} ({key}) ...')
-        hourly = _fetch_series(client, cfg['endpoint'], cfg['value_field'], start, end)
+        hourly = _extract_series(endpoint_frames[cfg['endpoint']], cfg['endpoint'], cfg['value_field'])
         if hourly.empty:
             print(f'  [epias] WARNING: no new data for {key} this run — kept previous values')
-        market[key] = _build_series_block(existing.get(key, {}), cfg['label'], hourly)
+        market[key] = _build_series_block(existing.get(key, {}), cfg['label'], cfg['unit'], hourly)
 
     OUT_MARKET.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_MARKET, 'w', encoding='utf-8') as f:

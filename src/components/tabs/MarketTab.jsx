@@ -6,8 +6,17 @@ import { downloadBlob } from './chartHelpers';
 const SERIES = ['dam', 'idm', 'bpm'];
 const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010' };
 const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the series color — stays out of the way
-const GRANULARITIES = [['multiyear', 'Multi-year'], ['year', 'Year'], ['month', 'Month'], ['day', 'Day']];
+// Ids are load-bearing (used throughout getPeriods/getChartPoints/computeStats)
+// — only the display labels changed, to match what AXIS_TITLE already says
+// each chart's points represent (one per year/month/day/hour respectively).
+const GRANULARITIES = [['multiyear', 'Yearly'], ['year', 'Monthly'], ['month', 'Daily'], ['day', 'Hourly']];
+const GRANULARITY_LABEL = Object.fromEntries(GRANULARITIES);
+// Above this many bars, the Daily (per-day) bar+whisker chart gets visually
+// cluttered — fall back to a plain mean line instead, same idea as Hourly.
+const DAILY_BAR_MAX_POINTS = 60;
 const SUB_TABS = [['prices', 'Prices']];
+// DAM-only — only that series has EUR/USD alternatives in the data (dam_eur, dam_usd).
+const CURRENCIES = [['try', 'TL'], ['eur', 'EUR'], ['usd', 'USD']];
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -16,16 +25,37 @@ const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'Jul
 const AXIS_TITLE = { multiyear: 'Year', year: 'Month', month: 'Day', day: 'Hour' };
 
 // All timestamps in the source JSON are UTC (fixed-width ISO strings with a
-// "+00:00" suffix, and the daily/monthly aggregates are grouped by UTC
-// calendar day) — we display everything in UTC too, via plain string slicing,
-// rather than shifting to Turkey local time, so labels never disagree with
-// how the underlying periods were actually bucketed.
+// "+00:00" suffix), but the daily/monthly/yearly aggregates are bucketed by
+// Turkey local time (UTC+3) on the backend — we display everything in UTC via
+// plain string slicing regardless, since the hourly points themselves are
+// still UTC-stamped; only the daily/monthly/yearly grouping is local-time.
 function monthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_ABBR[+m - 1]} ${y}`; }
 function dayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_ABBR[+m - 1]} ${y}`; }
 // Full-word versions, used in the chart tooltip (e.g. "4 August 2026").
 function fullMonthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_FULL[+m - 1]} ${y}`; }
 function fullDayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_FULL[+m - 1]} ${y}`; }
 function hourOfDayLabel(iso) { return `${+iso.slice(11, 13)}:00`; } // "04:00" -> "4:00"
+// Chart x-axis labels that disambiguate only when the selected range needs
+// it — e.g. a single month's days just say "5", but once a Daily range
+// crosses a month boundary that's ambiguous, so it becomes "5 Aug".
+function monthPointLabel(ym, rangeStart, rangeEnd) {
+  const [y, m] = ym.split('-');
+  const spansYears = rangeStart.slice(0, 4) !== rangeEnd.slice(0, 4);
+  return spansYears ? `${MONTH_ABBR[+m - 1]} '${y.slice(2)}` : MONTH_ABBR[+m - 1];
+}
+function dayPointLabel(ymd, rangeStart, rangeEnd) {
+  const [, m, d] = ymd.split('-');
+  const spansMonths = rangeStart.slice(0, 7) !== rangeEnd.slice(0, 7);
+  return spansMonths ? `${+d} ${MONTH_ABBR[+m - 1]}` : `${+d}`;
+}
+// Axis label for a multi-day Hourly range — day only, no hour, since with
+// hundreds of points only ~10 ticks get labeled anyway and "20 Jul 0:00"
+// x10 overlaps into an unreadable mess; the tooltip still has the exact
+// hour via hourLabel regardless of what the axis shows.
+function shortDayLabel(iso) {
+  const [, m, d] = iso.slice(0, 10).split('-');
+  return `${+d} ${MONTH_ABBR[+m - 1]}`;
+}
 function hourTimestampLabel(iso) {
   const [datePart, timePart] = iso.split('T');
   const [y, m, d] = datePart.split('-');
@@ -49,94 +79,123 @@ function niceTicks(maxVal) {
 
 function avg(arr) { return arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null; }
 
-// The period nav for a given granularity picks one unit at the level ABOVE
-// what gets charted — e.g. picking "2026" (a Year) then charts its months.
+// What the From/To range pickers choose from, per granularity — the same
+// level as what gets charted for Yearly/Monthly/Daily, but for Hourly it's
+// still whole days (picking two timestamps across a range of days via a
+// dropdown isn't practical), which then charts every hour within them.
 function getPeriods(block, granularity) {
   if (!block) return [];
-  if (granularity === 'year')  return Object.keys(block.yearly.mean).sort();
-  if (granularity === 'month') return Object.keys(block.monthly.mean).sort();
-  if (granularity === 'day')   return Object.keys(block.daily.mean).sort();
+  if (granularity === 'multiyear') return Object.keys(block.yearly.mean).sort();
+  if (granularity === 'year')      return Object.keys(block.monthly.mean).sort();
+  if (granularity === 'month')     return Object.keys(block.daily.mean).sort();
+  // Hourly picks from the rolling hourly window (block.hourly), NOT
+  // block.daily.mean — that's permanent full history back to 2017 and would
+  // let you "select" days with no hourly detail behind them at all.
+  if (granularity === 'day') {
+    const days = new Set(Object.keys(block.hourly || {}).map(h => h.slice(0, 10)));
+    return [...days].sort();
+  }
   return [];
 }
 
 function periodOptionLabel(granularity, p) {
-  if (granularity === 'year')  return p;
-  if (granularity === 'month') return monthLabel(p);
-  return dayLabel(p);
+  if (granularity === 'multiyear') return p;
+  if (granularity === 'year')      return monthLabel(p);
+  return dayLabel(p); // Daily's days and Hourly's day-range both use day strings
 }
 
-function computeStats(block, granularity, period) {
-  if (!block) return null;
+// Default range shown the first time a granularity is selected (or when the
+// previous range doesn't carry over, e.g. after switching granularity).
+function defaultRange(periods, granularity) {
+  if (!periods.length) return [null, null];
+  const last = periods[periods.length - 1];
+  if (granularity === 'multiyear') return [periods[0], last];       // full history, as before
+  if (granularity === 'year')      return [periods[Math.max(0, periods.length - 12)], last]; // last 12 months
+  if (granularity === 'month')     return [periods[Math.max(0, periods.length - 30)], last]; // last 30 days
+  return [last, last]; // Hourly: most recent single day, as before
+}
+
+function rangeLabel(granularity, start, end) {
+  if (!start || !end) return '';
+  const fmt = granularity === 'multiyear' ? (x => x) : granularity === 'year' ? monthLabel : dayLabel;
+  return start === end ? fmt(start) : `${fmt(start)} – ${fmt(end)}`;
+}
+
+function statsFromKeys(meanMap, minMap, maxMap, keys) {
+  if (!keys.length) return null;
+  return {
+    avg: avg(keys.map(k => meanMap[k])),
+    min: Math.min(...keys.map(k => minMap[k])),
+    max: Math.max(...keys.map(k => maxMap[k])),
+  };
+}
+
+// periodStart/periodEnd are always the same "shape" of key as the aggregate
+// being filtered (years for yearly, 'YYYY-MM' for monthly, 'YYYY-MM-DD' for
+// daily) — plain string comparison sorts these the same as chronological
+// order, so a simple range filter works without parsing dates.
+function computeStats(block, granularity, periodStart, periodEnd) {
+  if (!block || !periodStart || !periodEnd) return null;
   if (granularity === 'multiyear') {
-    const means = Object.values(block.yearly.mean);
-    if (!means.length) return null;
-    return {
-      avg: avg(means),
-      min: Math.min(...Object.values(block.yearly.min)),
-      max: Math.max(...Object.values(block.yearly.max)),
-    };
+    const keys = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd);
+    return statsFromKeys(block.yearly.mean, block.yearly.min, block.yearly.max, keys);
   }
-  if (!period) return null;
   if (granularity === 'year') {
-    const keys = Object.keys(block.monthly.mean).filter(k => k.startsWith(`${period}-`));
-    if (!keys.length) return null;
-    return {
-      avg: avg(keys.map(k => block.monthly.mean[k])),
-      min: Math.min(...keys.map(k => block.monthly.min[k])),
-      max: Math.max(...keys.map(k => block.monthly.max[k])),
-    };
+    const keys = Object.keys(block.monthly.mean).filter(k => k >= periodStart && k <= periodEnd);
+    return statsFromKeys(block.monthly.mean, block.monthly.min, block.monthly.max, keys);
   }
   if (granularity === 'month') {
-    const keys = Object.keys(block.daily.mean).filter(k => k.startsWith(period));
-    if (!keys.length) return null;
-    return {
-      avg: avg(keys.map(k => block.daily.mean[k])),
-      min: Math.min(...keys.map(k => block.daily.min[k])),
-      max: Math.max(...keys.map(k => block.daily.max[k])),
-    };
+    const keys = Object.keys(block.daily.mean).filter(k => k >= periodStart && k <= periodEnd);
+    return statsFromKeys(block.daily.mean, block.daily.min, block.daily.max, keys);
   }
   if (granularity === 'day') {
-    const hKeys = Object.keys(block.hourly).filter(k => k.startsWith(period));
-    if (hKeys.length) {
-      const vals = hKeys.map(k => block.hourly[k]);
-      return { avg: avg(vals), min: Math.min(...vals), max: Math.max(...vals) };
-    }
-    // Outside the rolling 90-day hourly window — the daily aggregate is
-    // permanent, so we can still show an average even without hourly detail.
-    if (block.daily.mean[period] != null) {
-      return { avg: block.daily.mean[period], min: block.daily.min[period], max: block.daily.max[period] };
-    }
-    return null;
+    const keys = Object.keys(block.hourly).filter(k => k.slice(0, 10) >= periodStart && k.slice(0, 10) <= periodEnd);
+    if (!keys.length) return null;
+    const vals = keys.map(k => block.hourly[k]);
+    return { avg: avg(vals), min: Math.min(...vals), max: Math.max(...vals) };
   }
   return null;
 }
 
-function getChartPoints(block, granularity, period) {
-  if (!block) return { mode: 'band', points: [] };
+function getChartPoints(block, granularity, periodStart, periodEnd) {
+  if (!block || !periodStart || !periodEnd) return { mode: 'band', points: [] };
   if (granularity === 'multiyear') {
-    const years = Object.keys(block.yearly.mean).sort();
+    const years = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
     return { mode: 'band', points: years.map(y => ({
       label: y, fullLabel: y, mean: block.yearly.mean[y], min: block.yearly.min[y], max: block.yearly.max[y],
     })) };
   }
-  if (!period) return { mode: 'band', points: [] };
   if (granularity === 'year') {
-    const months = Object.keys(block.monthly.mean).filter(k => k.startsWith(`${period}-`)).sort();
+    const months = Object.keys(block.monthly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
     return { mode: 'band', points: months.map(m => ({
-      label: MONTH_ABBR[+m.slice(5, 7) - 1], fullLabel: fullMonthLabel(m),
+      label: monthPointLabel(m, periodStart, periodEnd), fullLabel: fullMonthLabel(m),
       mean: block.monthly.mean[m], min: block.monthly.min[m], max: block.monthly.max[m],
     })) };
   }
   if (granularity === 'month') {
-    const days = Object.keys(block.daily.mean).filter(k => k.startsWith(period)).sort();
-    return { mode: 'band', points: days.map(d => ({
-      label: `${+d.slice(8, 10)}`, fullLabel: fullDayLabel(d),
+    const days = Object.keys(block.daily.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
+    const points = days.map(d => ({
+      label: dayPointLabel(d, periodStart, periodEnd), fullLabel: fullDayLabel(d),
       mean: block.daily.mean[d], min: block.daily.min[d], max: block.daily.max[d],
-    })) };
+    }));
+    // Too many bars to read cleanly — fall back to a plain mean line (still
+    // has min/max for the tooltip, just not drawn as bars+whiskers).
+    if (points.length > DAILY_BAR_MAX_POINTS) {
+      return { mode: 'line', points: points.map(p => ({ ...p, value: p.mean })) };
+    }
+    return { mode: 'band', points };
   }
   if (granularity === 'day') {
-    const hours = Object.keys(block.hourly).filter(k => k.startsWith(period)).sort();
-    return { mode: 'line', points: hours.map(h => ({ label: hourOfDayLabel(h), value: block.hourly[h] })) };
+    const hours = Object.keys(block.hourly).filter(k => {
+      const day = k.slice(0, 10);
+      return day >= periodStart && day <= periodEnd;
+    }).sort();
+    const multiDay = periodStart !== periodEnd;
+    return { mode: 'line', points: hours.map(h => ({
+      label: multiDay ? shortDayLabel(h) : hourOfDayLabel(h),
+      fullLabel: fullDayLabel(h.slice(0, 10)), hourLabel: hourOfDayLabel(h),
+      value: block.hourly[h],
+    })) };
   }
   return { mode: 'band', points: [] };
 }
@@ -248,37 +307,55 @@ export default function MarketTab({ iso, theme }) {
   const [data,        setData]        = useState(null);
   const [loading,      setLoading]     = useState(true);
   const [series,       setSeries]      = useState('dam');
+  const [currency,     setCurrency]    = useState('try'); // 'try' | 'eur' | 'usd' — DAM only, remembered across series switches
   const [granularity,  setGranularity] = useState('multiyear');
-  const [period,       setPeriod]      = useState(null);
+  const [periodStart,  setPeriodStart] = useState(null);
+  const [periodEnd,    setPeriodEnd]   = useState(null);
+  const [exportScope,  setExportScope] = useState('selected'); // 'selected' | 'full' — CSV export range
   const [tip,          setTip]         = useState(null);
   const chartRef = useRef(null);
 
   useEffect(() => {
     if (!iso) return;
     setLoading(true); setData(null);
-    setSeries('dam'); setGranularity('multiyear'); setPeriod(null); setTip(null);
+    setSeries('dam'); setCurrency('try'); setGranularity('multiyear');
+    setPeriodStart(null); setPeriodEnd(null); setExportScope('selected'); setTip(null);
     fetch(`/data/market/${iso}.json`)
       .then(r => { if (!r.ok) throw new Error('404'); return r.json(); })
       .then(d => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, [iso]);
 
-  const block = data?.[series] ?? null;
+  // dam_eur / dam_usd are separate top-level keys with the same shape as dam
+  // (and their own unit) — idm/bpm have no currency alternatives, so this
+  // only kicks in for series === 'dam'.
+  const dataKey = series === 'dam' && currency !== 'try' ? `dam_${currency}` : series;
+  const block = data?.[dataKey] ?? null;
 
   const periods = useMemo(() => getPeriods(block, granularity), [block, granularity]);
 
-  // Default to the most recent period whenever granularity changes (previous
-  // period format won't match, so this always resets); on a series switch
-  // with the same granularity it stays put as long as it's still valid.
+  // Default range whenever granularity changes; on a series switch with the
+  // same granularity a still-valid custom range stays put instead of
+  // snapping back to the default. Can't tell these apart just by checking
+  // periods.includes(prev) — Daily and Hourly both key on plain 'YYYY-MM-DD'
+  // strings, so a Daily range can look like a "still valid" Hourly one even
+  // though it's a different granularity entirely — so granularity changes
+  // are tracked explicitly instead of inferred from key format collisions.
+  const prevGranularityRef = useRef(granularity);
   useEffect(() => {
-    if (granularity === 'multiyear') { setPeriod(null); return; }
-    if (!periods.length) { setPeriod(null); return; }
-    setPeriod(prev => periods.includes(prev) ? prev : periods[periods.length - 1]);
+    const [defStart, defEnd] = defaultRange(periods, granularity);
+    if (prevGranularityRef.current !== granularity) {
+      prevGranularityRef.current = granularity;
+      setPeriodStart(defStart);
+      setPeriodEnd(defEnd);
+      return;
+    }
+    setPeriodStart(prev => (prev && periods.includes(prev)) ? prev : defStart);
+    setPeriodEnd(prev => (prev && periods.includes(prev)) ? prev : defEnd);
   }, [periods, granularity]);
 
-  const stats       = useMemo(() => computeStats(block, granularity, period), [block, granularity, period]);
-  const chartPoints = useMemo(() => getChartPoints(block, granularity, period), [block, granularity, period]);
-  const years        = useMemo(() => block ? Object.keys(block.yearly.mean).sort() : [], [block]);
+  const stats       = useMemo(() => computeStats(block, granularity, periodStart, periodEnd), [block, granularity, periodStart, periodEnd]);
+  const chartPoints = useMemo(() => getChartPoints(block, granularity, periodStart, periodEnd), [block, granularity, periodStart, periodEnd]);
   const latestHourly = useMemo(() => {
     if (!block?.hourly) return null;
     const keys = Object.keys(block.hourly);
@@ -290,8 +367,7 @@ export default function MarketTab({ iso, theme }) {
   if (loading) return <p style={{ fontSize: '0.7rem', color: t.lblMuted, marginTop: 8 }}>Loading…</p>;
   if (!data)   return <p style={{ fontSize: '0.7rem', color: t.lblMuted, marginTop: 8, fontStyle: 'italic' }}>No market data available for this country.</p>;
 
-  const unit = data.unit || 'TL/MWh';
-  const periodIdx = periods.indexOf(period);
+  const unit = block?.unit || 'TL/MWh';
 
   // Underline-style sub-tabs (a tab strip, not standalone pill buttons) —
   // reads as a tab set even with just one entry, and more (e.g.
@@ -311,21 +387,16 @@ export default function MarketTab({ iso, theme }) {
     color: active ? t.lbl : t.lblMuted,
   });
 
-  const navBtnStyle = disabled => ({
-    fontSize: '0.7rem', width: 20, height: 20, lineHeight: '18px', textAlign: 'center',
-    borderRadius: 3, cursor: disabled ? 'default' : 'pointer', fontFamily: 'inherit',
-    border: `1px solid ${t.panelBorder}`, backgroundColor: 'transparent',
-    color: disabled ? t.panelBorder : t.lblMuted, padding: 0, opacity: disabled ? 0.5 : 1, flexShrink: 0,
-  });
+  const selectStyle = {
+    flex: 1, fontSize: '0.6rem', padding: '3px 6px', borderRadius: 4, fontFamily: 'inherit',
+    border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel, color: t.lbl, outline: 'none',
+  };
 
   const dlBtnStyle = {
     fontSize: '0.52rem', letterSpacing: '0.5px', padding: '4px 9px', borderRadius: 3,
     cursor: 'pointer', fontFamily: 'inherit', border: `1px solid ${t.panelBorder}`,
     backgroundColor: 'transparent', color: t.lblMuted,
   };
-
-  const goPrev = () => { if (periodIdx > 0) setPeriod(periods[periodIdx - 1]); };
-  const goNext = () => { if (periodIdx >= 0 && periodIdx < periods.length - 1) setPeriod(periods[periodIdx + 1]); };
 
   const handleHover = (i, e) => {
     if (i === null) { setTip(null); return; }
@@ -334,21 +405,43 @@ export default function MarketTab({ iso, theme }) {
     setTip({ i, x: e.clientX - r.left, y: e.clientY - r.top });
   };
 
+  // Exports whatever granularity + range is currently on screen, using the
+  // same range-filter logic as the chart/KPIs — not always the full daily
+  // history regardless of what's selected. exportScope picks between the
+  // range currently on screen and the full range available for this
+  // granularity (periods[0]..periods[last] — for Hourly that's still
+  // capped to the 90-day window, since nothing wider actually exists).
   const handleDownload = () => {
-    if (!block) return;
-    const days = Object.keys(block.daily.mean).sort();
-    const header = 'date,mean,min,max';
-    const rows = days.map(d => [d, block.daily.mean[d], block.daily.min[d], block.daily.max[d]].join(','));
-    downloadBlob([header, ...rows].join('\n'), `market_${series}_daily_${iso}.csv`, 'text/csv');
+    if (!block || !periods.length) return;
+    const [fromKey, toKey] = exportScope === 'full'
+      ? [periods[0], periods[periods.length - 1]]
+      : [periodStart, periodEnd];
+    if (!fromKey || !toKey) return;
+    let header, keys, rows;
+    if (granularity === 'multiyear') {
+      keys = Object.keys(block.yearly.mean).filter(k => k >= fromKey && k <= toKey).sort();
+      header = 'year,mean,min,max';
+      rows = keys.map(k => [k, block.yearly.mean[k], block.yearly.min[k], block.yearly.max[k]].join(','));
+    } else if (granularity === 'year') {
+      keys = Object.keys(block.monthly.mean).filter(k => k >= fromKey && k <= toKey).sort();
+      header = 'month,mean,min,max';
+      rows = keys.map(k => [k, block.monthly.mean[k], block.monthly.min[k], block.monthly.max[k]].join(','));
+    } else if (granularity === 'month') {
+      keys = Object.keys(block.daily.mean).filter(k => k >= fromKey && k <= toKey).sort();
+      header = 'date,mean,min,max';
+      rows = keys.map(k => [k, block.daily.mean[k], block.daily.min[k], block.daily.max[k]].join(','));
+    } else {
+      keys = Object.keys(block.hourly).filter(k => {
+        const day = k.slice(0, 10);
+        return day >= fromKey && day <= toKey;
+      }).sort();
+      header = 'timestamp,price';
+      rows = keys.map(k => [k, block.hourly[k]].join(','));
+    }
+    downloadBlob([header, ...rows].join('\n'), `market_${dataKey}_${granularity}_${exportScope}_${iso}.csv`, 'text/csv');
   };
 
-  const kpi1Label = granularity === 'multiyear'
-    ? `Average${years.length ? ` · ${years[0]}–${years[years.length - 1]}` : ''}`
-    : granularity === 'year'  ? `Average · ${period ?? ''}`
-    : granularity === 'month' ? `Average · ${period ? monthLabel(period) : ''}`
-    : `Average · ${period ? dayLabel(period) : ''}`;
-
-  const noHourlyDetail = granularity === 'day' && period && chartPoints.points.length === 0;
+  const kpi1Label = `Average · ${rangeLabel(granularity, periodStart, periodEnd)}`;
 
   const tooltip = (() => {
     if (!tip) return null;
@@ -357,7 +450,10 @@ export default function MarketTab({ iso, theme }) {
     const TW = 148;
     const left = tip.x > 170 ? tip.x - TW - 6 : tip.x + 8;
     const top  = Math.max(tip.y - 30, 0);
-    const dateLine = chartPoints.mode === 'band' ? p.fullLabel : (period ? fullDayLabel(period) : p.label);
+    // Hourly points carry hourLabel; both the bar chart and the dense-Daily
+    // fallback line carry mean/min/max — check point shape, not chart mode,
+    // since 'line' rendering covers both an aggregate fallback and Hourly.
+    const isHourly = p.hourLabel != null;
     const row = (label, value, muted) => (
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: muted ? '0.52rem' : '0.55rem', color: muted ? t.lblMuted : t.lbl }}>
         <span style={{ color: t.lblMuted }}>{label}</span>
@@ -371,20 +467,20 @@ export default function MarketTab({ iso, theme }) {
         borderRadius: 4, padding: '6px 8px', boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
       }}>
         <div style={{ fontWeight: 700, fontSize: '0.56rem', color: t.lbl, marginBottom: 3 }}>
-          <span style={{ fontWeight: 400, color: t.lblMuted }}>Date: </span>{dateLine}
+          <span style={{ fontWeight: 400, color: t.lblMuted }}>Date: </span>{p.fullLabel}
         </div>
-        {chartPoints.mode === 'band' ? (
+        {isHourly ? (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.52rem', color: t.lblMuted, marginBottom: 2 }}>
+              <span>Hour</span><span>{p.hourLabel}</span>
+            </div>
+            {row('Price', fmtPrice(p.value))}
+          </>
+        ) : (
           <>
             {row('Mean', fmtPrice(p.mean))}
             {row('Min', fmtPrice(p.min), true)}
             {row('Max', fmtPrice(p.max), true)}
-          </>
-        ) : (
-          <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.52rem', color: t.lblMuted, marginBottom: 2 }}>
-              <span>Hour</span><span>{p.label}</span>
-            </div>
-            {row('Price', fmtPrice(p.value))}
           </>
         )}
       </div>
@@ -429,24 +525,29 @@ export default function MarketTab({ iso, theme }) {
             ))}
           </div>
 
-          {/* Period nav */}
-          {granularity !== 'multiyear' && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-              <button onClick={goPrev} disabled={periodIdx <= 0} style={navBtnStyle(periodIdx <= 0)}>‹</button>
-              <select
-                value={period ?? ''}
-                onChange={e => { setPeriod(e.target.value); setTip(null); }}
-                style={{
-                  flex: 1, fontSize: '0.6rem', padding: '3px 6px', borderRadius: 4, fontFamily: 'inherit',
-                  border: `1px solid ${t.panelBorder}`, backgroundColor: t.panel, color: t.lbl, outline: 'none',
-                }}
-              >
-                {periods.map(p => <option key={p} value={p}>{periodOptionLabel(granularity, p)}</option>)}
-              </select>
-              <button onClick={goNext} disabled={periodIdx < 0 || periodIdx >= periods.length - 1}
-                style={navBtnStyle(periodIdx < 0 || periodIdx >= periods.length - 1)}>›</button>
-            </div>
-          )}
+          {/* Range nav — From/To, each constrained by the other's current value */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+            <span style={{ fontSize: '0.5rem', color: t.lblMuted, textTransform: 'uppercase', letterSpacing: '0.5px' }}>From</span>
+            <select
+              value={periodStart ?? ''}
+              onChange={e => { setPeriodStart(e.target.value); setTip(null); }}
+              style={selectStyle}
+            >
+              {periods.filter(p => !periodEnd || p <= periodEnd).map(p => (
+                <option key={p} value={p}>{periodOptionLabel(granularity, p)}</option>
+              ))}
+            </select>
+            <span style={{ fontSize: '0.5rem', color: t.lblMuted, textTransform: 'uppercase', letterSpacing: '0.5px' }}>To</span>
+            <select
+              value={periodEnd ?? ''}
+              onChange={e => { setPeriodEnd(e.target.value); setTip(null); }}
+              style={selectStyle}
+            >
+              {periods.filter(p => !periodStart || p >= periodStart).map(p => (
+                <option key={p} value={p}>{periodOptionLabel(granularity, p)}</option>
+              ))}
+            </select>
+          </div>
 
           {/* KPI cards */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 14 }}>
@@ -456,13 +557,17 @@ export default function MarketTab({ iso, theme }) {
               sub={latestHourly ? hourTimestampLabel(latestHourly.ts) : 'No data'} t={t} />
           </div>
 
+          {/* Currency toggle — DAM only, IDM/BPM have no EUR/USD in the data */}
+          {series === 'dam' && (
+            <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+              {CURRENCIES.map(([c, lbl]) => (
+                <button key={c} onClick={() => setCurrency(c)} style={toggleBtnStyle(currency === c)}>{lbl}</button>
+              ))}
+            </div>
+          )}
+
           {/* Chart */}
-          {noHourlyDetail ? (
-            <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '24px 8px', textAlign: 'center', lineHeight: 1.5 }}>
-              No hourly detail available for {dayLabel(period)} — outside the rolling 90-day window.
-              The average above is still accurate; only the hour-by-hour chart is unavailable.
-            </p>
-          ) : chartPoints.points.length ? (
+          {chartPoints.points.length ? (
             <div ref={chartRef} style={{ position: 'relative' }}>
               <PriceChart mode={chartPoints.mode} points={chartPoints.points} color={SERIES_COLOR[series]}
                 unit={unit} t={t} hoveredI={tip?.i ?? null} onHover={handleHover} xAxisLabel={AXIS_TITLE[granularity]} />
@@ -479,7 +584,16 @@ export default function MarketTab({ iso, theme }) {
             <span style={{ fontSize: '0.47rem', letterSpacing: '2px', fontWeight: 700, color: t.lblMuted, textTransform: 'uppercase', display: 'block', marginBottom: 7 }}>
               Export Data
             </span>
-            <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} daily CSV</button>
+            <div style={{ display: 'flex', gap: 4, marginBottom: 7 }}>
+              <button onClick={() => setExportScope('selected')} style={toggleBtnStyle(exportScope === 'selected')}>Selected Range</button>
+              <button onClick={() => setExportScope('full')} style={toggleBtnStyle(exportScope === 'full')}>Full Range</button>
+            </div>
+            <p style={{ fontSize: '0.46rem', color: t.lblMuted, margin: '0 0 7px' }}>
+              {exportScope === 'full' && periods.length
+                ? `Full range · ${periodOptionLabel(granularity, periods[0])} – ${periodOptionLabel(granularity, periods[periods.length - 1])}`
+                : `Selected range · ${rangeLabel(granularity, periodStart, periodEnd)}`}
+            </p>
+            <button style={dlBtnStyle} onClick={handleDownload}>{series.toUpperCase()} {GRANULARITY_LABEL[granularity]} CSV</button>
           </div>
         </>
       )}
