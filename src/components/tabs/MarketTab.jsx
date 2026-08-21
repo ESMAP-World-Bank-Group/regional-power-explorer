@@ -56,7 +56,13 @@ function getPeriods(block, granularity) {
   if (!block) return [];
   if (granularity === 'year')  return Object.keys(block.yearly.mean).sort();
   if (granularity === 'month') return Object.keys(block.monthly.mean).sort();
-  if (granularity === 'day')   return Object.keys(block.daily.mean).sort();
+  // Day picks from the rolling hourly window (block.hourly), NOT
+  // block.daily.mean — that's permanent full history back to 2017 and would
+  // let you "select" days with no hourly detail behind them at all.
+  if (granularity === 'day') {
+    const days = new Set(Object.keys(block.hourly || {}).map(h => h.slice(0, 10)));
+    return [...days].sort();
+  }
   return [];
 }
 
