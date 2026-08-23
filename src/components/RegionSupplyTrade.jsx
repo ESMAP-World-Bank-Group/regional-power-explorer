@@ -17,8 +17,12 @@ function niceTicks(maxVal) {
   const raw = maxVal / 4;
   const mag = Math.pow(10, Math.floor(Math.log10(raw)));
   const nice = [1, 2, 2.5, 5, 10].find(f => f * mag >= raw) * mag;
-  const ticks = [0];
-  for (let v = nice; v <= maxVal + nice; v += nice) ticks.push(Math.round(v));
+  // Round the axis top UP to the next nice step — never one full step beyond it.
+  // Keeps niceTicks idempotent: niceTicks(niceTicks(x).pop()) === niceTicks(x),
+  // so a tick can never land above the plot area.
+  const top = Math.ceil(maxVal / nice - 1e-9) * nice;
+  const ticks = [];
+  for (let v = 0; v <= top + nice * 1e-9; v += nice) ticks.push(Math.round(v));
   return ticks;
 }
 const fmt = v =>
@@ -176,8 +180,10 @@ function NetTradeChart({ data, hidden, hoveredYi, onHover, t }) {
   const rows = data.rows.filter(r => !hidden?.has(r.iso));
   const posTot = years.map((Y) => rows.reduce((s, r) => s + Math.max(r.net[Y] || 0, 0), 0));
   const negTot = years.map((Y) => rows.reduce((s, r) => s + Math.min(r.net[Y] || 0, 0), 0));
-  const axisPos = niceTicks(Math.max(...posTot, 1)).pop() || 1;
-  const axisNeg = niceTicks(Math.max(...negTot.map(v => -v), 1)).pop() || 1;
+  const posTicks = niceTicks(Math.max(...posTot, 1));
+  const negTicks = niceTicks(Math.max(...negTot.map(v => -v), 1));
+  const axisPos = posTicks[posTicks.length - 1] || 1;
+  const axisNeg = negTicks[negTicks.length - 1] || 1;
   const posH = iH * axisPos / (axisPos + axisNeg);
   const negH = iH - posH;
   const zeroY = pT + posH;
@@ -187,7 +193,6 @@ function NetTradeChart({ data, hidden, hoveredYi, onHover, t }) {
   const barX = i => pL + i * slotW + (slotW - barW) / 2;
   const yrStep = years.length > 15 ? 5 : years.length > 8 ? 2 : 1;
   const hlFill = t.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
-  const posTicks = niceTicks(axisPos), negTicks = niceTicks(axisNeg);
 
   return (
     <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
@@ -245,7 +250,8 @@ function FuelChart({ section, hidden, hoveredYi, onHover, t }) {
   const allFuels = Object.keys(fuels).filter(f => !hidden?.has(f));
   const totals = years.map((_, yi) => allFuels.reduce((s, f) => s + num(fuels[f][yi]), 0));
   const dVals = (demand || []).filter(v => v != null);
-  const axisMax = niceTicks(Math.max(...totals, dVals.length ? Math.max(...dVals) : 0, 1)).pop() || 1;
+  const ticks = niceTicks(Math.max(...totals, dVals.length ? Math.max(...dVals) : 0, 1));
+  const axisMax = ticks[ticks.length - 1] || 1;
   const toY = v => pT + iH - (v / axisMax) * iH;
   const slotW = iW / years.length;
   const barW = Math.max(slotW * 0.7, 1.5);
@@ -259,7 +265,7 @@ function FuelChart({ section, hidden, hoveredYi, onHover, t }) {
   return (
     <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
       <text transform={`translate(8,${pT + iH / 2}) rotate(-90)`} textAnchor="middle" fill={t.lblMuted} fontSize={6}>{section.unit}</text>
-      {niceTicks(axisMax).map(tk => (
+      {ticks.map(tk => (
         <g key={tk}>
           {tk > 0 && <line x1={pL} x2={pL + iW} y1={toY(tk)} y2={toY(tk)} stroke={t.panelBorder} strokeWidth={0.4} strokeDasharray="2,3" />}
           <text x={pL - 3} y={toY(tk) + 3} textAnchor="end" fill={t.lblMuted} fontSize={6}>{fmt(tk)}</text>

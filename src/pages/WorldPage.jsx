@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT, mapStyle } from '../constants';
+import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, regionFilter, addRegionCoast, raiseBoundaries } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -102,6 +103,9 @@ export default function WorldPage() {
     if (!containerRef.current || !regions) return;
 
     const isoToRegions = {};
+    // Areas the Bank attributes to no country carry no code, so they are keyed
+    // on WB_NAME instead. See regionFilter() in src/utils/basemap.js.
+    const areaToRegions = {};
     const available = regions.filter(r => r.status === 'available');
     for (const r of available) {
       if (r.type === 'meta') continue;
@@ -109,8 +113,15 @@ export default function WorldPage() {
         if (!isoToRegions[c.iso]) isoToRegions[c.iso] = [];
         isoToRegions[c.iso].push({ id: r.id, name: r.name, color: r.color, countryName: c.name });
       }
+      for (const area of r.non_determined || []) {
+        if (!areaToRegions[area]) areaToRegions[area] = [];
+        areaToRegions[area].push({ id: r.id, name: r.name, color: r.color, countryName: area });
+      }
     }
     const availableIsos = Object.keys(isoToRegions);
+    const availableAreas = Object.keys(areaToRegions);
+    const regionsFor = p =>
+      (p.STATUS === 'non-determined' ? areaToRegions[p.WB_NAME] : isoToRegions[p.ISO_A3]) || [];
 
     const map = new maplibregl.Map({
       container: containerRef.current,
@@ -126,33 +137,29 @@ export default function WorldPage() {
     map.on('movestart', () => setDisambig(null));
 
     map.on('load', async () => {
-      const countries = await fetch('/data/countries_110m.geojson').then(r => r.json());
+      const countries = await fetchCountries('110m');
+      const boundaries = await fetchBoundaries('110m');
 
-      countries.features.forEach((f, i) => {
-        const p = f.properties;
-        let iso = p.ISO_A3 || '-99';
-        if (iso === '-99') iso = p.ISO_A3_EH || '-99';
-        if (iso === '-99') iso = p.ADM0_A3 || '-99';
-        p.ISO_A3 = iso;
-        f.id = i;
-      });
-
-      map.addSource('countries', { type: 'geojson', data: countries, generateId: false });
-      map.addLayer({ id: 'land',    type: 'fill', source: 'countries',
-        paint: { 'fill-color': t.land, 'fill-opacity': 1 } });
-      map.addLayer({ id: 'borders', type: 'line', source: 'countries',
-        paint: { 'line-color': t.worldBdr, 'line-width': t.worldBdrW } });
+      addCountriesSource(map, countries);
+      addBaseLayers(map, t, boundaries);
 
       if (availableIsos.length) {
-        const colorExpr = ['match', ['get', 'ISO_A3'],
+        const byIso = ['match', ['get', 'ISO_A3'],
           ...availableIsos.flatMap(iso => [iso, isoToRegions[iso][0].color]),
           'transparent',
         ];
+        const colorExpr = availableAreas.length
+          ? ['case', ['==', ['get', 'STATUS'], 'non-determined'],
+              ['match', ['get', 'WB_NAME'],
+                ...availableAreas.flatMap(a => [a, areaToRegions[a][0].color]),
+                'transparent'],
+              byIso]
+          : byIso;
         map.addLayer({
           id: 'region-fill',
           type: 'fill',
           source: 'countries',
-          filter: ['in', ['get', 'ISO_A3'], ['literal', availableIsos]],
+          filter: regionFilter(availableIsos, availableAreas),
           paint: {
             'fill-color': colorExpr,
             'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.55, 0.28],
@@ -164,6 +171,15 @@ export default function WorldPage() {
           source: 'countries',
           filter: ['in', ['get', 'ISO_A3'], ['literal', availableIsos]],
           paint: { 'line-color': colorExpr, 'line-width': 0.9, 'line-opacity': 0.7 },
+        });
+
+        // The areas take the same outline, keyed on the only name they carry.
+        addRegionCoast(map, {
+          areas: availableAreas,
+          color: ['match', ['get', 'NAME'],
+            ...availableAreas.flatMap(a => [a, areaToRegions[a][0].color]),
+            'transparent'],
+          width: 0.9, opacity: 0.7,
         });
       }
 
@@ -180,9 +196,9 @@ export default function WorldPage() {
         hoveredId = e.features[0].id;
         map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: true });
 
-        const iso = e.features[0].properties.ISO_A3;
-        const rs = isoToRegions[iso] || [];
-        const countryName = rs[0]?.countryName || iso;
+        const props = e.features[0].properties;
+        const rs = regionsFor(props);
+        const countryName = rs[0]?.countryName || props.WB_NAME || props.ISO_A3;
         const subtitle = rs.length > 1
           ? rs.map(r => r.name).join(' · ') + ' · click to choose'
           : (rs[0]?.name || '') + ' · click to explore';
@@ -200,9 +216,10 @@ export default function WorldPage() {
       });
 
       map.on('click', 'region-fill', e => {
-        const iso = e.features[0].properties.ISO_A3;
-        const rs = isoToRegions[iso];
-        if (!rs || rs.length === 0) return;
+        const props = e.features[0].properties;
+        const iso = props.ISO_A3 || props.WB_NAME;
+        const rs = regionsFor(props);
+        if (rs.length === 0) return;
         if (rs.length === 1) {
           navigate(`/region/${rs[0].id}`);
         } else {
@@ -210,6 +227,8 @@ export default function WorldPage() {
           setDisambig({ x: pixel.x, y: pixel.y, iso, regions: rs });
         }
       });
+
+      raiseBoundaries(map);
 
       // Restore meta markers after map rebuild (e.g., theme change)
       if (metaActiveRef.current) applyMetaMarkers(metaActiveRef.current, map);

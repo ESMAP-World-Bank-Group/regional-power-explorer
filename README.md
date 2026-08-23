@@ -26,7 +26,7 @@ OpenStreetMap, the WRI Global Power Plant Database, Global Energy Monitor, the G
 Atlas, ERA5, Our World in Data, Ember, and national statistical offices.
 
 Data licences include: OpenStreetMap (ODbL), WRI GPPD (CC BY 4.0), Global Energy Monitor
-(CC BY 4.0), Natural Earth (Public Domain), and others as listed on the Data Sources page.
+(CC BY 4.0), World Bank Official Boundaries (CC BY 4.0), and others as listed on the Data Sources page.
 
 ## Tech stack
 

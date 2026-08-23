@@ -81,14 +81,15 @@ def convert_lines(region_id):
                     "type": "LineString",
                     "coordinates": [[lon, lat] for lon, lat in zip(seg["lons"], seg["lats"])],
                 },
-                "properties": {"v": seg["v"]},
+                "properties": {k: v for k, v in seg.items()
+                               if k not in ("lats", "lons")},
             }
             for seg in data["segments"]
             if len(seg.get("lons", [])) >= 2
         ],
     }
     out = DST / "cache" / f"region_lines_{region_id}.geojson"
-    out.write_text(json.dumps(geojson), encoding="utf-8")
+    out.write_text(json.dumps(geojson, ensure_ascii=False), encoding="utf-8")
     print(f"  {out.name}  ({len(geojson['features'])} segments)")
 
 

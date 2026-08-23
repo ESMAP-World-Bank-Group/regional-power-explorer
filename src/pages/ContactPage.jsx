@@ -80,11 +80,16 @@ export default function ContactPage() {
         <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
           About
         </h1>
-        <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 24 }}>
+        <p style={{ fontSize: '0.75rem', color: t.muted, lineHeight: 1.65, marginBottom: 10 }}>
           An open tool for exploring power-sector data across regions — generation mix, installed
           capacity, power plants, grid infrastructure, renewable energy resources, and country profiles.
           It is a pilot, is not an official product of any institution, and carries no institutional
           endorsement. Figures are indicative and parts of the content were drafted with AI assistance.
+        </p>
+        {/* Support, not endorsement — kept deliberately quiet, and separate from the
+            paragraph above so it cannot be read as walking back the disclaimer. */}
+        <p style={{ fontSize: '0.65rem', color: t.muted, opacity: 0.75, lineHeight: 1.6, marginBottom: 24 }}>
+          Developed with support from ESMAP and the World Bank.
         </p>
 
         {/* GitHub repository — prominent */}

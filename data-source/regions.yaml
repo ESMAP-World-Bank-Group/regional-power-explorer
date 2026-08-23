@@ -3,6 +3,7 @@ regions:
     name: Black Sea
     status: available
     color: "#1E6DB8"
+    min_kv: 20000
     countries:
       - {iso: TUR, name: Turkey}
       - {iso: ROU, name: Romania}
@@ -15,6 +16,7 @@ regions:
     name: Western Africa Power Pool
     status: available
     color: "#C47C2A"
+    min_kv: 20000
     countries:
       - {iso: SEN, name: Senegal}
       - {iso: GMB, name: Gambia}
@@ -37,6 +39,7 @@ regions:
     name: Central Africa Power Pool
     status: available
     color: "#2A88C8"
+    min_kv: 20000
     countries:
       - {iso: CMR, name: Cameroon}
       - {iso: CAF, name: Central African Republic}
@@ -51,6 +54,7 @@ regions:
     name: Eastern Africa Power Pool
     status: available
     color: "#1AA8B0"
+    min_kv: 20000
     countries:
       - {iso: EGY, name: Egypt}
       - {iso: LBY, name: Libya}
@@ -65,12 +69,12 @@ regions:
       - {iso: RWA, name: Rwanda}
       - {iso: BDI, name: Burundi}
       - {iso: COD, name: DR Congo}
-      - {iso: SOL, name: Somaliland}
 
   - id: sapp
     name: Southern Africa Power Pool
     status: available
     color: "#6098D0"
+    min_kv: 20000
     countries:
       - {iso: ZAF, name: South Africa}
       - {iso: ZWE, name: Zimbabwe}
@@ -90,6 +94,7 @@ regions:
     name: EA & SA Pools
     status: available
     color: "#5A6FC0"
+    min_kv: 20000
     countries:
       # EAPP
       - {iso: EGY, name: Egypt}
@@ -105,7 +110,6 @@ regions:
       - {iso: RWA, name: Rwanda}
       - {iso: BDI, name: Burundi}
       - {iso: COD, name: DR Congo}
-      - {iso: SOL, name: Somaliland}
       # SAPP (excl. TZA, COD already listed above)
       - {iso: ZAF, name: South Africa}
       - {iso: ZWE, name: Zimbabwe}
@@ -123,6 +127,7 @@ regions:
     name: Pan-Arab
     status: available
     color: "#C4A020"
+    min_kv: 20000
     countries:
       - {iso: MAR, name: Morocco}
       - {iso: DZA, name: Algeria}
@@ -146,6 +151,7 @@ regions:
     name: Western Balkans 6
     status: available
     color: "#3A6098"
+    min_kv: 20000
     countries:
       - {iso: ALB, name: Albania}
       - {iso: BIH, name: Bosnia and Herzegovina}
@@ -158,6 +164,7 @@ regions:
     name: South Asia
     status: available
     color: "#1A8AAA"
+    min_kv: 20000
     countries:
       - {iso: IND, name: India}
       - {iso: PAK, name: Pakistan}
@@ -172,6 +179,7 @@ regions:
     name: Central Asia
     status: available
     color: "#2A4E8E"
+    min_kv: 20000
     countries:
       - {iso: KAZ, name: Kazakhstan}
       - {iso: KGZ, name: Kyrgyzstan}
@@ -183,6 +191,7 @@ regions:
     name: Central Asia - South Asia (CASA)
     status: available
     color: "#7A5AA8"
+    min_kv: 20000
     countries:
       - {iso: KAZ, name: Kazakhstan}
       - {iso: KGZ, name: Kyrgyzstan}
@@ -196,6 +205,7 @@ regions:
     name: ASEAN Power Grid
     status: available
     color: "#1A9080"
+    min_kv: 20000
     countries:
       - {iso: BRN, name: Brunei}
       - {iso: KHM, name: Cambodia}
@@ -212,6 +222,7 @@ regions:
     name: SIEPAC
     status: available
     color: "#3A9040"
+    min_kv: 20000
     countries:
       - {iso: GTM, name: Guatemala}
       - {iso: HND, name: Honduras}
@@ -224,6 +235,7 @@ regions:
     name: Caribbean SIDS
     status: available
     color: "#0E9B8A"
+    min_kv: 20000
     countries:
       - {iso: CUB, name: Cuba}
       - {iso: HTI, name: Haiti}
@@ -246,6 +258,7 @@ regions:
     name: Pacific SIDS
     status: available
     color: "#0E9B8A"
+    min_kv: 20000
     countries:
       - {iso: FJI, name: Fiji}
       - {iso: PNG, name: Papua New Guinea}
@@ -265,6 +278,7 @@ regions:
     name: AIMS
     status: available
     color: "#0E9B8A"
+    min_kv: 20000
     countries:
       - {iso: MDV, name: Maldives}
       - {iso: COM, name: Comoros}
@@ -280,6 +294,7 @@ regions:
     name: European Union
     status: available
     color: "#4870C0"
+    min_kv: 110000
     countries:
       - {iso: AUT, name: Austria}
       - {iso: BEL, name: Belgium}

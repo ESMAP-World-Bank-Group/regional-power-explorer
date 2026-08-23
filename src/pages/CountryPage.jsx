@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
+import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
@@ -11,6 +11,7 @@ import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
+import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, raiseBoundaries } from '../utils/basemap';
 
 // Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
 // Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
@@ -133,6 +134,9 @@ export default function CountryPage() {
   const [access,             setAccess]             = useState(null);
   const [filteredPlantsData, setFilteredPlantsData] = useState(null);
   const [filteredLinesData,  setFilteredLinesData]  = useState(null);
+  const [minKv,            setMinKv]            = useState(0);
+  const [kvFloor,          setKvFloor]          = useState(110);
+  const [presentKvs,       setPresentKvs]       = useState(null);
   const [countryCenter,      setCountryCenter]      = useState(null);
   const [countryReady,       setCountryReady]       = useState(false);
   const [activeTab,          setActiveTab]          = useState('overview');
@@ -307,23 +311,15 @@ export default function CountryPage() {
     });
 
     map.on('load', async () => {
-      const [countries, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
-        fetch('/data/countries_10m.geojson').then(r => r.json()),
+      const [countries, boundaries, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
+        fetchCountries('10m'),
+        fetchBoundaries('10m'),
         fetch(`/data/cache/region_plants_${region.id}.geojson`).then(r => r.json()),
         fetch(`/data/cache/region_lines_${region.id}.geojson`).then(r => r.json()),
         fetch(`/data/cache/region_substations_${region.id}.geojson`).then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
         fetch(`/data/region_load_centers_${region.id}.geojson`).then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
         fetch(`/data/cache/region_admin1_${region.id}.geojson`).then(r => r.ok ? r.json() : { type: 'FeatureCollection', features: [] }).catch(() => ({ type: 'FeatureCollection', features: [] })),
       ]);
-
-      countries.features.forEach((f, i) => {
-        const p = f.properties;
-        let code = p.ISO_A3 || '-99';
-        if (code === '-99') code = p.ISO_A3_EH || '-99';
-        if (code === '-99') code = p.ADM0_A3 || '-99';
-        p.ISO_A3 = code;
-        f.id = i;
-      });
 
       const bounds = fitBoundsCountry(iso, countries);
       if (bounds) {
@@ -365,6 +361,21 @@ export default function CountryPage() {
 
       setFilteredPlantsData(filteredPlants);
       setFilteredLinesData(filteredLines);
+      // Slider floor comes from the data itself: regions.yaml sets a different
+      // min_kv per region, and this way the UI never promises voltages the file
+      // doesn't hold.
+      const taggedKv = filteredLines.features
+        .map(f => f.properties.v)
+        .filter(v => v > 0);
+      const floorKv = taggedKv.length ? Math.floor(Math.min(...taggedKv) / 1000) : 110;
+      setKvFloor(floorKv);
+      // A theme switch rebuilds the map from scratch; keep whatever the slider
+      // was set to as long as the new data can honour it, and only fall back to
+      // the floor when it can't (first load, or a region with a higher floor).
+      setMinKv(kv => (kv >= floorKv && kv <= 500 ? kv : floorKv));
+      // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
+      // an empty legend row would just be a dead checkbox.
+      setPresentKvs(new Set(filteredLines.features.map(f => bracketFor(f.properties.v).key)));
 
       // Adaptive default min-MW: show all of a small country (e.g. Madagascar),
       // cap big ones to the ~150 largest. Replaces the flat 100 MW default.
@@ -377,7 +388,7 @@ export default function CountryPage() {
         features: lcGJ.features.filter(f => f.properties.iso === iso),
       };
 
-      map.addSource('countries',    { type: 'geojson', data: countries,    generateId: false });
+      addCountriesSource(map, countries);
       map.addSource('plants',       { type: 'geojson', data: filteredPlants });
       map.addSource('lines',        { type: 'geojson', data: filteredLines  });
       map.addSource('substations',  { type: 'geojson', data: filteredSubs   });
@@ -392,24 +403,16 @@ export default function CountryPage() {
 
       const tv = getT(theme);
 
-      map.addLayer({ id: 'land',    type: 'fill', source: 'countries',
-        paint: { 'fill-color': tv.land, 'fill-opacity': 1 } });
-      map.addLayer({ id: 'borders', type: 'line', source: 'countries',
-        paint: { 'line-color': tv.worldBdr, 'line-width': tv.worldBdrW } });
+      addBaseLayers(map, tv, boundaries);
 
       // Transmission lines
-      const kvFilters = {
-        '500': ['>=', ['get', 'v'], 500_000],
-        '330': ['all', ['>=', ['get', 'v'], 330_000], ['<', ['get', 'v'], 500_000]],
-        '220': ['all', ['>=', ['get', 'v'], 220_000], ['<', ['get', 'v'], 330_000]],
-        '110': ['<', ['get', 'v'], 220_000],
-      };
-      for (const { colors, width, key } of VOLTAGE_BRACKETS) {
+      for (const bracket of VOLTAGE_BRACKETS) {
+        const { colors, width, key } = bracket;
         map.addLayer({
           id: `lines-${key}`,
           type: 'line',
           source: 'lines',
-          filter: kvFilters[key],
+          filter: kvFilterWithFloor(bracket, minKv),
           paint: {
             'line-color': colors[theme] ?? colors.fog, 'line-width': width,
             'line-opacity': tv.isDark ? 0.92 : 0.65,
@@ -535,15 +538,12 @@ export default function CountryPage() {
         map.on('mouseenter', `lines-${key}`, e => {
           map.getCanvas().style.cursor = 'pointer';
           const feat = e.features[0];
-          const v = feat.properties.v;
           const geom = feat.geometry;
           const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
           const fromName = nearestSubName(coords[0]);
           const toName   = nearestSubName(coords[coords.length - 1]);
-          const route = (fromName || toName)
-            ? `<b>${[fromName, toName].filter(Boolean).join(' — ')}</b><br>` : '';
           popup.setLngLat(e.lngLat)
-            .setHTML(`${route}<span style="opacity:.75">${Math.round(v / 1000)} kV</span>`)
+            .setHTML(linePopupHTML(feat.properties, [fromName, toName]))
             .addTo(map);
         });
         map.on('mousemove', `lines-${key}`, e => { popup.setLngLat(e.lngLat); });
@@ -558,14 +558,16 @@ export default function CountryPage() {
         const active = LINE_LAYERS.filter(id => { try { return !!map.getLayer(id); } catch { return false; } });
         const lineFeats = active.length ? map.queryRenderedFeatures(bbox, { layers: active }) : [];
         if (lineFeats.length > 0) {
-          const v = lineFeats[0].properties.v;
-          const bracket = VOLTAGE_BRACKETS.find(b =>
-            b.key === '500' ? v >= 500_000 : b.key === '330' ? v >= 330_000 && v < 500_000
-            : b.key === '220' ? v >= 220_000 && v < 330_000 : v < 220_000
-          );
+          const props   = lineFeats[0].properties;
+          const v       = props.v;
+          const bracket = bracketFor(v);
           const geom = lineFeats[0].geometry;
           const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
-          setSelFeature({ type: 'line', props: { v, voltageLabel: bracket?.label || `${Math.round(v / 1000)} kV` }, km: lineKm(coords) });
+          setSelFeature({
+            type:  'line',
+            props: { ...props, voltageLabel: v ? `${Math.round(v / 1000)} kV` : bracket.label },
+            km:    lineKm(coords),
+          });
         } else {
           setSelFeature(null);
         }
@@ -730,6 +732,7 @@ export default function CountryPage() {
 
       mapReadyRef.current = true;
 
+      raiseBoundaries(map);
     });
 
     return () => { mapReadyRef.current = false; popup.remove(); mapRef.current?.remove(); };
@@ -1080,21 +1083,54 @@ export default function CountryPage() {
     }
   }, [filteredPlantsData, iso, plantSource]);
 
+
+  // ── Min-kV filter ──────────────────────────────────────────────────────────
+  // Dragging repaints only (cheap, no source re-parse); the real setFilter lands
+  // once the drag settles, so hover, click and download agree with what is drawn.
+  const minKvCommitRef = useRef(null);
+
+  const applyMinKv = useCallback((kv, commit) => {
+    const map = mapRef.current;
+    if (!map) return;
+    const baseOpacity = getT(theme).isDark ? 0.92 : 0.65;
+    for (const bracket of VOLTAGE_BRACKETS) {
+      const id = `lines-${bracket.key}`;
+      if (!map.getLayer(id)) continue;
+      // v === 0 means "OSM doesn't say", not "0 kV" — a numeric floor can't judge
+      // it, so the untagged bracket answers to its own legend checkbox alone.
+      if (bracket.untagged) continue;
+      if (commit) {
+        map.setFilter(id, kvFilterWithFloor(bracket, kv));
+        map.setPaintProperty(id, 'line-opacity', baseOpacity);
+      } else {
+        map.setPaintProperty(id, 'line-opacity',
+          ['case', ['>=', ['get', 'v'], kv * 1000], baseOpacity, 0]);
+      }
+    }
+  }, [theme]);
+
+  const handleMinKvChange = useCallback(kv => {
+    setMinKv(kv);
+    applyMinKv(kv, false);
+    clearTimeout(minKvCommitRef.current);
+    minKvCommitRef.current = setTimeout(() => applyMinKv(kv, true), 250);
+  }, [applyMinKv]);
+
+  useEffect(() => () => clearTimeout(minKvCommitRef.current), []);
+
   const handleDownloadLines = useCallback((format = 'geojson') => {
     if (!filteredLinesData) return;
     track('data_download', { type: 'lines', format, iso });
+    // What you see is what you get: the legend toggles and the min-kV slider sit
+    // next to this button, so the file matches the map rather than the raw cache.
+    const feats = visibleLineFeatures(filteredLinesData.features, { minKv, kvsOff });
     if (format === 'csv') {
-      const header = 'id,voltage_kv,geometry_wkt';
-      const rows = filteredLinesData.features.map((f, i) => {
-        const vkv = f.properties.v ? Math.round(f.properties.v / 1000) : '';
-        const wkt = `LINESTRING(${f.geometry.coordinates.map(([x, y]) => `${x} ${y}`).join(', ')})`;
-        return `${i},${vkv},"${wkt}"`;
-      });
-      downloadBlob([header, ...rows].join('\n'), `lines_${iso}.csv`, 'text/csv');
+      downloadBlob(linesToCSV(feats), `lines_${iso}.csv`, 'text/csv');
     } else {
-      downloadBlob(JSON.stringify(filteredLinesData), `lines_${iso}.geojson`, 'application/geo+json');
+      downloadBlob(JSON.stringify(linesToDownloadGeoJSON(feats)),
+        `lines_${iso}.geojson`, 'application/geo+json');
     }
-  }, [filteredLinesData, iso]);
+  }, [filteredLinesData, iso, minKv, kvsOff]);
 
   if (!info) return <div style={{ padding: 40, color: t.text }}>Loading…</div>;
 
@@ -1134,6 +1170,8 @@ export default function CountryPage() {
         onSourceChange={s => { setPlantSource(s); track('plant_source_change', { source: s, iso }); }}
         onDownloadPlants={handleDownloadPlants}
         onDownloadLines={handleDownloadLines}
+        minKv={minKv} kvFloor={kvFloor} onMinKvChange={handleMinKvChange}
+        presentKvs={presentKvs}
       />
       </div>
 
@@ -1272,9 +1310,24 @@ export default function CountryPage() {
 
             {selFeature.type === 'line' && (
               <>
-                <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>Transmission line</div>
+                <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
+                  {selFeature.props.nm || 'Transmission line'}
+                </div>
                 <Row label="Voltage" value={selFeature.props.voltageLabel} t={t} />
                 {selFeature.km > 0 && <Row label="Length" value={`~${Math.round(selFeature.km)} km`} t={t} />}
+                {['op', 'c', 'f', 'l', 'st'].map(k => (
+                  selFeature.props[k] ? (
+                    <Row key={k} label={LINE_ATTR_LABELS[k]}
+                      value={lineAttrText(k, selFeature.props[k])} t={t} />
+                  ) : null
+                ))}
+                {selFeature.props.oid && (
+                  <Row label="Source" t={t} value={
+                    <a href={`https://www.openstreetmap.org/way/${selFeature.props.oid}`}
+                      target="_blank" rel="noreferrer"
+                      style={{ color: t.lblRow }}>OpenStreetMap ↗</a>
+                  } />
+                )}
               </>
             )}
 

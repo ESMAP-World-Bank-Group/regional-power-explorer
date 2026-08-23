@@ -146,6 +146,7 @@
   },
   {
    "id": "eapp",
+   "non_determined": ["Abyei"],
    "name": "Eastern Africa Power Pool",
    "status": "available",
    "color": "#1AA8B0",
@@ -201,10 +202,6 @@
     {
      "iso": "COD",
      "name": "DR Congo"
-    },
-    {
-     "iso": "SOL",
-     "name": "Somaliland"
     }
    ]
   },
@@ -270,6 +267,7 @@
   },
   {
    "id": "easa",
+   "non_determined": ["Abyei"],
    "name": "EA & SA Pools",
    "status": "available",
    "color": "#5A6FC0",
@@ -327,10 +325,6 @@
      "name": "DR Congo"
     },
     {
-     "iso": "SOL",
-     "name": "Somaliland"
-    },
-    {
      "iso": "ZAF",
      "name": "South Africa"
     },
@@ -378,6 +372,7 @@
   },
   {
    "id": "panarab",
+   "non_determined": ["Western Sahara"],
    "name": "Pan-Arab",
    "status": "available",
    "color": "#C4A020",
@@ -486,6 +481,7 @@
   },
   {
    "id": "southasia",
+   "non_determined": ["Arunchal Pradesh", "Disputed Area: IND/PAK"],
    "name": "South Asia",
    "status": "available",
    "color": "#1A8AAA",
@@ -670,6 +666,7 @@
   },
   {
    "id": "eu",
+   "non_determined": ["UN Buffer Zone in Cyprus"],
    "name": "European Union",
    "status": "available",
    "color": "#4870C0",
