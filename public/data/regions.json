@@ -2,6 +2,7 @@
  "regions": [
   {
    "id": "blacksea",
+   "epm": true,
    "name": "Black Sea",
    "status": "available",
    "color": "#1E6DB8",
@@ -146,6 +147,7 @@
   },
   {
    "id": "eapp",
+   "epm": true,
    "non_determined": ["Abyei"],
    "name": "Eastern Africa Power Pool",
    "status": "available",
@@ -207,6 +209,7 @@
   },
   {
    "id": "sapp",
+   "epm": true,
    "name": "Southern Africa Power Pool",
    "status": "available",
    "color": "#6098D0",
@@ -550,6 +553,7 @@
   },
   {
    "id": "casa",
+   "epm": true,
    "name": "Central Asia - South Asia (CASA)",
    "status": "available",
    "color": "#7A5AA8",

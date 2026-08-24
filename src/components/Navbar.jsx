@@ -6,13 +6,31 @@ import { track } from '../analytics';
 
 const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
 
-// Countries and regions with published EPM models in epm-data-explorer
-const EPM_ISOS = new Set([
-  'ARM','AZE','BGR','GEO','ROU','TUR',                          // Black Sea
-  'EGY','SDN','SSD','ETH','DJI','KEN','TZA','UGA','RWA','BDI','COD','SOM', // EAPP
-  'ZAF','ZWE','ZMB','BWA','MOZ','MWI','NAM','LSO','SWZ','AGO','MDG',        // SAPP
-]);
-const EPM_REGIONS = new Set(['blacksea', 'eapp', 'sapp']);
+// Which regions have a published EPM model is read from the region data, not
+// listed here: regions.json carries `epm: true` on the ones EPM View can open, so
+// publishing a model is a change to the data and not to the navbar. The countries
+// follow from the regions that carry it.
+function useEpmRegions() {
+  const [epm, setEpm] = useState(null);
+
+  useEffect(() => {
+    fetch('/data/regions.json')
+      .then(r => r.json())
+      .then(d => {
+        const all = (d.regions || []).filter(r => r.type !== 'meta');
+        const withModel = all.filter(r => r.epm);
+        setEpm({
+          all,
+          withModel,
+          ids: new Set(withModel.map(r => r.id)),
+          isos: new Set(withModel.flatMap(r => (r.countries || []).map(c => c.iso))),
+        });
+      })
+      .catch(() => setEpm({ all: [], withModel: [], ids: new Set(), isos: new Set() }));
+  }, []);
+
+  return epm;
+}
 
 function useBreadcrumb() {
   const location = useLocation();
@@ -59,6 +77,7 @@ export default function Navbar() {
   const location = useLocation();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [epmCountryPath, setEpmCountryPath] = useState(null);
+  const epm = useEpmRegions();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700);
 
   useEffect(() => {
@@ -67,22 +86,20 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  // Resolve EPM path from ISO: /country/AZE → /region/black_sea/country/Azerbaijan
+  // Resolve EPM path from ISO: /country/AZE → /region/blacksea/country/Azerbaijan.
+  // A country can belong to several regions -- DR Congo sits in CAPP, EAPP and SAPP
+  // -- so the ones with a model are searched first: the others would open a region
+  // EPM View has nothing to show for.
   useEffect(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    if (parts[0] !== 'country' || !parts[1]) { setEpmCountryPath(null); return; }
+    if (parts[0] !== 'country' || !parts[1] || !epm) { setEpmCountryPath(null); return; }
     const iso = parts[1];
-    fetch('/data/regions.json')
-      .then(r => r.json())
-      .then(d => {
-        for (const r of (d.regions || [])) {
-          const c = (r.countries || []).find(c => c.iso === iso);
-          if (c) { setEpmCountryPath(`/region/${r.id}/country/${encodeURIComponent(c.name)}`); return; }
-        }
-        setEpmCountryPath(null);
-      })
-      .catch(() => setEpmCountryPath(null));
-  }, [location.pathname]);
+    for (const r of [...epm.withModel, ...epm.all]) {
+      const c = (r.countries || []).find(c => c.iso === iso);
+      if (c) { setEpmCountryPath(`/region/${r.id}/country/${encodeURIComponent(c.name)}`); return; }
+    }
+    setEpmCountryPath(null);
+  }, [location.pathname, epm]);
 
   const dashboardUrl = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
@@ -95,12 +112,15 @@ export default function Navbar() {
     return `${EPM_DASHBOARD_URL}${suffix}`;
   }, [location.pathname, theme, epmCountryPath]);
 
+  // Until the region data has arrived the button stays live: greying it out first
+  // and enabling it a moment later reads as a broken button.
   const epmAvailable = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    if (parts[0] === 'country' && parts[1]) return EPM_ISOS.has(parts[1]);
-    if (parts[0] === 'region' && parts[1]) return EPM_REGIONS.has(parts[1]);
+    if (!epm) return true;
+    if (parts[0] === 'country' && parts[1]) return epm.isos.has(parts[1]);
+    if (parts[0] === 'region' && parts[1]) return epm.ids.has(parts[1]);
     return true;
-  }, [location.pathname]);
+  }, [location.pathname, epm]);
 
   const navBtn = (active = false) => ({
     background: 'none',
