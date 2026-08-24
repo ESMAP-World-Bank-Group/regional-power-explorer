@@ -1,7 +1,13 @@
+# The `epm: true` flag marks a region whose EPM model is published in EPM View
+# (the epm-data-explorer app). It is what lights up the EPM View button in the
+# navbar; a region without it gets the button greyed out and a tooltip saying so.
+# Add the flag when the model's branch carries its data folder and a run, not
+# when the model merely exists.
 regions:
   - id: blacksea
     name: Black Sea
     status: available
+    epm: true
     color: "#1E6DB8"
     min_kv: 20000
     countries:
@@ -53,6 +59,7 @@ regions:
   - id: eapp
     name: Eastern Africa Power Pool
     status: available
+    epm: true
     color: "#1AA8B0"
     min_kv: 20000
     countries:
@@ -73,6 +80,7 @@ regions:
   - id: sapp
     name: Southern Africa Power Pool
     status: available
+    epm: true
     color: "#6098D0"
     min_kv: 20000
     countries:
@@ -190,6 +198,7 @@ regions:
   - id: casa
     name: Central Asia - South Asia (CASA)
     status: available
+    epm: true
     color: "#7A5AA8"
     min_kv: 20000
     countries:
