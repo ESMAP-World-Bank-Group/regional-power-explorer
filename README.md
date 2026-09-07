@@ -85,10 +85,10 @@ For new data sources or coverage gaps, open a
 - Estimation methods (e.g. demand projections, capacity-factor derivation, wind-speed
   height correction) are documented on the Data Sources / Methods page; treat estimated
   layers accordingly.
-- Parts of the content — in particular the country briefing notes held in `data-source/notes/`
+- Parts of the content — in particular the country briefing notes held in `public/data/notes/`
   — were **drafted with AI language models** and have not been verified or peer-reviewed.
-  They may contain wrong figures or inaccurate statements on politically sensitive matters,
-  and are not deployed in the interface for that reason.
+  They may contain wrong figures or inaccurate statements on politically sensitive matters.
+  Each note opens with a banner saying so; treat them as unverified drafts, not as sources.
 - The boundaries, colours, denominations, and other information shown on any map do **not**
   imply any judgment concerning the legal status of any territory or the endorsement or
   acceptance of such boundaries.
