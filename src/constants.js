@@ -296,8 +296,8 @@ export function toggleSatLabels(map, show, theme) {
 // to PANEL_WIDTH_MIN, or bigger up to PANEL_WIDTH_MAX (default + a further
 // 4cm of headroom) — both cm figures @ 96 CSS px/in ÷ 2.54cm/in, rounded.
 // Country briefing notes were drafted with AI assistance and are not fact-checked, so
-// every note carries a banner saying so and the About and Contact pages repeat it. That
-// disclosure is the condition for showing them: the flag and the notes living under
+// every note carries a line saying so under its header. That disclosure is the
+// condition for showing them: the flag and the notes living under
 // public/data/notes/ (where the build copies them into dist/) go together — turning
 // this off again means moving the folder back out of public/ too, or the files stay
 // reachable by direct URL.

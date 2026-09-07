@@ -88,7 +88,7 @@ For new data sources or coverage gaps, open a
 - Parts of the content — in particular the country briefing notes held in `public/data/notes/`
   — were **drafted with AI language models** and have not been verified or peer-reviewed.
   They may contain wrong figures or inaccurate statements on politically sensitive matters.
-  Each note opens with a banner saying so; treat them as unverified drafts, not as sources.
+  Each note carries a line saying so; treat them as unverified drafts, not as sources.
 - The boundaries, colours, denominations, and other information shown on any map do **not**
   imply any judgment concerning the legal status of any territory or the endorsement or
   acceptance of such boundaries.
