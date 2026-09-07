@@ -1,0 +1,65 @@
+name: Daily EPİAŞ market price update
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # 03:00 UTC = 06:00 Türkiye time
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-market-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install eptr2 pandas
+
+      - name: Figure out where to resume from
+        id: startdate
+        run: |
+          python3 -c "
+          import json
+          from pathlib import Path
+          from datetime import date, timedelta
+
+          path = Path('public/data/market/TUR.json')
+          fallback = date.today() - timedelta(days=14)
+
+          if not path.exists():
+              start = fallback
+          else:
+              data = json.loads(path.read_text())
+              last_dates = []
+              for series in ('dam', 'dam_eur', 'dam_usd', 'idm', 'bpm'):
+                  hourly = data.get(series, {}).get('hourly', {})
+                  if hourly:
+                      last_dates.append(date.fromisoformat(max(hourly.keys())[:10]))
+              # use the series that is furthest behind, so nothing gets left out
+              start = (min(last_dates) - timedelta(days=3)) if last_dates else fallback
+
+          print(f'start_date={start.isoformat()}')
+          " >> \"$GITHUB_OUTPUT\"
+
+      - name: Run EPİAŞ pipeline
+        env:
+          EPIAS_USERNAME: ${{ secrets.EPIAS_USERNAME }}
+          EPIAS_PASSWORD: ${{ secrets.EPIAS_PASSWORD }}
+        run: python tools/pipelines/epias_pipeline.py --start-date ${{ steps.startdate.outputs.start_date }}
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/market/TUR.json
+          git diff --staged --quiet && echo "No changes to commit" || git commit -m "chore: daily EPİAŞ market price update"
+          git push
+EOF
