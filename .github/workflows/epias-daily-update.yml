@@ -43,11 +43,10 @@ jobs:
                   hourly = data.get(series, {}).get('hourly', {})
                   if hourly:
                       last_dates.append(date.fromisoformat(max(hourly.keys())[:10]))
-              # use the series that is furthest behind, so nothing gets left out
               start = (min(last_dates) - timedelta(days=3)) if last_dates else fallback
 
           print(f'start_date={start.isoformat()}')
-          " >> \"$GITHUB_OUTPUT\"
+          " >> "$GITHUB_OUTPUT"
 
       - name: Run EPİAŞ pipeline
         env:
@@ -62,4 +61,3 @@ jobs:
           git add public/data/market/TUR.json
           git diff --staged --quiet && echo "No changes to commit" || git commit -m "chore: daily EPİAŞ market price update"
           git push
-EOF
