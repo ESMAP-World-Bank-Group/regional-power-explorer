@@ -3,8 +3,14 @@ import { getT } from '../../constants';
 import ChartCaption from '../ChartCaption';
 import { downloadBlob } from './chartHelpers';
 
-const SERIES = ['dam', 'idm', 'bpm'];
-const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010' };
+// Which series show up as buttons, per sub-tab — Quantity reuses dam's and
+// idm's colors below since they're the same underlying markets, just a
+// different measure (matched MWh instead of price).
+const SERIES_BY_TAB = {
+  prices:   ['dam', 'idm', 'bpm'],
+  quantity: ['dam_qty', 'idm_qty'],
+};
+const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010', dam_qty: '#2478B4', idm_qty: '#0E8070' };
 const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the series color — stays out of the way
 // Ids are load-bearing (used throughout getPeriods/getChartPoints/computeStats)
 // — only the display labels changed, to match what AXIS_TITLE already says
@@ -14,7 +20,7 @@ const GRANULARITY_LABEL = Object.fromEntries(GRANULARITIES);
 // Above this many bars, the Daily (per-day) bar+whisker chart gets visually
 // cluttered — fall back to a plain mean line instead, same idea as Hourly.
 const DAILY_BAR_MAX_POINTS = 60;
-const SUB_TABS = [['prices', 'Prices']];
+const SUB_TABS = [['prices', 'Prices'], ['quantity', 'Quantity']];
 // DAM-only — only that series has EUR/USD alternatives in the data (dam_eur, dam_usd).
 const CURRENCIES = [['try', 'TL'], ['eur', 'EUR'], ['usd', 'USD']];
 
@@ -322,7 +328,7 @@ export default function MarketTab({ iso, theme }) {
   useEffect(() => {
     if (!iso) return;
     setLoading(true); setData(null);
-    setSeries('dam'); setCurrency('try'); setGranularity('multiyear');
+    setSubTab('prices'); setSeries(SERIES_BY_TAB.prices[0]); setCurrency('try'); setGranularity('multiyear');
     setPeriodStart(null); setPeriodEnd(null); setExportScope('selected'); setTip(null);
     fetch(`/data/market/${iso}.json`)
       .then(r => { if (!r.ok) throw new Error('404'); return r.json(); })
@@ -330,9 +336,11 @@ export default function MarketTab({ iso, theme }) {
       .catch(() => setLoading(false));
   }, [iso]);
 
+  const activeSeries = SERIES_BY_TAB[subTab];
+
   // dam_eur / dam_usd are separate top-level keys with the same shape as dam
-  // (and their own unit) — idm/bpm have no currency alternatives, so this
-  // only kicks in for series === 'dam'.
+  // (and their own unit) — idm/bpm and the Quantity series have no currency
+  // alternatives, so this only kicks in for series === 'dam' specifically.
   const dataKey = series === 'dam' && currency !== 'try' ? `dam_${currency}` : series;
   const block = data?.[dataKey] ?? null;
 
@@ -496,15 +504,16 @@ export default function MarketTab({ iso, theme }) {
       {/* Sub-tabs */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 14, borderBottom: `1px solid ${t.panelBorder}` }}>
         {SUB_TABS.map(([id, lbl]) => (
-          <button key={id} onClick={() => setSubTab(id)} style={subTabBtnStyle(subTab === id)}>{lbl}</button>
+          <button key={id} onClick={() => { setSubTab(id); setSeries(SERIES_BY_TAB[id][0]); setTip(null); }}
+            style={subTabBtnStyle(subTab === id)}>{lbl}</button>
         ))}
       </div>
 
-      {subTab === 'prices' && (
+      {(subTab === 'prices' || subTab === 'quantity') && (
         <>
           {/* Series toggle — full dataset name, 2 lines, slightly narrower than the panel, centered */}
           <div style={{ display: 'flex', gap: 4, width: '93%', margin: '0 auto 10px' }}>
-            {SERIES.map(s => {
+            {activeSeries.map(s => {
               const [line1, line2 = ''] = (data[s]?.label || s.toUpperCase()).split(' — ');
               const active = series === s;
               return (

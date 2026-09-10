@@ -2,17 +2,26 @@
 Turkiye electricity market prices — EPIAS Transparency Platform pipeline.
 https://seffaflik.epias.com.tr
 
-Generates public/data/market/TUR.json with five hourly price series:
+Generates public/data/market/TUR.json with seven hourly series:
   - dam:     Day-Ahead Market — Market Clearing Price (MCP), in TL/MWh
   - dam_eur: Day-Ahead Market — Market Clearing Price (MCP), in EUR/MWh
   - dam_usd: Day-Ahead Market — Market Clearing Price (MCP), in USD/MWh
   - idm:     Intraday Market — Weighted Average Price (WAP), in TL/MWh
   - bpm:     Balancing Power Market — System Marginal Price (SMP), in TL/MWh
+  - dam_qty: Day-Ahead Market — Matching Quantity, in MWh
+  - idm_qty: Intraday Market — Matching Quantity, in MWh
 
 dam/dam_eur/dam_usd all come from the same "mcp" endpoint response — it
 returns price, priceEur and priceUsd columns per hour (confirmed against
 the EPIAS PtfResponseDataDto schema). idm and bpm only carry a TL price in
 their respective schemas, so they have no EUR/USD counterpart.
+
+dam_qty reads matchedBids off "dam-clearing" (same date/hour shape as every
+other endpoint here). idm_qty reads clearingQuantityBid off "idm-qty", which
+has NO date/hour column at all — only a kontratAdi contract code (e.g.
+"PH26090900" = PH + YYMMDDHH, Turkey local time) for hourly contracts, plus
+"Blok" (block, multi-hour) contracts that don't fit this shape and are
+dropped. See _decode_idm_qty_timestamp.
 
 Good to know:
   - Auth is handled by the eptr2 client (logs in with username/password,
@@ -35,6 +44,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import warnings
 from calendar import monthrange
@@ -68,11 +78,13 @@ HOURLY_RETENTION_DAYS = 90
 # price (TL), priceEur and priceUsd columns per hour — so they're fetched
 # together in one API call per month rather than three (see run()).
 SERIES = {
-    'dam':     {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price',        'value_field': 'price',                'unit': 'TL/MWh'},
-    'dam_eur': {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price (EUR)',  'value_field': 'priceEur',             'unit': 'EUR/MWh'},
-    'dam_usd': {'endpoint': 'mcp', 'label': 'Day-Ahead Market — Market Clearing Price (USD)',  'value_field': 'priceUsd',             'unit': 'USD/MWh'},
-    'idm':     {'endpoint': 'wap', 'label': 'Intraday Market — Weighted Average Price',        'value_field': 'wap',                  'unit': 'TL/MWh'},
-    'bpm':     {'endpoint': 'smp', 'label': 'Balancing Power Market — System Marginal Price',  'value_field': 'systemMarginalPrice',  'unit': 'TL/MWh'},
+    'dam':     {'endpoint': 'mcp',          'label': 'Day-Ahead Market — Market Clearing Price',        'value_field': 'price',                'unit': 'TL/MWh'},
+    'dam_eur': {'endpoint': 'mcp',          'label': 'Day-Ahead Market — Market Clearing Price (EUR)',  'value_field': 'priceEur',             'unit': 'EUR/MWh'},
+    'dam_usd': {'endpoint': 'mcp',          'label': 'Day-Ahead Market — Market Clearing Price (USD)',  'value_field': 'priceUsd',             'unit': 'USD/MWh'},
+    'idm':     {'endpoint': 'wap',          'label': 'Intraday Market — Weighted Average Price',        'value_field': 'wap',                  'unit': 'TL/MWh'},
+    'bpm':     {'endpoint': 'smp',          'label': 'Balancing Power Market — System Marginal Price',  'value_field': 'systemMarginalPrice',  'unit': 'TL/MWh'},
+    'dam_qty': {'endpoint': 'dam-clearing', 'label': 'Day-Ahead Market — Matching Quantity',            'value_field': 'matchedBids',          'unit': 'MWh'},
+    'idm_qty': {'endpoint': 'idm-qty',      'label': 'Intraday Market — Matching Quantity',             'value_field': 'clearingQuantityBid',  'unit': 'MWh'},
 }
 
 
@@ -115,6 +127,27 @@ def _timestamp_column(df: pd.DataFrame) -> str:
     return next((c for c in df.columns if 'date' in c.lower() or 'time' in c.lower()), df.columns[0])
 
 
+# "idm-qty" has no date/hour column — only a kontratAdi contract code. Hourly
+# contracts look like "PH26090900" (PH + YYMMDDHH, Turkey local time); "Blok"
+# (block, multi-hour) contracts use a different shape ("PB...-NN") and can't
+# be decoded the same way, so they're dropped rather than mis-timestamped.
+# Verified against live data spanning 2017-11 through 2026-09: every single
+# "Saatlik" (hourly) row across that whole range matches this pattern with no
+# exceptions, and block contracts — common through mid-2023 — disappear
+# entirely from 2024 onward.
+_IDM_QTY_HOURLY_RE = re.compile(r'^PH(\d{2})(\d{2})(\d{2})(\d{2})$')
+
+
+def _decode_idm_qty_timestamp(df: pd.DataFrame) -> pd.DataFrame:
+    hourly = df[df['kontratTuru'] == 'Saatlik']
+    codes = hourly['kontratAdi'].astype(str)
+    parts = codes.str.extract(_IDM_QTY_HOURLY_RE)
+    hourly = hourly[parts.notna().all(axis=1)]
+    parts = parts[parts.notna().all(axis=1)]
+    local_iso = '20' + parts[0] + '-' + parts[1] + '-' + parts[2] + 'T' + parts[3] + ':00:00+03:00'
+    return hourly.set_index(pd.to_datetime(local_iso, utc=True))
+
+
 def _fetch_endpoint(client, endpoint: str, start: date, end: date) -> pd.DataFrame:
     """Returns one hourly pd.DataFrame (UTC-indexed, all response columns kept)
     for a single eptr2 endpoint, fetched month by month so we never ask the
@@ -135,10 +168,16 @@ def _fetch_endpoint(client, endpoint: str, start: date, end: date) -> pd.DataFra
             df = None
 
         if df is not None and not df.empty:
-            ts_col = _timestamp_column(df)
-            df = df.set_index(pd.to_datetime(df[ts_col], utc=True))
-            frames.append(df)
-            print(f'  [epias] {endpoint} {label}: {len(df)} rows')
+            if endpoint == 'idm-qty':
+                df = _decode_idm_qty_timestamp(df)
+            else:
+                ts_col = _timestamp_column(df)
+                df = df.set_index(pd.to_datetime(df[ts_col], utc=True))
+            if df.empty:
+                print(f'  [epias] {endpoint} {label}: no hourly rows')
+            else:
+                frames.append(df)
+                print(f'  [epias] {endpoint} {label}: {len(df)} rows')
         else:
             print(f'  [epias] {endpoint} {label}: no data')
 
