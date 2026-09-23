@@ -5,6 +5,7 @@ import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
+import MapChat from '../chat/MapChat';
 import { fetchGeo, fetchNdlsa, addCountriesSource, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
@@ -16,6 +17,7 @@ export default function WorldPage() {
   const metaMarkersRef = useRef([]);
   const metaActiveRef = useRef(null);
   const [regions, setRegions] = useState(null);
+  const [mapReady, setMapReady] = useState(false);
   const wbBase = useWbStyleBase();
   const [metaActive, setMetaActive] = useState(null); // region obj or null
   const [disambig, setDisambig] = useState(null);
@@ -223,6 +225,7 @@ export default function WorldPage() {
       });
 
       raiseBoundaries(map);
+      setMapReady(true);
 
       // Restore meta markers after map rebuild (e.g., theme change)
       if (metaActiveRef.current) applyMetaMarkers(metaActiveRef.current, map);
@@ -233,6 +236,7 @@ export default function WorldPage() {
       metaMarkersRef.current = []; // map.remove() detaches them
       mapRef.current?.remove();
       mapRef.current = null;
+      setMapReady(false);
       setDisambig(null);
     };
   }, [regions, theme, wbBase]);
@@ -252,6 +256,7 @@ export default function WorldPage() {
   return (
     <div style={{ height: 'calc(100vh - 46px)', position: 'relative', backgroundColor: t.bg }}>
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+      <MapChat theme={theme} mapRef={mapRef} ready={mapReady} controller={{ page: 'world', navigate }} />
 
       {/* Disambiguation popover */}
       {disambig && (

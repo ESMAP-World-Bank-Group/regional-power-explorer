@@ -1,11 +1,12 @@
 import { dataPath } from '../utils/paths';
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
+import MapChat from '../chat/MapChat';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
@@ -92,6 +93,7 @@ function pointInFeature(pt, feature) {
 
 export default function CountryPage() {
   const { iso }      = useParams();
+  const navigate     = useNavigate();
   const { theme }    = useTheme();
   const t            = getT(theme);
 
@@ -181,6 +183,7 @@ export default function CountryPage() {
     }
   }
   const mapReadyRef        = useRef(false);
+  const [mapReady,        setMapReady]        = useState(false);
   const countryFeatureRef  = useRef(null);
   const adaptiveMinRef     = useRef(0);   // adaptive default min-MW for this country
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
@@ -273,6 +276,7 @@ export default function CountryPage() {
     setHasNote(null); setNoteOpen(false); setCountryReady(false);
     setMarketAvailable(null);
     mapReadyRef.current = false;
+    setMapReady(false);
     countryFeatureRef.current = null;
     track('country_view', { iso });
   }, [iso]);
@@ -721,6 +725,7 @@ export default function CountryPage() {
       map.on('mouseleave', 'load-centers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
       mapReadyRef.current = true;
+      setMapReady(true);
 
       raiseBoundaries(map);
       // Anything toggled while the map was still loading.
@@ -730,6 +735,7 @@ export default function CountryPage() {
     return () => {
       disposed = true;
       mapReadyRef.current = false;
+      setMapReady(false);
       popup.remove();
       mapRef.current?.remove();
       mapRef.current = null;
@@ -1135,6 +1141,11 @@ export default function CountryPage() {
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
+      <MapChat theme={theme} mapRef={mapRef} ready={mapReady} controller={{
+        page: 'country', iso, regionId: region?.id, tab: activeTab, navigate,
+        setTab: setActiveTab, setPlantSource, setMinMw: handleMinMw,
+        showOnlyFuels: fuels => { for (const f of presentFuels) if (fuelsOff.has(f) === fuels.includes(f)) toggleFuel(f); },
+      }} />
       {isMobile && layerPanelOpen && (
         <div onClick={() => setLayerPanelOpen(false)} style={{
           position: 'absolute', inset: 0, zIndex: 299, backgroundColor: 'rgba(0,0,0,0.35)',

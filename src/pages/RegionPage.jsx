@@ -10,6 +10,7 @@ import {
   PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX,
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
+import MapChat from '../chat/MapChat';
 import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
@@ -1033,6 +1034,11 @@ export default function RegionPage() {
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
+      <MapChat theme={theme} mapRef={mapRef} ready={mapReady} controller={{
+        page: 'region', regionId, tab: activeTab, navigate,
+        setTab: setActiveTab, setPlantSource, setMinMw: handleMinMw,
+        showOnlyFuels: fuels => { for (const f of presentFuels) if (fuelsOff.has(f) === fuels.includes(f)) toggleFuel(f); },
+      }} />
       {isMobile && layerPanelOpen && (
         <div onClick={() => setLayerPanelOpen(false)} style={{
           position: 'absolute', inset: 0, zIndex: 299, backgroundColor: 'rgba(0,0,0,0.35)',
