@@ -1206,7 +1206,10 @@ export default function CountryPage() {
 
         {isMobile && (
           <div style={{
-            position: 'absolute', top: 10, right: 12, zIndex: 5,
+            // The zone selector takes the top-right corner when a country has
+            // zones; the hint then drops under the Legend & Filter button.
+            position: 'absolute', zIndex: 5,
+            ...(zonesIndex !== null ? { top: 56, left: 12 } : { top: 10, right: 12 }),
             backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
             borderRadius: 6, padding: '8px 12px',
             boxShadow: '0 1px 6px rgba(0,0,0,.2)',

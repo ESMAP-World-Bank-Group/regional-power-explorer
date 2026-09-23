@@ -10,6 +10,3 @@ export function appPath(path = '') {
 export function dataPath(path = '') {
   return appPath(`data/${String(path).replace(/^\/+/, '')}`);
 }
-
-/** React Router basename matching Vite's configured base path. */
-export const routerBasename = BASE_URL === '/' ? '/' : BASE_URL.replace(/\/$/, '');
