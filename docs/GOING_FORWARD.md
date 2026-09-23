@@ -76,8 +76,9 @@ Decided:
   that is committed in the public repo, so its owner should close or rotate it.
 
 Still to do:
-- Deploy it, then point this app's EPM button at the Design Studio address in
-  hash-route form (`…/epm-data-explorer/#/region/wapp`).
+- Deploy it, before or together with this app: the EPM button already points at
+  `…/epm-data-explorer/`, which the gateway redirects to its error page until
+  EPM Data Explorer is there.
 - **Mexico has no infrastructure data.** It is in EPM's `public/data/regions.json`
   but was never added to `data-source/regions.yaml`, which the pipeline reads. So
   no plants, lines, substations or capacity files exist for it.

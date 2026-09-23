@@ -5,7 +5,7 @@ import { getT, THEME_LIST, THEMES } from '../constants';
 import { useEffect, useState, useMemo } from 'react';
 import { track } from '../analytics';
 
-const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
+const EPM_DASHBOARD_URL = 'https://designstudio.worldbank.org/epm-data-explorer/';
 
 // Which regions have a published EPM model is read from the region data, not
 // listed here: regions.json carries `epm: true` on the ones EPM View can open, so
@@ -104,13 +104,11 @@ export default function Navbar() {
 
   const dashboardUrl = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    const suffix = `?theme=${theme}`;
-    if (parts[0] === 'region' && parts[1]) return `${EPM_DASHBOARD_URL}/region/${parts[1]}${suffix}`;
-    if (parts[0] === 'country' && parts[1]) {
-      if (epmCountryPath) return `${EPM_DASHBOARD_URL}${epmCountryPath}${suffix}`;
-      return `${EPM_DASHBOARD_URL}/country/${parts[1]}${suffix}`;
-    }
-    return `${EPM_DASHBOARD_URL}${suffix}`;
+    // EPM View uses hash routes; it reads ?theme= from before the hash.
+    const at = route => `${EPM_DASHBOARD_URL}?theme=${theme}#${route}`;
+    if (parts[0] === 'region' && parts[1]) return at(`/region/${parts[1]}`);
+    if (parts[0] === 'country' && parts[1]) return at(epmCountryPath || `/country/${parts[1]}`);
+    return at('/');
   }, [location.pathname, theme, epmCountryPath]);
 
   // Until the region data has arrived the button stays live: greying it out first
