@@ -1,21 +1,23 @@
+import { dataPath } from '../utils/paths';
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, mapStyle, swapBasemap, toggleSatLabels, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
+import { getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
+import MapChat from '../chat/MapChat';
+import ExportControl from '../components/ExportControl';
+import { powerLegend } from '../utils/exportLegend';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
-import { fetchCountries, fetchBoundaries, addCountriesSource, addBaseLayers, raiseBoundaries } from '../utils/basemap';
-
-// Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
-// Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKtNsfk0dX5SET9ajr4jZ0YK058f94jyjzTpiUFQZZkp9jTh6p_TtPiI6Gv6UeLhTx/exec';
+import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW, MAP_LABEL_FONT } from '../utils/wbStyle';
+import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { CONTACT_EMAIL, openMail } from '../utils/mailto';
 
 const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color: '#5A6474', margin: '10px 0 3px', letterSpacing: '0.3px' };
 const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '0.72rem', padding: '6px 8px', borderRadius: 4, border: '1px solid #D5DBE2', color: '#1B2A4A', resize: 'vertical' };
@@ -88,26 +90,9 @@ function pointInFeature(pt, feature) {
   return false;
 }
 
-function fitBoundsCountry(iso, countries) {
-  let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
-  for (const f of countries.features) {
-    if (f.properties.ISO_A3 !== iso) continue;
-    const geom = f.geometry;
-    const rings = geom.type === 'Polygon'
-      ? geom.coordinates
-      : geom.coordinates.flatMap(p => p);
-    for (const ring of rings)
-      for (const [lon, lat] of ring) {
-        if (lon < minLon) minLon = lon; if (lon > maxLon) maxLon = lon;
-        if (lat < minLat) minLat = lat; if (lat > maxLat) maxLat = lat;
-      }
-  }
-  if (!isFinite(minLon)) return null;
-  return [[minLon - 0.8, minLat - 0.8], [maxLon + 0.8, maxLat + 0.8]];
-}
-
 export default function CountryPage() {
   const { iso }      = useParams();
+  const navigate     = useNavigate();
   const { theme }    = useTheme();
   const t            = getT(theme);
 
@@ -144,8 +129,9 @@ export default function CountryPage() {
   const isDrRef   = useRef(false);
   const drStartX  = useRef(0);
   const drStartW  = useRef(0);
-  const [basemap,            setBasemap]            = useState('minimal');
-  const [satLabels,          setSatLabels]          = useState(false);
+  const [wbView,             setWbView]             = useState(DEFAULT_WB_VIEW);
+  const wbViewRef = useRef(wbView);   // what a rebuilt map (theme change) starts from
+  const wbBase = useWbStyleBase();
   const [loadCentersOn,      setLoadCentersOn]      = useState(true);
   const [lcMinPop,           setLcMinPop]           = useState(300_000);
   const [lcCircleScale,      setLcCircleScale]      = useState(1.0);
@@ -159,7 +145,7 @@ export default function CountryPage() {
   const [noteOpen,   setNoteOpen]   = useState(false);
   const noteIframeRef = useRef(null);
   const [editOpen,   setEditOpen]   = useState(false);
-  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '', firstName: '', lastName: '', email: '' });
+  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '' });
   const [editStatus, setEditStatus] = useState('idle');
 
   // Open the "suggest an edit" form, pre-filling any text the user highlighted in
@@ -167,35 +153,27 @@ export default function CountryPage() {
   const openEditSuggestion = () => {
     let passage = '';
     try { passage = noteIframeRef.current?.contentWindow?.getSelection?.().toString().trim() || ''; } catch { /* guard */ }
-    setEditForm({ passage, suggestion: '', firstName: '', lastName: '', email: '' });
+    setEditForm({ passage, suggestion: '' });
     setEditStatus('idle');
     setEditOpen(true);
   };
 
-  async function submitEditSuggestion(e) {
+  function submitEditSuggestion(e) {
     e.preventDefault();
     if (!editForm.suggestion.trim()) return;
-    setEditStatus('sending');
-    try {
-      await fetch(GOOGLE_APPS_SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        body: new URLSearchParams({
-          type: 'brief-edit',
-          country: country?.name || '', iso,
-          passage: editForm.passage, suggestion: editForm.suggestion,
-          name: `${editForm.firstName} ${editForm.lastName}`.trim(),
-          firstName: editForm.firstName, lastName: editForm.lastName,
-          email: editForm.email,
-          url: window.location.href,
-          source: 'Regional Power Explorer',
-        }),
-      });
-      setEditStatus('sent');
-    } catch {
-      setEditStatus('error');
-    }
+    const body = [
+      `Country: ${country?.name || ''} (${iso})`,
+      `Page: ${window.location.href}`,
+      '',
+      ...(editForm.passage.trim() ? ['Passage concerned:', editForm.passage.trim(), ''] : []),
+      'Suggested correction:',
+      editForm.suggestion.trim(),
+    ].join('\n');
+    openMail(`Briefing note edit: ${country?.name || iso}`, body);
+    setEditStatus('sent');
   }
   const mapReadyRef        = useRef(false);
+  const [mapReady,        setMapReady]        = useState(false);
   const countryFeatureRef  = useRef(null);
   const adaptiveMinRef     = useRef(0);   // adaptive default min-MW for this country
   const [isMobile,        setIsMobile]        = useState(() => window.innerWidth < 700);
@@ -243,33 +221,33 @@ export default function CountryPage() {
 
   // Static data — fetch once
   useEffect(() => {
-    fetch('/data/tariffs.json').then(r => r.json()).then(setTariffs).catch(() => {});
-    fetch('/data/access.json').then(r => r.json()).then(setAccess).catch(() => {});
-    fetch('/data/zones/index.json').then(r => r.json()).then(setZonesIndex).catch(() => setZonesIndex({}));
+    fetch(dataPath('tariffs.json')).then(r => r.json()).then(setTariffs).catch(() => {});
+    fetch(dataPath('access.json')).then(r => r.json()).then(setAccess).catch(() => {});
+    fetch(dataPath('zones/index.json')).then(r => r.json()).then(setZonesIndex).catch(() => setZonesIndex({}));
   }, []);
 
   useEffect(() => {
-    fetch('/data/regions.json').then(r => r.json()).then(d => {
+    fetch(dataPath('regions.json')).then(r => r.json()).then(d => {
       for (const region of (d.regions || [])) {
         if (region.type === 'meta') continue; // meta-regions have no cache files
         const country = region.countries.find(c => c.iso === iso);
         if (country) {
           setInfo({ country, region });
           // Check GPPD and GEM availability for this region
-          fetch(`/data/cache/region_plants_${region.id}_gppd.geojson`, { method: 'HEAD' })
+          fetch(dataPath(`cache/region_plants_${region.id}_gppd.geojson`), { method: 'HEAD' })
             .then(r => setGppdAvailable(r.ok))
             .catch(() => setGppdAvailable(false));
-          fetch(`/data/cache/region_plants_${region.id}_gem.geojson`, { method: 'HEAD' })
+          fetch(dataPath(`cache/region_plants_${region.id}_gem.geojson`), { method: 'HEAD' })
             .then(r => setGemAvailable(r.ok))
             .catch(() => setGemAvailable(false));
           if (BRIEFS_ENABLED) {
-            fetch(`/data/notes/${iso}.html`, { method: 'HEAD' })
+            fetch(dataPath(`notes/${iso}.html`), { method: 'HEAD' })
               .then(r => setHasNote(r.ok))
               .catch(() => setHasNote(false));
           } else {
             setHasNote(false);
           }
-          fetch(`/data/market/${iso}.json`, { method: 'HEAD' })
+          fetch(dataPath(`market/${iso}.json`), { method: 'HEAD' })
             // Dev server (and some static hosts) return 200 + index.html for
             // any unmatched path, so r.ok alone can't tell a real JSON file
             // from the SPA fallback — only every country having a notes file
@@ -288,17 +266,20 @@ export default function CountryPage() {
     setHasNote(null); setNoteOpen(false); setCountryReady(false);
     setMarketAvailable(null);
     mapReadyRef.current = false;
+    setMapReady(false);
     countryFeatureRef.current = null;
     track('country_view', { iso });
   }, [iso]);
 
   useEffect(() => {
-    if (!containerRef.current || !info) return;
+    if (!containerRef.current || !info || !wbBase) return;
     const { region } = info;
+    const tv = getT(theme);
 
+    let disposed = false;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: mapStyle(theme),
+      style: buildWbStyle(wbBase, tv, wbViewRef.current),
       center: [0, 20], zoom: 2,
       minZoom: 1, maxZoom: 16,
       attributionControl: false,
@@ -311,17 +292,19 @@ export default function CountryPage() {
     });
 
     map.on('load', async () => {
-      const [countries, boundaries, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
-        fetchCountries('10m'),
-        fetchBoundaries('10m'),
-        fetch(`/data/cache/region_plants_${region.id}.geojson`).then(r => r.json()),
-        fetch(`/data/cache/region_lines_${region.id}.geojson`).then(r => r.json()),
-        fetch(`/data/cache/region_substations_${region.id}.geojson`).then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
-        fetch(`/data/region_load_centers_${region.id}.geojson`).then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
-        fetch(`/data/cache/region_admin1_${region.id}.geojson`).then(r => r.ok ? r.json() : { type: 'FeatureCollection', features: [] }).catch(() => ({ type: 'FeatureCollection', features: [] })),
+      const [countries, bboxes, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
+        fetchGeo('country', iso),
+        fetchBboxes(),
+        fetchNdlsa(),
+        fetch(dataPath(`cache/region_plants_${region.id}.geojson`)).then(r => r.json()),
+        fetch(dataPath(`cache/region_lines_${region.id}.geojson`)).then(r => r.json()),
+        fetch(dataPath(`cache/region_substations_${region.id}.geojson`)).then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
+        fetch(dataPath(`region_load_centers_${region.id}.geojson`)).then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
+        fetch(dataPath(`cache/region_admin1_${region.id}.geojson`)).then(r => r.ok ? r.json() : { type: 'FeatureCollection', features: [] }).catch(() => ({ type: 'FeatureCollection', features: [] })),
       ]);
 
-      const bounds = fitBoundsCountry(iso, countries);
+      if (disposed) return;
+      const bounds = boundsFor(bboxes, 'countries', iso, 0.8);
       if (bounds) {
         map.fitBounds(bounds, { padding: 60, duration: 0, maxZoom: 9 });
         setCountryCenter({
@@ -401,9 +384,6 @@ export default function CountryPage() {
       map.addSource('zone-centroids-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-outside',       { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
 
-      const tv = getT(theme);
-
-      addBaseLayers(map, tv, boundaries);
 
       // Transmission lines
       for (const bracket of VOLTAGE_BRACKETS) {
@@ -428,7 +408,11 @@ export default function CountryPage() {
         source: 'countries',
         filter: hlFilter,
         paint: { 'fill-color': hl.fill, 'fill-opacity': 0.08 },
-      });
+      }, fillAnchor(map));
+      // The country takes the highlight; a non-determined area it is party to
+      // comes out at half strength, see ndlsaFill(). Outlines come from the basemap.
+      addNdlsaLayer(map, { ndlsa, colorForIso: c => (c === iso ? hl.fill : null),
+        opacity: 0.08, before: fillAnchor(map), t: tv });
 
       // Admin-1 province/state boundaries (shown in 'admin' zone mode)
       map.addLayer({
@@ -594,7 +578,7 @@ export default function CountryPage() {
         id: 'zone-outside-labels', type: 'symbol', source: 'zone-outside',
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'zone_name'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'zone_name'],
           'text-size': 10,
           'text-anchor': 'center',
           'text-allow-overlap': false,
@@ -632,7 +616,7 @@ export default function CountryPage() {
         id: 'zone-labels', type: 'symbol', source: 'zone-fills',
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'zone_name'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'zone_name'],
           'text-size': 11,
           'text-anchor': 'center',
           'text-allow-overlap': true,
@@ -662,7 +646,7 @@ export default function CountryPage() {
         filter: ['!', ['in', ['get', 'status'], ['literal', ['planned', 'candidate', 'long_term']]]],
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'label'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'label'],
           'text-size': 9,
           'symbol-placement': 'line-center',
           'text-allow-overlap': false,
@@ -683,13 +667,15 @@ export default function CountryPage() {
         },
       });
 
-      // Country border on top of zone layers so it always covers zone outer edges
+      // A soft glow over the zones' outer edges, not a border: the WB boundary
+      // line is lifted above it, and a crisp generalised edge beside that line
+      // would read as a second, wobbly border.
       map.addLayer({
         id: 'country-border',
         type: 'line',
         source: 'countries',
         filter: hlFilter,
-        paint: { 'line-color': hl.border, 'line-width': hl.borderW + 0.4, 'line-opacity': 0.95 },
+        paint: { 'line-color': hl.border, 'line-width': hl.borderW + 3, 'line-blur': 2.5, 'line-opacity': 0.45 },
       });
 
       // ── Load centers ─────────────────────────────────────────────────────────
@@ -708,7 +694,7 @@ export default function CountryPage() {
         id: 'load-centers-labels', type: 'symbol', source: 'load-centers',
         filter: ['>=', ['get', 'pop'], 300_000],
         layout: {
-          'text-field': ['get', 'name'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'name'],
           'text-size': 9,
           'text-offset': [0, 1.3],
           'text-anchor': 'top',
@@ -731,26 +717,31 @@ export default function CountryPage() {
       map.on('mouseleave', 'load-centers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
       mapReadyRef.current = true;
+      setMapReady(true);
 
       raiseBoundaries(map);
+      // Anything toggled while the map was still loading.
+      applyWbView(map, wbViewRef.current);
     });
 
-    return () => { mapReadyRef.current = false; popup.remove(); mapRef.current?.remove(); };
-  }, [info, theme]);
+    return () => {
+      disposed = true;
+      mapReadyRef.current = false;
+      setMapReady(false);
+      popup.remove();
+      mapRef.current?.remove();
+      mapRef.current = null;
+    };
+  }, [info, theme, wbBase]);
 
   // ── Basemap switcher ─────────────────────────────────────────────────────
+  // The initial view is baked into the style; later changes are applied live.
   useEffect(() => {
+    wbViewRef.current = wbView;
     const map = mapRef.current;
-    if (!map) return;
-    swapBasemap(map, basemap, theme);
-    if (basemap !== 'satellite') toggleSatLabels(map, false, theme);
-  }, [basemap, theme]);
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || basemap !== 'satellite') return;
-    toggleSatLabels(map, satLabels, theme);
-  }, [satLabels, basemap, theme]);
+    if (!map || !mapReadyRef.current) return;
+    applyWbView(map, wbView);
+  }, [wbView]);
 
   // ── Layer toggle handlers ────────────────────────────────────────────────
 
@@ -926,10 +917,10 @@ export default function CountryPage() {
     const label = `${iso}_${nZones}z`;
 
     Promise.all([
-      fetch(`/data/zones/${label}_zones.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`/data/zones/${label}_topo.json`).then(r => r.ok ? r.json() : []).catch(() => []),
-      fetch(`/data/zones/${label}_corridors.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`/data/zones/${label}_outside.geojson`).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(dataPath(`zones/${label}_zones.geojson`)).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(dataPath(`zones/${label}_topo.json`)).then(r => r.ok ? r.json() : []).catch(() => []),
+      fetch(dataPath(`zones/${label}_corridors.geojson`)).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(dataPath(`zones/${label}_outside.geojson`)).then(r => r.ok ? r.json() : null).catch(() => null),
     ]).then(([zonesGJ, topo, corridorsGJ, outsideGJ]) => {
       if (!zonesGJ || !map.getSource('zone-fills')) return;
       zonesGJ.features.forEach((f, i) => { f.properties.color = COLORS[i % COLORS.length]; });
@@ -1001,7 +992,7 @@ export default function CountryPage() {
     if (!map?.getSource('plants') || !info || !countryReady) return;
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     const filename = `region_plants_${info.region.id}${suffix}.geojson`;
-    fetch(`/data/cache/${filename}`)
+    fetch(dataPath(`cache/${filename}`))
       .then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(data => {
         const cf = countryFeatureRef.current;
@@ -1026,8 +1017,8 @@ export default function CountryPage() {
     if (!info) return;
     setCapacity(null);
     const capSuffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
-    const baseUrl    = `/data/cache/region_capacity_${info.region.id}.json`;
-    const primaryUrl = capSuffix ? `/data/cache/region_capacity_${info.region.id}${capSuffix}.json` : null;
+    const baseUrl    = dataPath(`cache/region_capacity_${info.region.id}.json`);
+    const primaryUrl = capSuffix ? dataPath(`cache/region_capacity_${info.region.id}${capSuffix}.json`) : null;
     Promise.all([
       fetch(baseUrl).then(r => r.json()).catch(() => null),
       primaryUrl ? fetch(primaryUrl).then(r => r.json()).catch(() => null) : Promise.resolve(null),
@@ -1044,7 +1035,7 @@ export default function CountryPage() {
   useEffect(() => {
     setFleetAge(null);
     if (!info || plantSource !== 'gppd') return;
-    fetch(`/data/cache/region_age_${info.region.id}_gppd.json`)
+    fetch(dataPath(`cache/region_age_${info.region.id}_gppd.json`))
       .then(r => r.ok ? r.json() : null)
       .then(setFleetAge)
       .catch(() => setFleetAge(null));
@@ -1142,6 +1133,11 @@ export default function CountryPage() {
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
+      <MapChat theme={theme} mapRef={mapRef} ready={mapReady} controller={{
+        page: 'country', iso, regionId: region?.id, tab: activeTab, navigate,
+        setTab: setActiveTab, setPlantSource, setMinMw: handleMinMw,
+        showOnlyFuels: fuels => { for (const f of presentFuels) if (fuelsOff.has(f) === fuels.includes(f)) toggleFuel(f); },
+      }} />
       {isMobile && layerPanelOpen && (
         <div onClick={() => setLayerPanelOpen(false)} style={{
           position: 'absolute', inset: 0, zIndex: 299, backgroundColor: 'rgba(0,0,0,0.35)',
@@ -1159,7 +1155,7 @@ export default function CountryPage() {
         minMw={minMw} circleScale={circleScale}
         plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={region.id} iso={iso}
         presentFuels={presentFuels}
-        basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
+        wbView={wbView} onWbView={setWbView}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus} onToggleKv={toggleKv}
         onToggleLines={toggleLines} onTogglePlants={togglePlants}
         onToggleSubs={toggleSubs}
@@ -1200,7 +1196,10 @@ export default function CountryPage() {
 
         {isMobile && (
           <div style={{
-            position: 'absolute', top: 10, right: 12, zIndex: 5,
+            // The zone selector takes the top-right corner when a country has
+            // zones; the hint then drops under the Legend & Filter button.
+            position: 'absolute', zIndex: 5,
+            ...(zonesIndex !== null ? { top: 56, left: 12 } : { top: 10, right: 12 }),
             backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
             borderRadius: 6, padding: '8px 12px',
             boxShadow: '0 1px 6px rgba(0,0,0,.2)',
@@ -1369,6 +1368,16 @@ export default function CountryPage() {
           </div>
         )}
 
+        {/* Equal Earth export — top-left of the map (under Legend & Filter on phones) */}
+        <ExportControl
+          mapRef={mapRef} ready={mapReady} t={t} compact={isMobile}
+          style={isMobile ? { top: zonesIndex !== null ? 104 : 56, left: 12 } : { top: 10, left: 12 }}
+          title={`Regional Power Explorer — ${country.name}`}
+          fileName={`regional-power-explorer-${iso}`}
+          defaultBasemap={wbView.canvas}
+          legend={() => powerLegend({ presentFuels, fuelsOff, presentKvs, theme })}
+        />
+
         {/* ── Map disclaimer ── */}
         <div style={{
           position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
@@ -1443,7 +1452,7 @@ export default function CountryPage() {
             </div>
             <iframe
               ref={noteIframeRef}
-              src={`/data/notes/${iso}.html`}
+              src={dataPath(`notes/${iso}.html`)}
               title={`${country.name} – Sector Briefing Note`}
               style={{ flex: 1, border: 'none', width: '100%' }}
             />
@@ -1451,7 +1460,7 @@ export default function CountryPage() {
         </>
       )}
 
-      {/* ── Suggest-an-edit modal (posts to the Google Sheet via Apps Script) ── */}
+      {/* ── Suggest-an-edit modal (opens the visitor's email app) ── */}
       {editOpen && (
         <div onClick={() => setEditOpen(false)} style={{
           position: 'fixed', inset: 0, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.45)',
@@ -1472,7 +1481,8 @@ export default function CountryPage() {
 
             {editStatus === 'sent' ? (
               <div style={{ fontSize: '0.78rem', color: '#1f8a4c', padding: '14px 0' }}>
-                ✓ Thanks — your suggestion was sent.
+                Your email app should now be open with the suggestion ready to send. If it isn't,
+                write to {CONTACT_EMAIL}.
                 <div style={{ marginTop: 14 }}>
                   <button type="button" onClick={() => setEditOpen(false)} style={EDIT_BTN_PRIMARY}>Close</button>
                 </div>
@@ -1487,25 +1497,10 @@ export default function CountryPage() {
                 <textarea value={editForm.suggestion} onChange={e => setEditForm(f => ({ ...f, suggestion: e.target.value }))}
                   rows={4} required placeholder="What should it say / what's wrong?" style={EDIT_INP} />
 
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={EDIT_LBL}>First name</label>
-                    <input value={editForm.firstName} onChange={e => setEditForm(f => ({ ...f, firstName: e.target.value }))} style={EDIT_INP} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={EDIT_LBL}>Last name</label>
-                    <input value={editForm.lastName} onChange={e => setEditForm(f => ({ ...f, lastName: e.target.value }))} style={EDIT_INP} />
-                  </div>
-                </div>
-                <label style={EDIT_LBL}>Your email</label>
-                <input type="email" value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} style={EDIT_INP} />
-
-                {editStatus === 'error' && <div style={{ fontSize: '0.66rem', color: '#c0392b', marginTop: 8 }}>Something went wrong — please try again.</div>}
-
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
                   <button type="button" onClick={() => setEditOpen(false)} style={EDIT_BTN_GHOST}>Cancel</button>
-                  <button type="submit" disabled={editStatus === 'sending' || !editForm.suggestion.trim()} style={EDIT_BTN_PRIMARY}>
-                    {editStatus === 'sending' ? 'Sending…' : 'Submit suggestion'}
+                  <button type="submit" disabled={!editForm.suggestion.trim()} style={EDIT_BTN_PRIMARY}>
+                    Submit suggestion
                   </button>
                 </div>
               </>

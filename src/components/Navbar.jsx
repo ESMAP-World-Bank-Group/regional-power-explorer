@@ -1,10 +1,11 @@
+import { dataPath } from '../utils/paths';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT, THEME_LIST, THEMES } from '../constants';
 import { useEffect, useState, useMemo } from 'react';
 import { track } from '../analytics';
 
-const EPM_DASHBOARD_URL = 'https://epm-data-explorer.vercel.app';
+const EPM_DASHBOARD_URL = 'https://designstudio.worldbank.org/epm-data-explorer/';
 
 // Which regions have a published EPM model is read from the region data, not
 // listed here: regions.json carries `epm: true` on the ones EPM View can open, so
@@ -14,7 +15,7 @@ function useEpmRegions() {
   const [epm, setEpm] = useState(null);
 
   useEffect(() => {
-    fetch('/data/regions.json')
+    fetch(dataPath('regions.json'))
       .then(r => r.json())
       .then(d => {
         const all = (d.regions || []).filter(r => r.type !== 'meta');
@@ -40,7 +41,7 @@ function useBreadcrumb() {
     const parts = location.pathname.split('/').filter(Boolean);
     if (parts.length === 0) { setCrumb(null); return; }
     if (parts[0] === 'region' && parts[1]) {
-      fetch('/data/regions.json')
+      fetch(dataPath('regions.json'))
         .then(r => r.json())
         .then(d => {
           const r = (d.regions || []).find(r => r.id === parts[1]);
@@ -48,7 +49,7 @@ function useBreadcrumb() {
         })
         .catch(() => setCrumb({ type: 'region', label: parts[1] }));
     } else if (parts[0] === 'country' && parts[1]) {
-      fetch('/data/regions.json')
+      fetch(dataPath('regions.json'))
         .then(r => r.json())
         .then(d => {
           for (const r of (d.regions || [])) {
@@ -103,13 +104,11 @@ export default function Navbar() {
 
   const dashboardUrl = useMemo(() => {
     const parts = location.pathname.split('/').filter(Boolean);
-    const suffix = `?theme=${theme}`;
-    if (parts[0] === 'region' && parts[1]) return `${EPM_DASHBOARD_URL}/region/${parts[1]}${suffix}`;
-    if (parts[0] === 'country' && parts[1]) {
-      if (epmCountryPath) return `${EPM_DASHBOARD_URL}${epmCountryPath}${suffix}`;
-      return `${EPM_DASHBOARD_URL}/country/${parts[1]}${suffix}`;
-    }
-    return `${EPM_DASHBOARD_URL}${suffix}`;
+    // EPM View uses hash routes; it reads ?theme= from before the hash.
+    const at = route => `${EPM_DASHBOARD_URL}?theme=${theme}#${route}`;
+    if (parts[0] === 'region' && parts[1]) return at(`/region/${parts[1]}`);
+    if (parts[0] === 'country' && parts[1]) return at(epmCountryPath || `/country/${parts[1]}`);
+    return at('/');
   }, [location.pathname, theme, epmCountryPath]);
 
   // Until the region data has arrived the button stays live: greying it out first
@@ -150,7 +149,7 @@ export default function Navbar() {
           fontSize: '0.7rem', fontWeight: 700, letterSpacing: '2px',
           color: t.muted, textTransform: 'uppercase',
           display: 'flex', alignItems: 'center', gap: 8,
-          fontFamily: "'Segoe UI', system-ui, sans-serif",
+          fontFamily: "'Open Sans', system-ui, sans-serif",
           flexShrink: 0,
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
