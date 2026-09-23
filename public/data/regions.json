@@ -2,7 +2,6 @@
  "regions": [
   {
    "id": "blacksea",
-   "epm": true,
    "name": "Black Sea",
    "status": "available",
    "color": "#1E6DB8",
