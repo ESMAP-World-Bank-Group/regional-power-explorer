@@ -1,56 +1,85 @@
 /**
- * Where the interaction geometry comes from: the World Bank GAD Admin-0 vector
- * tile service. One source, two source-layers -- countries and the
- * non-determined legal status areas -- carrying the Bank's own attributes
- * (ISO_A3, WB_STATUS, SOV_ISO_A3, NAM_0). Nothing is fetched or generalised
- * app-side: the tiler simplifies per zoom, and republishing the service
- * updates the map.
+ * Where the interaction geometry (country and non-determined area fills,
+ * hover, click) comes from: the World Bank GAD vector tile service when it is
+ * usable, otherwise the static GAD extract in public/data/geo.
  *
- * Pages add this source once and draw fills/lines from the two layers with
- * filters on ISO_A3 (countries) and NAM_0 (areas); see src/utils/basemap.js.
+ * "Usable" is checked, not assumed, once per browser session: the service
+ * must answer without a token and a sample tile must carry the attributes the
+ * pages key on (ISO_A3 on countries, NAM_0 on areas). A tileset published
+ * with Unique Values symbology fails this -- ArcGIS then writes only a
+ * `_symbol` class index into the tiles -- and so does a private one. Either
+ * way the map falls back to the static files and nothing breaks; when the
+ * service is republished with real attributes the tiles take over without a
+ * redeploy.
+ *
+ * Borders are never drawn from this geometry; they come from the Bank's own
+ * boundary lines in the basemap style (src/utils/wbStyle.js).
  */
 
-// Public ArcGIS Online tile service, source FeatureServer "WB_GAD_Polygons"
-// (item e793c45f7af44ea3bd90596305f71179), sublayers ADM0/ADM1/ADM2/NDLSA.
-// Replaces an earlier URL on an internal-only geowb.worldbank.org host that
-// never resolved from outside the Bank.
-const SERVICE = 'https://vectortileservices.arcgis.com/iQ1dY19aHwbSDYIF/arcgis/rest/services/WB_GAD_Areas/VectorTileServer';
+// Override at build time with VITE_GAD_TILES_URL once the ADM0 + NDLSA
+// tileset is republished; set it to 'off' to skip the probe entirely.
+const DEFAULT_SERVICE = 'https://tiles.arcgis.com/tiles/iQ1dY19aHwbSDYIF/arcgis/rest/services/WB_GAD_Polygons_012/VectorTileServer';
+const SERVICE = import.meta.env.VITE_GAD_TILES_URL || DEFAULT_SERVICE;
 
-export const GEO_SOURCE = 'wb-gad';
-export const ADM0_LAYER = 'WB_GAD_ADM0';
-export const NDLSA_LAYER = 'WB_GAD_NDLSA';
-/** The Bank's name field on both layers; the key the NDLSA policy table joins on. */
+export const ADM0_LAYER = import.meta.env.VITE_GAD_ADM0_LAYER || 'WB_GAD_ADM0';
+export const NDLSA_LAYER = import.meta.env.VITE_GAD_NDLSA_LAYER || 'World_Bank_Official_Boundaries___NDLSA';
+/** The Bank's name field on the areas; the key the NDLSA policy table joins on. */
 export const NAME_PROP = 'NAM_0';
 
-// BLOCKED -- as of 2026-09-17 the service resolves (?f=json, /tilemap all
-// 200) but every /tile/{z}/{y}/{x}.pbf request 404s, at every zoom tried
-// (0, 2, 3, 6, 10). That's an empty or broken tile cache on the ArcGIS side,
-// not a symbology/attribute problem -- a sibling service (WB_GAD_Boundaries)
-// serves real tile bytes at 0/0/0 today, so the pattern is specific to this
-// service. Needs Brenan to check the publish job / re-run the tile cache in
-// ArcGIS before any of this can be decoded or wired in.
-//
-// Once tiles are live, still confirm from a decoded tile:
-//   1. Does the tiler keep a feature id? If not, hover (setFeatureState) needs
-//      promoteId. ISO_A3 works for countries; areas need NAM_0, and Jammu and
-//      Kashmir is two polygons with one name -- SOV_ISO_A3 tells them apart.
-//   2. Tile size: ArcGIS publishes 512 px tiles; MapLibre must be told.
+// ArcGIS publishes 512 px tiles; this service's cache stops at LOD 10 and
+// MapLibre overzooms from there.
 const TILE_SIZE = 512;
-const PROMOTE_ID = { [ADM0_LAYER]: 'ISO_A3', [NDLSA_LAYER]: NAME_PROP };
+const MAX_ZOOM = 10;
+// A mid-zoom tile over North Africa / the Middle East: small enough to fetch
+// quickly, sure to hold both countries and non-determined areas.
+const PROBE_TILE = '3/3/4';
+const PROBE_TIMEOUT_MS = 5000;
+const CACHE_KEY = `rpe:gad-mode:${SERVICE}`;
 
-export function geoSourceSpec() {
+/** Vector source spec for the tiles; hover uses the promoted ids. */
+export function geoTileSourceSpec() {
   return {
     type: 'vector',
     tiles: [`${SERVICE}/tile/{z}/{y}/{x}.pbf`],
     tileSize: TILE_SIZE,
     minzoom: 0,
-    maxzoom: 14,
-    promoteId: PROMOTE_ID,
-    attribution: 'Boundaries © World Bank GAD',
+    maxzoom: MAX_ZOOM,
+    promoteId: { [ADM0_LAYER]: 'ISO_A3', [NDLSA_LAYER]: NAME_PROP },
   };
 }
 
-/** Spread into a layer definition to bind it to one of the two source-layers. */
-export function fromLayer(sourceLayer) {
-  return { source: GEO_SOURCE, 'source-layer': sourceLayer };
+async function probe() {
+  if (SERVICE === 'off') return 'static';
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), PROBE_TIMEOUT_MS);
+  try {
+    const res = await fetch(`${SERVICE}/tile/${PROBE_TILE}.pbf`, { signal: ctrl.signal });
+    // A private service answers 200 with a JSON "Token Required" body.
+    if (!res.ok || !/octet-stream|protobuf/.test(res.headers.get('content-type') || '')) return 'static';
+    const [{ VectorTile }, { default: Pbf }] = await Promise.all([import('@mapbox/vector-tile'), import('pbf')]);
+    const tile = new VectorTile(new Pbf(await res.arrayBuffer()));
+    const first = name => (tile.layers[name]?.length ? tile.layers[name].feature(0).properties : null);
+    const adm0 = first(ADM0_LAYER), area = first(NDLSA_LAYER);
+    return adm0 && 'ISO_A3' in adm0 && (!area || NAME_PROP in area) ? 'tiles' : 'static';
+  } catch {
+    return 'static';
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+let modePromise = null;
+/** 'tiles' or 'static', decided once per session. */
+export function resolveGeoMode() {
+  if (!modePromise) {
+    let cached = null;
+    try { cached = sessionStorage.getItem(CACHE_KEY); } catch { /* storage blocked */ }
+    modePromise = cached === 'tiles' || cached === 'static'
+      ? Promise.resolve(cached)
+      : probe().then(mode => {
+        try { sessionStorage.setItem(CACHE_KEY, mode); } catch { /* storage blocked */ }
+        return mode;
+      });
+  }
+  return modePromise;
 }

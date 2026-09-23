@@ -677,13 +677,15 @@ export default function CountryPage() {
         },
       });
 
-      // Country border on top of zone layers so it always covers zone outer edges
+      // A soft glow over the zones' outer edges, not a border: the WB boundary
+      // line is lifted above it, and a crisp generalised edge beside that line
+      // would read as a second, wobbly border.
       map.addLayer({
         id: 'country-border',
         type: 'line',
         source: 'countries',
         filter: hlFilter,
-        paint: { 'line-color': hl.border, 'line-width': hl.borderW + 0.4, 'line-opacity': 0.95 },
+        paint: { 'line-color': hl.border, 'line-width': hl.borderW + 3, 'line-blur': 2.5, 'line-opacity': 0.45 },
       });
 
       // ── Load centers ─────────────────────────────────────────────────────────

@@ -6,7 +6,7 @@ import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
-import { fetchGeo, fetchNdlsa, addCountriesSource, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -124,8 +124,8 @@ export default function WorldPage() {
       }
     }
     const availableIsos = Object.keys(isoToRegions);
-    const regionsFor = p =>
-      (p.STATUS === 'non-determined' ? areaToRegions[p.WB_NAME] : isoToRegions[p.ISO_A3]) || [];
+    const regionsFor = f =>
+      (isArea(f) ? areaToRegions[areaName(f)] : isoToRegions[f.properties.ISO_A3]) || [];
     // A country's colour on this map is its first region's.
     const colorForIso = iso => isoToRegions[iso]?.[0].color || null;
 
@@ -144,9 +144,9 @@ export default function WorldPage() {
     map.on('movestart', () => setDisambig(null));
 
     map.on('load', async () => {
-      const [countries, ndlsa] = await Promise.all([fetchGeo('world'), fetchNdlsa()]);
-      if (disposed) return;
-      addCountriesSource(map, countries);
+      const ndlsa = await fetchNdlsa();
+      const mode = await addGeoSource(map, 'world', undefined, () => disposed);
+      if (!mode) return;
 
       if (availableIsos.length) {
         const colorExpr = ['match', ['get', 'ISO_A3'],
@@ -156,25 +156,18 @@ export default function WorldPage() {
         map.addLayer({
           id: 'region-fill',
           type: 'fill',
-          source: 'countries',
+          ...countryLayer(mode),
           filter: regionFilter(availableIsos),
           paint: {
             'fill-color': colorExpr,
             'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.55, 0.28],
           },
         }, fillAnchor(map));
-        map.addLayer({
-          id: 'region-border',
-          type: 'line',
-          source: 'countries',
-          filter: regionFilter(availableIsos),
-          paint: { 'line-color': colorExpr, 'line-width': 0.9, 'line-opacity': 0.7 },
-        });
       }
       // Every non-determined area, coloured from its parties; the basemap
       // draws their outlines. Under the region fill so a hovered country
       // never looks cut by its neighbour's area.
-      addNdlsaLayer(map, { ndlsa, colorForIso, opacity: 0.28, hoverOpacity: 0.55, before: fillAnchor(map), t });
+      addNdlsaLayer(map, { ndlsa, colorForIso, opacity: 0.28, hoverOpacity: 0.55, before: fillAnchor(map), t, mode });
 
       let hoveredId = null;
       const popup = new maplibregl.Popup({
@@ -186,13 +179,13 @@ export default function WorldPage() {
       map.on('mousemove', hoverLayers, e => {
         map.getCanvas().style.cursor = 'pointer';
         if (hoveredId !== null)
-          map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: false });
-        hoveredId = e.features[0].id;
-        map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: true });
+          map.setFeatureState(hoveredId, { hover: false });
+        hoveredId = featureTarget(e.features[0]);
+        map.setFeatureState(hoveredId, { hover: true });
 
-        const props = e.features[0].properties;
-        const rs = regionsFor(props);
-        const countryName = rs[0]?.countryName || props.WB_NAME || props.ISO_A3;
+        const f = e.features[0];
+        const rs = regionsFor(f);
+        const countryName = rs[0]?.countryName || areaName(f) || f.properties.ISO_A3;
         const subtitle = rs.length > 1
           ? rs.map(r => r.name).join(' · ') + ' · click to choose'
           : rs.length === 1
@@ -206,15 +199,15 @@ export default function WorldPage() {
       map.on('mouseleave', hoverLayers, () => {
         map.getCanvas().style.cursor = '';
         if (hoveredId !== null)
-          map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: false });
+          map.setFeatureState(hoveredId, { hover: false });
         hoveredId = null;
         popup.remove();
       });
 
       map.on('click', hoverLayers, e => {
-        const props = e.features[0].properties;
-        const iso = props.ISO_A3 || props.WB_NAME;
-        const rs = regionsFor(props);
+        const f = e.features[0];
+        const iso = f.properties.ISO_A3 || areaName(f);
+        const rs = regionsFor(f);
         if (rs.length === 0) return;
         if (rs.length === 1) {
           navigate(`/region/${rs[0].id}`);

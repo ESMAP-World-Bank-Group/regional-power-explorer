@@ -2,6 +2,7 @@ import { dataPath } from './paths';
 import { ndlsaNeutralFill } from '../constants';
 import { average } from './color';
 import { raiseWbReference, fillAnchor } from './wbStyle';
+import { resolveGeoMode, geoTileSourceSpec, ADM0_LAYER, NDLSA_LAYER, NAME_PROP } from './geoSource';
 /**
  * Interaction geometry: the World Bank GAD extract that tools/prepare_gad.py
  * writes into public/data/geo, and the layers pages draw from it.
@@ -80,6 +81,57 @@ export function addCountriesSource(map, fc) {
   map.addSource('countries', { type: 'geojson', data: fc, generateId: false });
 }
 
+/**
+ * Add the 'countries' source from the GAD tiles when usable, otherwise from
+ * the static extract (see src/utils/geoSource.js). Pages then bind layers
+ * with countryLayer()/areaLayer() and never need to know which one it is.
+ *
+ * @param {'world'|'region'} kind  which static file to fall back to
+ * @returns {Promise<'tiles'|'static'|null>}  null when the map was torn down meanwhile
+ */
+export async function addGeoSource(map, kind, id, isDisposed = () => false) {
+  const mode = await resolveGeoMode();
+  if (mode === 'tiles') {
+    if (isDisposed()) return null;
+    map.addSource('countries', geoTileSourceSpec());
+    return mode;
+  }
+  const fc = await fetchGeo(kind, id);
+  if (isDisposed()) return null;
+  addCountriesSource(map, fc);
+  return mode;
+}
+
+/** Source binding for a layer drawn from the countries. */
+export function countryLayer(mode) {
+  return mode === 'tiles' ? { source: 'countries', 'source-layer': ADM0_LAYER } : { source: 'countries' };
+}
+
+/** Source binding for a layer drawn from the non-determined areas. */
+function areaLayer(mode) {
+  return mode === 'tiles' ? { source: 'countries', 'source-layer': NDLSA_LAYER } : { source: 'countries' };
+}
+
+/** The Bank's name for an area; the NDLSA policy table's key. */
+function areaNameExpr(mode) {
+  return ['get', mode === 'tiles' ? NAME_PROP : 'WB_NAME'];
+}
+
+/** setFeatureState target for a feature from a rendered-features query. */
+export function featureTarget(f) {
+  return f.sourceLayer ? { source: 'countries', sourceLayer: f.sourceLayer, id: f.id } : { source: 'countries', id: f.id };
+}
+
+/** True for a non-determined area, from either source. */
+export function isArea(f) {
+  return f.sourceLayer ? f.sourceLayer === NDLSA_LAYER : f.properties.STATUS === 'non-determined';
+}
+
+/** An area's Bank name, from either source. */
+export function areaName(f) {
+  return f.properties.WB_NAME ?? f.properties[NAME_PROP];
+}
+
 /** Match a region's member countries. Areas are drawn by addNdlsaLayer(). */
 export function regionFilter(isos) {
   return ['in', ['get', 'ISO_A3'], ['literal', isos]];
@@ -137,7 +189,7 @@ export function ndlsaFill(area, colorForIso, t) {
  * @param {string} [opts.before]       layer id to insert before
  * @param {object} opts.t              the active theme
  */
-export function addNdlsaLayer(map, { ndlsa, colorForIso, opacity, hoverOpacity, before, t }) {
+export function addNdlsaLayer(map, { ndlsa, colorForIso, opacity, hoverOpacity, before, t, mode = 'static' }) {
   const neutral = ndlsaNeutralFill(t);
   const colorPairs = [], alphaPairs = [], hatched = [];
   for (const [name, area] of Object.entries(ndlsa)) {
@@ -147,13 +199,15 @@ export function addNdlsaLayer(map, { ndlsa, colorForIso, opacity, hoverOpacity, 
     alphaPairs.push(name, alpha);
   }
   const byName = (pairs, fallback) =>
-    pairs.length ? ['match', ['get', 'WB_NAME'], ...pairs, fallback] : fallback;
+    pairs.length ? ['match', areaNameExpr(mode), ...pairs, fallback] : fallback;
   const base = hoverOpacity == null ? opacity
     : ['case', ['boolean', ['feature-state', 'hover'], false], hoverOpacity, opacity];
-  const isHatched = ['in', ['get', 'WB_NAME'], ['literal', hatched]];
+  const isHatched = ['in', areaNameExpr(mode), ['literal', hatched]];
+  // The tiles keep areas in their own layer; the extract flags them.
+  const onlyAreas = mode === 'tiles' ? [] : [NON_DETERMINED_ONLY];
   map.addLayer({
-    id: 'ndlsa-fill', type: 'fill', source: 'countries',
-    filter: ['all', NON_DETERMINED_ONLY, ['!', isHatched]],
+    id: 'ndlsa-fill', type: 'fill', ...areaLayer(mode),
+    filter: ['all', ...onlyAreas, ['!', isHatched]],
     paint: {
       'fill-color': byName(colorPairs, neutral),
       'fill-opacity': ['*', byName(alphaPairs, 1), base],
@@ -162,8 +216,8 @@ export function addNdlsaLayer(map, { ndlsa, colorForIso, opacity, hoverOpacity, 
   // Areas drawn as grey diagonal stripes (Golan Heights).
   if (!map.hasImage(HATCH_IMAGE)) map.addImage(HATCH_IMAGE, hatchImage(t), { pixelRatio: 2 });
   map.addLayer({
-    id: 'ndlsa-hatch', type: 'fill', source: 'countries',
-    filter: ['all', NON_DETERMINED_ONLY, isHatched],
+    id: 'ndlsa-hatch', type: 'fill', ...areaLayer(mode),
+    filter: ['all', ...onlyAreas, isHatched],
     paint: { 'fill-pattern': HATCH_IMAGE, 'fill-opacity': Math.min(1, opacity * 6) },
   }, before);
 }

@@ -5,7 +5,7 @@ import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
-import { fetchGeo, addCountriesSource, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { addGeoSource, countryLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function MetaRegionPage({ region }) {
   const { theme }  = useTheme();
@@ -40,17 +40,12 @@ export default function MetaRegionPage({ region }) {
     mapRef.current = map;
 
     map.on('load', async () => {
-      const countries = await fetchGeo('world');
-      if (disposed) return;
-      addCountriesSource(map, countries);
-      map.addLayer({ id: 'sids-fill', type: 'fill', source: 'countries',
+      const mode = await addGeoSource(map, 'world', undefined, () => disposed);
+      if (!mode) return;
+      map.addLayer({ id: 'sids-fill', type: 'fill', ...countryLayer(mode),
         filter: ['in', ['get', 'ISO_A3'], ['literal', allIsos]],
         paint: { 'fill-color': region.color, 'fill-opacity': 0.18 },
       }, fillAnchor(map));
-      map.addLayer({ id: 'sids-border', type: 'line', source: 'countries',
-        filter: ['in', ['get', 'ISO_A3'], ['literal', allIsos]],
-        paint: { 'line-color': region.color, 'line-width': 1.2, 'line-opacity': 0.6 },
-      });
       raiseBoundaries(map);
 
       markersRef.current = subregions.map(sub => {

@@ -16,7 +16,7 @@ import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
 import MetaRegionPage from './MetaRegionPage';
 import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW } from '../utils/wbStyle';
-import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchBboxes, fetchNdlsa, boundsFor, addGeoSource, countryLayer, featureTarget, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -289,8 +289,8 @@ export default function RegionPage() {
     });
 
     map.on('load', async () => {
-      const [countries, bboxes, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
-        fetchGeo('region', regionId),
+      const [mode, bboxes, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
+        addGeoSource(map, 'region', regionId, () => disposed),
         fetchBboxes(),
         fetchNdlsa(),
         fetch(dataPath(`cache/region_plants_${regionId}.geojson`)).then(r => r.json()),
@@ -301,7 +301,7 @@ export default function RegionPage() {
           .then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
       ]);
 
-      if (disposed) return;
+      if (disposed || !mode) return;
       const bounds = boundsFor(bboxes, 'regions', regionId, 0.5);
       if (bounds) map.fitBounds(bounds, { padding: 40, duration: 0 });
 
@@ -325,7 +325,6 @@ export default function RegionPage() {
       setPresentKvs(new Set(linesGJ.features.map(f => bracketFor(f.properties.v).key)));
 
       const hl = tv.highlight;
-      addCountriesSource(map, countries);
       map.addSource('plants',       { type: 'geojson', data: plantsGJ });
       map.addSource('lines',        { type: 'geojson', data: linesGJ  });
       map.addSource('substations',  { type: 'geojson', data: subsGJ   });
@@ -343,17 +342,16 @@ export default function RegionPage() {
 
 
       // Region highlight
-      map.addLayer({ id: 'region-fill', type: 'fill', source: 'countries',
+      map.addLayer({ id: 'region-fill', type: 'fill', ...countryLayer(mode),
         filter: regionFilter(isos),
         paint: { 'fill-color': hl.fill,
           'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.18, 0.08] } }, fillAnchor(map));
-      map.addLayer({ id: 'region-border', type: 'line', source: 'countries',
-        filter: regionFilter(isos),
-        paint: { 'line-color': hl.border, 'line-width': hl.borderW, 'line-opacity': 0.9 } });
+      // No outline of our own: the WB boundary lines drawn on top are the
+      // borders, and a generalised polygon edge beside them reads as a double line.
       // Member countries take the highlight; a non-determined area between a
       // member and a non-member comes out at half strength, see ndlsaFill().
       addNdlsaLayer(map, { ndlsa, colorForIso: iso => (isos.includes(iso) ? hl.fill : null),
-        opacity: 0.08, before: fillAnchor(map), t: tv });
+        opacity: 0.08, before: fillAnchor(map), t: tv, mode });
 
 
       // Preferred zones overlay (hidden until mapMode === 'zones')
@@ -545,14 +543,14 @@ export default function RegionPage() {
       map.on('mousemove', 'region-fill', e => {
         map.getCanvas().style.cursor = 'pointer';
         if (hoveredId !== null)
-          map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: false });
-        hoveredId = e.features[0].id;
-        map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: true });
+          map.setFeatureState(hoveredId, { hover: false });
+        hoveredId = featureTarget(e.features[0]);
+        map.setFeatureState(hoveredId, { hover: true });
       });
       map.on('mouseleave', 'region-fill', () => {
         map.getCanvas().style.cursor = '';
         if (hoveredId !== null)
-          map.setFeatureState({ source: 'countries', id: hoveredId }, { hover: false });
+          map.setFeatureState(hoveredId, { hover: false });
         hoveredId = null;
       });
       map.on('click', 'region-fill', e => {
