@@ -11,6 +11,8 @@ import {
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import MapChat from '../chat/MapChat';
+import ExportControl from '../components/ExportControl';
+import { powerLegend } from '../utils/exportLegend';
 import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
@@ -1272,6 +1274,16 @@ export default function RegionPage() {
             })()}
           </div>
         )}
+
+        {/* Equal Earth export — top-left of the map (under Legend & Filter on phones) */}
+        <ExportControl
+          mapRef={mapRef} ready={mapReady} t={t} compact={isMobile}
+          style={isMobile ? { top: 56, left: 12 } : { top: 10, left: 12 }}
+          title={`Regional Power Explorer — ${region.name}`}
+          fileName={`regional-power-explorer-${regionId}`}
+          defaultBasemap={wbView.canvas}
+          legend={() => powerLegend({ presentFuels, fuelsOff, presentKvs, theme })}
+        />
 
         {/* ── Map disclaimer ── */}
         <div style={{

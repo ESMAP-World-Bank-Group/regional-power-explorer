@@ -6,6 +6,7 @@ import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
+import ExportControl from '../components/ExportControl';
 import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
@@ -147,6 +148,7 @@ export default function WorldPage() {
       const ndlsa = await fetchNdlsa();
       const mode = await addGeoSource(map, 'world', undefined, () => disposed);
       if (!mode) return;
+
 
       if (availableIsos.length) {
         const colorExpr = ['match', ['get', 'ISO_A3'],
@@ -380,6 +382,16 @@ export default function WorldPage() {
           </div>
         </div>
       </div>
+
+      {/* Equal Earth export — under the hint */}
+      <ExportControl
+        mapRef={mapRef} ready={mapReady} t={t} compact={isMobile}
+        style={{ top: isMobile ? 62 : 52, right: 12 }}
+        title="Regional Power Explorer — power pools and regions"
+        fileName="regional-power-explorer-world"
+        legend={() => (regions || []).filter(r => r.status === 'available' && r.type !== 'meta' && r.type !== 'sub')
+          .map(r => ({ color: r.color, alpha: 0.28, label: r.name }))}
+      />
 
       {/* ── Map disclaimer ── */}
       <div style={{

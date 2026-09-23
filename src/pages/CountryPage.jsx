@@ -7,6 +7,8 @@ import { useTheme } from '../App';
 import { getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import MapChat from '../chat/MapChat';
+import ExportControl from '../components/ExportControl';
+import { powerLegend } from '../utils/exportLegend';
 import CountryOverview from '../components/CountryOverview';
 import REResourcesTab from '../components/tabs/REResourcesTab';
 import LoadTab from '../components/tabs/LoadTab';
@@ -1377,6 +1379,16 @@ export default function CountryPage() {
             })()}
           </div>
         )}
+
+        {/* Equal Earth export — top-left of the map (under Legend & Filter on phones) */}
+        <ExportControl
+          mapRef={mapRef} ready={mapReady} t={t} compact={isMobile}
+          style={isMobile ? { top: zonesIndex !== null ? 104 : 56, left: 12 } : { top: 10, left: 12 }}
+          title={`Regional Power Explorer — ${country.name}`}
+          fileName={`regional-power-explorer-${iso}`}
+          defaultBasemap={wbView.canvas}
+          legend={() => powerLegend({ presentFuels, fuelsOff, presentKvs, theme })}
+        />
 
         {/* ── Map disclaimer ── */}
         <div style={{
