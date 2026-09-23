@@ -114,6 +114,9 @@ export default function StatsPanel({ region, theme, source = 'osm', tariffs, fle
   }));
   const ageEntries = countryData.filter(c => c.age != null).sort((a, b) => b.age - a.age);
   const maxAge     = Math.max(...ageEntries.map(c => c.age), 1);
+  // The tariff file covers only part of the world, so the attribution below has to
+  // key on this region's own coverage, not on the file being loaded.
+  const hasTariff  = countryData.some(c => c.tariff != null);
 
   return (
     <div>
@@ -235,7 +238,7 @@ export default function StatsPanel({ region, theme, source = 'osm', tariffs, fle
       })()}
 
       {/* ── Footer attributions ──────────────── */}
-      {tariffs && (
+      {hasTariff && (
         <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', marginBottom: 2 }}>
           Tariff (res. USD/MWh) · {tariffs.year} · {tariffs.source}
         </p>

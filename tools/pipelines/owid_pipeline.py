@@ -184,6 +184,18 @@ DEFAULT_COUNTRIES: dict[str, str] = {
     'NPL': 'Nepal',
     'BTN': 'Bhutan',
     'AFG': 'Afghanistan',
+    # Southern Cone (MERCOSUR)
+    'ARG': 'Argentina',
+    'BRA': 'Brazil',
+    'CHL': 'Chile',
+    'PRY': 'Paraguay',
+    'URY': 'Uruguay',
+    # Andean Community
+    'BOL': 'Bolivia',
+    'COL': 'Colombia',
+    'ECU': 'Ecuador',
+    'PER': 'Peru',
+    'VEN': 'Venezuela',
 }
 
 

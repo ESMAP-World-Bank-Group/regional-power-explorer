@@ -1,94 +1,1026 @@
 {
-  "year": 2022,
-  "source": "World Bank / SE4All / IEA",
-  "note": "% of population with access to electricity. Approximate values.",
-  "countries": {
-    "TUR": { "total": 100, "urban": 100, "rural": 100 },
-    "ROU": { "total": 100, "urban": 100, "rural": 100 },
-    "BGR": { "total": 100, "urban": 100, "rural": 100 },
-    "GEO": { "total": 100, "urban": 100, "rural": 100 },
-    "ARM": { "total": 100, "urban": 100, "rural": 100 },
-    "AZE": { "total": 100, "urban": 100, "rural": 100 },
-    "KAZ": { "total": 100, "urban": 100, "rural": 100 },
-    "KGZ": { "total":  99, "urban": 100, "rural":  99 },
-    "TJK": { "total": 100, "urban": 100, "rural": 100 },
-    "TKM": { "total": 100, "urban": 100, "rural": 100 },
-    "UZB": { "total": 100, "urban": 100, "rural": 100 },
-    "EGY": { "total": 100, "urban": 100, "rural": 100 },
-    "LBY": { "total":  99, "urban":  99, "rural":  97 },
-    "SDN": { "total":  63, "urban":  87, "rural":  46 },
-    "SSD": { "total":   8, "urban":  16, "rural":   4 },
-    "ETH": { "total":  48, "urban":  97, "rural":  30 },
-    "DJI": { "total":  65, "urban":  72, "rural":  14 },
-    "KEN": { "total":  76, "urban":  97, "rural":  63 },
-    "TZA": { "total":  44, "urban":  74, "rural":  27 },
-    "SOM": { "total":  36, "urban":  56, "rural":  15 },
-    "UGA": { "total":  42, "urban":  76, "rural":  30 },
-    "RWA": { "total":  53, "urban":  90, "rural":  45 },
-    "BDI": { "total":  12, "urban":  55, "rural":   4 },
-    "SEN": { "total":  72, "urban":  94, "rural":  54 },
-    "GMB": { "total":  61, "urban":  82, "rural":  40 },
-    "GNB": { "total":  35, "urban":  72, "rural":  10 },
-    "GIN": { "total":  44, "urban":  88, "rural":  14 },
-    "SLE": { "total":  27, "urban":  63, "rural":   6 },
-    "LBR": { "total":  30, "urban":  65, "rural":   8 },
-    "CIV": { "total":  68, "urban":  88, "rural":  42 },
-    "GHA": { "total":  86, "urban":  95, "rural":  72 },
-    "TGO": { "total":  55, "urban":  93, "rural":  23 },
-    "BEN": { "total":  43, "urban":  70, "rural":  18 },
-    "NGA": { "total":  59, "urban":  83, "rural":  30 },
-    "NER": { "total":  19, "urban":  72, "rural":   3 },
-    "MLI": { "total":  51, "urban":  90, "rural":  17 },
-    "BFA": { "total":  22, "urban":  67, "rural":   4 },
-    "MRT": { "total":  47, "urban":  83, "rural":  11 },
-    "CPV": { "total":  97, "urban":  99, "rural":  95 },
-    "ZAF": { "total":  91, "urban":  98, "rural":  77 },
-    "ZWE": { "total":  49, "urban":  89, "rural":  32 },
-    "ZMB": { "total":  44, "urban":  80, "rural":  10 },
-    "BWA": { "total":  77, "urban":  94, "rural":  54 },
-    "MOZ": { "total":  33, "urban":  77, "rural":  12 },
-    "MWI": { "total":  14, "urban":  53, "rural":   4 },
-    "NAM": { "total":  56, "urban":  82, "rural":  30 },
-    "LSO": { "total":  36, "urban":  70, "rural":  24 },
-    "SWZ": { "total":  72, "urban":  92, "rural":  58 },
-    "MDG": { "total":  34, "urban":  72, "rural":  14 },
-    "AGO": { "total":  46, "urban":  70, "rural":  14 },
-    "CMR": { "total":  63, "urban":  88, "rural":  25 },
-    "CAF": { "total":  15, "urban":  50, "rural":   2 },
-    "TCD": { "total":  11, "urban":  42, "rural":   2 },
-    "COD": { "total":  19, "urban":  45, "rural":   1 },
-    "COG": { "total":  52, "urban":  74, "rural":  13 },
-    "GAB": { "total":  91, "urban":  97, "rural":  56 },
-    "GNQ": { "total":  67, "urban":  88, "rural":  30 },
-    "STP": { "total":  77, "urban":  85, "rural":  64 },
-    "ALB": { "total": 100, "urban": 100, "rural": 100 },
-    "BIH": { "total": 100, "urban": 100, "rural": 100 },
-    "MKD": { "total": 100, "urban": 100, "rural": 100 },
-    "MNE": { "total": 100, "urban": 100, "rural": 100 },
-    "SRB": { "total": 100, "urban": 100, "rural": 100 },
-    "KOS": { "total": 100, "urban": 100, "rural": 100 },
-    "MAR": { "total":  87, "urban": 100, "rural":  76 },
-    "DZA": { "total": 100, "urban": 100, "rural": 100 },
-    "TUN": { "total": 100, "urban": 100, "rural": 100 },
-    "JOR": { "total": 100, "urban": 100, "rural": 100 },
-    "LBN": { "total": 100, "urban": 100, "rural": 100 },
-    "SYR": { "total":  92, "urban":  97, "rural":  83 },
-    "IRQ": { "total":  97, "urban":  99, "rural":  91 },
-    "SAU": { "total": 100, "urban": 100, "rural": 100 },
-    "YEM": { "total":  73, "urban":  90, "rural":  61 },
-    "OMN": { "total":  99, "urban": 100, "rural":  98 },
-    "ARE": { "total": 100, "urban": 100, "rural": 100 },
-    "QAT": { "total": 100, "urban": 100, "rural": 100 },
-    "BHR": { "total": 100, "urban": 100, "rural": 100 },
-    "KWT": { "total": 100, "urban": 100, "rural": 100 },
-    "PSE": { "total":  97, "urban":  99, "rural":  93 },
-    "IND": { "total":  99, "urban": 100, "rural":  97 },
-    "PAK": { "total":  95, "urban":  99, "rural":  93 },
-    "BGD": { "total":  97, "urban": 100, "rural":  96 },
-    "LKA": { "total": 100, "urban": 100, "rural": 100 },
-    "NPL": { "total":  93, "urban": 100, "rural":  88 },
-    "BTN": { "total": 100, "urban": 100, "rural": 100 },
-    "AFG": { "total":  97, "urban": 100, "rural":  91 },
-    "MDV": { "total": 100, "urban": 100, "rural": 100 }
+ "year": 2024,
+ "source": "World Bank WDI (EG.ELC.ACCS.ZS) / SE4All",
+ "note": "% of population with access to electricity. Each country carries its own reference year; the headline year is the most common one.",
+ "countries": {
+  "AFG": {
+   "total": 87.8,
+   "urban": 97.0,
+   "rural": 84.6,
+   "year": 2024
+  },
+  "AGO": {
+   "total": 55.5,
+   "urban": 78.0,
+   "rural": 1.3,
+   "year": 2024
+  },
+  "ALB": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ARE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ARG": {
+   "total": 98.4,
+   "urban": 100.0,
+   "rural": 79.8,
+   "year": 2024
+  },
+  "ARM": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ATG": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "AUT": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "AZE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BDI": {
+   "total": 20.1,
+   "urban": 70.0,
+   "rural": 3.6,
+   "year": 2024
+  },
+  "BEL": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BEN": {
+   "total": 59.0,
+   "urban": 71.6,
+   "rural": 45.0,
+   "year": 2024
+  },
+  "BFA": {
+   "total": 34.0,
+   "urban": 87.8,
+   "rural": 12.7,
+   "year": 2024
+  },
+  "BGD": {
+   "total": 99.5,
+   "urban": 99.5,
+   "rural": 99.6,
+   "year": 2024
+  },
+  "BGR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BHR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BHS": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BIH": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BLZ": {
+   "total": 99.6,
+   "urban": 99.8,
+   "rural": 99.5,
+   "year": 2024
+  },
+  "BOL": {
+   "total": 96.6,
+   "urban": 99.8,
+   "rural": 88.7,
+   "year": 2024
+  },
+  "BRA": {
+   "total": 99.8,
+   "urban": 99.9,
+   "rural": 99.2,
+   "year": 2024
+  },
+  "BRB": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BRN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BTN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "BWA": {
+   "total": 80.2,
+   "urban": 96.7,
+   "rural": 45.9,
+   "year": 2024
+  },
+  "CAF": {
+   "total": 18.2,
+   "urban": 38.8,
+   "rural": 2.0,
+   "year": 2024
+  },
+  "CHL": {
+   "total": 99.0,
+   "urban": 100.0,
+   "rural": 90.7,
+   "year": 2024
+  },
+  "CIV": {
+   "total": 72.9,
+   "urban": 94.3,
+   "rural": 47.7,
+   "year": 2024
+  },
+  "CMR": {
+   "total": 72.0,
+   "urban": 95.6,
+   "rural": 42.7,
+   "year": 2024
+  },
+  "COD": {
+   "total": 22.5,
+   "urban": 55.0,
+   "rural": 1.0,
+   "year": 2024
+  },
+  "COG": {
+   "total": 53.0,
+   "urban": 72.0,
+   "rural": 19.4,
+   "year": 2024
+  },
+  "COL": {
+   "total": 98.9,
+   "urban": 99.9,
+   "rural": 95.2,
+   "year": 2024
+  },
+  "COM": {
+   "total": 91.7,
+   "urban": 98.5,
+   "rural": 88.2,
+   "year": 2024
+  },
+  "CPV": {
+   "total": 98.4,
+   "urban": 98.6,
+   "rural": 97.7,
+   "year": 2024
+  },
+  "CRI": {
+   "total": 99.8,
+   "urban": 99.9,
+   "rural": 99.4,
+   "year": 2024
+  },
+  "CUB": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "CYP": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "CZE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "DEU": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "DJI": {
+   "total": 69.2,
+   "urban": 74.9,
+   "rural": 53.9,
+   "year": 2024
+  },
+  "DMA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "DNK": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "DOM": {
+   "total": 99.5,
+   "urban": 99.8,
+   "rural": 98.7,
+   "year": 2024
+  },
+  "DZA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ECU": {
+   "total": 98.5,
+   "urban": 100.0,
+   "rural": 95.9,
+   "year": 2024
+  },
+  "EGY": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ESP": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "EST": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ETH": {
+   "total": 56.6,
+   "urban": 95.1,
+   "rural": 44.8,
+   "year": 2024
+  },
+  "FIN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "FJI": {
+   "total": 95.9,
+   "urban": 98.2,
+   "rural": 92.5,
+   "year": 2024
+  },
+  "FRA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "FSM": {
+   "total": 88.9,
+   "urban": 98.8,
+   "rural": 86.0,
+   "year": 2024
+  },
+  "GAB": {
+   "total": 95.1,
+   "urban": 99.0,
+   "rural": 51.3,
+   "year": 2024
+  },
+  "GEO": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "GHA": {
+   "total": 91.9,
+   "urban": 98.6,
+   "rural": 82.6,
+   "year": 2024
+  },
+  "GIN": {
+   "total": 53.8,
+   "urban": 93.6,
+   "rural": 29.4,
+   "year": 2024
+  },
+  "GMB": {
+   "total": 69.0,
+   "urban": 85.6,
+   "rural": 39.2,
+   "year": 2024
+  },
+  "GNB": {
+   "total": 43.7,
+   "urban": 65.6,
+   "rural": 24.9,
+   "year": 2024
+  },
+  "GNQ": {
+   "total": 65.1,
+   "urban": 89.3,
+   "rural": 5.1,
+   "year": 2024
+  },
+  "GRC": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "GRD": {
+   "total": 95.6,
+   "year": 2024
+  },
+  "GTM": {
+   "total": 90.9,
+   "urban": 99.2,
+   "rural": 80.4,
+   "year": 2024
+  },
+  "GUY": {
+   "total": 93.0,
+   "urban": 100.0,
+   "rural": 90.5,
+   "year": 2024
+  },
+  "HND": {
+   "total": 95.5,
+   "urban": 99.3,
+   "rural": 90.1,
+   "year": 2024
+  },
+  "HRV": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "HTI": {
+   "total": 53.9,
+   "urban": 85.6,
+   "rural": 15.0,
+   "year": 2024
+  },
+  "HUN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "IDN": {
+   "total": 99.9,
+   "urban": 100.0,
+   "rural": 99.7,
+   "year": 2024
+  },
+  "IND": {
+   "total": 99.9,
+   "urban": 100.0,
+   "rural": 99.9,
+   "year": 2024
+  },
+  "IRL": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "IRQ": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ITA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "JAM": {
+   "total": 97.7,
+   "urban": 99.1,
+   "rural": 95.7,
+   "year": 2024
+  },
+  "JOR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "KAZ": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "KEN": {
+   "total": 77.0,
+   "urban": 98.1,
+   "rural": 67.1,
+   "year": 2024
+  },
+  "KGZ": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "KHM": {
+   "total": 99.2,
+   "urban": 100.0,
+   "rural": 98.6,
+   "year": 2024
+  },
+  "KIR": {
+   "total": 97.7,
+   "urban": 97.0,
+   "rural": 94.3,
+   "year": 2024
+  },
+  "KNA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "KOS": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2022,
+   "source": "carried over from the previous hand-maintained access.json"
+  },
+  "KWT": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "LAO": {
+   "total": 96.5,
+   "urban": 100.0,
+   "rural": 94.2,
+   "year": 2024
+  },
+  "LBN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "LBR": {
+   "total": 34.9,
+   "urban": 55.5,
+   "rural": 9.2,
+   "year": 2024
+  },
+  "LBY": {
+   "total": 77.4,
+   "urban": 100.0,
+   "rural": 0.8,
+   "year": 2024
+  },
+  "LCA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "LKA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "LSO": {
+   "total": 60.6,
+   "urban": 85.2,
+   "rural": 41.4,
+   "year": 2024
+  },
+  "LTU": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "LUX": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "LVA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MAR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MDG": {
+   "total": 42.5,
+   "urban": 75.9,
+   "rural": 26.5,
+   "year": 2024
+  },
+  "MDV": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MHL": {
+   "total": 97.2,
+   "urban": 97.4,
+   "rural": 96.3,
+   "year": 2024
+  },
+  "MKD": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MLI": {
+   "total": 49.5,
+   "urban": 88.6,
+   "rural": 31.4,
+   "year": 2024
+  },
+  "MLT": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MMR": {
+   "total": 80.4,
+   "urban": 95.3,
+   "rural": 73.9,
+   "year": 2024
+  },
+  "MNE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MOZ": {
+   "total": 36.9,
+   "urban": 79.8,
+   "rural": 12.3,
+   "year": 2024
+  },
+  "MRT": {
+   "total": 52.2,
+   "urban": 94.2,
+   "rural": 0.8,
+   "year": 2024
+  },
+  "MUS": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "MWI": {
+   "total": 15.6,
+   "urban": 59.5,
+   "rural": 6.4,
+   "year": 2024
+  },
+  "MYS": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "NAM": {
+   "total": 59.3,
+   "urban": 77.2,
+   "rural": 41.1,
+   "year": 2024
+  },
+  "NER": {
+   "total": 21.3,
+   "urban": 69.1,
+   "rural": 10.8,
+   "year": 2024
+  },
+  "NGA": {
+   "total": 62.5,
+   "urban": 85.5,
+   "rural": 23.5,
+   "year": 2024
+  },
+  "NIC": {
+   "total": 88.7,
+   "urban": 100.0,
+   "rural": 72.2,
+   "year": 2024
+  },
+  "NLD": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "NPL": {
+   "total": 97.9,
+   "urban": 99.7,
+   "rural": 94.2,
+   "year": 2024
+  },
+  "NRU": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "OMN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "PAK": {
+   "total": 95.7,
+   "urban": 98.4,
+   "rural": 94.0,
+   "year": 2024
+  },
+  "PAN": {
+   "total": 96.0,
+   "urban": 98.0,
+   "rural": 92.1,
+   "year": 2024
+  },
+  "PER": {
+   "total": 96.5,
+   "urban": 99.0,
+   "rural": 82.1,
+   "year": 2024
+  },
+  "PHL": {
+   "total": 94.8,
+   "urban": 99.8,
+   "rural": 88.5,
+   "year": 2024
+  },
+  "PLW": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "PNG": {
+   "total": 43.3,
+   "urban": 66.8,
+   "rural": 39.0,
+   "year": 2024
+  },
+  "POL": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "PRT": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "PRY": {
+   "total": 99.8,
+   "urban": 99.9,
+   "rural": 99.6,
+   "year": 2024
+  },
+  "PSE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "QAT": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ROU": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "RWA": {
+   "total": 72.0,
+   "urban": 88.0,
+   "rural": 65.2,
+   "year": 2024
+  },
+  "SAU": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SDN": {
+   "total": 66.0,
+   "urban": 87.9,
+   "rural": 54.2,
+   "year": 2024
+  },
+  "SEN": {
+   "total": 82.9,
+   "urban": 95.7,
+   "rural": 67.1,
+   "year": 2024
+  },
+  "SGP": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SLB": {
+   "total": 81.5,
+   "urban": 82.3,
+   "rural": 81.1,
+   "year": 2024
+  },
+  "SLE": {
+   "total": 39.2,
+   "urban": 56.4,
+   "rural": 24.9,
+   "year": 2024
+  },
+  "SLV": {
+   "total": 98.7,
+   "urban": 99.4,
+   "rural": 96.6,
+   "year": 2024
+  },
+  "SOM": {
+   "total": 54.4,
+   "urban": 73.4,
+   "rural": 24.4,
+   "year": 2024
+  },
+  "SRB": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SSD": {
+   "total": 5.4,
+   "urban": 22.8,
+   "rural": 0.7,
+   "year": 2024
+  },
+  "STP": {
+   "total": 77.7,
+   "urban": 78.9,
+   "rural": 75.1,
+   "year": 2024
+  },
+  "SUR": {
+   "total": 99.0,
+   "urban": 100.0,
+   "rural": 97.1,
+   "year": 2024
+  },
+  "SVK": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SVN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SWE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SWZ": {
+   "total": 89.3,
+   "urban": 92.1,
+   "rural": 88.3,
+   "year": 2024
+  },
+  "SYC": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "SYR": {
+   "total": 89.3,
+   "urban": 100.0,
+   "rural": 61.6,
+   "year": 2024
+  },
+  "TCD": {
+   "total": 13.4,
+   "urban": 51.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TGO": {
+   "total": 61.1,
+   "urban": 96.0,
+   "rural": 33.9,
+   "year": 2024
+  },
+  "THA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TJK": {
+   "total": 99.9,
+   "urban": 99.9,
+   "rural": 99.9,
+   "year": 2024
+  },
+  "TKM": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TLS": {
+   "total": 94.3,
+   "urban": 100.0,
+   "rural": 92.1,
+   "year": 2024
+  },
+  "TON": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TTO": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TUN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TUR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TUV": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "TZA": {
+   "total": 52.4,
+   "urban": 85.2,
+   "rural": 33.7,
+   "year": 2024
+  },
+  "UGA": {
+   "total": 55.3,
+   "urban": 78.3,
+   "rural": 44.8,
+   "year": 2024
+  },
+  "URY": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 99.3,
+   "year": 2024
+  },
+  "UZB": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "VCT": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "VEN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "VNM": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "VUT": {
+   "total": 65.5,
+   "urban": 90.1,
+   "rural": 58.5,
+   "year": 2024
+  },
+  "WSM": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "YEM": {
+   "total": 86.3,
+   "urban": 95.0,
+   "rural": 81.3,
+   "year": 2024
+  },
+  "ZAF": {
+   "total": 90.2,
+   "urban": 92.4,
+   "rural": 86.3,
+   "year": 2024
+  },
+  "ZMB": {
+   "total": 53.6,
+   "urban": 80.3,
+   "rural": 31.3,
+   "year": 2024
+  },
+  "ZWE": {
+   "total": 62.0,
+   "urban": 85.1,
+   "rural": 46.6,
+   "year": 2024
   }
+ }
 }

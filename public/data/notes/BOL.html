@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolivia Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Bolivia</div>
+    <div class="doc-sub">~3.6 GW installed &middot; gas-dominated &middot; ENDE vertically reintegrated &middot; declining gas reserves &middot; export ambitions unrealised &middot; lithium prospects</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~3.6 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~65%</div><div class="kpi-lbl">Gas share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~11 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~99%</div><div class="kpi-lbl">Electrification rate</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Bolivia's electricity has been cheap because its gas has been cheap. Roughly <strong>two thirds of generation</strong> comes from thermal plants burning domestic natural gas sold to the power sector at regulated prices well below export parity, with hydropower supplying most of the rest. The result is among the lowest generation costs in South America and a tariff structure that depends on that input price holding.</p>
+    <p>It is not holding. <strong>Gas production has been declining</strong> for a decade as the large fields discovered in the 1990s deplete without replacement, export volumes to Brazil and Argentina have fallen sharply, and Bolivia has moved from being a regional gas supplier toward importing fuels. The fiscal and energy consequences reach the power sector directly.</p>
+    <p>The state's response has been a large hydro and transmission programme, including combined-cycle conversions of the existing gas turbines and projects such as <strong>Misicuni</strong> and <strong>San Jos&eacute;</strong>, explicitly framed around becoming an <strong>energy exporter</strong> to Brazil and Argentina. Little of that export ambition has materialised, and the country now has more capacity than domestic demand requires.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9A7040"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Diesel (isolated systems)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~3.6 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: CNDC; AETN; Ministerio de Hidrocarburos y Energ&iacute;as; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Combined-cycle conversions</strong>The open-cycle gas turbines at Warnes, Entre R&iacute;os and Del Sur were converted to combined cycle, adding several hundred MW without additional fuel; the single most efficient investment the sector has made</div>
+        <div class="stat-item"><strong>Misicuni and San Jos&eacute;</strong>Recent hydro additions near Cochabamba, modest in size but significant for a system of this scale and part of the diversification away from gas</div>
+        <div class="stat-item"><strong>Gas decline</strong>Output has fallen well below the peak of the 2010s, contractual export volumes to Brazil and Argentina have been cut, and the fiscal revenue that underwrote subsidised domestic energy has eroded with it</div>
+        <div class="stat-item"><strong>Export ambition</strong>Transmission to the Brazilian and Argentine borders has been planned and partly built, but firm export contracts have not followed; the surplus capacity therefore sits idle</div>
+        <div class="stat-item"><strong>Lithium</strong>The Uyuni salt flat holds one of the world's largest lithium resources; industrialisation attempts have repeatedly stalled, but any serious processing industry would be a large new electricity consumer</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>ENDE:</strong> Empresa Nacional de Electricidad was renationalised from 2010 and is now a vertically integrated state group covering most generation, transmission and much distribution. Bolivia reversed the 1990s unbundling more completely than any of its neighbours.</li>
+      <li><strong>CNDC:</strong> The Comit&eacute; Nacional de Despacho de Carga dispatches the national interconnected system (SIN) and settles the wholesale market that remains.</li>
+      <li><strong>AETN:</strong> The Autoridad de Fiscalizaci&oacute;n y Control Social de Electricidad y Tecnolog&iacute;a Nuclear regulates tariffs and supervises the sector.</li>
+      <li><strong>Subsidised gas to power:</strong> The transfer price of gas to generators is administratively set far below export parity. It is the main reason Bolivian electricity is cheap and the main reason the sector's economics are not transferable to a future where gas is imported.</li>
+      <li><strong>Isolated systems:</strong> Parts of Pando, Beni and rural Santa Cruz remain outside the SIN, served by diesel; extending the interconnected system to these areas has been a continuing public investment priority.</li>
+      <li><strong>Interconnections:</strong> Physical links to Brazil and Argentina are limited and operate marginally; the planned export corridors have not converted into commercial trade.</li>
+    </ul>
+
+    <div class="callout">
+      Bolivia built a power system for an export market that never opened, funded by gas rents that are now disappearing. It has surplus capacity, near universal access and some of the lowest tariffs in the region, all resting on an input price that cannot survive the transition from gas exporter to gas importer. That adjustment, rather than any generation project, is the sector's defining issue.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>The subsidised gas price is the hidden foundation of the whole tariff structure.</strong> Every comparison showing Bolivian electricity as cheap is really a comparison of fuel transfer prices. As domestic gas gives way to imports at market prices, either tariffs rise sharply or the fiscal transfer grows, and neither is politically easy.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Surplus capacity without export contracts is a stranded asset.</strong> Capacity was added on the premise of selling to Brazil and Argentina. Without firm offtake, the country is paying capital costs for plants that run at low utilisation while domestic demand grows slowly.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Gas decline is an energy security problem, not only a fiscal one.</strong> A system two thirds dependent on domestic gas becomes import-dependent for its core fuel. Bolivia is landlocked, so LNG is not a straightforward substitute, and pipeline imports would come from the same neighbours it hoped to sell to.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Renewables are the cheapest available hedge and are barely deployed.</strong> Bolivia has excellent highland solar resource and under 200 MW of solar. Building it would directly displace gas the country can no longer afford to burn, which makes the case unusually clear-cut.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Lithium industrialisation would change the demand picture entirely.</strong> Processing at scale is electricity-intensive and would absorb the existing surplus. It has been announced repeatedly and delivered marginally, so it should be treated as an option rather than a plan.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      CNDC &mdash; Memoria Anual &middot; AETN &mdash; Anuario Estad&iacute;stico &middot; Ministerio de Hidrocarburos y Energ&iacute;as &middot; YPFB &mdash; Bolet&iacute;n Estad&iacute;stico &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas', 'Hydropower', 'Wind', 'Solar PV', 'Biomass', 'Diesel (isolated systems)'],
+    datasets: [{ data: [2100, 800, 130, 170, 100, 250], backgroundColor: ['#9A7040', '#1E9AF5', '#44DAEC', '#FFD700', '#52C860', '#7A7068'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

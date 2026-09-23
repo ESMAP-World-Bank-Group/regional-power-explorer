@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uruguay Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Uruguay</div>
+    <div class="doc-sub">~5 GW installed &middot; ~90% renewable generation &middot; wind ~40% &middot; UTE state utility &middot; ADME market administrator &middot; green hydrogen ambitions</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~5 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~90%</div><div class="kpi-lbl">Renewable generation</div></div>
+    <div class="kpi"><div class="kpi-val">~13 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~100%</div><div class="kpi-lbl">Electrification rate</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Uruguay carried out the fastest wind build-out of any country in the Americas relative to its size. Between 2013 and 2019 it went from almost no wind capacity to roughly <strong>1,500 MW</strong>, which now supplies close to <strong>40% of annual generation</strong>. Combined with hydro and biomass, renewables typically cover around <strong>90%</strong> of the country's electricity, and in favourable months considerably more.</p>
+    <p>The transformation was achieved without a liberalised market. <strong>UTE</strong>, the state utility, remained the single buyer and contracted private wind farms through long-term PPAs awarded by tender, under a cross-party energy policy agreed in 2008 that survived successive governments. That political continuity, rather than market design, is what most distinguishes the Uruguayan case.</p>
+    <p>The system's problem is now the mirror image of scarcity. In windy, wet periods Uruguay produces more than it can use and exports to Argentina and Brazil or curtails. In drought, as in 2023, hydro collapses and the country falls back on expensive thermal generation and imports. Storage, demand growth and <strong>green hydrogen</strong> are all being pursued as ways to absorb the surplus.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Thermal (oil and diesel)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~5 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: UTE; ADME; Ministerio de Industria, Energ&iacute;a y Miner&iacute;a; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Salto Grande: 1,890 MW</strong>Binational with Argentina on the Uruguay River; Uruguay's half is 945 MW and the plant is the backbone of both the national system and the interconnection with Argentina</div>
+        <div class="stat-item"><strong>Rio Negro cascade: ~580 MW</strong>Bonete, Baygorria and Palmar; the national hydro fleet, with the only significant reservoir storage in the country and therefore the main seasonal buffer</div>
+        <div class="stat-item"><strong>Wind fleet: ~1,500 MW</strong>Built almost entirely by private developers under UTE PPAs between 2013 and 2019; capacity factors on the Uruguayan plateau are high and the fleet is geographically well spread, which smooths output</div>
+        <div class="stat-item"><strong>Melo and Rivera converters</strong>Back-to-back HVDC stations linking Uruguay's 50 Hz system to Brazil's 60 Hz grid; Melo at 500 MW is the larger and makes Brazil a genuine outlet for surplus rather than a token link</div>
+        <div class="stat-item"><strong>2023 drought</strong>The worst in decades emptied reservoirs, forced heavy thermal dispatch and imports, and produced a water supply crisis in Montevideo; it demonstrated that a renewable system without storage is still a hydrological one</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>UTE:</strong> The Administraci&oacute;n Nacional de Usinas y Trasmisiones El&eacute;ctricas owns most generation, all transmission and all distribution, and is the buyer for private generators. Uruguay is a single-buyer system, not a competitive market.</li>
+      <li><strong>ADME:</strong> The Administraci&oacute;n del Mercado El&eacute;ctrico dispatches the system and administers the wholesale market that exists around UTE's contracts.</li>
+      <li><strong>URSEA:</strong> The regulator for energy and water services, responsible for tariffs and technical standards.</li>
+      <li><strong>MIEM:</strong> The Ministry of Industry, Energy and Mining sets policy, including the 2008 multi-party energy policy and the current green hydrogen roadmap.</li>
+      <li><strong>Interconnections:</strong> Salto Grande and Concepci&oacute;n del Uruguay connect to Argentina at 50 Hz; Melo and Rivera connect to Brazil through frequency converters. For its size Uruguay is unusually well interconnected, which is what makes its surplus exportable at all.</li>
+      <li><strong>Green hydrogen:</strong> Several large projects have been proposed to use surplus wind for hydrogen and e-fuels, most prominently on the Atlantic coast. None has reached financial close at scale, and their viability depends on European offtake.</li>
+    </ul>
+
+    <div class="callout">
+      Uruguay is the standing counter-example to the claim that deep renewable penetration requires a liberalised market. A state monopoly buyer, a cross-party policy agreement and competitive tenders for private wind delivered a 90% renewable grid in under a decade. The open question is what to do with the surplus, since a small domestic market limits how much value that clean energy can capture at home.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Political continuity did more for the transition than market design.</strong> The 2008 multi-party energy policy meant developers faced the same rules across three governments. In a region where energy policy is routinely reversed, that credibility is what made fifteen-year PPAs financeable at low cost.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>A 90% renewable grid is still a hydrological system.</strong> The 2023 drought showed that wind does not hedge hydro when demand peaks and reservoirs are empty. Uruguay's residual thermal fleet is expensive and rarely used, which is exactly why it is hard to justify keeping and impossible to do without.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Surplus is only valuable if it can be exported or stored.</strong> Uruguay already curtails wind in favourable conditions. The converters to Brazil and the links to Argentina give it more export capability than most small systems, but regional demand is not always there when Uruguay's wind is.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Green hydrogen is the intended answer to the surplus, and it is unproven.</strong> Converting curtailed wind into exportable molecules would solve the absorption problem and create an industry. Nothing at scale has been built, and the projects depend on offtake contracts in Europe that have repeatedly slipped.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Uruguay is a replicable template for small systems, not a unique case.</strong> Its combination of tendered private renewables under a state offtaker, strong interconnection and policy stability is directly transferable to small systems elsewhere, which is why it is cited far more often than its 13 TWh would suggest.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      UTE &mdash; Memoria Anual &middot; ADME &mdash; Informes del Mercado El&eacute;ctrico &middot; MIEM &mdash; Balance Energ&eacute;tico Nacional &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Wind', 'Biomass', 'Thermal (oil and diesel)', 'Solar PV'],
+    datasets: [{ data: [1538, 1500, 700, 1000, 280], backgroundColor: ['#1E9AF5', '#44DAEC', '#52C860', '#7A7068', '#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

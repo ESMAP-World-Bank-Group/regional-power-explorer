@@ -11,7 +11,7 @@ regions:
     color: "#1E6DB8"
     min_kv: 20000
     countries:
-      - {iso: TUR, name: Turkey}
+      - {iso: TUR, name: Turkiye}
       - {iso: ROU, name: Romania}
       - {iso: BGR, name: Bulgaria}
       - {iso: GEO, name: Georgia}
@@ -239,6 +239,30 @@ regions:
       - {iso: NIC, name: Nicaragua}
       - {iso: CRI, name: Costa Rica}
       - {iso: PAN, name: Panama}
+
+  - id: mercosur
+    name: Southern Cone (MERCOSUR)
+    status: available
+    color: "#A83A5A"
+    min_kv: 20000
+    countries:
+      - {iso: ARG, name: Argentina}
+      - {iso: BRA, name: Brazil}
+      - {iso: CHL, name: Chile}
+      - {iso: PRY, name: Paraguay}
+      - {iso: URY, name: Uruguay}
+
+  - id: andean
+    name: Andean Community
+    status: available
+    color: "#6E8A2E"
+    min_kv: 20000
+    countries:
+      - {iso: BOL, name: Bolivia}
+      - {iso: COL, name: Colombia}
+      - {iso: ECU, name: Ecuador}
+      - {iso: PER, name: Peru}
+      - {iso: VEN, name: Venezuela}
 
   - id: sids-caribbean
     name: Caribbean SIDS

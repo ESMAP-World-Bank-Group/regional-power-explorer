@@ -45,6 +45,10 @@ GIPT_FUEL_MAP = {
     "coal":       "coal",
     "oil/gas":    "gas",
     "solar":      "solar",
+    # GIPT renamed this type between the Sept 2025 and Aug 2026 releases. Unmapped
+    # types are skipped silently apart from one summary line, so the old key alone
+    # dropped every solar plant in the newer file.
+    "utility-scale solar": "solar",
     "wind":       "wind",
     "hydropower": "hydro",
     "nuclear":    "nuclear",
