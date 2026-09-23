@@ -255,7 +255,7 @@ function drawLabels(ctx, labels, projection, k, t, [[x0, y0], [x1, y1]]) {
     const pt = projection(l.coordinates);
     if (!pt) continue;
     const size = l.size * k * 0.8;
-    ctx.font = `700 ${size.toFixed(1)}px 'Segoe UI', system-ui, sans-serif`;
+    ctx.font = `700 ${size.toFixed(1)}px 'Open Sans', system-ui, sans-serif`;
     const w = ctx.measureText(l.text).width + size * 0.12 * l.text.length, h = size * 1.2;
     const box = [pt[0] - w / 2, pt[1] - h / 2, pt[0] + w / 2, pt[1] + h / 2];
     if (box[0] < x0 || box[2] > x1 || box[1] < y0 || box[3] > y1) continue;
@@ -490,6 +490,9 @@ export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', la
     labels ? loadLabels(bounds, zoom) : [],
     basemap === 'clean' ? fetchGeo('world') : null,
     basemap === 'clean' ? null : fetchWbStyle(),
+    // A canvas draws with whatever font is already loaded, so load the weights
+    // the export writes in before painting, or its text falls back silently.
+    Promise.all(['400', '600', '700'].map(w => document.fonts.load(`${w} 12px 'Open Sans'`))).catch(() => {}),
   ]);
 
   const canvas = document.createElement('canvas');
@@ -548,13 +551,13 @@ export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', la
 
   // Title, legend, disclaimer.
   ctx.fillStyle = t.lbl;
-  ctx.font = "600 20px 'Segoe UI', system-ui, sans-serif";
+  ctx.font = "600 20px 'Open Sans', system-ui, sans-serif";
   ctx.fillText(title, PAD, 34);
   ctx.fillStyle = t.muted;
-  ctx.font = "12px 'Segoe UI', system-ui, sans-serif";
+  ctx.font = "12px 'Open Sans', system-ui, sans-serif";
   ctx.fillText('Equal Earth projection', PAD, 50);
   if (legend.length) {
-    ctx.font = "12px 'Segoe UI', system-ui, sans-serif";
+    ctx.font = "12px 'Open Sans', system-ui, sans-serif";
     const rowH = 18;
     const boxW = Math.max(160, ...legend.map(i => ctx.measureText(i.label).width + 46));
     const boxH = legend.length * rowH + 16;
@@ -578,7 +581,7 @@ export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', la
     });
   }
   ctx.fillStyle = t.muted;
-  ctx.font = "10px 'Segoe UI', system-ui, sans-serif";
+  ctx.font = "10px 'Open Sans', system-ui, sans-serif";
   const source = basemap === 'satellite' ? ' Imagery: Esri, Maxar, Earthstar Geographics.' : basemap === 'detailed' ? ' Basemap: Esri.' : '';
   ctx.fillText('The boundaries, colors, denominations, and other information shown on any map in this work do not imply any judgment on the part of the World Bank', PAD, H - 24);
   ctx.fillText(`concerning the legal status of any territory or the endorsement or acceptance of such boundaries. Boundaries: World Bank GAD.${source} Regional Power Explorer (pilot).`, PAD, H - 11);

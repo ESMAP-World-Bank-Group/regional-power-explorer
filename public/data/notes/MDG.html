@@ -4,24 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Madagascar Electricity Sector — Briefing Note</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="../../fonts/open-sans.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--teal:#0F7B72;--amber:#B7770D;--coral:#C0392B;--green:#1A7A4A;--purple:#5B3FA0;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF;}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  body{font-family:'Open Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
   .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
   .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
   .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
-  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
-  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .label{font-family:'Open Sans',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'Open Sans',sans-serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
   .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
   .kpi{padding:18px 22px;border-right:1px solid var(--border)}.kpi:last-child{border-right:none}
-  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-val{font-family:'Open Sans',sans-serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
   .kpi-lbl{font-size:11.5px;color:var(--muted)}
   .body{padding:48px 56px}
-  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2{font-family:'Open Sans',sans-serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
   h2:first-child{margin-top:0}
   h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue);margin:26px 0 10px}
   p{margin-bottom:11px}
@@ -35,19 +35,19 @@
   .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
   .chart-wrap{position:relative}
   .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-val{font-family:'Open Sans',sans-serif;font-size:17px;color:var(--navy);line-height:1.1}
   .chart-center-lbl{font-size:10px;color:var(--muted)}
   .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
   .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
   .trade-box{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin:13px 0 16px;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.04)}
   .trade-item{display:flex;gap:17px;padding:18px 20px}
   .trade-content{flex:1}.trade-title{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'DM Mono',monospace}
+  .trade-badge{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--navy);color:var(--white);padding:2px 7px;border-radius:20px;font-family:'Open Sans',sans-serif}
   .trade-badge-amber{background:#B7770D}
   .trade-body{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:7px}.trade-body:last-child{margin-bottom:0}
   .five-pts{margin:10px 0}
   .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.pt:last-child{border-bottom:none}
-  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .pt-n{font-family:'Open Sans',sans-serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
   .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
   .sources strong{color:var(--navy)}
   .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
@@ -66,7 +66,7 @@
   <div class="kpi"><div class="kpi-val">~22%</div><div class="kpi-lbl">Electrification rate</div></div>
   <div class="kpi"><div class="kpi-val">Not connected</div><div class="kpi-lbl">Island — no SAPP grid link</div></div>
 </div>
-<div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div style="padding:16px 56px 0;font-family:'Open Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
 <div class="body">
 
 <div class="callout-warn"><strong>JIRAMA financial collapse.</strong> JIRAMA (Jiro sy Rano Malagasy — electricity and water utility) is one of the most financially distressed state utilities in Africa. It operates at a structural deficit: HFO fuel costs dominate expenditure; electricity tariffs are well below cost recovery; government arrears to JIRAMA are large; and technical losses exceed 30%. JIRAMA cannot pay its fuel suppliers on time, leading to recurring HFO stock-outs and planned/unplanned blackouts of 8–16 hours per day even in Antananarivo. Despite this, the Madagascar government has not implemented the tariff reform or institutional restructuring needed for JIRAMA's viability — making JIRAMA one of SAPP's clearest examples of politically-constrained utility failure.</div>

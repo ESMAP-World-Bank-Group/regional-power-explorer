@@ -30,7 +30,7 @@ function applyTheme(el, theme) {
     border: t.panelBorder, input: t.panelBorder, ring: t.highlight.fill, radius: '5px',
   };
   for (const [key, value] of Object.entries(tokens)) el.style.setProperty(`--${key}`, value);
-  el.style.fontFamily = "'Segoe UI', system-ui, sans-serif";
+  el.style.fontFamily = "'Open Sans', system-ui, sans-serif";
   el.style.zoom = '0.86';
 
   const panel = el.parentElement;
