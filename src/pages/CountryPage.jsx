@@ -17,10 +17,7 @@ import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
 import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW } from '../utils/wbStyle';
 import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
-
-// Same Google Apps Script web-app as ContactPage (writes to the shared Sheet).
-// Brief-edit suggestions are tagged type='brief-edit' and routed to a "Brief Edits" tab.
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKtNsfk0dX5SET9ajr4jZ0YK058f94jyjzTpiUFQZZkp9jTh6p_TtPiI6Gv6UeLhTx/exec';
+import { CONTACT_EMAIL, openMail } from '../utils/mailto';
 
 const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color: '#5A6474', margin: '10px 0 3px', letterSpacing: '0.3px' };
 const EDIT_INP = { width: '100%', boxSizing: 'border-box', fontFamily: 'inherit', fontSize: '0.72rem', padding: '6px 8px', borderRadius: 4, border: '1px solid #D5DBE2', color: '#1B2A4A', resize: 'vertical' };
@@ -148,7 +145,7 @@ export default function CountryPage() {
   const [noteOpen,   setNoteOpen]   = useState(false);
   const noteIframeRef = useRef(null);
   const [editOpen,   setEditOpen]   = useState(false);
-  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '', firstName: '', lastName: '', email: '' });
+  const [editForm,   setEditForm]   = useState({ passage: '', suggestion: '' });
   const [editStatus, setEditStatus] = useState('idle');
 
   // Open the "suggest an edit" form, pre-filling any text the user highlighted in
@@ -156,33 +153,24 @@ export default function CountryPage() {
   const openEditSuggestion = () => {
     let passage = '';
     try { passage = noteIframeRef.current?.contentWindow?.getSelection?.().toString().trim() || ''; } catch { /* guard */ }
-    setEditForm({ passage, suggestion: '', firstName: '', lastName: '', email: '' });
+    setEditForm({ passage, suggestion: '' });
     setEditStatus('idle');
     setEditOpen(true);
   };
 
-  async function submitEditSuggestion(e) {
+  function submitEditSuggestion(e) {
     e.preventDefault();
     if (!editForm.suggestion.trim()) return;
-    setEditStatus('sending');
-    try {
-      await fetch(GOOGLE_APPS_SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
-        body: new URLSearchParams({
-          type: 'brief-edit',
-          country: country?.name || '', iso,
-          passage: editForm.passage, suggestion: editForm.suggestion,
-          name: `${editForm.firstName} ${editForm.lastName}`.trim(),
-          firstName: editForm.firstName, lastName: editForm.lastName,
-          email: editForm.email,
-          url: window.location.href,
-          source: 'Regional Power Explorer',
-        }),
-      });
-      setEditStatus('sent');
-    } catch {
-      setEditStatus('error');
-    }
+    const body = [
+      `Country: ${country?.name || ''} (${iso})`,
+      `Page: ${window.location.href}`,
+      '',
+      ...(editForm.passage.trim() ? ['Passage concerned:', editForm.passage.trim(), ''] : []),
+      'Suggested correction:',
+      editForm.suggestion.trim(),
+    ].join('\n');
+    openMail(`Briefing note edit: ${country?.name || iso}`, body);
+    setEditStatus('sent');
   }
   const mapReadyRef        = useRef(false);
   const [mapReady,        setMapReady]        = useState(false);
@@ -1472,7 +1460,7 @@ export default function CountryPage() {
         </>
       )}
 
-      {/* ── Suggest-an-edit modal (posts to the Google Sheet via Apps Script) ── */}
+      {/* ── Suggest-an-edit modal (opens the visitor's email app) ── */}
       {editOpen && (
         <div onClick={() => setEditOpen(false)} style={{
           position: 'fixed', inset: 0, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.45)',
@@ -1493,7 +1481,8 @@ export default function CountryPage() {
 
             {editStatus === 'sent' ? (
               <div style={{ fontSize: '0.78rem', color: '#1f8a4c', padding: '14px 0' }}>
-                ✓ Thanks — your suggestion was sent.
+                Your email app should now be open with the suggestion ready to send. If it isn't,
+                write to {CONTACT_EMAIL}.
                 <div style={{ marginTop: 14 }}>
                   <button type="button" onClick={() => setEditOpen(false)} style={EDIT_BTN_PRIMARY}>Close</button>
                 </div>
@@ -1508,25 +1497,10 @@ export default function CountryPage() {
                 <textarea value={editForm.suggestion} onChange={e => setEditForm(f => ({ ...f, suggestion: e.target.value }))}
                   rows={4} required placeholder="What should it say / what's wrong?" style={EDIT_INP} />
 
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={EDIT_LBL}>First name</label>
-                    <input value={editForm.firstName} onChange={e => setEditForm(f => ({ ...f, firstName: e.target.value }))} style={EDIT_INP} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={EDIT_LBL}>Last name</label>
-                    <input value={editForm.lastName} onChange={e => setEditForm(f => ({ ...f, lastName: e.target.value }))} style={EDIT_INP} />
-                  </div>
-                </div>
-                <label style={EDIT_LBL}>Your email</label>
-                <input type="email" value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} style={EDIT_INP} />
-
-                {editStatus === 'error' && <div style={{ fontSize: '0.66rem', color: '#c0392b', marginTop: 8 }}>Something went wrong — please try again.</div>}
-
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
                   <button type="button" onClick={() => setEditOpen(false)} style={EDIT_BTN_GHOST}>Cancel</button>
-                  <button type="submit" disabled={editStatus === 'sending' || !editForm.suggestion.trim()} style={EDIT_BTN_PRIMARY}>
-                    {editStatus === 'sending' ? 'Sending…' : 'Submit suggestion'}
+                  <button type="submit" disabled={!editForm.suggestion.trim()} style={EDIT_BTN_PRIMARY}>
+                    Submit suggestion
                   </button>
                 </div>
               </>
