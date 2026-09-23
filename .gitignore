@@ -48,3 +48,4 @@ docs/PROJECT_STATUS_internal.html
 # Local notes (tileset_info.txt holds an ArcGIS token)
 email.txt
 tileset_info.txt
+*.vtpk
