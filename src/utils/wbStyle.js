@@ -50,6 +50,14 @@ export const DEFAULT_WB_VIEW = {
   capitals: false,        // WB capitals
 };
 
+/**
+ * The font the app's own map labels are set in. A style has one glyph
+ * endpoint, and the Bank's (Esri's World_Basemap_v2 fonts) serves the Ubuntu
+ * family only, so page labels use it too; any other name makes MapLibre fall
+ * back to rendering every glyph locally.
+ */
+export const MAP_LABEL_FONT = ['Ubuntu Regular'];
+
 const GROUP_KEY = 'rpe:group';
 const SATELLITE_LAYER = 'satellite-imagery';
 const SATELLITE_SOURCE = 'satellite-imagery-src';

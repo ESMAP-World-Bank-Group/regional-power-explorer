@@ -17,7 +17,7 @@ import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
 import MetaRegionPage from './MetaRegionPage';
-import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW } from '../utils/wbStyle';
+import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW, MAP_LABEL_FONT } from '../utils/wbStyle';
 import { fetchBboxes, fetchNdlsa, boundsFor, addGeoSource, countryLayer, featureTarget, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -398,7 +398,7 @@ export default function RegionPage() {
         filter: ['>', ['coalesce', ['get', 'mw'], 0], 0],
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'label'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'label'],
           'text-size': 9,
           'symbol-placement': 'line-center',
           'text-allow-overlap': false,
@@ -523,7 +523,7 @@ export default function RegionPage() {
         filter: ['>=', ['get', 'pop'], 300_000],
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'name'], 'text-size': 9,
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'name'], 'text-size': 9,
           'text-offset': [0, 1.3], 'text-anchor': 'top', 'text-allow-overlap': false,
         },
         paint: {

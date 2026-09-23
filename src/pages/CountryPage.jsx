@@ -15,7 +15,7 @@ import LoadTab from '../components/tabs/LoadTab';
 import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
-import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW } from '../utils/wbStyle';
+import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW, MAP_LABEL_FONT } from '../utils/wbStyle';
 import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 import { CONTACT_EMAIL, openMail } from '../utils/mailto';
 
@@ -578,7 +578,7 @@ export default function CountryPage() {
         id: 'zone-outside-labels', type: 'symbol', source: 'zone-outside',
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'zone_name'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'zone_name'],
           'text-size': 10,
           'text-anchor': 'center',
           'text-allow-overlap': false,
@@ -616,7 +616,7 @@ export default function CountryPage() {
         id: 'zone-labels', type: 'symbol', source: 'zone-fills',
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'zone_name'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'zone_name'],
           'text-size': 11,
           'text-anchor': 'center',
           'text-allow-overlap': true,
@@ -646,7 +646,7 @@ export default function CountryPage() {
         filter: ['!', ['in', ['get', 'status'], ['literal', ['planned', 'candidate', 'long_term']]]],
         layout: {
           visibility: 'none',
-          'text-field': ['get', 'label'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'label'],
           'text-size': 9,
           'symbol-placement': 'line-center',
           'text-allow-overlap': false,
@@ -694,7 +694,7 @@ export default function CountryPage() {
         id: 'load-centers-labels', type: 'symbol', source: 'load-centers',
         filter: ['>=', ['get', 'pop'], 300_000],
         layout: {
-          'text-field': ['get', 'name'],
+          'text-font': MAP_LABEL_FONT, 'text-field': ['get', 'name'],
           'text-size': 9,
           'text-offset': [0, 1.3],
           'text-anchor': 'top',
