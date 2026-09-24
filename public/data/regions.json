@@ -673,6 +673,7 @@
    "name": "Southern Cone (MERCOSUR)",
    "status": "available",
    "color": "#A83A5A",
+   "grid_note": "OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.",
    "countries": [
     {
      "iso": "ARG",
@@ -701,6 +702,7 @@
    "name": "Andean Community",
    "status": "available",
    "color": "#6E8A2E",
+   "grid_note": "OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.",
    "countries": [
     {
      "iso": "BOL",
@@ -1198,6 +1200,167 @@
     {
      "iso": "BHR",
      "name": "Bahrain"
+    }
+   ]
+  },
+  {
+   "id": "entsoe",
+   "name": "ENTSO-E (pan-European)",
+   "status": "available",
+   "color": "#3F6E8C",
+   "grid_note": "Pan-European synchronous and market perimeter, wider than the EU-27. Mapped at 220 kV and above to keep the layer usable at continental scale, so sub-transmission is not shown.",
+   "countries": [
+    {
+     "iso": "ALB",
+     "name": "Albania"
+    },
+    {
+     "iso": "AUT",
+     "name": "Austria"
+    },
+    {
+     "iso": "BEL",
+     "name": "Belgium"
+    },
+    {
+     "iso": "BIH",
+     "name": "Bosnia and Herzegovina"
+    },
+    {
+     "iso": "BGR",
+     "name": "Bulgaria"
+    },
+    {
+     "iso": "HRV",
+     "name": "Croatia"
+    },
+    {
+     "iso": "CYP",
+     "name": "Cyprus"
+    },
+    {
+     "iso": "CZE",
+     "name": "Czechia"
+    },
+    {
+     "iso": "DNK",
+     "name": "Denmark"
+    },
+    {
+     "iso": "EST",
+     "name": "Estonia"
+    },
+    {
+     "iso": "FIN",
+     "name": "Finland"
+    },
+    {
+     "iso": "FRA",
+     "name": "France"
+    },
+    {
+     "iso": "DEU",
+     "name": "Germany"
+    },
+    {
+     "iso": "GRC",
+     "name": "Greece"
+    },
+    {
+     "iso": "HUN",
+     "name": "Hungary"
+    },
+    {
+     "iso": "ISL",
+     "name": "Iceland"
+    },
+    {
+     "iso": "IRL",
+     "name": "Ireland"
+    },
+    {
+     "iso": "ITA",
+     "name": "Italy"
+    },
+    {
+     "iso": "LVA",
+     "name": "Latvia"
+    },
+    {
+     "iso": "LTU",
+     "name": "Lithuania"
+    },
+    {
+     "iso": "LUX",
+     "name": "Luxembourg"
+    },
+    {
+     "iso": "MDA",
+     "name": "Moldova"
+    },
+    {
+     "iso": "MNE",
+     "name": "Montenegro"
+    },
+    {
+     "iso": "NLD",
+     "name": "Netherlands"
+    },
+    {
+     "iso": "MKD",
+     "name": "North Macedonia"
+    },
+    {
+     "iso": "NOR",
+     "name": "Norway"
+    },
+    {
+     "iso": "POL",
+     "name": "Poland"
+    },
+    {
+     "iso": "PRT",
+     "name": "Portugal"
+    },
+    {
+     "iso": "ROU",
+     "name": "Romania"
+    },
+    {
+     "iso": "SRB",
+     "name": "Serbia"
+    },
+    {
+     "iso": "SVK",
+     "name": "Slovakia"
+    },
+    {
+     "iso": "SVN",
+     "name": "Slovenia"
+    },
+    {
+     "iso": "ESP",
+     "name": "Spain"
+    },
+    {
+     "iso": "SWE",
+     "name": "Sweden"
+    },
+    {
+     "iso": "CHE",
+     "name": "Switzerland"
+    },
+    {
+     "iso": "TUR",
+     "name": "Turkiye"
+    },
+    {
+     "iso": "UKR",
+     "name": "Ukraine"
+    },
+    {
+     "iso": "GBR",
+     "name": "United Kingdom"
     }
    ]
   }

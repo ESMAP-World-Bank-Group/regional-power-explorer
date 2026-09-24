@@ -1,1 +1,1 @@
-{"countries":{"PNG":{"biomass":4.5,"gas":189.0,"solar":1.0,"geothermal":30.0,"hydro":224.0},"TLS":{"gas":255.0}}}
+{"countries":{"FJI":{"biomass":48.3,"gas":128.0,"wind":10.0,"hydro":120.0},"PNG":{"biomass":4.5,"gas":189.0,"solar":1.0,"geothermal":30.0,"hydro":224.0},"TLS":{"gas":255.0},"WSM":{"gas":24.0,"solar":8.1},"SLB":{"gas":27.0,"solar":3.0},"KIR":{"solar":4.3},"FSM":{"solar":4.3},"NRU":{"solar":6.0},"PLW":{"solar":15.3},"TON":{"solar":4.7,"wind":1.4},"VUT":{"solar":1.1,"wind":3.4}}}

@@ -112,7 +112,7 @@ COUNTRY_ISO = {
     "ireland": "IRL", "israel": "ISR", "italy": "ITA",
     "ivory coast": "CIV", "côte d'ivoire": "CIV", "cote d'ivoire": "CIV",
     "jamaica": "JAM", "japan": "JPN", "jordan": "JOR",
-    "kazakhstan": "KAZ", "kenya": "KEN", "kosovo": "XKX", "kuwait": "KWT",
+    "kazakhstan": "KAZ", "kenya": "KEN", "kosovo": "KOS", "kuwait": "KWT",
     "kyrgyzstan": "KGZ", "laos": "LAO", "lao people's democratic republic": "LAO",
     "latvia": "LVA", "lebanon": "LBN", "lesotho": "LSO", "liberia": "LBR",
     "libya": "LBY", "lithuania": "LTU", "luxembourg": "LUX",
@@ -149,6 +149,28 @@ COUNTRY_ISO = {
     "brunei": "BRN", "brunei darussalam": "BRN",
     "timor-leste": "TLS", "east timor": "TLS",
     "singapore": "SGP",
+    # GEM spells these differently from the rest of the table, or simply was
+    # never asked for them. Without an entry the country is dropped silently,
+    # so Slovakia (12.7 GW), Slovenia (6.8 GW), Malta and every SIDS were
+    # missing from the GEM layer of the regions that contain them.
+    "iceland": "ISL", "slovakia": "SVK", "slovenia": "SVN", "malta": "MLT",
+    "turkiye": "TUR",
+    "republic of the congo": "COG", "republic of congo": "COG",
+    "the gambia": "GMB",
+    "equatorial guinea": "GNQ", "cabo verde": "CPV", "cape verde": "CPV",
+    "sao tome and principe": "STP", "seychelles": "SYC",
+    "suriname": "SUR", "guyana": "GUY", "belize": "BLZ",
+    "bahamas": "BHS", "the bahamas": "BHS", "barbados": "BRB",
+    "antigua and barbuda": "ATG", "dominica": "DMA", "grenada": "GRD",
+    "saint kitts and nevis": "KNA", "st kitts and nevis": "KNA",
+    "saint lucia": "LCA", "st lucia": "LCA",
+    "saint vincent and the grenadines": "VCT",
+    "st vincent and the grenadines": "VCT",
+    "fiji": "FJI", "kiribati": "KIR", "marshall islands": "MHL",
+    "micronesia": "FSM", "federated states of micronesia": "FSM",
+    "nauru": "NRU", "palau": "PLW", "samoa": "WSM",
+    "solomon islands": "SLB", "tonga": "TON", "tuvalu": "TUV",
+    "vanuatu": "VUT",
 }
 
 ISO2_TO_ISO3 = {
@@ -164,7 +186,7 @@ ISO2_TO_ISO3 = {
     "GH":"GHA","GR":"GRC","GT":"GTM","GN":"GIN","GW":"GNB","HT":"HTI",
     "HN":"HND","HU":"HUN","IN":"IND","ID":"IDN","IR":"IRN","IQ":"IRQ",
     "IE":"IRL","IL":"ISR","IT":"ITA","CI":"CIV","JM":"JAM","JP":"JPN",
-    "JO":"JOR","KZ":"KAZ","KE":"KEN","XK":"XKX","KW":"KWT","KG":"KGZ",
+    "JO":"JOR","KZ":"KAZ","KE":"KEN","XK":"KOS","KW":"KWT","KG":"KGZ",
     "LA":"LAO","LV":"LVA","LB":"LBN","LS":"LSO","LR":"LBR","LY":"LBY",
     "LT":"LTU","LU":"LUX","MG":"MDG","MW":"MWI","MY":"MYS","MV":"MDV",
     "ML":"MLI","MR":"MRT","MU":"MUS","MX":"MEX","MD":"MDA","MN":"MNG",
@@ -193,6 +215,10 @@ def name_to_iso(name):
     if not name:
         return None
     s = str(name).strip()
+    # The rest of the repo codes Kosovo KOS (regions.yaml, OSM and GPPD layers).
+    # GEM ships XKX, and an unmapped code here drops the country from the region.
+    if s.upper() == "XKX":
+        return "KOS"
     if len(s) == 3 and s.isupper():
         return s
     if len(s) == 2 and s.isupper():

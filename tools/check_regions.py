@@ -19,9 +19,10 @@ _ROOT = Path(__file__).resolve().parents[1]
 YAML_PATH = _ROOT / "data-source" / "regions.yaml"
 JSON_PATH = _ROOT / "public" / "data" / "regions.json"
 
-# Fields that must be identical on both sides. min_kv is pipeline-only and center,
+# Fields that must be identical on both sides. grid_note is optional, so absent on
+# both sides still compares equal. min_kv is pipeline-only and center,
 # parent, type, subregions and non_determined are app-only, so none of them qualify.
-SHARED_FIELDS = ["name", "status", "color"]
+SHARED_FIELDS = ["name", "status", "color", "grid_note"]
 
 errors = []
 

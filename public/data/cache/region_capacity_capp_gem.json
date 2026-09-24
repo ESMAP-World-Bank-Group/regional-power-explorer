@@ -1,1 +1,1 @@
-{"countries":{"CMR":{"gas":364.0,"solar":76.9,"wind":100.0,"hydro":1405.0},"CAF":{"gas":50.0,"solar":48.0},"TCD":{"gas":89.0,"solar":120.2},"GAB":{"gas":496.0,"solar":11.0,"hydro":324.0},"COD":{"solar":32.4,"hydro":2898.0}}}
+{"countries":{"COG":{"biomass":6.0,"gas":534.0,"hydro":194.0},"CMR":{"gas":364.0,"solar":76.9,"wind":100.0,"hydro":1405.0},"CAF":{"gas":50.0,"solar":48.0},"TCD":{"gas":89.0,"solar":120.2},"GNQ":{"gas":218.0,"solar":5.0,"hydro":120.0},"GAB":{"gas":496.0,"solar":11.0,"hydro":324.0},"COD":{"solar":32.4,"hydro":2898.0},"STP":{"solar":12.2}}}

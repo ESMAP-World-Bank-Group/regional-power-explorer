@@ -1158,6 +1158,7 @@ export default function CountryPage() {
         linesOn={linesOn} plantsOn={plantsOn} subsOn={subsOn}
         minMw={minMw} circleScale={circleScale}
         plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={region.id} iso={iso}
+        gridNote={region.grid_note}
         presentFuels={presentFuels}
         basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus} onToggleKv={toggleKv}

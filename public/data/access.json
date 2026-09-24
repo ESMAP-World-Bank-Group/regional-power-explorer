@@ -159,6 +159,12 @@
    "rural": 2.0,
    "year": 2024
   },
+  "CHE": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
   "CHL": {
    "total": 99.0,
    "urban": 100.0,
@@ -327,6 +333,12 @@
    "rural": 51.3,
    "year": 2024
   },
+  "GBR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
   "GEO": {
    "total": 100.0,
    "urban": 100.0,
@@ -428,6 +440,12 @@
    "year": 2024
   },
   "IRQ": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "ISL": {
    "total": 100.0,
    "urban": 100.0,
    "rural": 100.0,
@@ -566,6 +584,12 @@
    "rural": 100.0,
    "year": 2024
   },
+  "MDA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
   "MDG": {
    "total": 42.5,
    "urban": 75.9,
@@ -669,6 +693,12 @@
    "year": 2024
   },
   "NLD": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
+  "NOR": {
    "total": 100.0,
    "urban": 100.0,
    "rural": 100.0,
@@ -954,6 +984,12 @@
    "total": 55.3,
    "urban": 78.3,
    "rural": 44.8,
+   "year": 2024
+  },
+  "UKR": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
    "year": 2024
   },
   "URY": {

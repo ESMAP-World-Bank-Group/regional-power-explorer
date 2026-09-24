@@ -82,6 +82,7 @@ export default function LayerPanel({
   minKv = 0, kvFloor = 110, onMinKvChange,
   presentKvs,
   plantSource, gppdAvailable, gemAvailable, regionId, iso,
+  gridNote,
   presentFuels,
   basemap, onBasemap, satLabels, onSatLabels,
   onToggleFuel, onToggleStatus,
@@ -352,6 +353,14 @@ export default function LayerPanel({
         )}
       </div>
 
+
+      {/* Per-region caveat from regions.json, e.g. where OSM barely maps the grid.
+          Without it a sparsely mapped region reads as a country with no network. */}
+      {gridNote && (
+        <div style={{ fontSize: '0.5rem', lineHeight: 1.5, color: t.lblMuted, margin: '-2px 0 8px', fontStyle: 'italic' }}>
+          {gridNote}
+        </div>
+      )}
 
       {VOLTAGE_BRACKETS
         .filter(({ key }) => !presentKvs || presentKvs.has(key))

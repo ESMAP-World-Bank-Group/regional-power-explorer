@@ -196,6 +196,9 @@ DEFAULT_COUNTRIES: dict[str, str] = {
     'ECU': 'Ecuador',
     'PER': 'Peru',
     'VEN': 'Venezuela',
+    # ENTSO-E members missing from the list above
+    'ISL': 'Iceland',
+    'MDA': 'Moldova',
 }
 
 

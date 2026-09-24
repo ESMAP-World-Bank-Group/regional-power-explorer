@@ -1060,6 +1060,7 @@ export default function RegionPage() {
         minMw={minMw} circleScale={circleScale}
         plantSource={plantSource}
         gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={regionId}
+        gridNote={region?.grid_note}
         presentFuels={presentFuels}
         basemap={basemap} onBasemap={setBasemap} satLabels={satLabels} onSatLabels={setSatLabels}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus}
