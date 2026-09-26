@@ -159,6 +159,12 @@
    "rural": 2.0,
    "year": 2024
   },
+  "CAN": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
+   "year": 2024
+  },
   "CHE": {
    "total": 100.0,
    "urban": 100.0,
@@ -602,6 +608,12 @@
    "rural": 100.0,
    "year": 2024
   },
+  "MEX": {
+   "total": 99.8,
+   "urban": 99.9,
+   "rural": 99.2,
+   "year": 2024
+  },
   "MHL": {
    "total": 97.2,
    "urban": 97.4,
@@ -996,6 +1008,12 @@
    "total": 100.0,
    "urban": 100.0,
    "rural": 99.3,
+   "year": 2024
+  },
+  "USA": {
+   "total": 100.0,
+   "urban": 100.0,
+   "rural": 100.0,
    "year": 2024
   },
   "UZB": {

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>United States Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">United States</div>
+    <div class="doc-sub">~1,300 GW installed &middot; ~4,250 TWh generated &middot; three asynchronous interconnections &middot; seven RTO/ISOs &middot; FERC and 50 state regulators &middot; demand rising after two flat decades</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~1,300 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~4,250 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~41%</div><div class="kpi-lbl">Gas share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">3</div><div class="kpi-lbl">Interconnections</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>The United States operates the largest power system in the OECD and one of the most institutionally fragmented. Generation is roughly <strong>41% gas, 16% coal, 18% nuclear and 23% renewable</strong>, with wind and solar now supplying more electricity than coal in most months of the year. Gas displaced coal on economics rather than policy after the shale expansion, and the coal fleet continues to retire on an announced schedule of roughly 10 to 15 GW a year.</p>
+    <p>Physically the country is not one grid but <strong>three asynchronous interconnections</strong>: Eastern, Western, and ERCOT covering most of Texas. They exchange power only through a handful of back-to-back DC ties with a combined rating of about 1.3 GW, negligible against a peak demand near 750 GW. This is the single most consequential physical fact about the system, because it means resource adequacy, market design and renewable integration are solved three times over rather than once.</p>
+    <p>After two decades of essentially flat demand, load is <strong>growing again</strong>. Data centres, electrified transport and manufacturing reshoring have pushed utility load forecasts up sharply since 2023. The binding constraint is no longer capital for generation, which the Inflation Reduction Act tax credits made abundant, but interconnection and transmission: the queue holds well over 2,000 GW of requested capacity, and typical study and construction timelines run five to seven years.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9A7040"></span>Gas</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#C8A8F0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar (utility-scale)</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Oil</span>
+          <span><span class="lsq" style="background:#8A9098"></span>Biomass and other</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~1.3 TW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: EIA Electric Power Annual and Form EIA-860; GEM Global Integrated Power Tracker. Utility-scale only; roughly 60 GW of small-scale rooftop solar sits outside these figures.</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Three grids, not one</strong>Eastern, Western and ERCOT are synchronously separate. The DC ties between them total around 1.3 GW against a national peak near 750 GW, so surplus wind in one interconnection cannot relieve scarcity in another</div>
+        <div class="stat-item"><strong>PJM: ~180 GW peak</strong>The largest wholesale market in the world by served load, spanning 13 states from Illinois to New Jersey. Its capacity auction prices rose roughly tenfold between 2023 and 2025 as data centre load met a shrinking supply stack, making it the clearest signal of the new scarcity</div>
+        <div class="stat-item"><strong>ERCOT is energy-only</strong>Texas runs the only large market with no capacity payment, relying on a scarcity price cap and an operating reserve demand curve. It also leads the country in wind, utility-scale solar and grid batteries, with well over 10 GW of storage now shaping the evening net peak</div>
+        <div class="stat-item"><strong>Interconnection queue: 2,000 GW+</strong>More capacity is waiting for a study than is installed nationally. FERC Order 2023 moved queues from serial to cluster study, but the physical build of network upgrades remains the slow step</div>
+        <div class="stat-item"><strong>Nuclear extended, not retired</strong>Licence renewals to 80 years, uprates, and the first restart of a shut plant at Palisades have replaced the retirement narrative of the 2010s. New build remains limited to a small number of SMR projects with utility or data centre offtake</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>FERC:</strong> Regulates interstate transmission, wholesale sales and market rules. It does not regulate retail rates, generation siting or resource choice, which is why federal decarbonisation policy runs mostly through tax credits and EPA rules rather than through electricity regulation.</li>
+      <li><strong>State commissions:</strong> Fifty public utility commissions set retail rates and approve utility investment. Resource adequacy obligations, renewable portfolio standards and retail competition all vary state by state.</li>
+      <li><strong>Seven RTOs and ISOs:</strong> PJM, MISO, ERCOT, CAISO, SPP, NYISO and ISO-NE run centralised day-ahead and real-time markets covering about two thirds of national load. The Southeast and most of the non-California West remain vertically integrated utilities trading bilaterally.</li>
+      <li><strong>Western market consolidation:</strong> The Western Energy Imbalance Market and the extended day-ahead market, together with SPP's Markets+, are an attempt to capture RTO efficiencies in the West without the governance of full RTO membership. Which platform utilities join is the live structural question in the Western Interconnection.</li>
+      <li><strong>NERC:</strong> Sets and enforces mandatory reliability standards across the continent, including in Canada and part of Mexico, under FERC oversight. Its winter event reports after Uri, Elliott and Heather drove gas and generator weatherisation rules.</li>
+      <li><strong>Inflation Reduction Act:</strong> Technology-neutral production and investment tax credits, transferable and with bonus rates, are the main federal support for clean generation. Their scope has been narrowed since 2025, but projects already under construction retain eligibility, which pulled a large volume of build forward.</li>
+    </ul>
+
+    <div class="callout">
+      The United States has no national electricity policy and no national grid. It has a federal wholesale regulator, fifty retail regulators, seven organised markets, three asynchronous interconnections, and a tax code that functions as its clean energy strategy. Any assessment of where the system goes next has to be made market by market, because the binding constraint differs in each: capacity price in PJM, transmission in the West, gas dependence in New England, and queue throughput almost everywhere.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Demand growth changed the question.</strong> For twenty years the planning problem was how to replace a shrinking coal fleet at flat load. It is now how to serve load growing 2 to 3% a year while retiring that fleet, which is a different and harder problem.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Transmission is the bottleneck.</strong> Generation capital is available and generation costs have fallen. Interconnection studies, network upgrades and interregional transfer capability are what set the pace of the transition.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Three interconnections is a policy variable.</strong> Studies consistently show large system value from more DC capacity between the Eastern and Western grids. The obstacles are cost allocation and jurisdiction, not engineering.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Capacity market design is under stress.</strong> PJM's price spike exposed how poorly administrative capacity constructs handle a sudden load shock combined with a slow queue. Expect continued redesign rather than abandonment.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Federal support is less predictable.</strong> Tax credit availability has become a political variable rather than a fixed planning assumption, which raises the value of long-term contracts and of state-level procurement.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      US Energy Information Administration &mdash; Electric Power Annual, Forms EIA-860 and EIA-923 &middot; FERC &middot; NERC Long-Term Reliability Assessment &middot; PJM, ERCOT, CAISO and MISO market reports &middot; Lawrence Berkeley National Laboratory &mdash; Queued Up &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker. Capacity figures are approximate and utility-scale only.
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Gas', 'Coal', 'Nuclear', 'Wind', 'Solar (utility-scale)', 'Hydropower', 'Oil', 'Biomass and other'],
+    datasets: [{ data: [490000, 170000, 97000, 155000, 140000, 80000, 30000, 15000], backgroundColor: ['#9A7040', '#808890', '#C8A8F0', '#44DAEC', '#FFD700', '#1E9AF5', '#7A7068', '#8A9098'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

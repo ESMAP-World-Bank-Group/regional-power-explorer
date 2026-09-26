@@ -199,6 +199,10 @@ DEFAULT_COUNTRIES: dict[str, str] = {
     # ENTSO-E members missing from the list above
     'ISL': 'Iceland',
     'MDA': 'Moldova',
+    # North America
+    'USA': 'United States',
+    'CAN': 'Canada',
+    'MEX': 'Mexico',
 }
 
 
