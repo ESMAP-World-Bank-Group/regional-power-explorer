@@ -309,7 +309,9 @@ export default function WorldPage() {
       {/* Region legend */}
       {regions && !isMobile && (
         <div style={{
-          position: 'absolute', bottom: 70, left: 24,
+          position: 'absolute', top: '50%', left: 24,
+          transform: 'translateY(-50%)',
+          maxHeight: 'calc(100vh - 46px - 48px)',
           backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
           borderRadius: 8, padding: '12px 14px',
           display: 'flex', flexDirection: 'column', gap: 7,
@@ -318,6 +320,8 @@ export default function WorldPage() {
             color: t.lblMuted, textTransform: 'uppercase', marginBottom: 2 }}>
             Power Pools & Regions
           </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7,
+            overflowY: 'auto', minHeight: 0, marginRight: -6, paddingRight: 6 }}>
           {legendItems.map(r => {
             const isSub = r.type === 'sub';
             const isMeta = r.type === 'meta';
@@ -360,6 +364,7 @@ export default function WorldPage() {
               </div>
             );
           })}
+          </div>
         </div>
       )}
 
