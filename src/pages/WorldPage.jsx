@@ -318,7 +318,7 @@ export default function WorldPage() {
         }}>
           <div style={{ fontSize: '0.52rem', letterSpacing: '2px', fontWeight: 700,
             color: t.lblMuted, textTransform: 'uppercase', marginBottom: 2 }}>
-            Power Pools & Regions
+            Regional initiatives
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7,
             overflowY: 'auto', minHeight: 0, marginRight: -6, paddingRight: 6 }}>

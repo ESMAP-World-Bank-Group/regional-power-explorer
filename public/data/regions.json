@@ -5,7 +5,7 @@
    "epm": true,
    "name": "Black Sea",
    "status": "available",
-   "color": "#16517D",
+   "color": "#303A6E",
    "countries": [
     {
      "iso": "TUR",
@@ -37,7 +37,7 @@
    "id": "wapp",
    "name": "Western Africa Power Pool",
    "status": "available",
-   "color": "#CAA34C",
+   "color": "#7F4F11",
    "countries": [
     {
      "iso": "SEN",
@@ -101,7 +101,7 @@
    "id": "capp",
    "name": "Central Africa Power Pool",
    "status": "available",
-   "color": "#B0843B",
+   "color": "#DEBD7A",
    "countries": [
     {
      "iso": "CMR",
@@ -143,7 +143,7 @@
    "non_determined": ["Abyei"],
    "name": "Eastern Africa Power Pool",
    "status": "available",
-   "color": "#8A6B21",
+   "color": "#5E3A0A",
    "countries": [
     {
      "iso": "EGY",
@@ -204,7 +204,7 @@
    "epm": true,
    "name": "Southern Africa Power Pool",
    "status": "available",
-   "color": "#645317",
+   "color": "#7A7413",
    "countries": [
     {
      "iso": "ZAF",
@@ -261,7 +261,7 @@
    "non_determined": ["Abyei"],
    "name": "EA & SA Pools",
    "status": "available",
-   "color": "#DBC492",
+   "color": "#D89954",
    "countries": [
     {
      "iso": "EGY",
@@ -366,7 +366,7 @@
    "non_determined": ["Western Sahara"],
    "name": "Pan-Arab",
    "status": "available",
-   "color": "#EFE2C0",
+   "color": "#978E2A",
    "countries": [
     {
      "iso": "MAR",
@@ -446,7 +446,7 @@
    "id": "balkans",
    "name": "Western Balkans 6",
    "status": "available",
-   "color": "#7F9FD3",
+   "color": "#008AD5",
    "countries": [
     {
      "iso": "ALB",
@@ -479,7 +479,7 @@
    "non_determined": ["Arunchal Pradesh", "Disputed Area: IND/PAK"],
    "name": "South Asia",
    "status": "available",
-   "color": "#76C4B3",
+   "color": "#64D2CB",
    "countries": [
     {
      "iso": "IND",
@@ -519,7 +519,7 @@
    "id": "centralasia",
    "name": "Central Asia",
    "status": "available",
-   "color": "#00786A",
+   "color": "#004B44",
    "countries": [
     {
      "iso": "KAZ",
@@ -548,7 +548,7 @@
    "epm": true,
    "name": "Central Asia - South Asia (CASA)",
    "status": "available",
-   "color": "#005A55",
+   "color": "#00807D",
    "grid_note": "The CASA-1000 project itself connects four countries: the Kyrgyz Republic and Tajikistan as exporters, Afghanistan and Pakistan as importers. The seven listed here are the wider Central Asia to South Asia corridor, which is the perimeter this map draws.",
    "countries": [
     {
@@ -585,7 +585,7 @@
    "id": "asean",
    "name": "ASEAN Power Grid",
    "status": "available",
-   "color": "#45ABA0",
+   "color": "#006748",
    "countries": [
     {
      "iso": "BRN",
@@ -633,7 +633,7 @@
    "id": "gms",
    "name": "Greater Mekong Subregion (GMS)",
    "status": "available",
-   "color": "#269477",
+   "color": "#009D85",
    "grid_note": "The GMS as ADB defines it also covers Yunnan and Guangxi. The pipeline works at country level and cannot cut a Chinese province, so the two provinces are absent here. Read the northern edge of the map as a boundary of this dataset, not of the interconnection.",
    "countries": [
     {
@@ -662,7 +662,7 @@
    "id": "northamerica",
    "name": "North America",
    "status": "available",
-   "color": "#4485C6",
+   "color": "#4F5BA5",
    "grid_note": "Mapped at 220 kV and above, so the map shows the 230, 345, 500 and 765 kV bulk network. The 115 kV and 138 kV systems, which carry a large share of regional transfers in North America, are not drawn. Showing them would quadruple the layer and make the continental view unreadable.",
    "countries": [
     {
@@ -683,7 +683,7 @@
    "id": "siepac",
    "name": "SIEPAC",
    "status": "available",
-   "color": "#C2DAF5",
+   "color": "#54B4F1",
    "countries": [
     {
      "iso": "GTM",
@@ -715,7 +715,7 @@
    "id": "mercosur",
    "name": "Southern Cone (MERCOSUR)",
    "status": "available",
-   "color": "#2A3A61",
+   "color": "#8B92E3",
    "grid_note": "OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.",
    "countries": [
     {
@@ -744,7 +744,7 @@
    "id": "andean",
    "name": "Andean Community",
    "status": "available",
-   "color": "#9CBBE4",
+   "color": "#005086",
    "grid_note": "OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.",
    "countries": [
     {
@@ -774,7 +774,7 @@
    "non_determined": ["UN Buffer Zone in Cyprus"],
    "name": "European Union",
    "status": "available",
-   "color": "#3766A7",
+   "color": "#B5BDFC",
    "countries": [
     {
      "iso": "AUT",
@@ -891,7 +891,7 @@
    "name": "SIDS",
    "type": "meta",
    "status": "available",
-   "color": "#A3DDD5",
+   "color": "#00B8B9",
    "subregions": [
     "sids-caribbean",
     "sids-pacific",
@@ -1058,7 +1058,7 @@
    "type": "sub",
    "parent": "sids",
    "status": "available",
-   "color": "#A3DDD5",
+   "color": "#00B8B9",
    "center": [
     -64,
     14
@@ -1136,7 +1136,7 @@
    "type": "sub",
    "parent": "sids",
    "status": "available",
-   "color": "#A3DDD5",
+   "color": "#00B8B9",
    "center": [
     168,
     -10
@@ -1202,7 +1202,7 @@
    "type": "sub",
    "parent": "sids",
    "status": "available",
-   "color": "#A3DDD5",
+   "color": "#00B8B9",
    "center": [
     62,
     -12
@@ -1250,7 +1250,7 @@
    "id": "entsoe",
    "name": "ENTSO-E (pan-European)",
    "status": "available",
-   "color": "#0B2B49",
+   "color": "#2E73C2",
    "grid_note": "Pan-European synchronous and market perimeter, wider than the EU-27. Mapped at 220 kV and above to keep the layer usable at continental scale, so sub-transmission is not shown.",
    "countries": [
     {
