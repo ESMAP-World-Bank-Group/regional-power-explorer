@@ -8,7 +8,7 @@ regions:
     name: Black Sea
     status: available
     epm: true
-    color: "#3C5FB5"
+    color: "#5C6DA6"
     min_kv: 20000
     countries:
       - {iso: TUR, name: Turkiye}
@@ -21,7 +21,7 @@ regions:
   - id: wapp
     name: Western Africa Power Pool
     status: available
-    color: "#DA763F"
+    color: "#B9773A"
     min_kv: 20000
     countries:
       - {iso: SEN, name: Senegal}
@@ -44,7 +44,7 @@ regions:
   - id: capp
     name: Central Africa Power Pool
     status: available
-    color: "#357538"
+    color: "#88B386"
     min_kv: 20000
     countries:
       - {iso: CMR, name: Cameroon}
@@ -60,7 +60,7 @@ regions:
     name: Eastern Africa Power Pool
     status: available
     epm: true
-    color: "#53AA6E"
+    color: "#4B8357"
     min_kv: 20000
     countries:
       - {iso: EGY, name: Egypt}
@@ -81,7 +81,7 @@ regions:
     name: Southern Africa Power Pool
     status: available
     epm: true
-    color: "#067E6E"
+    color: "#40572C"
     min_kv: 20000
     countries:
       - {iso: ZAF, name: South Africa}
@@ -101,7 +101,7 @@ regions:
   - id: easa
     name: EA & SA Pools
     status: available
-    color: "#04606F"
+    color: "#B4C7A0"
     min_kv: 20000
     countries:
       # EAPP
@@ -134,7 +134,7 @@ regions:
   - id: panarab
     name: Pan-Arab
     status: available
-    color: "#D5AF3A"
+    color: "#E0A248"
     min_kv: 20000
     countries:
       - {iso: MAR, name: Morocco}
@@ -158,7 +158,7 @@ regions:
   - id: balkans
     name: Western Balkans 6
     status: available
-    color: "#8AB8E1"
+    color: "#91C2E0"
     min_kv: 20000
     countries:
       - {iso: ALB, name: Albania}
@@ -171,7 +171,7 @@ regions:
   - id: southasia
     name: South Asia
     status: available
-    color: "#038993"
+    color: "#017064"
     min_kv: 20000
     countries:
       - {iso: IND, name: India}
@@ -186,7 +186,7 @@ regions:
   - id: centralasia
     name: Central Asia
     status: available
-    color: "#0480A9"
+    color: "#54B1CE"
     min_kv: 20000
     countries:
       - {iso: KAZ, name: Kazakhstan}
@@ -199,7 +199,7 @@ regions:
     name: Central Asia - South Asia (CASA)
     status: available
     epm: true
-    color: "#37ADCF"
+    color: "#49658A"
     min_kv: 20000
     countries:
       - {iso: KAZ, name: Kazakhstan}
@@ -213,7 +213,7 @@ regions:
   - id: asean
     name: ASEAN Power Grid
     status: available
-    color: "#03AF94"
+    color: "#10A3AE"
     min_kv: 20000
     countries:
       - {iso: BRN, name: Brunei}
@@ -230,7 +230,7 @@ regions:
   - id: gms
     name: Greater Mekong Subregion (GMS)
     status: available
-    color: "#668636"
+    color: "#397281"
     min_kv: 20000
     grid_note: >-
       The GMS as ADB defines it also covers Yunnan and Guangxi. The pipeline
@@ -247,7 +247,7 @@ regions:
   - id: northamerica
     name: North America
     status: available
-    color: "#7F66BA"
+    color: "#3787A8"
     min_kv: 220000
     grid_note: >-
       Mapped at 220 kV and above, so the map shows the 230, 345, 500 and 765 kV
@@ -262,7 +262,7 @@ regions:
   - id: siepac
     name: SIEPAC
     status: available
-    color: "#CE91CF"
+    color: "#3D8786"
     min_kv: 20000
     countries:
       - {iso: GTM, name: Guatemala}
@@ -275,7 +275,7 @@ regions:
   - id: mercosur
     name: Southern Cone (MERCOSUR)
     status: available
-    color: "#944A90"
+    color: "#005975"
     min_kv: 20000
     grid_note: >-
       OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.
@@ -289,7 +289,7 @@ regions:
   - id: andean
     name: Andean Community
     status: available
-    color: "#D76289"
+    color: "#91582B"
     min_kv: 20000
     grid_note: >-
       OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.
@@ -303,7 +303,7 @@ regions:
   - id: sids-caribbean
     name: Caribbean SIDS
     status: available
-    color: "#52C6CF"
+    color: "#95D1D1"
     min_kv: 20000
     countries:
       - {iso: CUB, name: Cuba}
@@ -326,7 +326,7 @@ regions:
   - id: sids-pacific
     name: Pacific SIDS
     status: available
-    color: "#52C6CF"
+    color: "#95D1D1"
     min_kv: 20000
     countries:
       - {iso: FJI, name: Fiji}
@@ -346,7 +346,7 @@ regions:
   - id: sids-aims
     name: AIMS
     status: available
-    color: "#52C6CF"
+    color: "#95D1D1"
     min_kv: 20000
     countries:
       - {iso: MDV, name: Maldives}
@@ -362,7 +362,7 @@ regions:
   - id: eu
     name: European Union
     status: available
-    color: "#4092E2"
+    color: "#2F9AD0"
     min_kv: 110000
     countries:
       - {iso: AUT, name: Austria}
@@ -396,7 +396,7 @@ regions:
   - id: entsoe
     name: ENTSO-E (pan-European)
     status: available
-    color: "#386698"
+    color: "#2A4977"
     min_kv: 220000
     grid_note: >-
       Pan-European synchronous and market perimeter, wider than the EU-27. Mapped at 220 kV and above to keep the layer usable at continental scale, so sub-transmission is not shown.
