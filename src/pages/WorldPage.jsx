@@ -162,7 +162,7 @@ export default function WorldPage() {
           filter: regionFilter(availableIsos, availableAreas),
           paint: {
             'fill-color': colorExpr,
-            'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.55, 0.28],
+            'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.65, 0.4],
           },
         });
         map.addLayer({
