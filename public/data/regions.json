@@ -8,7 +8,7 @@
    "countries": [
     {
      "iso": "TUR",
-     "name": "Turkiye"
+     "name": "Türkiye"
     },
     {
      "iso": "ROU",
@@ -44,7 +44,7 @@
     },
     {
      "iso": "GMB",
-     "name": "Gambia"
+     "name": "The Gambia"
     },
     {
      "iso": "GNB",
@@ -64,7 +64,7 @@
     },
     {
      "iso": "CIV",
-     "name": "Cote d'Ivoire"
+     "name": "Côte d'Ivoire"
     },
     {
      "iso": "GHA",
@@ -116,7 +116,7 @@
     },
     {
      "iso": "COD",
-     "name": "DR Congo"
+     "name": "Democratic Republic of Congo"
     },
     {
      "iso": "COG",
@@ -132,21 +132,25 @@
     },
     {
      "iso": "STP",
-     "name": "Sao Tome and Principe"
+     "name": "São Tomé and Príncipe"
     }
    ]
   },
   {
    "id": "eapp",
    "epm": true,
-   "non_determined": ["Abyei"],
+   "non_determined": [
+    "Abyei",
+    "Ilemi Triangle"
+   ],
    "name": "Eastern Africa Power Pool",
    "status": "available",
    "color": "#D4A26A",
    "countries": [
     {
      "iso": "EGY",
-     "name": "Egypt"
+     "name": "Arab Republic of Egypt",
+     "epm_name": "Egypt"
     },
     {
      "iso": "LBY",
@@ -178,7 +182,8 @@
     },
     {
      "iso": "SOM",
-     "name": "Somalia"
+     "name": "Federal Republic of Somalia",
+     "epm_name": "Somalia"
     },
     {
      "iso": "UGA",
@@ -194,7 +199,8 @@
     },
     {
      "iso": "COD",
-     "name": "DR Congo"
+     "name": "Democratic Republic of Congo",
+     "epm_name": "DR Congo"
     }
    ]
   },
@@ -251,20 +257,24 @@
     },
     {
      "iso": "COD",
-     "name": "DR Congo"
+     "name": "Democratic Republic of Congo",
+     "epm_name": "DR Congo"
     }
    ]
   },
   {
    "id": "easa",
-   "non_determined": ["Abyei"],
+   "non_determined": [
+    "Abyei",
+    "Ilemi Triangle"
+   ],
    "name": "EA & SA Pools",
    "status": "available",
    "color": "#846849",
    "countries": [
     {
      "iso": "EGY",
-     "name": "Egypt"
+     "name": "Arab Republic of Egypt"
     },
     {
      "iso": "LBY",
@@ -296,7 +306,7 @@
     },
     {
      "iso": "SOM",
-     "name": "Somalia"
+     "name": "Federal Republic of Somalia"
     },
     {
      "iso": "UGA",
@@ -312,7 +322,7 @@
     },
     {
      "iso": "COD",
-     "name": "DR Congo"
+     "name": "Democratic Republic of Congo"
     },
     {
      "iso": "ZAF",
@@ -362,7 +372,13 @@
   },
   {
    "id": "panarab",
-   "non_determined": ["Western Sahara"],
+   "non_determined": [
+    "Abyei",
+    "Golan Heights",
+    "No Man's Land",
+    "Shebaa Farms Dispute",
+    "Western Sahara"
+   ],
    "name": "Pan-Arab",
    "status": "available",
    "color": "#827D55",
@@ -385,7 +401,7 @@
     },
     {
      "iso": "EGY",
-     "name": "Egypt"
+     "name": "Arab Republic of Egypt"
     },
     {
      "iso": "JOR",
@@ -397,7 +413,7 @@
     },
     {
      "iso": "SYR",
-     "name": "Syria"
+     "name": "Syrian Arab Republic"
     },
     {
      "iso": "IRQ",
@@ -409,7 +425,7 @@
     },
     {
      "iso": "YEM",
-     "name": "Yemen"
+     "name": "Republic of Yemen"
     },
     {
      "iso": "OMN",
@@ -417,7 +433,7 @@
     },
     {
      "iso": "ARE",
-     "name": "UAE"
+     "name": "United Arab Emirates"
     },
     {
      "iso": "QAT",
@@ -433,7 +449,7 @@
     },
     {
      "iso": "PSE",
-     "name": "Palestine"
+     "name": "West Bank and Gaza"
     },
     {
      "iso": "SDN",
@@ -475,7 +491,21 @@
   },
   {
    "id": "southasia",
-   "non_determined": ["Arunchal Pradesh", "Disputed Area: IND/PAK"],
+   "non_determined": [
+    "Aksai Chin",
+    "Arunachal Pradesh",
+    "Chumar East",
+    "Chumar West",
+    "Demchok",
+    "Doklam",
+    "Jadh Ganga Valley",
+    "Jammu and Kashmir",
+    "Kalapani",
+    "Karakoram Range",
+    "Kauirik",
+    "Lapthal",
+    "Shipki Pass"
+   ],
    "name": "South Asia",
    "status": "available",
    "color": "#236A52",
@@ -526,7 +556,7 @@
     },
     {
      "iso": "KGZ",
-     "name": "Kyrgyzstan"
+     "name": "Kyrgyz Republic"
     },
     {
      "iso": "TJK",
@@ -556,7 +586,8 @@
     },
     {
      "iso": "KGZ",
-     "name": "Kyrgyzstan"
+     "name": "Kyrgyz Republic",
+     "epm_name": "Kyrgyzstan"
     },
     {
      "iso": "TJK",
@@ -578,6 +609,9 @@
      "iso": "PAK",
      "name": "Pakistan"
     }
+   ],
+   "non_determined": [
+    "Jammu and Kashmir"
    ]
   },
   {
@@ -588,7 +622,7 @@
    "countries": [
     {
      "iso": "BRN",
-     "name": "Brunei"
+     "name": "Brunei Darussalam"
     },
     {
      "iso": "KHM",
@@ -600,7 +634,7 @@
     },
     {
      "iso": "LAO",
-     "name": "Laos"
+     "name": "Lao People's Democratic Republic"
     },
     {
      "iso": "MYS",
@@ -624,7 +658,7 @@
     },
     {
      "iso": "VNM",
-     "name": "Vietnam"
+     "name": "Viet Nam"
     }
    ]
   },
@@ -641,7 +675,7 @@
     },
     {
      "iso": "LAO",
-     "name": "Laos"
+     "name": "Lao People's Democratic Republic"
     },
     {
      "iso": "MMR",
@@ -653,7 +687,7 @@
     },
     {
      "iso": "VNM",
-     "name": "Vietnam"
+     "name": "Viet Nam"
     }
    ]
   },
@@ -670,7 +704,7 @@
     },
     {
      "iso": "USA",
-     "name": "United States"
+     "name": "United States of America"
     },
     {
      "iso": "MEX",
@@ -738,7 +772,7 @@
      "name": "Uruguay"
     }
    ]
-  },
+  },
   {
    "id": "andean",
    "name": "Andean Community",
@@ -764,13 +798,15 @@
     },
     {
      "iso": "VEN",
-     "name": "Venezuela"
+     "name": "Republica Bolivariana de Venezuela"
     }
    ]
-  },
+  },
   {
    "id": "eu",
-   "non_determined": ["UN Buffer Zone in Cyprus"],
+   "non_determined": [
+    "UN Buffer Zone"
+   ],
    "name": "European Union",
    "status": "available",
    "color": "#00639B",
@@ -797,7 +833,7 @@
     },
     {
      "iso": "CZE",
-     "name": "Czechia"
+     "name": "Czech Republic"
     },
     {
      "iso": "DNK",
@@ -869,7 +905,7 @@
     },
     {
      "iso": "SVK",
-     "name": "Slovakia"
+     "name": "Slovak Republic"
     },
     {
      "iso": "SVN",
@@ -923,7 +959,7 @@
     },
     {
      "iso": "BHS",
-     "name": "Bahamas"
+     "name": "The Bahamas"
     },
     {
      "iso": "GRD",
@@ -995,7 +1031,7 @@
     },
     {
      "iso": "NRU",
-     "name": "Nauru"
+     "name": "Naoero"
     },
     {
      "iso": "PLW",
@@ -1007,7 +1043,7 @@
     },
     {
      "iso": "FSM",
-     "name": "Micronesia"
+     "name": "Federated States of Micronesia"
     },
     {
      "iso": "TLS",
@@ -1031,11 +1067,11 @@
     },
     {
      "iso": "STP",
-     "name": "Sao Tome and Principe"
+     "name": "São Tomé and Príncipe"
     },
     {
      "iso": "CPV",
-     "name": "Cape Verde"
+     "name": "Cabo Verde"
     },
     {
      "iso": "GNB",
@@ -1089,7 +1125,7 @@
     },
     {
      "iso": "BHS",
-     "name": "Bahamas"
+     "name": "The Bahamas"
     },
     {
      "iso": "GRD",
@@ -1175,7 +1211,7 @@
     },
     {
      "iso": "NRU",
-     "name": "Nauru"
+     "name": "Naoero"
     },
     {
      "iso": "PLW",
@@ -1187,7 +1223,7 @@
     },
     {
      "iso": "FSM",
-     "name": "Micronesia"
+     "name": "Federated States of Micronesia"
     },
     {
      "iso": "TLS",
@@ -1225,11 +1261,11 @@
     },
     {
      "iso": "STP",
-     "name": "Sao Tome and Principe"
+     "name": "São Tomé and Príncipe"
     },
     {
      "iso": "CPV",
-     "name": "Cape Verde"
+     "name": "Cabo Verde"
     },
     {
      "iso": "GNB",
@@ -1243,6 +1279,9 @@
      "iso": "BHR",
      "name": "Bahrain"
     }
+   ],
+   "non_determined": [
+    "British Indian Ocean Territory"
    ]
   },
   {
@@ -1282,7 +1321,7 @@
     },
     {
      "iso": "CZE",
-     "name": "Czechia"
+     "name": "Czech Republic"
     },
     {
      "iso": "DNK",
@@ -1374,7 +1413,7 @@
     },
     {
      "iso": "SVK",
-     "name": "Slovakia"
+     "name": "Slovak Republic"
     },
     {
      "iso": "SVN",
@@ -1394,7 +1433,7 @@
     },
     {
      "iso": "TUR",
-     "name": "Turkiye"
+     "name": "Türkiye"
     },
     {
      "iso": "UKR",
