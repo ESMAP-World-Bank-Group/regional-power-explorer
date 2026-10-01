@@ -68,6 +68,15 @@ DEFAULT_FETCH_WINDOW_DAYS = 14
 # by hour — this keeps the JSON file small even after years of daily runs).
 HOURLY_RETENTION_DAYS = 90
 
+# eptr2's HTTP client has no read timeout by default (bare urllib3.request()
+# call with no timeout kwarg), so a single unresponsive request hangs
+# forever instead of raising — which defeats the per-month try/except below
+# that's meant to skip a bad month and move on. Bounding it here turns a
+# silent multi-hour hang into an ordinary, already-handled FAILED/retry-later
+# month. All observed successful calls finish in low single-digit seconds, so
+# this has generous headroom without risking cutting off a slow-but-good one.
+REQUEST_TIMEOUT_SECONDS = 30
+
 # ─── Series registry — add a new price series by adding one entry here ──────
 #   endpoint    : eptr2 call name (see eptr2 docs / seffaflik technical guide)
 #   label       : human-readable name, shown in the output json and the UI
@@ -162,7 +171,8 @@ def _fetch_endpoint(client, endpoint: str, start: date, end: date) -> pd.DataFra
         chunk_end   = f'{year}-{month:02d}-{min(last_day, end.day) if (year, month) == (end.year, end.month) else last_day:02d}'
         label       = f'{year}-{month:02d}'
         try:
-            df = client.call(endpoint, start_date=chunk_start, end_date=chunk_end)
+            df = client.call(endpoint, start_date=chunk_start, end_date=chunk_end,
+                              request_kwargs={'timeout': REQUEST_TIMEOUT_SECONDS})
         except Exception as exc:
             print(f'  [epias] {endpoint} {label}: FAILED — {exc}')
             df = None
