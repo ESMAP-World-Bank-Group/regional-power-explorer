@@ -7,7 +7,7 @@ import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
 import ExportControl from '../components/ExportControl';
-import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -186,6 +186,7 @@ export default function WorldPage() {
         map.setFeatureState(hoveredId, { hover: true });
 
         const f = e.features[0];
+        if (!isNamed(f)) { popup.remove(); return; }
         const rs = regionsFor(f);
         // The polygon's own Bank name, not regions.json's: the popup names what the map draws.
         const countryName = areaName(f) || rs[0]?.countryName || f.properties.ISO_A3;
@@ -211,7 +212,7 @@ export default function WorldPage() {
         const f = e.features[0];
         const iso = f.properties.ISO_A3 || areaName(f);
         const rs = regionsFor(f);
-        const name = areaName(f) || rs[0]?.countryName;
+        const name = isNamed(f) ? areaName(f) || rs[0]?.countryName : null;
         if (rs.length === 0) return;
         if (rs.length === 1) {
           navigate(`/region/${rs[0].id}`);
@@ -278,8 +279,8 @@ export default function WorldPage() {
             <div style={{ fontSize: '0.5rem', letterSpacing: '2px', fontWeight: 700,
               color: t.lblMuted, textTransform: 'uppercase', marginBottom: 8 }}>
               <span style={isItalicName(disambig.name) ? { fontStyle: 'italic' } : undefined}>
-                {disambig.name || disambig.iso}
-              </span> · Choose region
+                {disambig.name}
+              </span>{disambig.name ? ' · ' : ''}Choose region
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {disambig.regions.map(r => (

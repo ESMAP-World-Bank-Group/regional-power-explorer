@@ -142,6 +142,15 @@ export function isItalicName(name) {
   return ITALIC_NAMES.has(name);
 }
 
+/**
+ * Whether the app may name a feature. Countries yes; of the non-determined
+ * areas only the contested territories above -- the rest stay unnamed, on the
+ * map and in popups alike.
+ */
+export function isNamed(f) {
+  return !isArea(f) || isItalicName(areaName(f));
+}
+
 /** A name for popup HTML, italicised where Bank style asks. */
 export function nameHtml(name) {
   return isItalicName(name) ? `<i>${name}</i>` : name;
