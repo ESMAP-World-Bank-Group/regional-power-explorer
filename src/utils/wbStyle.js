@@ -112,9 +112,39 @@ const SOLID_WIDTH = { stops: [[1, 0.65], [7, 1.1], [10, 1.4], [14, 2.0], [17, 2.
 // is dropped.
 const DASHED_ARRAY = [5, 7];
 
+// The Bank's ADM0 label tiles name the non-determined legal status areas like
+// countries, and carry nothing but the label text (`_name`, `_name1`, ... one
+// field per label class) -- so they can only be told apart by that text. The
+// app names two of them, in italics, and none of the others. These are every
+// NDLSA label in WB_GAD_Denominations, z3-z9, as of 2026-10-01.
+export const HIDDEN_ADM0_LABELS = [
+  'Abyei', 'British Indian Ocean Territory (U.K.)', 'Falkland Islands/Islas Malvinas',
+  'Jammu and Kashmir', 'South Georgia (U.K.)', 'South Sandwich Islands (U.K.)',
+];
+export const ITALIC_ADM0_LABELS = ['West Bank', 'Gaza', 'Western Sahara'];
+const ITALIC_FONT = ['Ubuntu Bold Italic'];   // the italic of the labels' Ubuntu Bold
+
+/** Hide and italicise ADM0 labels by their text, read from the layer's own name field. */
+function adjustAdm0Label(layer, layout) {
+  const field = /^\{(_name\d*)\}$/.exec(layout['text-field'] || '')?.[1];
+  if (!field) return layer.filter;
+  layout['text-font'] = ['case', ['in', ['get', field], ['literal', ITALIC_ADM0_LABELS]],
+    ['literal', ITALIC_FONT], ['literal', layout['text-font']]];
+  const keep = ['!', ['in', ['get', field], ['literal', HIDDEN_ADM0_LABELS]]];
+  return layer.filter ? ['all', convertLegacy(layer.filter), keep] : keep;
+}
+
+// The published filters are legacy ['==', key, value]; MapLibre will not mix
+// legacy and expression syntax in one filter.
+function convertLegacy(filter) {
+  const [op, key, value] = filter;
+  return op === '==' && typeof key === 'string' ? ['==', ['get', key], value] : filter;
+}
+
 function themeWbLayer(layer, group, p) {
   const paint = { ...layer.paint };
   const layout = { ...layer.layout };
+  let filter = layer.filter;
   if (group === 'boundaries') {
     if (layer.id.endsWith('/Dashed Cutout')) {
       layout.visibility = 'none';
@@ -128,11 +158,14 @@ function themeWbLayer(layer, group, p) {
   } else if (group === 'countryNames' || group === 'adminLabels') {
     paint['text-color'] = p.name;
     paint['text-halo-color'] = p.halo;
+    if (group === 'countryNames') filter = adjustAdm0Label(layer, layout);
   } else if (group === 'capitals') {
     paint['text-color'] = p.capital;
     paint['text-halo-color'] = p.halo;
   }
-  return { ...layer, paint, layout };
+  const themed = { ...layer, paint, layout };
+  if (filter) themed.filter = filter;
+  return themed;
 }
 
 function themeEsriLayer(layer, group, p) {

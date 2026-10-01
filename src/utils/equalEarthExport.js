@@ -22,7 +22,7 @@ import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
 import { geoArea, geoEqualEarth, geoPath } from 'd3-geo';
 import { VectorTile } from '@mapbox/vector-tile';
 import Pbf from 'pbf';
-import { fetchWbStyle, buildWbStyle, DEFAULT_WB_VIEW } from './wbStyle';
+import { fetchWbStyle, buildWbStyle, DEFAULT_WB_VIEW, HIDDEN_ADM0_LABELS, ITALIC_ADM0_LABELS } from './wbStyle';
 import { fetchGeo } from './basemap';
 
 const BOUNDARY_LAYER = 'ADM0_Boundaries';
@@ -219,12 +219,13 @@ async function loadLabels(bounds, zoom) {
       const cls = classes.find(c => f.properties[c.key] === c.value && f.properties[c.field]);
       if (!cls || f.type !== 1) continue;
       const text = String(f.properties[cls.field]);
-      if (seen.has(text)) continue;
+      if (seen.has(text) || HIDDEN_ADM0_LABELS.includes(text)) continue;
       const [[p]] = f.loadGeometry();
       if (p.x < 0 || p.y < 0 || p.x > extent || p.y > extent) continue;   // tile buffer copy
       seen.add(text);
       out.push({
         text: cls.upper ? text.toUpperCase() : text, size: cls.size,
+        italic: ITALIC_ADM0_LABELS.includes(text),
         coordinates: [(x + p.x / extent) / n * 360 - 180,
           Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + p.y / extent) / n))) * 180 / Math.PI],
       });
@@ -255,7 +256,7 @@ function drawLabels(ctx, labels, projection, k, t, [[x0, y0], [x1, y1]]) {
     const pt = projection(l.coordinates);
     if (!pt) continue;
     const size = l.size * k * 0.8;
-    ctx.font = `700 ${size.toFixed(1)}px 'Open Sans', system-ui, sans-serif`;
+    ctx.font = `${l.italic ? 'italic ' : ''}700 ${size.toFixed(1)}px 'Open Sans', system-ui, sans-serif`;
     const w = ctx.measureText(l.text).width + size * 0.12 * l.text.length, h = size * 1.2;
     const box = [pt[0] - w / 2, pt[1] - h / 2, pt[0] + w / 2, pt[1] + h / 2];
     if (box[0] < x0 || box[2] > x1 || box[1] < y0 || box[3] > y1) continue;
