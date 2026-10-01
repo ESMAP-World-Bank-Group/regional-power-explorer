@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukraine Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Ukraine</div>
+    <div class="doc-sub">Pre-war ~55 GW &middot; nuclear the backbone &middot; Zaporizhzhia occupied &middot; synchronised with Continental Europe since March 2022 &middot; sustained attacks on the grid</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~55 GW</div><div class="kpi-lbl">Pre-war capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~55%</div><div class="kpi-lbl">Nuclear share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">2022</div><div class="kpi-lbl">ENTSO-E synchronisation</div></div>
+    <div class="kpi"><div class="kpi-val">15</div><div class="kpi-lbl">Operating reactors (pre-war)</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Ukraine entered 2022 with one of Europe's largest power systems: roughly <strong>55 GW</strong> of installed capacity, a nuclear fleet of fifteen reactors supplying over half of generation, and large coal and hydro fleets inherited from the Soviet system. It was a net exporter and had begun coupling its market to European rules under the Energy Community.</p>
+    <p>The full-scale invasion changed every parameter. The <strong>Zaporizhzhia plant</strong>, Europe's largest at six reactors and 5,700 MW, has been under occupation since March 2022 and produces nothing while requiring continuous off-site power for cooling. Thermal and hydro plants, substations and transformers have been targeted in repeated waves, and a large share of pre-war generating and transmission capacity has been damaged or lost.</p>
+    <p>Against that, Ukraine and Moldova <strong>synchronised with the Continental European grid in March 2022</strong>, weeks after an isolated-operation trial that happened to be under way. Commercial trade with the EU followed, and imports from Poland, Slovakia, Hungary, Romania and Moldova have become a structural part of keeping the system supplied through each winter.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Pre-war installed capacity by source (approximate, 2021)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#C8A8F0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Gas and CHP</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydro and pumped storage</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~55 GW</div>
+            <div class="chart-center-lbl">pre-war</div>
+          </div>
+        </div>
+        <p class="fig-caption">Pre-war nameplate; available capacity since 2022 is far lower. Source: Ukrenergo; IEA; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Zaporizhzhia: 5,700 MW</strong>Six VVER-1000 reactors, Europe's largest nuclear plant, occupied since March 2022 and in cold shutdown; it generates nothing and has lost off-site power repeatedly, each time relying on emergency diesel for cooling</div>
+        <div class="stat-item"><strong>Remaining nuclear fleet</strong>Rivne, Khmelnytskyi and South Ukraine continue to operate and carry the largest share of supply; their availability is the single most important variable in Ukrainian energy security</div>
+        <div class="stat-item"><strong>Attacks on the grid</strong>Successive campaigns have targeted thermal plants, hydro stations and the high-voltage substations that connect nuclear output to demand; damage to autotransformers is particularly hard to repair</div>
+        <div class="stat-item"><strong>March 2022 synchronisation</strong>Emergency synchronisation with Continental Europe, completed in under three weeks, ended dependence on the Russian and Belarusian systems and opened commercial trade with the EU</div>
+        <div class="stat-item"><strong>Distributed generation</strong>Gas piston units, small cogeneration and rooftop solar with batteries have been deployed rapidly because they are far harder to destroy than a few large plants</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>Ministry of Energy:</strong> Sets policy and coordinates the repair and resilience programmes with international partners.</li>
+      <li><strong>NEURC:</strong> The National Energy and Utilities Regulatory Commission sets tariffs and market rules; its independence is a standing condition of EU and IFI support.</li>
+      <li><strong>Ukrenergo:</strong> The transmission system operator and market operator for balancing, and Ukraine's counterpart in ENTSO-E. It carries the physical burden of reconnecting a grid under attack.</li>
+      <li><strong>Energoatom:</strong> Operates the nuclear fleet, which supplies the majority of generation and is the reason the system has functioned at all.</li>
+      <li><strong>Market model:</strong> A liberalised model on the EU template was introduced in 2019 with day-ahead, intraday, balancing and bilateral segments. Wartime price caps and emergency measures have since overridden much of it, and restoring cost-reflective prices is a central reconstruction issue.</li>
+      <li><strong>Interconnections:</strong> Links to Poland, Slovakia, Hungary, Romania and Moldova, with trading capacity progressively increased by ENTSO-E since 2022. The Burshtyn island, long synchronised with Europe, was the precedent for full synchronisation.</li>
+    </ul>
+
+    <div class="callout">
+      Ukraine is the only European system operating under sustained attack, and it has stayed up. The lesson other systems are drawing is about distribution rather than generation: dispersed, repairable, partly self-supplied capacity has proved more resilient than a small number of large plants, and interconnection with neighbours has been worth more than any single asset.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Nuclear availability is the system's central variable.</strong> With the remaining reactors supplying the majority of generation, their operation and the integrity of the substations that evacuate their output determine whether the system holds through winter.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Occupied Zaporizhzhia is a nuclear safety issue independent of its output.</strong> The plant produces nothing but still needs reliable off-site power for cooling. Repeated loss of that supply has made it a continuing safety concern rather than an energy one.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Synchronisation with Europe was the decisive strategic move.</strong> It removed dependence on the Russian and Belarusian systems and made EU imports physically possible. Everything since, from emergency imports to market coupling, rests on that three-week operation.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Decentralisation is the reconstruction doctrine.</strong> Small dispersed units, cogeneration and rooftop solar with storage are being built precisely because they present no worthwhile target. This inverts the conventional economies-of-scale logic of power system planning.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Restoring cost-reflective tariffs is the hardest reconstruction question.</strong> Wartime price caps protect households and starve the sector of the revenue needed to repair and rebuild. Sequencing that adjustment, with donor support, will shape the sector long after the physical repairs.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Ukrenergo &middot; NEURC &middot; Energoatom &middot; IEA &mdash; Ukraine Energy Profile &middot; Energy Community Secretariat &middot; ENTSO-E &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker. Note: operational data since 2022 is partial and figures should be treated as indicative.
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Nuclear', 'Coal', 'Gas and CHP', 'Hydro and pumped storage', 'Solar PV', 'Wind', 'Biomass'],
+    datasets: [{ data: [13800, 21800, 6000, 6300, 6200, 1700, 200], backgroundColor: ['#C8A8F0', '#808890', '#9A7040', '#1E9AF5', '#FFD700', '#44DAEC', '#52C860'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

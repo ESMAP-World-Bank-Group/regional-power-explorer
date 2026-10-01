@@ -8,10 +8,10 @@ regions:
     name: Black Sea
     status: available
     epm: true
-    color: "#1E6DB8"
+    color: "#54B4EC"
     min_kv: 20000
     countries:
-      - {iso: TUR, name: Turkey}
+      - {iso: TUR, name: Turkiye}
       - {iso: ROU, name: Romania}
       - {iso: BGR, name: Bulgaria}
       - {iso: GEO, name: Georgia}
@@ -21,7 +21,7 @@ regions:
   - id: wapp
     name: Western Africa Power Pool
     status: available
-    color: "#C47C2A"
+    color: "#C2925B"
     min_kv: 20000
     countries:
       - {iso: SEN, name: Senegal}
@@ -38,13 +38,11 @@ regions:
       - {iso: NER, name: Niger}
       - {iso: MLI, name: Mali}
       - {iso: BFA, name: Burkina Faso}
-      - {iso: MRT, name: Mauritania}
-      - {iso: CPV, name: Cape Verde}
 
   - id: capp
     name: Central Africa Power Pool
     status: available
-    color: "#2A88C8"
+    color: "#636039"
     min_kv: 20000
     countries:
       - {iso: CMR, name: Cameroon}
@@ -60,7 +58,7 @@ regions:
     name: Eastern Africa Power Pool
     status: available
     epm: true
-    color: "#1AA8B0"
+    color: "#D4A26A"
     min_kv: 20000
     countries:
       - {iso: EGY, name: Egypt}
@@ -81,7 +79,7 @@ regions:
     name: Southern Africa Power Pool
     status: available
     epm: true
-    color: "#6098D0"
+    color: "#938E49"
     min_kv: 20000
     countries:
       - {iso: ZAF, name: South Africa}
@@ -93,7 +91,6 @@ regions:
       - {iso: NAM, name: Namibia}
       - {iso: LSO, name: Lesotho}
       - {iso: SWZ, name: Eswatini}
-      - {iso: MDG, name: Madagascar}
       - {iso: AGO, name: Angola}
       - {iso: TZA, name: Tanzania}
       - {iso: COD, name: DR Congo}
@@ -101,7 +98,7 @@ regions:
   - id: easa
     name: EA & SA Pools
     status: available
-    color: "#5A6FC0"
+    color: "#846849"
     min_kv: 20000
     countries:
       # EAPP
@@ -134,7 +131,7 @@ regions:
   - id: panarab
     name: Pan-Arab
     status: available
-    color: "#C4A020"
+    color: "#827D55"
     min_kv: 20000
     countries:
       - {iso: MAR, name: Morocco}
@@ -154,11 +151,12 @@ regions:
       - {iso: BHR, name: Bahrain}
       - {iso: KWT, name: Kuwait}
       - {iso: PSE, name: Palestine}
+      - {iso: SDN, name: Sudan}
 
   - id: balkans
     name: Western Balkans 6
     status: available
-    color: "#3A6098"
+    color: "#7A77B9"
     min_kv: 20000
     countries:
       - {iso: ALB, name: Albania}
@@ -171,7 +169,7 @@ regions:
   - id: southasia
     name: South Asia
     status: available
-    color: "#1A8AAA"
+    color: "#236A52"
     min_kv: 20000
     countries:
       - {iso: IND, name: India}
@@ -186,7 +184,7 @@ regions:
   - id: centralasia
     name: Central Asia
     status: available
-    color: "#2A4E8E"
+    color: "#46BDA9"
     min_kv: 20000
     countries:
       - {iso: KAZ, name: Kazakhstan}
@@ -199,8 +197,13 @@ regions:
     name: Central Asia - South Asia (CASA)
     status: available
     epm: true
-    color: "#7A5AA8"
+    color: "#44989A"
     min_kv: 20000
+    grid_note: >-
+      The CASA-1000 project itself connects four countries: the Kyrgyz
+      Republic and Tajikistan as exporters, Afghanistan and Pakistan as
+      importers. The seven listed here are the wider Central Asia to South
+      Asia corridor, which is the perimeter this map draws.
     countries:
       - {iso: KAZ, name: Kazakhstan}
       - {iso: KGZ, name: Kyrgyzstan}
@@ -213,7 +216,7 @@ regions:
   - id: asean
     name: ASEAN Power Grid
     status: available
-    color: "#1A9080"
+    color: "#23ACAE"
     min_kv: 20000
     countries:
       - {iso: BRN, name: Brunei}
@@ -227,10 +230,42 @@ regions:
       - {iso: THA, name: Thailand}
       - {iso: VNM, name: Vietnam}
 
+  - id: gms
+    name: Greater Mekong Subregion (GMS)
+    status: available
+    color: "#258A7C"
+    min_kv: 20000
+    grid_note: >-
+      The GMS as ADB defines it also covers Yunnan and Guangxi. The pipeline
+      works at country level and cannot cut a Chinese province, so the two
+      provinces are absent here. Read the northern edge of the map as a
+      boundary of this dataset, not of the interconnection.
+    countries:
+      - {iso: KHM, name: Cambodia}
+      - {iso: LAO, name: Laos}
+      - {iso: MMR, name: Myanmar}
+      - {iso: THA, name: Thailand}
+      - {iso: VNM, name: Vietnam}
+
+  - id: northamerica
+    name: North America
+    status: available
+    color: "#7E92D5"
+    min_kv: 220000
+    grid_note: >-
+      Mapped at 220 kV and above, so the map shows the 230, 345, 500 and 765 kV
+      bulk network. The 115 kV and 138 kV systems, which carry a large share of
+      regional transfers in North America, are not drawn. Showing them would
+      quadruple the layer and make the continental view unreadable.
+    countries:
+      - {iso: CAN, name: Canada}
+      - {iso: USA, name: United States}
+      - {iso: MEX, name: Mexico}
+
   - id: siepac
     name: SIEPAC
     status: available
-    color: "#3A9040"
+    color: "#00709C"
     min_kv: 20000
     countries:
       - {iso: GTM, name: Guatemala}
@@ -240,10 +275,38 @@ regions:
       - {iso: CRI, name: Costa Rica}
       - {iso: PAN, name: Panama}
 
+  - id: mercosur
+    name: Southern Cone (MERCOSUR)
+    status: available
+    color: "#717097"
+    min_kv: 20000
+    grid_note: >-
+      OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.
+    countries:
+      - {iso: ARG, name: Argentina}
+      - {iso: BRA, name: Brazil}
+      - {iso: CHL, name: Chile}
+      - {iso: PRY, name: Paraguay}
+      - {iso: URY, name: Uruguay}
+
+  - id: andean
+    name: Andean Community
+    status: available
+    color: "#68A4E3"
+    min_kv: 20000
+    grid_note: >-
+      OpenStreetMap coverage is thin in South America. The transmission layer shows a fraction of the real network, so gaps on the map are missing data, not missing lines.
+    countries:
+      - {iso: BOL, name: Bolivia}
+      - {iso: COL, name: Colombia}
+      - {iso: ECU, name: Ecuador}
+      - {iso: PER, name: Peru}
+      - {iso: VEN, name: Venezuela}
+
   - id: sids-caribbean
     name: Caribbean SIDS
     status: available
-    color: "#0E9B8A"
+    color: "#007A7C"
     min_kv: 20000
     countries:
       - {iso: CUB, name: Cuba}
@@ -266,7 +329,7 @@ regions:
   - id: sids-pacific
     name: Pacific SIDS
     status: available
-    color: "#0E9B8A"
+    color: "#007A7C"
     min_kv: 20000
     countries:
       - {iso: FJI, name: Fiji}
@@ -286,7 +349,7 @@ regions:
   - id: sids-aims
     name: AIMS
     status: available
-    color: "#0E9B8A"
+    color: "#007A7C"
     min_kv: 20000
     countries:
       - {iso: MDV, name: Maldives}
@@ -302,7 +365,7 @@ regions:
   - id: eu
     name: European Union
     status: available
-    color: "#4870C0"
+    color: "#00639B"
     min_kv: 110000
     countries:
       - {iso: AUT, name: Austria}
@@ -332,3 +395,50 @@ regions:
       - {iso: SVN, name: Slovenia}
       - {iso: ESP, name: Spain}
       - {iso: SWE, name: Sweden}
+
+  - id: entsoe
+    name: ENTSO-E (pan-European)
+    status: available
+    color: "#3591C3"
+    min_kv: 220000
+    grid_note: >-
+      Pan-European synchronous and market perimeter, wider than the EU-27. Mapped at 220 kV and above to keep the layer usable at continental scale, so sub-transmission is not shown.
+    countries:
+      - {iso: ALB, name: Albania}
+      - {iso: AUT, name: Austria}
+      - {iso: BEL, name: Belgium}
+      - {iso: BIH, name: Bosnia and Herzegovina}
+      - {iso: BGR, name: Bulgaria}
+      - {iso: HRV, name: Croatia}
+      - {iso: CYP, name: Cyprus}
+      - {iso: CZE, name: Czechia}
+      - {iso: DNK, name: Denmark}
+      - {iso: EST, name: Estonia}
+      - {iso: FIN, name: Finland}
+      - {iso: FRA, name: France}
+      - {iso: DEU, name: Germany}
+      - {iso: GRC, name: Greece}
+      - {iso: HUN, name: Hungary}
+      - {iso: ISL, name: Iceland}
+      - {iso: IRL, name: Ireland}
+      - {iso: ITA, name: Italy}
+      - {iso: LVA, name: Latvia}
+      - {iso: LTU, name: Lithuania}
+      - {iso: LUX, name: Luxembourg}
+      - {iso: MDA, name: Moldova}
+      - {iso: MNE, name: Montenegro}
+      - {iso: NLD, name: Netherlands}
+      - {iso: MKD, name: North Macedonia}
+      - {iso: NOR, name: Norway}
+      - {iso: POL, name: Poland}
+      - {iso: PRT, name: Portugal}
+      - {iso: ROU, name: Romania}
+      - {iso: SRB, name: Serbia}
+      - {iso: SVK, name: Slovakia}
+      - {iso: SVN, name: Slovenia}
+      - {iso: ESP, name: Spain}
+      - {iso: SWE, name: Sweden}
+      - {iso: CHE, name: Switzerland}
+      - {iso: TUR, name: Turkiye}
+      - {iso: UKR, name: Ukraine}
+      - {iso: GBR, name: United Kingdom}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chile Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Chile</div>
+    <div class="doc-sub">~37 GW installed &middot; coal phase-out under way &middot; Atacama solar &middot; Coordinador El&eacute;ctrico Nacional &middot; Kimal&ndash;Lo Aguirre HVDC &middot; storage build-out</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~37 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~65%</div><div class="kpi-lbl">Renewable generation</div></div>
+    <div class="kpi"><div class="kpi-val">~89 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">2017</div><div class="kpi-lbl">SIC&ndash;SING unification</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Chile operates the most liberalised power market in Latin America and has moved faster than any of its neighbours from coal to solar. The <strong>Sistema El&eacute;ctrico Nacional (SEN)</strong> was created in 2017 by joining the northern mining grid (SING) to the central system (SIC), producing a single market stretching more than 3,000 km along the country.</p>
+    <p>The <strong>Atacama desert</strong> has the highest solar irradiance on earth, and developers built into it aggressively once auction prices collapsed after 2015. Solar and wind now supply a large and rising share of generation, and Chile has committed to retiring its coal fleet, with most units already closed or converted to reserve status well ahead of the original 2040 schedule.</p>
+    <p>The consequence is a textbook transmission problem. Generation is in the north, demand is in Santiago and the south, and the corridor between them saturates in the middle of the day. Chile now routinely records <strong>zero or negative marginal prices</strong> in the north while paying far more in the centre, with large volumes of solar curtailed. The <strong>Kimal&ndash;Lo Aguirre HVDC</strong> line, a 1,500 km, 3,000 MW link, is the designated fix.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV and CSP</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Oil and diesel</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+          <span><span class="lsq" style="background:#D4A820"></span>Geothermal</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~37 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Coordinador El&eacute;ctrico Nacional; Comisi&oacute;n Nacional de Energ&iacute;a; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Kimal&ndash;Lo Aguirre HVDC</strong>About 1,500 km and 3,000 MW of bipolar HVDC from Antofagasta to the Santiago basin; the single most consequential infrastructure project in the Chilean system, since it converts stranded northern solar into deliverable energy</div>
+        <div class="stat-item"><strong>Coal retirement</strong>Chile committed to closing its coal fleet and has already retired or mothballed most units, with the remainder concentrated at Mejillones and Coronel; the pace has raised firm-capacity adequacy questions that storage is being asked to answer</div>
+        <div class="stat-item"><strong>Battery storage</strong>Chile has the largest utility-scale battery pipeline in South America, driven by the arbitrage between near-zero midday prices in the north and evening scarcity; several hundred MW are operating and several GW are contracted</div>
+        <div class="stat-item"><strong>PMGD segment</strong>Small distributed generators under 9 MW connect at distribution level with a stabilised price option; the segment grew rapidly and its remuneration has been repeatedly revised as its cost to consumers became visible</div>
+        <div class="stat-item"><strong>Tariff debt</strong>Residential tariffs were frozen from 2019, accumulating a large deferred balance owed to generators; unwinding it from 2024 produced steep bill increases and made electricity prices a first-order political issue</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>Ministerio de Energ&iacute;a:</strong> Sets policy and the long-term energy strategy, including the coal retirement schedule and the carbon neutrality pathway.</li>
+      <li><strong>CNE:</strong> The Comisi&oacute;n Nacional de Energ&iacute;a sets regulated tariffs, calculates node prices and runs the supply auctions for regulated customers.</li>
+      <li><strong>Coordinador El&eacute;ctrico Nacional:</strong> An independent system and market operator, created in 2016, dispatching on audited variable cost rather than on bids. Chile is therefore cost-based like Brazil, not bid-based, but with far more private contracting.</li>
+      <li><strong>SEC:</strong> The Superintendencia de Electricidad y Combustibles enforces service quality and safety, and became politically prominent after prolonged storm outages in the Santiago distribution network.</li>
+      <li><strong>Regulated and free customers:</strong> Consumers above 500 kW may choose their supplier; below that they are served by distributors through long-term auctions. Those auctions, held from 2015 onward, are what drove contract prices down and pulled in international renewable developers.</li>
+      <li><strong>Interconnections:</strong> Chile is effectively an electrical island. Small links to Argentina in the north exist but are little used, and the long-discussed SINEA corridor toward Peru and the Andean system has not been built.</li>
+    </ul>
+
+    <div class="callout">
+      Chile shows what happens when a market liberalises early and a resource turns out to be world-class. Auction competition delivered some of the cheapest solar contracts ever signed, and the grid could not keep up. The resulting price separation between a saturated north and a tight centre is not a market failure so much as a planning lag, but it has cost developers real revenue and shifted the investment case from generation to transmission and storage.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Transmission, not generation, now determines the pace of the transition.</strong> Chile has more solar than it can move. Until Kimal&ndash;Lo Aguirre energises, additional northern capacity mostly adds to curtailment rather than to supply, and the economics of new projects depend on where they sit relative to the constraint.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Storage has moved from pilot to core infrastructure faster than anywhere in the region.</strong> The daily price spread created by solar saturation gives batteries a clear revenue case without a capacity payment, which is why Chile's pipeline dwarfs its neighbours'. This is the most replicable lesson Chile offers the rest of the Southern Cone.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The tariff debt turned a technical deferral into a political crisis.</strong> Freezing residential prices for five years suppressed a real cost that had to reappear. When it did, in a single sharp adjustment, it damaged public support for the energy transition even though the underlying generation cost had fallen. It is a cautionary case for every country tempted to freeze tariffs.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Coal exit has outpaced the firm capacity to replace it.</strong> Retiring coal ahead of schedule is a genuine achievement, but it removed dispatchable capacity that solar does not replace at 8pm. Adequacy now rests on gas, hydro, storage and, increasingly, on reserve contracts with units that were supposed to close.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Chile's isolation limits what its surplus is worth.</strong> A country generating negative-priced solar next to a Peruvian system that burns gas, and an Argentine system that is short in the evening, exports almost nothing. Interconnection would monetise curtailed energy, and its absence is the largest unexploited opportunity in the Andean&ndash;Southern Cone corridor.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Coordinador El&eacute;ctrico Nacional &mdash; Anuario Estad&iacute;stico &middot; Comisi&oacute;n Nacional de Energ&iacute;a &mdash; Reporte Mensual &middot; Ministerio de Energ&iacute;a &mdash; Energ&iacute;a 2050 &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Solar PV and CSP', 'Hydropower', 'Natural gas', 'Wind', 'Coal', 'Oil and diesel', 'Biomass', 'Geothermal'],
+    datasets: [{ data: [10500, 7000, 5500, 4800, 3000, 3000, 600, 80], backgroundColor: ['#FFD700', '#1E9AF5', '#9A7040', '#44DAEC', '#808890', '#7A7068', '#52C860', '#D4A820'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

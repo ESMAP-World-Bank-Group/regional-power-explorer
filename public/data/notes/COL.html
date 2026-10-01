@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colombia Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Colombia</div>
+    <div class="doc-sub">~20 GW installed &middot; hydro ~65&ndash;70% &middot; XM market operator &middot; Hidroituango 2,400 MW &middot; El Ni&ntilde;o exposure &middot; first offshore wind auctions</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~20 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~70%</div><div class="kpi-lbl">Hydro share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~85 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~99%</div><div class="kpi-lbl">Electrification rate</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Colombia runs the most genuinely competitive wholesale power market in the Andean region. Generators bid into a day-ahead energy market cleared by <strong>XM</strong>, and firm capacity is remunerated separately through the <strong>Cargo por Confiabilidad</strong>, a reliability charge backed by obligations that generators must honour when prices exceed a scarcity threshold. That design, introduced after the 1992 rationing crisis, is widely studied and has been copied in part elsewhere.</p>
+    <p>Generation is roughly <strong>65 to 70% hydro</strong>, with gas and coal thermal providing the balance and, critically, the dry-season backstop. Colombia's hydrology is driven by ENSO, so <strong>El Ni&ntilde;o</strong> years produce simultaneous low inflows, high prices and heavy thermal dispatch. The 2023&ndash;24 episode pushed reservoirs low enough that rationing was publicly discussed.</p>
+    <p>Two structural pressures now dominate. Domestic gas reserves are declining, making the thermal backstop dependent on imported LNG through Cartagena just as it is needed most. And the non-conventional renewable build-out, centred on the wind resource of <strong>La Guajira</strong>, has been repeatedly delayed by transmission and by prior consultation processes with Way&uacute;u communities.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Liquid fuels</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass and cogeneration</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~20 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: XM &mdash; Informe de Operaci&oacute;n; UPME; CREG; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Hidroituango: 2,400 MW</strong>On the Cauca River; the largest project in the country's history, delayed for years by the 2018 tunnel collapse and evacuation; units have entered service progressively and the plant materially changes national energy balance</div>
+        <div class="stat-item"><strong>Cargo por Confiabilidad</strong>Firm energy obligations auctioned years ahead, paid a capacity premium and called when the spot price exceeds a scarcity price; the mechanism that has kept Colombia supplied through successive El Ni&ntilde;o events</div>
+        <div class="stat-item"><strong>La Guajira wind</strong>Some of the best onshore wind in South America, with several GW awarded in the 2019 and 2021 auctions; delivery has lagged badly because the Colectora transmission line and community consultations both slipped</div>
+        <div class="stat-item"><strong>Gas decline and LNG</strong>Domestic fields at Guajira and Cusiana are maturing; the Cartagena regasification terminal, built for power sector reliability, now carries a larger share of thermal fuel supply and a second terminal has been debated for years</div>
+        <div class="stat-item"><strong>Non-interconnected zones</strong>About 4% of the population lives outside the national grid, mostly in Amazonia, the Pacific coast and the islands, served by diesel microgrids under IPSE and now a target for solar hybridisation</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>Ministerio de Minas y Energ&iacute;a:</strong> Sets policy; UPME does planning and publishes the expansion and transmission reference plans.</li>
+      <li><strong>CREG:</strong> The Comisi&oacute;n de Regulaci&oacute;n de Energ&iacute;a y Gas sets tariffs and market rules, including the reliability charge design. Its quorum and independence have been politically contested in recent years, which itself became a regulatory risk.</li>
+      <li><strong>XM:</strong> Operates the national interconnected system and administers the wholesale market. Colombia is bid-based, unlike Brazil or Chile, which makes its price signal sharper and its scarcity episodes more visible.</li>
+      <li><strong>Unbundled and partly private:</strong> Generation, transmission and distribution are separated, with a mix of state, municipal and private ownership. EPM, owned by the city of Medell&iacute;n, is the largest single group.</li>
+      <li><strong>Interconnection with Ecuador:</strong> 230 kV links carry substantial trade, historically with Colombia exporting to Ecuador in Ecuador's dry season. This is the most-used international interconnection in the Andean region.</li>
+      <li><strong>Interconnection with Panama:</strong> The long-proposed link to the SIEPAC system in Central America would connect two regional markets; it has been studied for decades and repeatedly deferred on cost and regulatory grounds.</li>
+    </ul>
+
+    <div class="callout">
+      Colombia's reliability charge is the region's most successful answer to the question of how a hydro-dominated market survives drought. It works, but it works by paying for thermal capacity, and the fuel for that capacity is running out domestically. The next decade tests whether the same mechanism can be made to procure storage, demand response and imports rather than gas Colombia no longer produces.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>ENSO exposure is the system's defining operational risk.</strong> A hydro share near 70% means every strong El Ni&ntilde;o becomes an energy security and price event simultaneously. Colombia manages it better than its neighbours, but management costs money and depends on thermal fuel being available.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Declining domestic gas turns reliability into an import question.</strong> The reliability charge assumes the contracted thermal plants can actually run. With reserves falling, that depends on LNG cargoes and regasification capacity, which introduces price and logistics risk the original design did not contemplate.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>La Guajira shows that permitting, not resource or finance, is the binding constraint.</strong> Auction-winning wind projects with signed contracts have sat undeliverable for years because of transmission delays and unresolved prior consultation. It is the clearest case in the region of social licence determining an energy transition timetable.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Regulatory stability at CREG matters as much as any tariff.</strong> Investors price the risk that market rules change or that the regulator cannot act. Periods of contested appointments and quorum have coincided with weaker investment commitments, independently of the underlying economics.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Colombia is the natural hub of any Andean market integration.</strong> It already trades meaningfully with Ecuador, sits between the Andean system and Central America, and runs the region's most market-compatible rules. Any serious Andean&ndash;SIEPAC integration would be built around Colombian institutions.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      XM &mdash; Informe de Operaci&oacute;n del SIN &middot; UPME &mdash; Plan de Expansi&oacute;n de Referencia &middot; CREG &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Natural gas', 'Coal', 'Liquid fuels', 'Solar PV', 'Wind', 'Biomass and cogeneration'],
+    datasets: [{ data: [12500, 3600, 1500, 900, 1600, 500, 300], backgroundColor: ['#1E9AF5', '#9A7040', '#808890', '#7A7068', '#FFD700', '#44DAEC', '#52C860'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

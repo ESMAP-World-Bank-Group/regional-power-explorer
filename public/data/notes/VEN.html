@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venezuela Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Venezuela</div>
+    <div class="doc-sub">~35 GW nameplate &middot; Guri 10,235 MW &middot; availability far below capacity &middot; chronic blackouts &middot; CORPOELEC state monopoly &middot; collapsed thermal fleet</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~35 GW</div><div class="kpi-lbl">Nameplate capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~80%</div><div class="kpi-lbl">Hydro share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~65 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~99%</div><div class="kpi-lbl">Nominal access rate</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Venezuela has one of the largest hydroelectric endowments in the world and one of the least reliable power systems. The <strong>Guri dam (10,235 MW)</strong> on the Caron&iacute; River, together with Caruachi and Macagua, forms the Lower Caron&iacute; complex that supplies the large majority of national electricity. On paper the country has roughly 35 GW of capacity against a demand that has fallen sharply.</p>
+    <p>In practice available capacity is a fraction of nameplate. Years of underinvestment, deferred maintenance, loss of technical staff and a collapse in domestic refining have left much of the thermal fleet inoperable and the transmission network fragile. The <strong>March 2019 national blackout</strong>, which left most of the country without power for days, was the most visible episode in a pattern of rolling outages that continues in much of the interior.</p>
+    <p>Access statistics remain nominally near universal because connections exist. That figure is misleading: the operative constraint is <strong>hours of supply and voltage quality</strong>, not connection. Many states outside Caracas experience daily scheduled and unscheduled interruptions, and self-generation by those who can afford it has become widespread.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Nameplate capacity by source (approximate)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Natural gas</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Oil-fired thermal</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind (largely non-operational)</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~35 GW</div>
+            <div class="chart-center-lbl">nameplate</div>
+          </div>
+        </div>
+        <p class="fig-caption">Nameplate capacity; available capacity is substantially lower. Source: CORPOELEC; OLADE; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Guri: 10,235 MW</strong>Formally Central Hidroel&eacute;ctrica Sim&oacute;n Bol&iacute;var; among the largest hydroelectric plants in the world and the single asset on which Venezuelan electricity supply depends</div>
+        <div class="stat-item"><strong>Lower Caron&iacute; complex</strong>Guri, Caruachi and Macagua together account for the overwhelming majority of generation; the concentration means a fault at Guri or on its 765 kV outgoing lines is a national event</div>
+        <div class="stat-item"><strong>765 kV corridor</strong>The transmission spine carrying Caron&iacute; power to the centre and west of the country; vegetation management, substation fires and protection failures on this corridor have triggered repeated system collapses</div>
+        <div class="stat-item"><strong>Thermal fleet</strong>Large nominal gas and oil-fired capacity exists but availability is low, constrained by maintenance backlogs, spare parts and fuel supply from a refining system operating well below capacity</div>
+        <div class="stat-item"><strong>Data availability</strong>Official operational statistics have been published irregularly for years; figures here are approximate and drawn from international compilations rather than current national reporting</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>CORPOELEC:</strong> The Corporaci&oacute;n El&eacute;ctrica Nacional, created in 2007 by merging the previously separate utilities including EDELCA and EDC, is a single vertically integrated state monopoly covering generation, transmission and distribution.</li>
+      <li><strong>No wholesale market:</strong> There is no competitive market, no independent system operator and no independent regulator in any functional sense. Dispatch, tariffs and investment are administrative decisions.</li>
+      <li><strong>Tariffs:</strong> Regulated tariffs have been nominal for years, recovering a negligible share of cost. Without cost recovery, maintenance and network investment depend entirely on fiscal allocation, which has not been available at the scale required.</li>
+      <li><strong>Sanctions and equipment:</strong> International sanctions and the country's financial position have complicated procurement of turbines, transformers and control systems, compounding the maintenance backlog.</li>
+      <li><strong>Interconnections:</strong> Links exist to Colombia at Cuestecitas&ndash;Cuatricentenario and to Brazil at the 230 kV line from Guri to Boa Vista in Roraima. The Brazil link, which supplied Roraima for years, was interrupted and Roraima now relies on its own thermal generation.</li>
+    </ul>
+
+    <div class="callout">
+      Venezuela is the region's cautionary case. Hydroelectric resources that should make electricity abundant and clean sit behind an institutional and maintenance collapse that no amount of installed capacity compensates for. Recovery is primarily a question of governance, cost recovery and technical capacity rather than of new generation, and any rehabilitation programme would start with transmission and thermal availability.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Available capacity, not installed capacity, is the only meaningful metric here.</strong> Standard databases record roughly 35 GW. Operational reality is far below that, so any planning or comparison that uses nameplate figures for Venezuela will be wrong by a wide margin.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Extreme concentration on one river makes the system structurally fragile.</strong> With the large majority of generation on the Lower Caron&iacute; and a single high voltage corridor carrying it, both drought at Guri and a fault on the 765 kV lines translate directly into national outages.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>The access statistic conceals the actual service deficit.</strong> Near-universal connection alongside daily multi-hour interruptions means conventional access indicators do not describe this country. Reliability metrics, where they exist, are the relevant measure.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Rehabilitation would begin with transmission and thermal availability, not new build.</strong> The cheapest megawatts available are the ones already installed and not running. Restoring thermal availability and network integrity would deliver more energy per dollar than any greenfield project.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Regional reintegration would be consequential but requires institutional recovery first.</strong> A restored Venezuelan system with functioning Caron&iacute; output could supply Colombia and northern Brazil. Until cost recovery and technical capacity are rebuilt, interconnection adds little, because there is no reliable surplus to trade.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      CORPOELEC &middot; OLADE &mdash; Panorama Energ&eacute;tico de Am&eacute;rica Latina y el Caribe &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity. Note: national operational statistics have been published irregularly, and figures should be treated as indicative.
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Natural gas', 'Oil-fired thermal', 'Wind (largely non-operational)', 'Solar PV'],
+    datasets: [{ data: [16000, 10000, 8500, 80, 50], backgroundColor: ['#1E9AF5', '#9A7040', '#7A7068', '#44DAEC', '#FFD700'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

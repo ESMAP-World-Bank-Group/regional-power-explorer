@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Argentina Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Argentina</div>
+    <div class="doc-sub">~43 GW installed &middot; gas ~55% of generation &middot; CAMMESA single buyer &middot; Yacyret&aacute; and Salto Grande binational &middot; deep subsidy reform under way</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~43 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~55%</div><div class="kpi-lbl">Gas share of generation</div></div>
+    <div class="kpi"><div class="kpi-val">~98.4%</div><div class="kpi-lbl">Electrification rate</div></div>
+    <div class="kpi"><div class="kpi-val">3</div><div class="kpi-lbl">Nuclear reactors</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Argentina's power system is built on natural gas. Roughly <strong>55&ndash;60% of generation</strong> comes from thermal plants burning domestic gas, increasingly from the <strong>Vaca Muerta</strong> shale formation in Neuqu&eacute;n, with hydro supplying most of the balance and a small but established nuclear fleet providing firm baseload.</p>
+    <p>The sector's defining feature for two decades has not been technical but fiscal. End-user tariffs were frozen far below cost, and the gap was absorbed by the treasury through <strong>CAMMESA</strong>, the wholesale market administrator that functions as a single buyer. The result was a chronic transfer that at its peak consumed a significant share of the federal deficit, starved distribution networks of investment, and left generators owed large arrears.</p>
+    <p>Since late 2023 the government has pursued the sharpest correction in the sector's history: large tariff increases, a shift from blanket subsidies to targeted social tariffs, and a stated intention to move from the CAMMESA single-buyer model toward direct contracting between generators and large consumers. The transition is incomplete and politically contested, but the direction is a genuine break.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#9A7040"></span>Natural gas and combined cycle</span>
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar PV</span>
+          <span><span class="lsq" style="background:#C8A8F0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Oil and diesel</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~43 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: CAMMESA Informe Mensual; Secretar&iacute;a de Energ&iacute;a; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Yacyret&aacute;: 3,200 MW</strong>Binational with Paraguay on the Paran&aacute;; Argentina takes almost all of the output, buying Paraguay's unused half under the treaty, which makes it in practice one of Argentina's largest single supply sources</div>
+        <div class="stat-item"><strong>Salto Grande: 1,890 MW</strong>Binational with Uruguay on the Uruguay River; shared equally, and the physical anchor of the Argentina&ndash;Uruguay interconnection</div>
+        <div class="stat-item"><strong>Vaca Muerta</strong>Shale gas output has grown enough to displace LNG imports in most months and reopen winter exports to Chile; the power sector's fuel security now depends on the pipeline build-out from Neuqu&eacute;n more than on any generation project</div>
+        <div class="stat-item"><strong>Nuclear: Atucha I, Atucha II, Embalse</strong>About 1,760 MW combined, operated by Nucleoel&eacute;ctrica Argentina; Embalse completed a life extension, and Atucha I's own extension has been the subject of repeated schedule slippage</div>
+        <div class="stat-item"><strong>RenovAr and MATER</strong>The RenovAr auctions of 2016&ndash;2019 brought the first large wind and solar build; since then growth has come mainly through MATER, the regime that lets large private consumers contract renewables directly, which is now the most active segment of the market</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>Secretar&iacute;a de Energ&iacute;a:</strong> Sets policy and, in practice, sets prices, since seasonal programming resolutions determine what generators are paid and what distributors are charged.</li>
+      <li><strong>CAMMESA:</strong> Administers the wholesale market (MEM), dispatches the system and acts as counterparty to almost all transactions. Its accumulated payables to generators have been a recurring source of sector stress.</li>
+      <li><strong>ENRE:</strong> Regulates transmission and the federal distribution concessions of Edenor and Edesur in greater Buenos Aires; provincial distributors answer to provincial regulators, which fragments tariff policy.</li>
+      <li><strong>Transener:</strong> Operates the 500 kV backbone. Transmission investment lagged generation for years, and congestion between the Comahue region and Buenos Aires is a persistent constraint on both hydro and wind.</li>
+      <li><strong>Interconnections:</strong> Back-to-back converters at Garabi and Paso de los Libres link Argentina to Brazil; Salto Grande and Concepci&oacute;n del Uruguay to Uruguay; Yacyret&aacute; to Paraguay; and several lines to Chile, historically used for gas-linked trade in the north.</li>
+      <li><strong>Rural access gap:</strong> National access is about 98.4%, but rural access is near 80%, one of the widest urban-rural gaps in the Southern Cone and concentrated in the northern provinces and Patagonia.</li>
+    </ul>
+
+    <div class="callout">
+      Argentina is the clearest case in the region of a power sector whose problems are financial rather than physical. The country has abundant gas, world-class wind resources in Patagonia, and enough installed capacity to meet demand. What it has lacked is a price that clears, and the institutional credibility for private capital to commit to fifteen-year contracts. The current adjustment tests whether that can be rebuilt without a social rupture that reverses it again.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Subsidy reform is the sector's single determining variable.</strong> Every other question, generation investment, distribution quality, arrears to generators, follows from whether tariffs converge to cost and stay there. Previous attempts were reversed within an electoral cycle, which is why investors discount the current one until it survives one.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Dismantling the single buyer is harder than announcing it.</strong> Moving from CAMMESA-mediated trade to bilateral contracts requires a creditworthy counterparty structure, functioning collateral, and distributors able to buy at market prices. None of those conditions is fully in place, so the reform is likely to proceed by widening the MATER carve-out rather than by a clean break.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Vaca Muerta makes Argentina a potential regional gas and power exporter.</strong> Reversed pipeline flows already let Argentina export gas to Chile and, intermittently, to Brazil via Bolivia. Sustained shale output would let Argentina supply both molecules and electricity across the Southern Cone, which would change the regional trade balance more than any transmission project.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Patagonian wind is stranded by transmission, not by resource.</strong> Capacity factors in Santa Cruz and Chubut are among the best onshore anywhere, but the 500 kV corridor north is full. Without new lines the resource cannot reach demand, and the MATER queue keeps allocating capacity that cannot be evacuated.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>The rural access gap is the quiet equity issue.</strong> With urban access effectively universal and rural access near 80%, the remaining unserved population is dispersed, poor and politically marginal. Closing that gap is a distribution and off-grid problem that no wholesale market reform addresses.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      CAMMESA &mdash; Informe Mensual y Anual &middot; Secretar&iacute;a de Energ&iacute;a &mdash; Balance Energ&eacute;tico Nacional &middot; ENRE &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Natural gas and combined cycle', 'Hydropower', 'Wind', 'Solar PV', 'Nuclear', 'Oil and diesel', 'Biomass'],
+    datasets: [{ data: [24000, 11000, 3600, 1800, 1760, 1500, 300], backgroundColor: ['#9A7040', '#1E9AF5', '#44DAEC', '#FFD700', '#C8A8F0', '#7A7068', '#52C860'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

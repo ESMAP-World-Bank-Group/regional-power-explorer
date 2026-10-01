@@ -105,9 +105,9 @@ export default function CapacityChart({ capacity, region, theme, source = 'osm',
 
       {/* ── Reference years (data vintage) ─────────────────────── */}
       <p style={{ fontSize: '0.5rem', color: t.lblMuted, fontStyle: 'italic', margin: '-8px 0 16px', lineHeight: 1.5 }}>
-        Reference years — installed capacity: {source === 'gppd' ? 'GPPD 2021' : 'GEM 2024–25'}
+        Reference years — installed capacity: {source === 'gppd' ? 'GPPD 2021' : 'GEM 2026'}
         {tradeSnapshot?.tradeYear ? ` · electricity traded: ${tradeSnapshot.tradeYear}` : ''}
-        {access ? ' · access: 2022' : ''}
+        {aMin !== null ? ` · access: ${access.year}` : ''}
       </p>
 
       {/* ── Cross-border integration snapshot (R1) ─────────────── */}

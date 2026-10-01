@@ -162,7 +162,7 @@ export default function WorldPage() {
           filter: regionFilter(availableIsos),
           paint: {
             'fill-color': colorExpr,
-            'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.55, 0.28],
+            'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.65, 0.4],
           },
         }, fillAnchor(map));
       }
@@ -305,15 +305,19 @@ export default function WorldPage() {
       {/* Region legend */}
       {regions && !isMobile && (
         <div style={{
-          position: 'absolute', bottom: 70, left: 24,
+          position: 'absolute', top: '50%', left: 24,
+          transform: 'translateY(-50%)',
+          maxHeight: 'calc(100vh - 46px - 48px)',
           backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
           borderRadius: 8, padding: '12px 14px',
           display: 'flex', flexDirection: 'column', gap: 7,
         }}>
           <div style={{ fontSize: '0.52rem', letterSpacing: '2px', fontWeight: 700,
             color: t.lblMuted, textTransform: 'uppercase', marginBottom: 2 }}>
-            Power Pools & Regions
+            Regional initiatives
           </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7,
+            overflowY: 'auto', minHeight: 0, marginRight: -6, paddingRight: 6 }}>
           {legendItems.map(r => {
             const isSub = r.type === 'sub';
             const isMeta = r.type === 'meta';
@@ -356,6 +360,7 @@ export default function WorldPage() {
               </div>
             );
           })}
+          </div>
         </div>
       )}
 

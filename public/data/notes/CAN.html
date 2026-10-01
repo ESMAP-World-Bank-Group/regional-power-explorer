@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canada Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Canada</div>
+    <div class="doc-sub">~155 GW installed &middot; ~641 TWh generated &middot; ~60% hydro &middot; over 80% non-emitting &middot; provincial jurisdiction &middot; exports north to south, not east to west</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~155 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~641 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">~60%</div><div class="kpi-lbl">Hydro share</div></div>
+    <div class="kpi"><div class="kpi-val">~50 TWh</div><div class="kpi-lbl">Net exports to the US</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Canada generates roughly <strong>60% of its electricity from hydropower</strong> and about 15% from nuclear, giving it one of the cleanest large power systems in the world at over 80% non-emitting. That position was inherited from twentieth century hydro development rather than bought with recent policy, which shapes the whole sector: the decarbonisation problem here is not the existing fleet but the cost of the next increment of firm clean capacity.</p>
+    <p>Electricity is a <strong>provincial responsibility</strong>. There is no national utility, no national market and no national grid operator. Each province built its own system around its own resource, so Qu&eacute;bec, British Columbia, Manitoba and Newfoundland are hydro systems, Ontario is hydro and nuclear, and Alberta and Saskatchewan are gas and coal systems in transition. Federal authority reaches the sector mainly through carbon pricing, environmental regulation, and permitting of interprovincial and international lines.</p>
+    <p>The trade pattern follows that history. Interprovincial transfer capability is thin, but <strong>north to south links into the United States are strong</strong>, and Canada is a consistent net exporter of around 50 TWh a year, overwhelmingly from Qu&eacute;bec, British Columbia, Ontario and Manitoba. Hydro reservoirs make those exports flexible, which is worth more to New England and New York as their own variable renewable share rises.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#9A7040"></span>Gas</span>
+          <span><span class="lsq" style="background:#44DAEC"></span>Wind</span>
+          <span><span class="lsq" style="background:#C8A8F0"></span>Nuclear</span>
+          <span><span class="lsq" style="background:#808890"></span>Coal</span>
+          <span><span class="lsq" style="background:#FFD700"></span>Solar</span>
+          <span><span class="lsq" style="background:#52C860"></span>Biomass</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Oil</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~155 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: Canada Energy Regulator; Statistics Canada; GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Hydro-Qu&eacute;bec: ~37 GW</strong>The largest hydro utility in North America, with the La Grande and Churchill Falls complexes at its core. Its export contracts with New England and New York, and the renegotiation of the Churchill Falls arrangement with Newfoundland, are the defining commercial questions in Canadian power</div>
+        <div class="stat-item"><strong>Ontario: nuclear refurbishment</strong>Bruce and Darlington are being refurbished unit by unit through the 2030s, and Darlington hosts the first grid-scale SMR under construction in the G7. Ontario is also the only province to have fully phased out coal, which it did by 2014</div>
+        <div class="stat-item"><strong>Alberta: the one liberalised market</strong>An energy-only wholesale market with no capacity mechanism, now coal-free ahead of schedule after conversions to gas. It carries the fastest renewable build in the country alongside the most contested provincial siting policy</div>
+        <div class="stat-item"><strong>East to west transfer is weak</strong>Provinces are far better connected to American neighbours than to each other. Proposals for an Atlantic Loop, or for stronger Manitoba to Saskatchewan and Qu&eacute;bec to Ontario links, recur and stall on cost allocation between provinces with very different resource endowments</div>
+        <div class="stat-item"><strong>Clean Electricity Regulations</strong>Federal rules pushing the grid toward net zero emissions by 2035, softened in consultation to accommodate gas with abatement and peaking flexibility. Alberta and Saskatchewan have contested them on jurisdictional grounds, which is itself the central federal-provincial fault line</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>Provincial jurisdiction:</strong> Provinces own and regulate their utilities and set resource policy. Most operate vertically integrated Crown corporations: Hydro-Qu&eacute;bec, BC Hydro, Manitoba Hydro, SaskPower, NB Power and Nalcor.</li>
+      <li><strong>Ontario:</strong> The IESO runs a wholesale market and centralised procurement, Ontario Power Generation owns the nuclear and large hydro fleet, and Hydro One owns transmission. It is a hybrid of market and state planning rather than either one.</li>
+      <li><strong>Alberta:</strong> The AESO operates the only genuine energy-only competitive market, with a price cap, no capacity mechanism, and retail competition. Market design reform and restrictions on renewable siting are both live.</li>
+      <li><strong>Canada Energy Regulator:</strong> Federal oversight of interprovincial and international power lines and of export permits. It is a permitting authority, not a market regulator.</li>
+      <li><strong>Carbon pricing:</strong> The federal output-based pricing system applies to generators in provinces without an equivalent, and is the main economic driver against unabated gas. Its durability has become a political question.</li>
+      <li><strong>NERC and NPCC:</strong> Canadian systems sit inside the North American reliability framework and follow NERC standards through provincial adoption, which is what makes the dense cross-border interconnection operationally straightforward.</li>
+    </ul>
+
+    <div class="callout">
+      Canada's advantage is a clean, dispatchable hydro fleet; its constraint is that the fleet is provincial. The cheapest continental decarbonisation option would pair Qu&eacute;bec, Manitoba and British Columbia reservoirs with wind and solar across a much wider area, but almost every route for doing that crosses either a provincial boundary with no line or an international one with a better line. Whether Canada builds east to west or keeps selling north to south is the question that decides its role in the North American transition.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>The clean baseline is inherited.</strong> Over 80% non-emitting generation came from mid-century hydro investment. It gives Canada a head start on decarbonisation and very little recent institutional practice at building new firm clean capacity.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Growth, not replacement, is the challenge.</strong> Electrification of heat, transport and industry implies roughly a doubling of generation by 2050 on most official scenarios, a build programme without modern precedent in the country.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Interprovincial transmission is the missing market.</strong> Every serious least-cost study finds value in east to west transfer. None has yet found a cost allocation that provinces accept.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Exports are a strategic asset.</strong> Flexible hydro exported into markets with rising variable renewable shares earns a rising premium. It also ties Canadian revenue to American market design decisions.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Federal-provincial friction is structural.</strong> Carbon pricing and the Clean Electricity Regulations meet provincial ownership of the sector. Expect continued negotiation rather than resolution.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      Canada Energy Regulator &mdash; Canada's Energy Future &middot; Statistics Canada &middot; IESO and AESO market reports &middot; Hydro-Qu&eacute;bec and BC Hydro annual reports &middot; Environment and Climate Change Canada &mdash; Clean Electricity Regulations &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker. Capacity figures are approximate.
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Gas', 'Wind', 'Nuclear', 'Coal', 'Solar', 'Biomass', 'Oil'],
+    datasets: [{ data: [85000, 23000, 18500, 14000, 4500, 4500, 2500, 2000], backgroundColor: ['#1E9AF5', '#9A7040', '#44DAEC', '#C8A8F0', '#808890', '#FFD700', '#52C860', '#7A7068'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>

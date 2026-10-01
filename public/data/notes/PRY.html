@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paraguay Electricity Sector &mdash; Briefing Note</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root{--navy:#1B3A5C;--blue:#2E75B6;--lblue:#D6E8F5;--grey:#F4F5F7;--border:#E2E6EA;--text:#1A2332;--muted:#5A6474;--light:#8A94A6;--white:#FFFFFF}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#F0F2F5;line-height:1.7}
+  .page{max-width:900px;margin:0 auto;background:var(--white);box-shadow:0 4px 40px rgba(0,0,0,.08);min-height:100vh}
+  .doc-header{background:var(--navy);padding:48px 56px 40px;position:relative;overflow:hidden}
+  .doc-header::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;background:rgba(46,117,182,.2)}
+  .label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .doc-title{font-family:'DM Serif Display',serif;font-size:42px;font-weight:400;color:var(--white);line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+  .doc-sub{font-size:14px;color:rgba(255,255,255,.55);font-weight:300;position:relative;z-index:1}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+  .kpi{padding:18px 22px;border-right:1px solid var(--border)}
+  .kpi:last-child{border-right:none}
+  .kpi-val{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1;margin-bottom:3px}
+  .kpi-lbl{font-size:11.5px;color:var(--muted)}
+  .body{padding:48px 56px}
+  h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--navy);margin:44px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--lblue)}
+  h2:first-child{margin-top:0}
+  p{margin-bottom:11px}
+  ul{padding-left:20px;margin:7px 0 13px}
+  li{margin-bottom:5px;font-size:14px}
+  li strong{color:var(--navy)}
+  .callout{background:var(--lblue);border-left:4px solid var(--blue);padding:13px 17px;margin:14px 0;font-size:13px;color:var(--navy);line-height:1.65;border-radius:0 4px 4px 0}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px 15px;font-size:12px;color:var(--muted);margin-bottom:9px}
+  .chart-legend span{display:flex;align-items:center;gap:5px}
+  .lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:7px 0}
+  .chart-wrap{position:relative}
+  .chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+  .chart-center-val{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);line-height:1.1}
+  .chart-center-lbl{font-size:10px;color:var(--muted)}
+  .chart-title{font-size:12px;font-weight:600;color:var(--text);text-align:center;margin-bottom:5px}
+  .fig-caption{font-size:11px;color:var(--light);margin-top:4px;margin-bottom:.8rem;font-style:italic}
+  .stat-note{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:4px 0}
+  .stat-item{font-size:12px;line-height:1.5}
+  .stat-item strong{color:var(--navy);display:block}
+  .five-pts{margin:10px 0}
+  .pt{display:flex;gap:13px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .pt:last-child{border-bottom:none}
+  .pt-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);min-width:24px;line-height:1}
+  .sources{margin-top:38px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.9}
+  .sources strong{color:var(--navy)}
+  .doc-footer{background:var(--grey);padding:14px 56px;font-size:11px;color:var(--light);display:flex;justify-content:space-between;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="doc-header">
+    <div class="label">Electricity Sector Briefing &middot; September 2026</div>
+    <div class="doc-title">Paraguay</div>
+    <div class="doc-sub">~8.8 GW installed &middot; effectively 100% hydro &middot; Itaip&uacute; and Yacyret&aacute; binational &middot; large structural export surplus &middot; ANDE vertically integrated</div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">~8.8 GW</div><div class="kpi-lbl">Installed capacity</div></div>
+    <div class="kpi"><div class="kpi-val">~100%</div><div class="kpi-lbl">Hydropower share</div></div>
+    <div class="kpi"><div class="kpi-val">~53 TWh</div><div class="kpi-lbl">Generation (2023)</div></div>
+    <div class="kpi"><div class="kpi-val">2023</div><div class="kpi-lbl">Itaip&uacute; debt retired</div></div>
+  </div>
+
+  <div style="padding:16px 56px 0;font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic;line-height:1.6;color:#8A94A6">Produced with AI assistance. It is recommended to double-check figures and sources before use.</div>
+<div class="body">
+    <h2>Generation Mix &amp; Capacity</h2>
+    <p>Paraguay is the most unusual power system in South America. Essentially <strong>all</strong> of its electricity comes from three hydroelectric plants, two of them binational, and the country consumes only a fraction of its entitlement. The surplus is sold to Brazil and Argentina under treaty terms rather than at market prices, which has made the value of Paraguay's hydro a national political question for fifty years.</p>
+    <p><strong>Itaip&uacute;</strong>, shared with Brazil, is 14,000 MW across twenty units, ten of them at 50 Hz for Paraguay and ten at 60 Hz for Brazil. <strong>Yacyret&aacute;</strong>, shared with Argentina, adds 3,200 MW. Paraguay owns half of each and uses well under half of what that entitles it to, so the remainder is ceded to the partner country under the founding treaties.</p>
+    <p>The <strong>retirement of Itaip&uacute;'s construction debt in 2023</strong> changed the arithmetic. With the debt service gone, the cost of energy from the plant falls sharply, and Annex C of the 1973 treaty, which governs the tariff and the terms of surplus sales, reopened for renegotiation. What Paraguay obtains there determines its fiscal position and whether roughly 7 GW of firm low-cost hydro becomes tradable in the region.</p>
+
+    <div class="chart-grid-2">
+      <div>
+        <div class="chart-title">Installed capacity by source (approximate, 2025)</div>
+        <div class="chart-legend">
+          <span><span class="lsq" style="background:#1E9AF5"></span>Hydropower</span>
+          <span><span class="lsq" style="background:#7A7068"></span>Thermal (backup)</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="capMixChart" height="200"></canvas>
+          <div class="chart-center">
+            <div class="chart-center-val">~8.8 GW</div>
+            <div class="chart-center-lbl">installed</div>
+          </div>
+        </div>
+        <p class="fig-caption">Source: ANDE; Itaip&uacute; Binacional; EBY (Yacyret&aacute;); GEM Global Integrated Power Tracker</p>
+      </div>
+      <div class="stat-note" style="padding-left:8px">
+        <div class="stat-item"><strong>Itaip&uacute;: 14,000 MW</strong>Paran&aacute; River, shared equally with Brazil; for decades the largest hydroelectric plant in the world by annual output; Paraguay's half is 7,000 MW against a national peak demand far below that</div>
+        <div class="stat-item"><strong>Yacyret&aacute;: 3,200 MW</strong>Paran&aacute; River, shared equally with Argentina; Argentina takes almost all the energy and pays Paraguay for the ceded half; the Ay&uacute; a&Ntilde;&aacute; raising project would add output</div>
+        <div class="stat-item"><strong>Acaray: 210 MW</strong>Paraguay's only fully national plant, on the Acaray River; small, but the one asset whose output Paraguay controls without a treaty partner</div>
+        <div class="stat-item"><strong>Annex C renegotiation</strong>Reopened after the 2023 debt retirement; the issues are the tariff level, whether Paraguay may sell its surplus to third parties, and how the plant's revenues are allocated between the two states</div>
+        <div class="stat-item"><strong>Crypto mining demand</strong>Cheap surplus power attracted large-scale mining operations, legal and illegal; ANDE has attributed substantial losses to illegal connections while also contracting authorised load as a way to monetise surplus</div>
+      </div>
+    </div>
+
+    <h2>Market Structure &amp; Institutions</h2>
+    <ul>
+      <li><strong>ANDE:</strong> The Administraci&oacute;n Nacional de Electricidad is a vertically integrated state utility handling generation, transmission and distribution. Paraguay has no wholesale market, no independent regulator and no private generation of significance.</li>
+      <li><strong>Itaip&uacute; Binacional and EBY:</strong> Each binational plant is governed by its own treaty entity with equal representation from both states, standing outside normal national regulation. Their finances are, in effect, a second energy budget.</li>
+      <li><strong>No market, one buyer:</strong> Because ANDE is the only purchaser and the binationals the only suppliers of consequence, the price Paraguayan consumers pay is an administrative decision rather than a market outcome.</li>
+      <li><strong>Transmission is the domestic constraint:</strong> The 500 kV backbone from Itaip&uacute; to Asunci&oacute;n and the Chaco has been reinforced repeatedly, but distribution losses remain high and quality of supply outside the capital is a standing complaint.</li>
+      <li><strong>Interconnections:</strong> The links to Brazil and Argentina exist inside the binational plants themselves. Paraguay has no independent interconnection it controls, which is precisely why third-party sales require treaty change rather than a commercial decision.</li>
+    </ul>
+
+    <div class="callout">
+      Paraguay is the only country in the hemisphere whose principal export is electricity it is not free to sell. Two treaties written in the 1970s, when the country had neither the demand nor the capital to use its share, still govern roughly 7 GW of firm hydro. Renegotiating them is less an energy question than a sovereignty and fiscal one, and its resolution would reshape Southern Cone power trade.
+    </div>
+
+    <h2>Five Strategic Takeaways</h2>
+    <div class="five-pts">
+      <div class="pt"><div class="pt-n">1</div><div><strong>Annex C is the highest-value negotiation in South American power.</strong> The difference between the current treaty tariff and a market price for Paraguay's surplus is measured in hundreds of millions of dollars a year, against a small economy. No generation project anywhere in the Southern Cone moves as much value as this text does.</div></div>
+      <div class="pt"><div class="pt-n">2</div><div><strong>Surplus without market access is not wealth.</strong> Paraguay has enormous firm capacity and almost no ability to monetise it at market value, because every export path runs through a partner that is also the counterparty. Third-party sales rights matter more to Paraguay than any new megawatt.</div></div>
+      <div class="pt"><div class="pt-n">3</div><div><strong>Domestic demand is growing into the surplus, slowly and unevenly.</strong> Industrial load, electrification and data centre or mining demand are raising national consumption, which reduces the ceded volume but also exposes ANDE's distribution weaknesses. The binding constraint at home is the network, not generation.</div></div>
+      <div class="pt"><div class="pt-n">4</div><div><strong>Total hydro dependence is a climate risk with no hedge.</strong> A system that is effectively 100% run-of-river on two rivers has no fuel diversification at all. Prolonged low flow on the Paran&aacute;, as in 2021, cuts output and export revenue simultaneously, and Paraguay holds no thermal or renewable alternative of any scale.</div></div>
+      <div class="pt"><div class="pt-n">5</div><div><strong>Paraguay is the natural supplier of firm clean energy to a variable regional grid.</strong> As Brazil, Chile and Argentina add solar and wind, the scarce product becomes dispatchable low-carbon energy in the evening. Paraguayan hydro is exactly that, which makes the commercial case for opening its surplus stronger now than when the treaties were written.</div></div>
+    </div>
+
+    <div class="sources">
+      <strong>Sources &amp; references:</strong><br>
+      ANDE &mdash; Memoria Anual &middot; Itaip&uacute; Binacional &mdash; Informe Anual &middot; Entidad Binacional Yacyret&aacute; &middot; Our World in Data / Ember &mdash; Yearly Electricity Data &middot; Global Energy Monitor &mdash; Global Integrated Power Tracker &middot; World Bank WDI &mdash; Access to electricity
+    </div>
+  </div>
+  <div class="doc-footer">
+  <span>Pilot &mdash; unofficial, AI-drafted, not fact-checked &nbsp;&middot;&nbsp; Not for citation</span>
+  <span>September 2026</span>
+</div>
+</div>
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+new Chart(document.getElementById('capMixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Hydropower', 'Thermal (backup)'],
+    datasets: [{ data: [8760, 30], backgroundColor: ['#1E9AF5', '#7A7068'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    cutout: '62%', animation: { duration: 900 },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ~${ctx.parsed} MW` }}},
+    layout: { padding: 4 }
+  }
+});
+</script>
+</body>
+</html>
