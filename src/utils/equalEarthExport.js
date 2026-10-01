@@ -22,7 +22,7 @@ import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
 import { geoArea, geoEqualEarth, geoPath } from 'd3-geo';
 import { VectorTile } from '@mapbox/vector-tile';
 import Pbf from 'pbf';
-import { fetchWbStyle, buildWbStyle, DEFAULT_WB_VIEW, HIDDEN_ADM0_LABELS, ITALIC_ADM0_LABELS } from './wbStyle';
+import { fetchWbStyle, buildWbStyle, DEFAULT_WB_VIEW, HIDDEN_ADM0_LABELS, ITALIC_ADM0_LABELS, adm0LabelSize, withExtraAdm0Labels, adm0LabelsOnly } from './wbStyle';
 import { fetchGeo } from './basemap';
 
 const BOUNDARY_LAYER = 'ADM0_Boundaries';
@@ -196,14 +196,15 @@ async function loadLabels(bounds, zoom) {
   const style = await fetchWbStyle();
   const url = style.sources.wbg_admin_labels?.url?.replace(/\/$/, '');
   if (!url) return [];
-  const classes = style.layers.filter(l =>
+  const classes = withExtraAdm0Labels(style.layers).filter(l =>
     l.source === 'wbg_admin_labels' && l['source-layer'] === 'ADM0' && l.type === 'symbol'
     && (l.minzoom ?? 0) <= zoom && zoom < (l.maxzoom ?? 99) && l.filter?.[0] === '=='
   ).map(l => ({
     key: l.filter[1], value: l.filter[2],
     field: String(l.layout?.['text-field'] || '').replace(/[{}]/g, ''),
-    size: sizeAt(l.layout?.['text-size'], zoom),
+    size: adm0LabelSize(sizeAt(l.layout?.['text-size'], zoom)),
     upper: l.layout?.['text-transform'] === 'uppercase',
+    only: adm0LabelsOnly(l),
   }));
   const z = Math.max(0, Math.min(9, Math.floor(zoom)));
   const out = [], seen = new Set();
@@ -219,7 +220,7 @@ async function loadLabels(bounds, zoom) {
       const cls = classes.find(c => f.properties[c.key] === c.value && f.properties[c.field]);
       if (!cls || f.type !== 1) continue;
       const text = String(f.properties[cls.field]);
-      if (seen.has(text) || HIDDEN_ADM0_LABELS.includes(text)) continue;
+      if (seen.has(text) || HIDDEN_ADM0_LABELS.includes(text) || (cls.only && !cls.only.includes(text))) continue;
       const [[p]] = f.loadGeometry();
       if (p.x < 0 || p.y < 0 || p.x > extent || p.y > extent) continue;   // tile buffer copy
       seen.add(text);
