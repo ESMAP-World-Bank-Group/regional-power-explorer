@@ -8,7 +8,7 @@ html {
 
 html, body, #root {
   height: 100%;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: 'Open Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -19,7 +19,7 @@ a { text-decoration: none; color: inherit; }
   border-radius: 8px !important;
   padding: 8px 12px !important;
   font-size: 0.8rem;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Open Sans', system-ui, sans-serif;
   box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important;
   line-height: 1.5;
 }
@@ -41,6 +41,13 @@ a { text-decoration: none; color: inherit; }
 .maplibregl-ctrl-attrib { display: none !important; }
 .maplibregl-ctrl-logo   { display: none !important; }
 .maplibregl-ctrl-bottom-right { display: none !important; }
+.maplibregl-ctrl-bottom-right:has(.imaps-ai-chat-ctrl) { display: block !important; }
+/* Phones: the region/country pages dock a 96 px data sheet over the map's
+   bottom edge; keep the assistant button clear of it (isMobile is < 700 px). */
+@media (max-width: 699px) {
+  :root { --rpe-chat-offset: 14rem; }
+  .maplibregl-ctrl-bottom-right:has(.imaps-ai-chat-ctrl) { bottom: 100px; }
+}
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
