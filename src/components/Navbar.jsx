@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { isItalicName } from '../utils/basemap';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT, THEME_LIST, THEMES } from '../constants';
@@ -97,7 +98,8 @@ export default function Navbar() {
     const iso = parts[1];
     for (const r of [...epm.withModel, ...epm.all]) {
       const c = (r.countries || []).find(c => c.iso === iso);
-      if (c) { setEpmCountryPath(`/region/${r.id}/country/${encodeURIComponent(c.name)}`); return; }
+      // EPM links by the model's own country name, which can differ from the Bank name.
+      if (c) { setEpmCountryPath(`/region/${r.id}/country/${encodeURIComponent(c.epm_name || c.name)}`); return; }
     }
     setEpmCountryPath(null);
   }, [location.pathname, epm]);
@@ -186,10 +188,11 @@ export default function Navbar() {
                   onMouseOut={e => e.currentTarget.style.color = t.muted}
                 >{crumb.regionName}</Link>
                 <span style={{ color: t.panelBorder, fontSize: '0.75rem', flexShrink: 0 }}>›</span>
-                <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{crumb.countryName}</span>
+                <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', ...(isItalicName(crumb.countryName) ? { fontStyle: 'italic' } : {}) }}>{crumb.countryName}</span>
               </span>
             ) : (
-              <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <span style={{ fontSize: '0.75rem', color: t.lbl, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                ...(isItalicName(crumb.type === 'country' && crumb.countryName) ? { fontStyle: 'italic' } : {}) }}>
                 {crumb.type === 'country' ? crumb.countryName : crumb.label}
               </span>
             )}

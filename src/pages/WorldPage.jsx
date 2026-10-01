@@ -7,7 +7,7 @@ import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
 import ExportControl from '../components/ExportControl';
-import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -187,14 +187,15 @@ export default function WorldPage() {
 
         const f = e.features[0];
         const rs = regionsFor(f);
-        const countryName = rs[0]?.countryName || areaName(f) || f.properties.ISO_A3;
+        // The polygon's own Bank name, not regions.json's: the popup names what the map draws.
+        const countryName = areaName(f) || rs[0]?.countryName || f.properties.ISO_A3;
         const subtitle = rs.length > 1
           ? rs.map(r => r.name).join(' · ') + ' · click to choose'
           : rs.length === 1
             ? rs[0].name + ' · click to explore'
             : 'Non-determined legal status area';
         popup.setLngLat(e.lngLat)
-          .setHTML(`<b>${countryName}</b><br><span style="opacity:0.65">${subtitle}</span>`)
+          .setHTML(`<b>${nameHtml(countryName)}</b><br><span style="opacity:0.65">${subtitle}</span>`)
           .addTo(map);
       });
 
@@ -210,12 +211,13 @@ export default function WorldPage() {
         const f = e.features[0];
         const iso = f.properties.ISO_A3 || areaName(f);
         const rs = regionsFor(f);
+        const name = areaName(f) || rs[0]?.countryName;
         if (rs.length === 0) return;
         if (rs.length === 1) {
           navigate(`/region/${rs[0].id}`);
         } else {
           const pixel = map.project(e.lngLat);
-          setDisambig({ x: pixel.x, y: pixel.y, iso, regions: rs });
+          setDisambig({ x: pixel.x, y: pixel.y, iso, name, regions: rs });
         }
       });
 
@@ -275,7 +277,9 @@ export default function WorldPage() {
           }}>
             <div style={{ fontSize: '0.5rem', letterSpacing: '2px', fontWeight: 700,
               color: t.lblMuted, textTransform: 'uppercase', marginBottom: 8 }}>
-              {disambig.regions[0]?.countryName || disambig.iso} · Choose region
+              <span style={isItalicName(disambig.name) ? { fontStyle: 'italic' } : undefined}>
+                {disambig.name || disambig.iso}
+              </span> · Choose region
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {disambig.regions.map(r => (

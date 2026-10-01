@@ -16,7 +16,7 @@ import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
 import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW, MAP_LABEL_FONT } from '../utils/wbStyle';
-import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor, isItalicName } from '../utils/basemap';
 import { CONTACT_EMAIL, openMail } from '../utils/mailto';
 
 const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color: '#5A6474', margin: '10px 0 3px', letterSpacing: '0.3px' };
@@ -1474,7 +1474,7 @@ export default function CountryPage() {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1B2A4A', margin: 0 }}>Suggest an edit</h3>
-              <span style={{ fontSize: '0.62rem', color: '#5A6474' }}>{country?.name} · {iso}</span>
+              <span style={{ fontSize: '0.62rem', color: '#5A6474' }}><span style={isItalicName(country?.name) ? { fontStyle: 'italic' } : undefined}>{country?.name}</span> · {iso}</span>
             </div>
             <p style={{ fontSize: '0.66rem', color: '#5A6474', lineHeight: 1.5, margin: '0 0 12px' }}>
               Propose a correction to this briefing note. Tip: highlight text in the note before clicking to pre-fill the passage.
@@ -1548,7 +1548,7 @@ export default function CountryPage() {
               width: 44, height: 5, borderRadius: 3,
               backgroundColor: t.muted, opacity: 0.7,
             }} />
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text }}>{country.name}</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: t.text, ...(isItalicName(country.name) ? { fontStyle: 'italic' } : {}) }}>{country.name}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ fontSize: '0.82rem', fontWeight: 700, color: t.lbl, letterSpacing: '0.3px' }}>
                 {sheetHeight > 96 ? 'Close' : 'Data'}
@@ -1568,10 +1568,10 @@ export default function CountryPage() {
             <span style={{ color: t.panelBorder, fontSize: '0.68rem' }}>/</span>
             <Link to={`/region/${region.id}`} style={{ fontSize: '0.68rem', color: t.muted }}>{region.name}</Link>
             <span style={{ color: t.panelBorder, fontSize: '0.68rem' }}>/</span>
-            <span style={{ fontSize: '0.68rem', color: t.lbl, fontWeight: 600 }}>{country.name}</span>
+            <span style={{ fontSize: '0.68rem', color: t.lbl, fontWeight: 600, ...(isItalicName(country.name) ? { fontStyle: 'italic' } : {}) }}>{country.name}</span>
           </div>
 
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6 }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: t.text, marginBottom: 6, ...(isItalicName(country.name) ? { fontStyle: 'italic' } : {}) }}>
             {country.name}
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>

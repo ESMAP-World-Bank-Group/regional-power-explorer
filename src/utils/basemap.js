@@ -127,9 +127,24 @@ export function isArea(f) {
   return f.sourceLayer ? f.sourceLayer === NDLSA_LAYER : f.properties.STATUS === 'non-determined';
 }
 
-/** An area's Bank name, from either source. */
+/** A country's or area's Bank name, from either source. */
 export function areaName(f) {
   return f.properties.WB_NAME ?? f.properties[NAME_PROP];
+}
+
+// The two contested territories the app names. Bank style sets their names in
+// italics wherever they appear; the map's own labels follow the same rule (see
+// ITALIC_ADM0_LABELS in wbStyle.js).
+const ITALIC_NAMES = new Set(['West Bank and Gaza', 'Western Sahara']);
+
+/** True for a name Bank style sets in italics. */
+export function isItalicName(name) {
+  return ITALIC_NAMES.has(name);
+}
+
+/** A name for popup HTML, italicised where Bank style asks. */
+export function nameHtml(name) {
+  return isItalicName(name) ? `<i>${name}</i>` : name;
 }
 
 /** Match a region's member countries. Areas are drawn by addNdlsaLayer(). */
