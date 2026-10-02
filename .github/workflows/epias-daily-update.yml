@@ -1,4 +1,4 @@
-name: Daily EPİAŞ market price update
+name: Daily EPİAŞ data update
 
 on:
   schedule:
