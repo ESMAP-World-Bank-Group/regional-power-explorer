@@ -5,7 +5,7 @@ import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
-import { addGeoSource, countryLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { prefetchGeo, addGeoSource, countryLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function MetaRegionPage({ region }) {
   const { theme }  = useTheme();
@@ -17,6 +17,7 @@ export default function MetaRegionPage({ region }) {
   const [subregions, setSubregions] = useState([]);
 
   useEffect(() => {
+    prefetchGeo('world');
     fetch(dataPath('regions.json')).then(r => r.json()).then(d => {
       setSubregions((d.regions || []).filter(r => r.parent === region.id));
     });

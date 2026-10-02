@@ -7,7 +7,7 @@ import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
 import ExportControl from '../components/ExportControl';
-import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchNdlsa, prefetchGeo, addGeoSource, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -31,6 +31,7 @@ export default function WorldPage() {
   }, []);
 
   useEffect(() => {
+    prefetchGeo('world');
     fetch(dataPath('regions.json')).then(r => r.json()).then(d => setRegions(d.regions));
   }, []);
 

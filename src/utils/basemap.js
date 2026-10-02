@@ -66,8 +66,39 @@ function fromTopology(topo) {
  * @param {string} [id]  region id or ISO_A3; none for 'world'
  */
 export async function fetchGeo(kind, id) {
-  const file = kind === 'world' ? 'geo/world.topo.json' : `geo/${kind}/${id}.topo.json`;
-  return fromTopology(await fetchJson(dataPath(file)));
+  const file = geoFile(kind, id);
+  const pending = prefetched.get(file);
+  prefetched.delete(file);
+  return fromTopology(await (pending || fetchJson(dataPath(file))));
+}
+
+function geoFile(kind, id) {
+  return kind === 'world' ? 'geo/world.topo.json' : `geo/${kind}/${id}.topo.json`;
+}
+
+// Downloads started ahead of the map, each handed to the first fetchGeo() for
+// its file and then forgotten, so nothing lingers in memory past its page.
+const prefetched = new Map();
+
+/**
+ * Start downloading a page's geometry as the page opens, instead of after the
+ * map's 'load' -- which waits for the basemap style, tiles and fonts -- so the
+ * two load side by side. The pages that draw through addGeoSource() skip it
+ * when the GAD tiles are in use; country pages always read the file.
+ *
+ * @param {'world'|'region'|'country'} kind
+ * @param {string} [id]  region id or ISO_A3; none for 'world'
+ */
+export function prefetchGeo(kind, id) {
+  const file = geoFile(kind, id);
+  const start = () => {
+    if (prefetched.has(file)) return;
+    const p = fetchJson(dataPath(file));
+    p.catch(() => prefetched.delete(file));
+    prefetched.set(file, p);
+  };
+  if (kind === 'country') start();
+  else resolveGeoMode().then(mode => { if (mode === 'static') start(); });
 }
 
 let bboxesPromise = null;

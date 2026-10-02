@@ -18,7 +18,7 @@ import StatsPanel from '../components/StatsPanel';
 import RegionSupplyTrade from '../components/RegionSupplyTrade';
 import MetaRegionPage from './MetaRegionPage';
 import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW, MAP_LABEL_FONT } from '../utils/wbStyle';
-import { fetchBboxes, fetchNdlsa, boundsFor, addGeoSource, countryLayer, featureTarget, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchBboxes, fetchNdlsa, boundsFor, prefetchGeo, addGeoSource, countryLayer, featureTarget, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -122,6 +122,8 @@ export default function RegionPage() {
   const [sheetHeight,     setSheetHeight]     = useState(96);
   const [isDragging,      setIsDragging]      = useState(false);
   const dragRef = useRef(null);
+
+  useEffect(() => { prefetchGeo('region', regionId); }, [regionId]);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
