@@ -127,14 +127,18 @@ const ITALIC_FONT = ['Ubuntu Bold Italic'];   // the italic of the labels' Ubunt
 // Country name sizes. The Bank's label classes run from 8.5 px (small
 // countries) to 20 px (large ones at z7+), a spread that reads as shouting next
 // to whispering once zoomed in. Each published size is pulled halfway toward
-// 12 px, then the whole set is drawn at 80%.
+// 12 px, the whole set is drawn at 80%, then 2 px smaller -- but never under
+// 7 px, below which the small countries' names stop being legible.
 const ADM0_SIZE_MID = 12;
 const ADM0_SIZE_SPREAD = 0.5;
 const ADM0_SIZE_SCALE = 0.8;
+const ADM0_SIZE_OFFSET = -2;
+const ADM0_SIZE_MIN = 7;
 
 /** A country label's drawn size, in px, from the Bank's published size. */
 export function adm0LabelSize(px) {
-  return (ADM0_SIZE_MID + (px - ADM0_SIZE_MID) * ADM0_SIZE_SPREAD) * ADM0_SIZE_SCALE;
+  return Math.max(ADM0_SIZE_MIN,
+    (ADM0_SIZE_MID + (px - ADM0_SIZE_MID) * ADM0_SIZE_SPREAD) * ADM0_SIZE_SCALE + ADM0_SIZE_OFFSET);
 }
 
 function adm0SizeSpec(size) {
