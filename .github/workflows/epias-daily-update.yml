@@ -28,9 +28,12 @@ jobs:
         id: startdate
         run: |
           python3 -c "
-          import json
+          import json, sys
           from pathlib import Path
           from datetime import date, timedelta
+
+          sys.path.insert(0, 'tools/pipelines')
+          from epias_pipeline import SERIES
 
           path = Path('public/data/market/TUR.json')
           fallback = date.today() - timedelta(days=14)
@@ -40,7 +43,7 @@ jobs:
           else:
               data = json.loads(path.read_text())
               last_dates = []
-              for series in ('dam', 'dam_eur', 'dam_usd', 'idm', 'bpm'):
+              for series in SERIES:
                   hourly = data.get(series, {}).get('hourly', {})
                   if hourly:
                       last_dates.append(date.fromisoformat(max(hourly.keys())[:10]))
