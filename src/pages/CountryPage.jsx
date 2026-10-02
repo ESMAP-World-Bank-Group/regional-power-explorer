@@ -16,7 +16,7 @@ import ZoningTab from '../components/tabs/ZoningTab';
 import SupplyTab from '../components/tabs/SupplyTab';
 import MarketTab from '../components/tabs/MarketTab';
 import { buildWbStyle, applyWbView, useWbStyleBase, DEFAULT_WB_VIEW, MAP_LABEL_FONT } from '../utils/wbStyle';
-import { fetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor, isItalicName } from '../utils/basemap';
+import { fetchGeo, prefetchGeo, fetchBboxes, fetchNdlsa, boundsFor, addCountriesSource, addNdlsaLayer, raiseBoundaries, fillAnchor, isItalicName } from '../utils/basemap';
 import { CONTACT_EMAIL, openMail } from '../utils/mailto';
 
 const EDIT_LBL = { display: 'block', fontSize: '0.6rem', fontWeight: 600, color: '#5A6474', margin: '10px 0 3px', letterSpacing: '0.3px' };
@@ -181,6 +181,8 @@ export default function CountryPage() {
   const [sheetHeight,     setSheetHeight]     = useState(96);
   const [isDragging,      setIsDragging]      = useState(false);
   const dragRef = useRef(null);
+
+  useEffect(() => { prefetchGeo('country', iso); }, [iso]);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
