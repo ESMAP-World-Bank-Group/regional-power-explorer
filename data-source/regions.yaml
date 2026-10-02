@@ -11,7 +11,7 @@ regions:
     color: "#54B4EC"
     min_kv: 20000
     countries:
-      - {iso: TUR, name: Turkiye}
+      - {iso: TUR, name: Türkiye}
       - {iso: ROU, name: Romania}
       - {iso: BGR, name: Bulgaria}
       - {iso: GEO, name: Georgia}
@@ -25,12 +25,12 @@ regions:
     min_kv: 20000
     countries:
       - {iso: SEN, name: Senegal}
-      - {iso: GMB, name: Gambia}
+      - {iso: GMB, name: The Gambia}
       - {iso: GNB, name: Guinea-Bissau}
       - {iso: GIN, name: Guinea}
       - {iso: SLE, name: Sierra Leone}
       - {iso: LBR, name: Liberia}
-      - {iso: CIV, name: Cote d'Ivoire}
+      - {iso: CIV, name: "Côte d'Ivoire"}
       - {iso: GHA, name: Ghana}
       - {iso: TGO, name: Togo}
       - {iso: BEN, name: Benin}
@@ -48,11 +48,11 @@ regions:
       - {iso: CMR, name: Cameroon}
       - {iso: CAF, name: Central African Republic}
       - {iso: TCD, name: Chad}
-      - {iso: COD, name: DR Congo}
+      - {iso: COD, name: Democratic Republic of Congo}
       - {iso: COG, name: Republic of Congo}
       - {iso: GAB, name: Gabon}
       - {iso: GNQ, name: Equatorial Guinea}
-      - {iso: STP, name: Sao Tome and Principe}
+      - {iso: STP, name: São Tomé and Príncipe}
 
   - id: eapp
     name: Eastern Africa Power Pool
@@ -61,7 +61,7 @@ regions:
     color: "#D4A26A"
     min_kv: 20000
     countries:
-      - {iso: EGY, name: Egypt}
+      - {iso: EGY, name: Arab Republic of Egypt}
       - {iso: LBY, name: Libya}
       - {iso: SDN, name: Sudan}
       - {iso: SSD, name: South Sudan}
@@ -69,11 +69,11 @@ regions:
       - {iso: DJI, name: Djibouti}
       - {iso: KEN, name: Kenya}
       - {iso: TZA, name: Tanzania}
-      - {iso: SOM, name: Somalia}
+      - {iso: SOM, name: Federal Republic of Somalia}
       - {iso: UGA, name: Uganda}
       - {iso: RWA, name: Rwanda}
       - {iso: BDI, name: Burundi}
-      - {iso: COD, name: DR Congo}
+      - {iso: COD, name: Democratic Republic of Congo}
 
   - id: sapp
     name: Southern Africa Power Pool
@@ -93,7 +93,7 @@ regions:
       - {iso: SWZ, name: Eswatini}
       - {iso: AGO, name: Angola}
       - {iso: TZA, name: Tanzania}
-      - {iso: COD, name: DR Congo}
+      - {iso: COD, name: Democratic Republic of Congo}
 
   - id: easa
     name: EA & SA Pools
@@ -102,7 +102,7 @@ regions:
     min_kv: 20000
     countries:
       # EAPP
-      - {iso: EGY, name: Egypt}
+      - {iso: EGY, name: Arab Republic of Egypt}
       - {iso: LBY, name: Libya}
       - {iso: SDN, name: Sudan}
       - {iso: SSD, name: South Sudan}
@@ -110,11 +110,11 @@ regions:
       - {iso: DJI, name: Djibouti}
       - {iso: KEN, name: Kenya}
       - {iso: TZA, name: Tanzania}
-      - {iso: SOM, name: Somalia}
+      - {iso: SOM, name: Federal Republic of Somalia}
       - {iso: UGA, name: Uganda}
       - {iso: RWA, name: Rwanda}
       - {iso: BDI, name: Burundi}
-      - {iso: COD, name: DR Congo}
+      - {iso: COD, name: Democratic Republic of Congo}
       # SAPP (excl. TZA, COD already listed above)
       - {iso: ZAF, name: South Africa}
       - {iso: ZWE, name: Zimbabwe}
@@ -138,19 +138,19 @@ regions:
       - {iso: DZA, name: Algeria}
       - {iso: TUN, name: Tunisia}
       - {iso: LBY, name: Libya}
-      - {iso: EGY, name: Egypt}
+      - {iso: EGY, name: Arab Republic of Egypt}
       - {iso: JOR, name: Jordan}
       - {iso: LBN, name: Lebanon}
-      - {iso: SYR, name: Syria}
+      - {iso: SYR, name: Syrian Arab Republic}
       - {iso: IRQ, name: Iraq}
       - {iso: SAU, name: Saudi Arabia}
-      - {iso: YEM, name: Yemen}
+      - {iso: YEM, name: Republic of Yemen}
       - {iso: OMN, name: Oman}
-      - {iso: ARE, name: UAE}
+      - {iso: ARE, name: United Arab Emirates}
       - {iso: QAT, name: Qatar}
       - {iso: BHR, name: Bahrain}
       - {iso: KWT, name: Kuwait}
-      - {iso: PSE, name: Palestine}
+      - {iso: PSE, name: West Bank and Gaza}
       - {iso: SDN, name: Sudan}
 
   - id: balkans
@@ -188,7 +188,7 @@ regions:
     min_kv: 20000
     countries:
       - {iso: KAZ, name: Kazakhstan}
-      - {iso: KGZ, name: Kyrgyzstan}
+      - {iso: KGZ, name: Kyrgyz Republic}
       - {iso: TJK, name: Tajikistan}
       - {iso: TKM, name: Turkmenistan}
       - {iso: UZB, name: Uzbekistan}
@@ -206,7 +206,7 @@ regions:
       Asia corridor, which is the perimeter this map draws.
     countries:
       - {iso: KAZ, name: Kazakhstan}
-      - {iso: KGZ, name: Kyrgyzstan}
+      - {iso: KGZ, name: Kyrgyz Republic}
       - {iso: TJK, name: Tajikistan}
       - {iso: TKM, name: Turkmenistan}
       - {iso: UZB, name: Uzbekistan}
@@ -219,16 +219,16 @@ regions:
     color: "#23ACAE"
     min_kv: 20000
     countries:
-      - {iso: BRN, name: Brunei}
+      - {iso: BRN, name: Brunei Darussalam}
       - {iso: KHM, name: Cambodia}
       - {iso: IDN, name: Indonesia}
-      - {iso: LAO, name: Laos}
+      - {iso: LAO, name: "Lao People's Democratic Republic"}
       - {iso: MYS, name: Malaysia}
       - {iso: MMR, name: Myanmar}
       - {iso: PHL, name: Philippines}
       - {iso: SGP, name: Singapore}
       - {iso: THA, name: Thailand}
-      - {iso: VNM, name: Vietnam}
+      - {iso: VNM, name: Viet Nam}
 
   - id: gms
     name: Greater Mekong Subregion (GMS)
@@ -242,10 +242,10 @@ regions:
       boundary of this dataset, not of the interconnection.
     countries:
       - {iso: KHM, name: Cambodia}
-      - {iso: LAO, name: Laos}
+      - {iso: LAO, name: "Lao People's Democratic Republic"}
       - {iso: MMR, name: Myanmar}
       - {iso: THA, name: Thailand}
-      - {iso: VNM, name: Vietnam}
+      - {iso: VNM, name: Viet Nam}
 
   - id: northamerica
     name: North America
@@ -259,7 +259,7 @@ regions:
       quadruple the layer and make the continental view unreadable.
     countries:
       - {iso: CAN, name: Canada}
-      - {iso: USA, name: United States}
+      - {iso: USA, name: United States of America}
       - {iso: MEX, name: Mexico}
 
   - id: siepac
@@ -301,7 +301,7 @@ regions:
       - {iso: COL, name: Colombia}
       - {iso: ECU, name: Ecuador}
       - {iso: PER, name: Peru}
-      - {iso: VEN, name: Venezuela}
+      - {iso: VEN, name: Republica Bolivariana de Venezuela}
 
   - id: sids-caribbean
     name: Caribbean SIDS
@@ -315,7 +315,7 @@ regions:
       - {iso: JAM, name: Jamaica}
       - {iso: TTO, name: Trinidad and Tobago}
       - {iso: BRB, name: Barbados}
-      - {iso: BHS, name: Bahamas}
+      - {iso: BHS, name: The Bahamas}
       - {iso: GRD, name: Grenada}
       - {iso: LCA, name: Saint Lucia}
       - {iso: VCT, name: Saint Vincent and the Grenadines}
@@ -340,10 +340,10 @@ regions:
       - {iso: TON, name: Tonga}
       - {iso: KIR, name: Kiribati}
       - {iso: TUV, name: Tuvalu}
-      - {iso: NRU, name: Nauru}
+      - {iso: NRU, name: Naoero}
       - {iso: PLW, name: Palau}
       - {iso: MHL, name: Marshall Islands}
-      - {iso: FSM, name: Micronesia}
+      - {iso: FSM, name: Federated States of Micronesia}
       - {iso: TLS, name: Timor-Leste}
 
   - id: sids-aims
@@ -356,8 +356,8 @@ regions:
       - {iso: COM, name: Comoros}
       - {iso: SYC, name: Seychelles}
       - {iso: MUS, name: Mauritius}
-      - {iso: STP, name: Sao Tome and Principe}
-      - {iso: CPV, name: Cape Verde}
+      - {iso: STP, name: São Tomé and Príncipe}
+      - {iso: CPV, name: Cabo Verde}
       - {iso: GNB, name: Guinea-Bissau}
       - {iso: SGP, name: Singapore}
       - {iso: BHR, name: Bahrain}
@@ -373,7 +373,7 @@ regions:
       - {iso: BGR, name: Bulgaria}
       - {iso: HRV, name: Croatia}
       - {iso: CYP, name: Cyprus}
-      - {iso: CZE, name: Czechia}
+      - {iso: CZE, name: Czech Republic}
       - {iso: DNK, name: Denmark}
       - {iso: EST, name: Estonia}
       - {iso: FIN, name: Finland}
@@ -391,7 +391,7 @@ regions:
       - {iso: POL, name: Poland}
       - {iso: PRT, name: Portugal}
       - {iso: ROU, name: Romania}
-      - {iso: SVK, name: Slovakia}
+      - {iso: SVK, name: Slovak Republic}
       - {iso: SVN, name: Slovenia}
       - {iso: ESP, name: Spain}
       - {iso: SWE, name: Sweden}
@@ -411,7 +411,7 @@ regions:
       - {iso: BGR, name: Bulgaria}
       - {iso: HRV, name: Croatia}
       - {iso: CYP, name: Cyprus}
-      - {iso: CZE, name: Czechia}
+      - {iso: CZE, name: Czech Republic}
       - {iso: DNK, name: Denmark}
       - {iso: EST, name: Estonia}
       - {iso: FIN, name: Finland}
@@ -434,11 +434,11 @@ regions:
       - {iso: PRT, name: Portugal}
       - {iso: ROU, name: Romania}
       - {iso: SRB, name: Serbia}
-      - {iso: SVK, name: Slovakia}
+      - {iso: SVK, name: Slovak Republic}
       - {iso: SVN, name: Slovenia}
       - {iso: ESP, name: Spain}
       - {iso: SWE, name: Sweden}
       - {iso: CHE, name: Switzerland}
-      - {iso: TUR, name: Turkiye}
+      - {iso: TUR, name: Türkiye}
       - {iso: UKR, name: Ukraine}
       - {iso: GBR, name: United Kingdom}
