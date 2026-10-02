@@ -8,18 +8,19 @@
  * pages key on (ISO_A3 on countries, NAM_0 on areas). A tileset published
  * with Unique Values symbology fails this -- ArcGIS then writes only a
  * `_symbol` class index into the tiles -- and so does a private one. Either
- * way the map falls back to the static files and nothing breaks; when the
- * service is republished with real attributes the tiles take over without a
- * redeploy.
+ * way the map falls back to the static files and nothing breaks. The probe is
+ * off until a service is configured; see SERVICE below.
  *
  * Borders are never drawn from this geometry; they come from the Bank's own
  * boundary lines in the basemap style (src/utils/wbStyle.js).
  */
 
-// Override at build time with VITE_GAD_TILES_URL once the ADM0 + NDLSA
-// tileset is republished; set it to 'off' to skip the probe entirely.
-const DEFAULT_SERVICE = 'https://tiles.arcgis.com/tiles/iQ1dY19aHwbSDYIF/arcgis/rest/services/WB_GAD_Polygons_012/VectorTileServer';
-const SERVICE = import.meta.env.VITE_GAD_TILES_URL || DEFAULT_SERVICE;
+// Off by default: the tileset answers "Requested Service not available", and
+// probing it put a round trip in front of every first visit's geometry. Once
+// the ADM0 + NDLSA tileset is republished, set VITE_GAD_TILES_URL to it at
+// build time -- the last published URL was
+// https://tiles.arcgis.com/tiles/iQ1dY19aHwbSDYIF/arcgis/rest/services/WB_GAD_Polygons_012/VectorTileServer
+const SERVICE = import.meta.env.VITE_GAD_TILES_URL || 'off';
 
 export const ADM0_LAYER = import.meta.env.VITE_GAD_ADM0_LAYER || 'WB_GAD_ADM0';
 export const NDLSA_LAYER = import.meta.env.VITE_GAD_NDLSA_LAYER || 'World_Bank_Official_Boundaries___NDLSA';
