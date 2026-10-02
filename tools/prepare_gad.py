@@ -27,6 +27,9 @@ read_topology() here turn them back into GeoJSON.
 
 Outputs (public/data/geo/):
     world.topo.json             every feature, coarse -- world and meta-region pages
+    world-lite.topo.json        region members and areas only, much coarser and
+                                without small islands -- what those pages draw
+                                first, for the second until world.topo.json is in
     country/<ISO_A3>.topo.json  one country plus the areas it is a claimant of,
                                 detail -- only for countries that belong to a
                                 region, the only ones with a country page
@@ -99,6 +102,16 @@ PRECISION = 5           # decimal places kept, ~1 m
 # collapse in the world file are Douglas-Peucker slivers of a few hundred m2.
 DETAIL_GRID = 0.00005   # ~6 m
 WORLD_GRID = 0.0005     # ~56 m
+
+# The first pass the world and meta-region pages draw while world.topo.json
+# loads: only what those pages colour, at 0.1 deg (~11 km) and without islands
+# under 0.05 deg. 30k vertices against the world file's 300k -- most of which
+# are small islands -- so the browser has the colours up in a tenth of the
+# time. On screen for about a second, then replaced, so every island still
+# shows once the page has loaded.
+LITE_TOLERANCE = 0.1
+LITE_MIN_RING = 0.05
+LITE_GRID = 0.001       # ~110 m
 PAGE = 50               # features per request; geometry makes bigger pages time out
 
 # The Bank's own code where the app's differs (regions.json, every data file).
@@ -375,6 +388,13 @@ def write_json(path, obj, compact=True):
     return path.stat().st_size
 
 
+def lite_world(by_iso, areas, regions):
+    """world-lite's features: every region member and every area, coarsened."""
+    members = {c["iso"] for r in regions if r.get("type") != "meta" for c in r.get("countries", [])}
+    feats = [f for iso, f in by_iso.items() if iso in members] + areas
+    return [simplify_feature(f, LITE_TOLERANCE, LITE_MIN_RING) for f in feats]
+
+
 def write_topology(path, features, grid):
     topo, dropped = topology(features, grid)
     if dropped:
@@ -504,6 +524,8 @@ def main():
 
     sizes = {}
     sizes["world.topo.json"] = write_topology(OUT_DIR / "world.topo.json", world, WORLD_GRID)
+    sizes["world-lite.topo.json"] = write_topology(
+        OUT_DIR / "world-lite.topo.json", lite_world(by_iso, areas, regions), LITE_GRID)
     sizes["bboxes.json"] = write_json(OUT_DIR / "bboxes.json", boxes)
 
     paged = {c["iso"] for r in regions for c in r.get("countries", [])}
@@ -525,7 +547,7 @@ def main():
     update_regions_json(regions_doc, derived, dry_run=False)
 
     log(f"wrote {len(sizes)} files under {OUT_DIR.relative_to(_ROOT)}")
-    for k in ("world.topo.json", "bboxes.json"):
+    for k in ("world.topo.json", "world-lite.topo.json", "bboxes.json"):
         log(f"  {k:24s} {sizes[k]:>10,} bytes")
     region_sizes = sorted(((v, k) for k, v in sizes.items() if k.startswith("region/")), reverse=True)
     log("  largest region files: " + ", ".join(f"{k[7:]} {v:,}" for v, k in region_sizes[:5]))

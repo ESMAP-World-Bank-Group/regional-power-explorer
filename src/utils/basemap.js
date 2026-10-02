@@ -73,7 +73,8 @@ export async function fetchGeo(kind, id) {
 }
 
 function geoFile(kind, id) {
-  return kind === 'world' ? 'geo/world.topo.json' : `geo/${kind}/${id}.topo.json`;
+  if (kind === 'world' || kind === 'world-lite') return `geo/${kind}.topo.json`;
+  return `geo/${kind}/${id}.topo.json`;
 }
 
 // Downloads started ahead of the map, each handed to the first fetchGeo() for
@@ -90,13 +91,13 @@ const prefetched = new Map();
  * @param {string} [id]  region id or ISO_A3; none for 'world'
  */
 export function prefetchGeo(kind, id) {
-  const file = geoFile(kind, id);
-  const start = () => {
+  const files = kind === 'world' ? [geoFile('world-lite'), geoFile('world')] : [geoFile(kind, id)];
+  const start = () => files.forEach(file => {
     if (prefetched.has(file)) return;
     const p = fetchJson(dataPath(file));
     p.catch(() => prefetched.delete(file));
     prefetched.set(file, p);
-  };
+  });
   if (kind === 'country') start();
   else resolveGeoMode().then(mode => { if (mode === 'static') start(); });
 }
@@ -147,10 +148,49 @@ export async function addGeoSource(map, kind, id, isDisposed = () => false) {
     map.addSource('countries', geoTileSourceSpec());
     return mode;
   }
+  if (kind === 'world') return addWorldSource(map, isDisposed);
   const fc = await fetchGeo(kind, id);
   if (isDisposed()) return null;
   addCountriesSource(map, fc);
   return mode;
+}
+
+// Resolves once a map's countries source holds its full geometry.
+const detailReady = new WeakMap();
+
+/**
+ * When the map's countries source holds its full geometry -- for the world
+ * file, after the first pass has been replaced. Anything that reads the
+ * source's data, like the export, waits on this.
+ */
+export function geoDetail(map) {
+  return detailReady.get(map) || Promise.resolve();
+}
+
+/**
+ * The world geometry in two passes: world-lite first -- a tenth of the
+ * vertices, so the colours are up almost at once -- then world.topo.json in
+ * its place when it has loaded. The pages' layers key on properties, which
+ * the two files share, so filters and colours carry over; feature ids do not
+ * line up, so hover state is reset at the swap.
+ */
+async function addWorldSource(map, isDisposed) {
+  const full = fetchGeo('world');
+  const lite = await fetchGeo('world-lite').catch(() => null);
+  if (isDisposed()) return null;
+  if (!lite) {
+    const fc = await full;
+    if (isDisposed()) return null;
+    addCountriesSource(map, fc);
+    return 'static';
+  }
+  addCountriesSource(map, lite);
+  detailReady.set(map, full.then(fc => {
+    if (isDisposed() || !map.getSource('countries')) return;
+    map.removeFeatureState({ source: 'countries' });
+    map.getSource('countries').setData(fc);
+  }).catch(err => console.error('world geometry', err)));
+  return 'static';
 }
 
 /** Source binding for a layer drawn from the countries. */

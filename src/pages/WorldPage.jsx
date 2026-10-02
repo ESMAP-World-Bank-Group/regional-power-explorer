@@ -7,7 +7,7 @@ import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
 import ExportControl from '../components/ExportControl';
-import { fetchNdlsa, prefetchGeo, addGeoSource, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -228,10 +228,14 @@ export default function WorldPage() {
       });
 
       raiseBoundaries(map);
-      setMapReady(true);
 
       // Restore meta markers after map rebuild (e.g., theme change)
       if (metaActiveRef.current) applyMetaMarkers(metaActiveRef.current, map);
+
+      // The export and the chat read the source's data, so they wait for the
+      // full geometry to replace the first pass.
+      await geoDetail(map);
+      if (!disposed) setMapReady(true);
     });
 
     return () => {
