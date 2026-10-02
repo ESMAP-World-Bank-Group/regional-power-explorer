@@ -26,6 +26,8 @@ from shapely.wkb import loads as wkb_loads
 from shapely.ops import unary_union
 from shapely.validation import make_valid
 
+from prepare_gad import read_topology
+
 _ROOT    = Path(__file__).resolve().parents[1]
 GPKG     = _ROOT.parent / "maps" / "worldwide.gpkg"
 DATA_DIR = _ROOT / "data-source"
@@ -63,12 +65,11 @@ def load_region_countries(region_id):
     """The region's member polygons from its detail extract. The coarse world
     file drops islands under 0.2 deg and shifts coasts by kilometres, which
     misplaces coastal plants and loses small-island regions entirely."""
-    path = DATA_DIR.parent / "public" / "data" / "geo" / "region" / f"{region_id}.geojson"
+    path = DATA_DIR.parent / "public" / "data" / "geo" / "region" / f"{region_id}.topo.json"
     if not path.exists():
         print(f"  {path.name} not found -- run tools/prepare_gad.py first")
         return []
-    with open(path, encoding="utf-8") as f:
-        gj = json.load(f)
+    gj = read_topology(path)
     rows, repaired = [], 0
     for feat in gj["features"]:
         p = feat["properties"]

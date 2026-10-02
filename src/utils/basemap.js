@@ -36,18 +36,38 @@ async function fetchJson(path) {
 }
 
 /**
- * Load one of the extract's files. Feature ids are assigned here because
- * MapLibre needs them for setFeatureState and the source is loaded with
- * generateId: false.
+ * The FeatureCollection in one of the extract's TopoJSON files. It reads only
+ * what tools/prepare_gad.py topology() writes -- quantized, delta-encoded, one
+ * arc per ring, MultiPolygons -- not TopoJSON at large. Feature ids are
+ * assigned here because MapLibre needs them for setFeatureState and the
+ * source is loaded with generateId: false.
+ */
+function fromTopology(topo) {
+  const { scale: [sx, sy], translate: [tx, ty] } = topo.transform;
+  const rings = topo.arcs.map(arc => {
+    let x = 0, y = 0;
+    return arc.map(([dx, dy]) => [(x += dx) * sx + tx, (y += dy) * sy + ty]);
+  });
+  return {
+    type: 'FeatureCollection',
+    features: topo.objects.features.geometries.map((g, i) => ({
+      type: 'Feature',
+      id: i,
+      properties: g.properties,
+      geometry: { type: 'MultiPolygon', coordinates: g.arcs.map(poly => poly.map(([a]) => rings[a])) },
+    })),
+  };
+}
+
+/**
+ * Load one of the extract's files as GeoJSON.
  *
  * @param {'world'|'region'|'country'} kind
  * @param {string} [id]  region id or ISO_A3; none for 'world'
  */
 export async function fetchGeo(kind, id) {
-  const file = kind === 'world' ? 'geo/world.geojson' : `geo/${kind}/${id}.geojson`;
-  const fc = await fetchJson(dataPath(file));
-  fc.features.forEach((f, i) => { f.id = i; });
-  return fc;
+  const file = kind === 'world' ? 'geo/world.topo.json' : `geo/${kind}/${id}.topo.json`;
+  return fromTopology(await fetchJson(dataPath(file)));
 }
 
 let bboxesPromise = null;
