@@ -145,9 +145,13 @@ export default function WorldPage() {
 
     map.on('movestart', () => setDisambig(null));
 
-    map.on('load', async () => {
-      const ndlsa = await fetchNdlsa();
-      const mode = await addGeoSource(map, 'world', undefined, () => disposed);
+    // On the style, not 'load': 'load' waits for every basemap tile and font
+    // to arrive and draw, and the region colours have no reason to wait for them.
+    map.once('style.load', async () => {
+      const [ndlsa, mode] = await Promise.all([
+        fetchNdlsa(),
+        addGeoSource(map, 'world', undefined, () => disposed),
+      ]);
       if (!mode) return;
 
 

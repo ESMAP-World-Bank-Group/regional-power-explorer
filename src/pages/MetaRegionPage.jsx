@@ -40,7 +40,8 @@ export default function MetaRegionPage({ region }) {
     });
     mapRef.current = map;
 
-    map.on('load', async () => {
+    // On the style, not 'load', which waits for every basemap tile to draw.
+    map.once('style.load', async () => {
       const mode = await addGeoSource(map, 'world', undefined, () => disposed);
       if (!mode) return;
       map.addLayer({ id: 'sids-fill', type: 'fill', ...countryLayer(mode),
