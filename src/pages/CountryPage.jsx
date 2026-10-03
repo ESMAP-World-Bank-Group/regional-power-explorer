@@ -460,6 +460,10 @@ export default function CountryPage() {
             props: { ...props, voltageLabel: v ? `${Math.round(v / 1000)} kV` : bracket.label },
             km:    lineKm(coords),
           });
+        } else if (countryFeatureRef.current
+            && !pointInFeature([e.lngLat.lng, e.lngLat.lat], countryFeatureRef.current)) {
+          // A click outside the country goes back out to its region.
+          navigate(`/region/${region.id}`);
         } else {
           setSelFeature(null);
         }
