@@ -8,8 +8,7 @@ import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
-import WelcomePanel from '../components/WelcomePanel';
-import { welcomeSeen } from '../utils/welcome';
+import { onFirstDraw } from '../utils/mapDrawn';
 import { prefetchPages } from './lazyPages';
 import { fetchBboxes, fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
@@ -27,7 +26,6 @@ export default function WorldPage() {
   const [metaActive, setMetaActive] = useState(null); // region obj or null
   const [disambig, setDisambig] = useState(null);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700);
-  const [welcomeOpen, setWelcomeOpen] = useState(() => !welcomeSeen());
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
@@ -169,6 +167,8 @@ export default function WorldPage() {
           ...availableIsos.flatMap(iso => [iso, isoToRegions[iso][0].color]),
           'transparent',
         ];
+        // The welcome screen (index.html) lets the visitor in once these are drawn.
+        onFirstDraw(map, 'countries', () => window.rpeWelcome?.mapReady());
         map.addLayer({
           id: 'region-fill',
           type: 'fill',
@@ -433,8 +433,8 @@ export default function WorldPage() {
         Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
       </div>
 
-      {/* ── About this map: reopens the welcome panel ── */}
-      <button onClick={() => setWelcomeOpen(true)} style={{
+      {/* ── About this map: reopens the welcome screen in index.html ── */}
+      <button onClick={() => window.rpeWelcome?.show()} style={{
         position: 'absolute', bottom: isMobile ? 30 : 8, right: 12, zIndex: 50,
         backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
         borderRadius: 6, padding: '4px 10px', cursor: 'pointer',
@@ -443,8 +443,6 @@ export default function WorldPage() {
       }}>
         About this map
       </button>
-
-      {welcomeOpen && <WelcomePanel t={t} onClose={() => setWelcomeOpen(false)} />}
     </div>
   );
 }
