@@ -1133,7 +1133,7 @@ export default function CountryPage() {
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
-      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >

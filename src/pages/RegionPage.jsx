@@ -63,6 +63,13 @@ function Row({ label, value, t }) {
   );
 }
 
+// Map layers behind each corridor toggle.
+const CORRIDOR_LAYERS = {
+  Existing:  ['region-corridors-ex', 'region-corridors-labels', 'region-corridors-dots'],
+  Committed: ['region-corridors-committed', 'region-corridors-dots'],
+  Candidate: ['region-corridors-candidate', 'region-corridors-dots'],
+};
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function RegionPage() {
@@ -269,7 +276,7 @@ export default function RegionPage() {
     for (const s of PLANT_STATUSES)
       if (map.getLayer(`plants-${s}`))
         map.setFilter(`plants-${s}`, makeLayerFilter(s, fuelsOff, minMw, visibleIsos));
-  }, [countriesOff, fuelsOff, minMw, region]); // eslint-disable-line
+  }, [countriesOff, fuelsOff, minMw, region]);
 
   // Map initialisation
   useEffect(() => {
@@ -286,13 +293,6 @@ export default function RegionPage() {
       attributionControl: false,
     });
     mapRef.current = map;
-
-    const popup = new maplibregl.Popup({
-      closeButton: false, closeOnClick: false, offset: 10,
-      className: `popup-${theme}`,
-    });
-
-    map.on('load', async () => {
     // Frame the region as soon as the (small, cached) bbox file is in, not
     // after the style and every data layer have loaded -- otherwise the page
     // sits on the zoom-2 world view for the whole download.
@@ -300,6 +300,13 @@ export default function RegionPage() {
       const bounds = boundsFor(bboxes, 'regions', regionId, 0.5);
       if (!disposed && bounds) map.fitBounds(bounds, { padding: 40, duration: 0 });
     }).catch(err => console.error('bboxes', err));
+
+    const popup = new maplibregl.Popup({
+      closeButton: false, closeOnClick: false, offset: 10,
+      className: `popup-${theme}`,
+    });
+
+    map.on('load', async () => {
       const [mode, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
         addGeoSource(map, 'region', regionId, () => disposed),
         fetchNdlsa(),
@@ -735,6 +742,20 @@ export default function RegionPage() {
 
   // ── Layer toggle handlers ─────────────────────────────────────────────────
 
+  // Flip a corridor class on or off: its state flag and its map layers together.
+  const onCorridorToggle = e => {
+    const label = e.currentTarget.dataset.corridor;
+    const map = mapRef.current;
+    if (!map) return;
+    const setter = { Existing: setCorrExistOn, Committed: setCorrCommOn, Candidate: setCorrCandOn }[label];
+    setter(prev => {
+      const next = !prev;
+      for (const id of CORRIDOR_LAYERS[label])
+        if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', next ? 'visible' : 'none');
+      return next;
+    });
+  };
+
   const toggleFuel = useCallback(fuel => {
     const map = mapRef.current;
     if (!map) return;
@@ -836,22 +857,6 @@ export default function RegionPage() {
         map.setPaintProperty(`plants-${s}`, 'circle-radius', plantRadiusExpr(scale));
   }, []);
 
-  const makeCorridorToggle = (layerIds, setter) => () => {
-    const map = mapRef.current;
-    if (!map) return;
-    setter(prev => {
-      const next = !prev;
-      for (const id of layerIds)
-        if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', next ? 'visible' : 'none');
-      return next;
-    });
-  };
-  const toggleCorrExist = useCallback(
-    makeCorridorToggle(['region-corridors-ex', 'region-corridors-labels', 'region-corridors-dots'], setCorrExistOn), []);
-  const toggleCorrComm  = useCallback(
-    makeCorridorToggle(['region-corridors-committed', 'region-corridors-dots'], setCorrCommOn), []);
-  const toggleCorrCand  = useCallback(
-    makeCorridorToggle(['region-corridors-candidate', 'region-corridors-dots'], setCorrCandOn), []);
 
   const toggleLoadCenters = useCallback(() => {
     const map = mapRef.current;
@@ -1036,7 +1041,7 @@ export default function RegionPage() {
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 46px)', position: 'relative' }}
-      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(w => Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
+      onMouseMove={e => { if (!isDrRef.current) return; setPanelWidth(Math.max(PANEL_WIDTH_MIN, Math.min(PANEL_WIDTH_MAX, drStartW.current + (drStartX.current - e.clientX)))); }}
       onMouseUp={() => { isDrRef.current = false; }}
       onMouseLeave={() => { isDrRef.current = false; }}
     >
@@ -1157,11 +1162,11 @@ export default function RegionPage() {
 
               {/* Corridor type toggles — only in zone mode */}
               {mapMode === 'zones' && [
-                { label: 'Existing',   on: corrExistOn, toggle: toggleCorrExist, color: '#1a5fa8', dash: null },
-                { label: 'Committed',  on: corrCommOn,  toggle: toggleCorrComm,  color: '#e07b00', dash: '8 3' },
-                { label: 'Candidate',  on: corrCandOn,  toggle: toggleCorrCand,  color: '#666',    dash: '2 4' },
-              ].map(({ label, on, toggle, color, dash }) => (
-                <button key={label} onClick={toggle} style={{
+                { label: 'Existing',   on: corrExistOn, color: '#1a5fa8', dash: null },
+                { label: 'Committed',  on: corrCommOn,  color: '#e07b00', dash: '8 3' },
+                { label: 'Candidate',  on: corrCandOn,  color: '#666',    dash: '2 4' },
+              ].map(({ label, on, color, dash }) => (
+                <button key={label} data-corridor={label} onClick={onCorridorToggle} style={{
                   display: 'flex', alignItems: 'center', gap: 5,
                   fontSize: '0.58rem', letterSpacing: '0.5px', fontFamily: 'inherit',
                   padding: '5px 9px', borderRadius: 6, cursor: 'pointer',
