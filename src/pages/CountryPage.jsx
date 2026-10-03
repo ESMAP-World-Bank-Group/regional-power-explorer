@@ -8,7 +8,7 @@ import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
-import MapChat from '../chat/MapChat';
+import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
 import { powerLegend } from '../utils/exportLegend';
 import CountryOverview from '../components/CountryOverview';

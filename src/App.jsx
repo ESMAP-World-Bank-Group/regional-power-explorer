@@ -1,13 +1,10 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, Suspense } from 'react';
 import { THEME_LIST } from './constants';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import WorldPage from './pages/WorldPage';
-import RegionPage from './pages/RegionPage';
-import CountryPage from './pages/CountryPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
+import { RegionPage, CountryPage, AboutPage, ContactPage } from './pages/lazyPages';
 import { getT } from './constants';
 
 export const ThemeCtx = createContext({ theme: 'fog', setTheme: () => {} });
@@ -33,6 +30,7 @@ export default function App() {
         }}>
           <Navbar />
           <div style={{ flex: 1, overflow: 'hidden', height: 'calc(100vh - 46px)' }}>
+            <Suspense fallback={null}>
             <Routes>
               <Route path="/"                    element={<WorldPage />} />
               <Route path="/region/:regionId"    element={<RegionPage />} />
@@ -40,6 +38,7 @@ export default function App() {
               <Route path="/about"               element={<AboutPage />} />
               <Route path="/contact"             element={<ContactPage />} />
             </Routes>
+            </Suspense>
           </div>
         </div>
         {/* Vercel's insights endpoint only exists on Vercel, which serves from the root. */}
