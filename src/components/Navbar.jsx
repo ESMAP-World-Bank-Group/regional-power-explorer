@@ -6,7 +6,7 @@ import { getT, THEME_LIST, THEMES } from '../constants';
 import { useEffect, useState, useMemo } from 'react';
 import { track } from '../analytics';
 
-const EPM_DASHBOARD_URL = 'https://designstudio.worldbank.org/epm-data-explorer/';
+const EPM_DASHBOARD_URL = 'https://epm-data-explorer.com/';
 
 // Which regions have a published EPM model is read from the region data, not
 // listed here: regions.json carries `epm: true` on the ones EPM View can open, so
