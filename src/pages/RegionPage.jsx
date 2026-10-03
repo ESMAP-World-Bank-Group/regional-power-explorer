@@ -71,6 +71,16 @@ const CORRIDOR_LAYERS = {
   Candidate: ['region-corridors-candidate', 'region-corridors-dots'],
 };
 
+// The region's map data files, in the order the map handler reads them.
+function regionDataFiles(regionId) {
+  return [
+    `cache/region_plants_${regionId}.geojson`,
+    `cache/region_lines_${regionId}.geojson`,
+    `cache/region_substations_${regionId}.geojson`,
+    `region_load_centers_${regionId}.geojson`,
+  ];
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function RegionPage() {
@@ -131,7 +141,12 @@ export default function RegionPage() {
   const [isDragging,      setIsDragging]      = useState(false);
   const dragRef = useRef(null);
 
-  useEffect(() => { prefetchGeo('region', regionId); }, [regionId]);
+  useEffect(() => {
+    prefetchGeo('region', regionId);
+    // Start the map data now, alongside the basemap; the map picks the same
+    // downloads up from the data cache when it is ready for them.
+    for (const p of regionDataFiles(regionId)) fetchData(dataPath(p)).catch(() => {});
+  }, [regionId]);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
@@ -304,42 +319,25 @@ export default function RegionPage() {
       className: `popup-${theme}`,
     });
 
-    map.on('load', async () => {
-      const [mode, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
+    // On the style, not 'load': 'load' waits for every basemap tile and font to
+    // arrive and draw. The region's colours go on as soon as its geometry is in;
+    // plants, lines, substations and load centres start empty and fill in as
+    // each file arrives (see the end of this handler), so the largest file --
+    // Europe's lines, 21 MB -- holds up nothing but its own layer.
+    map.once('style.load', async () => {
+      const [mode, ndlsa] = await Promise.all([
         addGeoSource(map, 'region', regionId, () => disposed),
         fetchNdlsa(),
-        fetchData(dataPath(`cache/region_plants_${regionId}.geojson`)),
-        fetchData(dataPath(`cache/region_lines_${regionId}.geojson`)),
-        fetchData(dataPath(`cache/region_substations_${regionId}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
-        fetchData(dataPath(`region_load_centers_${regionId}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
       ]);
 
       if (disposed || !mode) return;
 
-      // Adaptive default min-MW: cap to the ~150 largest plants, 0 if fewer.
-      const adaptMin = adaptiveMinMw(plantsGJ.features, 150);
-      setMinMw(adaptMin);
-      // Slider floor comes from the data itself: regions.yaml sets a different
-      // min_kv per region, and this way the UI never promises voltages the file
-      // doesn't hold.
-      const taggedKv = linesGJ.features
-        .map(f => f.properties.v)
-        .filter(v => v > 0);
-      const floorKv = taggedKv.length ? Math.floor(Math.min(...taggedKv) / 1000) : 110;
-      setKvFloor(floorKv);
-      // A theme switch rebuilds the map from scratch; keep whatever the slider
-      // was set to as long as the new data can honour it, and only fall back to
-      // the floor when it can't (first load, or a region with a higher floor).
-      setMinKv(kv => (kv >= floorKv && kv <= 500 ? kv : floorKv));
-      // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
-      // an empty legend row would just be a dead checkbox.
-      setPresentKvs(new Set(linesGJ.features.map(f => bracketFor(f.properties.v).key)));
-
       const hl = tv.highlight;
-      map.addSource('plants',       { type: 'geojson', data: plantsGJ });
-      map.addSource('lines',        { type: 'geojson', data: linesGJ  });
-      map.addSource('substations',  { type: 'geojson', data: subsGJ   });
-      map.addSource('load-centers', { type: 'geojson', data: lcGJ     });
+      const empty = () => ({ type: 'FeatureCollection', features: [] });
+      map.addSource('plants',       { type: 'geojson', data: empty() });
+      map.addSource('lines',        { type: 'geojson', data: empty() });
+      map.addSource('substations',  { type: 'geojson', data: empty() });
+      map.addSource('load-centers', { type: 'geojson', data: empty() });
 
 
       // Transmission lines
@@ -429,18 +427,12 @@ export default function RegionPage() {
       });
 
       // ── Plant layers (3 status layers, data-driven fuel color) ───────────
-      const fuels = new Set();
-      for (const f of plantsGJ.features) {
-        const fuel = f.properties.fuel;
-        if (fuel && FUEL_COLORS[fuel]) fuels.add(fuel);
-      }
-      setPresentFuels(fuels);
-
+      // Their min-MW filter is set once the plant file is in (below).
       const colorExpr = fuelColorExpr();
 
       // Operating: filled circles
       map.addLayer({ id: 'plants-operating', type: 'circle', source: 'plants',
-        filter: makeLayerFilter('operating', new Set(), adaptMin),
+        filter: makeLayerFilter('operating', new Set(), 0),
         paint: {
           'circle-radius':       plantRadiusExpr(),
           'circle-color':        colorExpr,
@@ -452,7 +444,7 @@ export default function RegionPage() {
 
       // Under construction: hollow ring
       map.addLayer({ id: 'plants-construction', type: 'circle', source: 'plants',
-        filter: makeLayerFilter('construction', new Set(), adaptMin),
+        filter: makeLayerFilter('construction', new Set(), 0),
         paint: {
           'circle-radius':         plantRadiusExpr(),
           'circle-color':          'rgba(0,0,0,0)',
@@ -465,7 +457,7 @@ export default function RegionPage() {
 
       // Planned: faint filled + thin stroke — hidden by default (statusOff init)
       map.addLayer({ id: 'plants-planned', type: 'circle', source: 'plants',
-        filter: makeLayerFilter('planned', new Set(), adaptMin),
+        filter: makeLayerFilter('planned', new Set(), 0),
         layout: { visibility: 'none' },
         paint: {
           'circle-radius':         plantRadiusExpr(),
@@ -652,8 +644,54 @@ export default function RegionPage() {
       });
 
       raiseBoundaries(map);
-      // Anything toggled while the map was still loading.
-      applyWbView(map, wbViewRef.current);
+      // Anything toggled while the map was still loading. applyWbView() needs
+      // the basemap fully in, which 'style.load' does not wait for.
+      map.once('idle', () => { if (!disposed) applyWbView(map, wbViewRef.current); });
+
+      // ── Data layers, each filled as its file arrives ─────────────────────
+      const [plantsFile, linesFile, subsFile, lcFile] = regionDataFiles(regionId);
+      const optional = p => fetchData(dataPath(p)).catch(() => empty());
+      const lines = fetchData(dataPath(linesFile)).then(linesGJ => {
+        if (disposed) return;
+        // Slider floor comes from the data itself: regions.yaml sets a different
+        // min_kv per region, and this way the UI never promises voltages the file
+        // doesn't hold.
+        const taggedKv = linesGJ.features
+          .map(f => f.properties.v)
+          .filter(v => v > 0);
+        const floorKv = taggedKv.length ? Math.floor(Math.min(...taggedKv) / 1000) : 110;
+        setKvFloor(floorKv);
+        // A theme switch rebuilds the map from scratch; keep whatever the slider
+        // was set to as long as the new data can honour it, and only fall back to
+        // the floor when it can't (first load, or a region with a higher floor).
+        setMinKv(kv => (kv >= floorKv && kv <= 500 ? kv : floorKv));
+        // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
+        // an empty legend row would just be a dead checkbox.
+        setPresentKvs(new Set(linesGJ.features.map(f => bracketFor(f.properties.v).key)));
+        map.getSource('lines')?.setData(linesGJ);
+      });
+      const plants = fetchData(dataPath(plantsFile)).then(plantsGJ => {
+        if (disposed) return;
+        // Adaptive default min-MW: cap to the ~150 largest plants, 0 if fewer.
+        const adaptMin = adaptiveMinMw(plantsGJ.features, 150);
+        setMinMw(adaptMin);
+        const fuels = new Set();
+        for (const f of plantsGJ.features) {
+          const fuel = f.properties.fuel;
+          if (fuel && FUEL_COLORS[fuel]) fuels.add(fuel);
+        }
+        setPresentFuels(fuels);
+        for (const status of PLANT_STATUSES)
+          if (map.getLayer(`plants-${status}`))
+            map.setFilter(`plants-${status}`, makeLayerFilter(status, new Set(), adaptMin));
+        map.getSource('plants')?.setData(plantsGJ);
+      });
+      const subs = optional(subsFile).then(gj => { if (!disposed) map.getSource('substations')?.setData(gj); });
+      const lcs  = optional(lcFile).then(gj => { if (!disposed) map.getSource('load-centers')?.setData(gj); });
+      const results = await Promise.allSettled([plants, lines, subs, lcs]);
+      for (const r of results) if (r.status === 'rejected') console.error('region map data', r.reason);
+      if (disposed) return;
+      // Ready once the data is in: the plant-source swap and the chat act on it.
       setMapReady(true);
     });
 
