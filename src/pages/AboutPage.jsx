@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
@@ -309,7 +310,7 @@ export default function AboutPage() {
   const t = getT(theme);
   const [meta, setMeta] = useState(null);
   useEffect(() => {
-    fetch(dataPath('metadata.json')).then(r => r.ok ? r.json() : null).then(d => d && setMeta(d)).catch(() => {});
+    fetchData(dataPath('metadata.json')).catch(() => null).then(d => d && setMeta(d)).catch(() => {});
   }, []);
 
   // Scroll to a section when navigated to with a hash (e.g. /about#limitations).

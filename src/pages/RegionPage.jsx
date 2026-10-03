@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { track } from '../analytics';
@@ -171,18 +172,18 @@ export default function RegionPage() {
 
   // Static data
   useEffect(() => {
-    fetch(dataPath('tariffs.json')).then(r => r.json()).then(setTariffs).catch(() => {});
-    fetch(dataPath('access.json')).then(r => r.json()).then(setAccess).catch(() => {});
+    fetchData(dataPath('tariffs.json')).then(setTariffs).catch(() => {});
+    fetchData(dataPath('access.json')).then(setAccess).catch(() => {});
   }, []);
 
   // Region metadata + availability checks
   useEffect(() => {
-    fetch(dataPath('regions.json')).then(r => r.json()).then(d => {
+    fetchData(dataPath('regions.json')).then(d => {
       const r = (d.regions || []).find(r => r.id === regionId);
       setRegion(r || null);
     });
     setCapacity(null); setFleetAge(null);
-    fetch(dataPath(`cache/region_capacity_${regionId}.json`)).then(r => r.json()).then(setCapacity).catch(() => {});
+    fetchData(dataPath(`cache/region_capacity_${regionId}.json`)).then(setCapacity).catch(() => {});
     setFuelsOff(new Set()); setStatusOff(new Set()); setKvsOff(new Set());
     setLinesOn(true); setPlantsOn(true); setSubsOn(false);
     setLoadCentersOn(false); setLcMinPop(300_000); setLcCircleScale(1.0);
@@ -194,8 +195,7 @@ export default function RegionPage() {
     setCorrExistOn(false); setCorrCommOn(false); setCorrCandOn(false);
     setZoningConfigs([]); setSelectedSlug(null);
     setCountriesOff(new Set()); setPlantCount(null);
-    fetch(dataPath(`zones/${regionId}_configs.json`))
-      .then(r => r.ok ? r.json() : null)
+    fetchData(dataPath(`zones/${regionId}_configs.json`)).catch(() => null)
       .then(cfgs => {
         if (cfgs?.length) {
           setZoningConfigs(cfgs);
@@ -218,15 +218,13 @@ export default function RegionPage() {
   useEffect(() => {
     setFleetAge(null);
     if (plantSource !== 'gppd') return;
-    fetch(dataPath(`cache/region_age_${regionId}_gppd.json`))
-      .then(r => r.ok ? r.json() : null).then(setFleetAge).catch(() => {});
+    fetchData(dataPath(`cache/region_age_${regionId}_gppd.json`)).catch(() => null).then(setFleetAge).catch(() => {});
   }, [plantSource, regionId]);
 
   // Plant count for overview stats
   useEffect(() => {
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
-    fetch(dataPath(`cache/region_plants_${regionId}${suffix}.geojson`))
-      .then(r => r.json()).then(d => setPlantCount(d.features.length)).catch(() => {});
+    fetchData(dataPath(`cache/region_plants_${regionId}${suffix}.geojson`)).then(d => setPlantCount(d.features.length)).catch(() => {});
   }, [regionId, plantSource]);
 
   // R1 — cross-border integration snapshot (built from per-country trade files)
@@ -236,7 +234,7 @@ export default function RegionPage() {
     let cancelled = false;
     const isos = region.countries.map(c => c.iso);
     Promise.all(isos.map(iso =>
-      fetch(dataPath(`trade/${iso}.json`)).then(r => (r.ok ? r.json() : null)).catch(() => null),
+      fetchData(dataPath(`trade/${iso}.json`)).catch(() => null),
     )).then(results => {
       if (cancelled) return;
       let withData = 0, isolated = 0, netExp = 0, netImp = 0, tradedGwh = 0, tradeYear = null;
@@ -310,12 +308,10 @@ export default function RegionPage() {
       const [mode, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
         addGeoSource(map, 'region', regionId, () => disposed),
         fetchNdlsa(),
-        fetch(dataPath(`cache/region_plants_${regionId}.geojson`)).then(r => r.json()),
-        fetch(dataPath(`cache/region_lines_${regionId}.geojson`)).then(r => r.json()),
-        fetch(dataPath(`cache/region_substations_${regionId}.geojson`))
-          .then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
-        fetch(dataPath(`region_load_centers_${regionId}.geojson`))
-          .then(r => r.json()).catch(() => ({ type: 'FeatureCollection', features: [] })),
+        fetchData(dataPath(`cache/region_plants_${regionId}.geojson`)),
+        fetchData(dataPath(`cache/region_lines_${regionId}.geojson`)),
+        fetchData(dataPath(`cache/region_substations_${regionId}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
+        fetchData(dataPath(`region_load_centers_${regionId}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
       ]);
 
       if (disposed || !mode) return;
@@ -690,8 +686,8 @@ export default function RegionPage() {
       const url        = dataPath(`zones/${regionId}_${slug}_zones_hd.geojson`);
       const corrUrl    = dataPath(`zones/${regionId}_${slug}_corridors.geojson`);
       Promise.all([
-        fetch(url).then(r => { if (!r.ok) throw new Error(); return r.json(); }),
-        fetch(corrUrl).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetchData(url),
+        fetchData(corrUrl).catch(() => null),
       ])
         .then(([data, corridorsGJ]) => {
           const m = mapRef.current;
@@ -893,15 +889,14 @@ export default function RegionPage() {
     const f    = `region_plants_${regionId}${suffix}.geojson`;
     const cf   = dataPath(`cache/region_capacity_${regionId}${suffix}.json`);
     const cfBase = dataPath(`cache/region_capacity_${regionId}.json`);
-    fetch(dataPath(`cache/${f}`))
-      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    fetchData(dataPath(`cache/${f}`))
       .then(data => {
         map.getSource('plants').setData(data);
         const fuels = new Set(data.features.map(f => f.properties.fuel).filter(f => FUEL_COLORS[f]));
         setPresentFuels(fuels);
         return Promise.all([
-          suffix ? fetch(cfBase).then(r => r.json()).catch(() => null) : Promise.resolve(null),
-          fetch(cf).then(r => r.json()).catch(() => null),
+          suffix ? fetchData(cfBase).catch(() => null) : Promise.resolve(null),
+          fetchData(cf).catch(() => null),
         ]);
       })
       .then(([base, primary]) => {
@@ -923,7 +918,7 @@ export default function RegionPage() {
     track('data_download', { type: 'plants', format, source: plantSource, region: regionId });
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     const url  = dataPath(`cache/region_plants_${regionId}${suffix}.geojson`);
-    const data = await fetch(url).then(r => r.json());
+    const data = await fetchData(url);
     if (format === 'csv') {
       const header = 'name,fuel,mw,country,status,lat,lon,source';
       const rows = data.features.map(f => {
@@ -979,7 +974,7 @@ export default function RegionPage() {
   const handleDownloadLines = useCallback(async (format = 'geojson') => {
     track('data_download', { type: 'lines', format, region: regionId });
     const url  = dataPath(`cache/region_lines_${regionId}.geojson`);
-    const data = await fetch(url).then(r => r.json());
+    const data = await fetchData(url);
     // What you see is what you get: the legend toggles and the min-kV slider sit
     // next to this button, so the file matches the map rather than the raw cache.
     const feats = visibleLineFeatures(data.features, { minKv, kvsOff });

@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
@@ -33,7 +34,7 @@ export default function WorldPage() {
   useEffect(() => {
     prefetchGeo('world');
     fetchBboxes().catch(() => {}); // so a click frames the region at once
-    fetch(dataPath('regions.json')).then(r => r.json()).then(d => setRegions(d.regions));
+    fetchData(dataPath('regions.json')).then(d => setRegions(d.regions));
   }, []);
 
   // --- Cluster marker helpers ---
