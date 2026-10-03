@@ -293,9 +293,15 @@ export default function RegionPage() {
     });
 
     map.on('load', async () => {
-      const [mode, bboxes, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
+    // Frame the region as soon as the (small, cached) bbox file is in, not
+    // after the style and every data layer have loaded -- otherwise the page
+    // sits on the zoom-2 world view for the whole download.
+    fetchBboxes().then(bboxes => {
+      const bounds = boundsFor(bboxes, 'regions', regionId, 0.5);
+      if (!disposed && bounds) map.fitBounds(bounds, { padding: 40, duration: 0 });
+    }).catch(err => console.error('bboxes', err));
+      const [mode, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ] = await Promise.all([
         addGeoSource(map, 'region', regionId, () => disposed),
-        fetchBboxes(),
         fetchNdlsa(),
         fetch(dataPath(`cache/region_plants_${regionId}.geojson`)).then(r => r.json()),
         fetch(dataPath(`cache/region_lines_${regionId}.geojson`)).then(r => r.json()),
@@ -306,8 +312,6 @@ export default function RegionPage() {
       ]);
 
       if (disposed || !mode) return;
-      const bounds = boundsFor(bboxes, 'regions', regionId, 0.5);
-      if (bounds) map.fitBounds(bounds, { padding: 40, duration: 0 });
 
       // Adaptive default min-MW: cap to the ~150 largest plants, 0 if fewer.
       const adaptMin = adaptiveMinMw(plantsGJ.features, 150);

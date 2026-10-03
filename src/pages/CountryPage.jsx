@@ -287,6 +287,17 @@ export default function CountryPage() {
       attributionControl: false,
     });
     mapRef.current = map;
+    // Frame the country as soon as the (small, cached) bbox file is in, not
+    // after the style and every data layer have loaded (see RegionPage).
+    fetchBboxes().then(bboxes => {
+      const bounds = boundsFor(bboxes, 'countries', iso, 0.8);
+      if (disposed || !bounds) return;
+      map.fitBounds(bounds, { padding: 60, duration: 0, maxZoom: 9 });
+      setCountryCenter({
+        lon: (bounds[0][0] + bounds[1][0]) / 2,
+        lat: (bounds[0][1] + bounds[1][1]) / 2,
+      });
+    }).catch(err => console.error('bboxes', err));
 
     const popup = new maplibregl.Popup({
       closeButton: false, closeOnClick: false, offset: 10,
@@ -294,9 +305,8 @@ export default function CountryPage() {
     });
 
     map.on('load', async () => {
-      const [countries, bboxes, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
+      const [countries, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
         fetchGeo('country', iso),
-        fetchBboxes(),
         fetchNdlsa(),
         fetch(dataPath(`cache/region_plants_${region.id}.geojson`)).then(r => r.json()),
         fetch(dataPath(`cache/region_lines_${region.id}.geojson`)).then(r => r.json()),
@@ -306,14 +316,6 @@ export default function CountryPage() {
       ]);
 
       if (disposed) return;
-      const bounds = boundsFor(bboxes, 'countries', iso, 0.8);
-      if (bounds) {
-        map.fitBounds(bounds, { padding: 60, duration: 0, maxZoom: 9 });
-        setCountryCenter({
-          lon: (bounds[0][0] + bounds[1][0]) / 2,
-          lat: (bounds[0][1] + bounds[1][1]) / 2,
-        });
-      }
 
       // Filter plants strictly inside the country polygon (point-in-polygon)
       // Lines filtered by bbox (segments cross borders by nature)
