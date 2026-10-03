@@ -50,9 +50,23 @@ function fromTopology(topo) {
       type: 'Feature',
       id: i,
       properties: g.properties,
-      geometry: { type: 'MultiPolygon', coordinates: g.arcs.map(poly => poly.map(([a]) => rings[a])) },
+      geometry: { type: 'MultiPolygon', coordinates: polygons(g.arcs, rings) },
     })),
   };
+}
+
+// A ring needs four positions (three corners and the closing one). The source
+// carries a few that do not -- one of Ghana's is a single point, and Vatican
+// City, Monaco and Gibraltar are two-point slivers at world scale -- which
+// MapLibre skips but d3-geo, behind the Equal Earth export, fails on. A
+// polygon whose outline is unusable goes with its holes.
+function polygons(arcs, rings) {
+  const out = [];
+  for (const poly of arcs) {
+    const [outline, ...holes] = poly.map(([a]) => rings[a]).map(r => (r?.length >= 4 ? r : null));
+    if (outline) out.push([outline, ...holes.filter(Boolean)]);
+  }
+  return out;
 }
 
 /**
