@@ -12,6 +12,12 @@ import { onFirstDraw } from '../utils/mapDrawn';
 import { prefetchPages } from './lazyPages';
 import { fetchBboxes, fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
+// The world map's last view, kept for the visit: the page builds a new map each
+// time it opens and on every theme switch, and coming back from a region (or
+// clicking the title) should find the map where it was left, not at the start.
+// A reload starts from the default again.
+let lastView = { center: [20, 15], zoom: 2.2 };
+
 export default function WorldPage() {
   const { theme } = useTheme();
   const t = getT(theme);
@@ -142,13 +148,17 @@ export default function WorldPage() {
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: buildWbStyle(wbBase, t),
-      center: [20, 15],
-      zoom: 2.2,
+      center: lastView.center,
+      zoom: lastView.zoom,
       minZoom: 1.5,
       maxZoom: 9,
       attributionControl: false,
     });
     mapRef.current = map;
+    map.on('moveend', () => {
+      const c = map.getCenter();
+      lastView = { center: [c.lng, c.lat], zoom: map.getZoom() };
+    });
 
     map.on('movestart', () => setDisambig(null));
 
@@ -433,9 +443,10 @@ export default function WorldPage() {
         Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
       </div>
 
-      {/* ── About this map: reopens the welcome screen in index.html ── */}
+      {/* ── About this map: reopens the welcome screen in index.html. Top right,
+          under the export button: the bottom-right corner is the chat's. ── */}
       <button onClick={() => window.rpeWelcome?.show()} style={{
-        position: 'absolute', bottom: isMobile ? 30 : 8, right: 12, zIndex: 50,
+        position: 'absolute', top: isMobile ? 100 : 86, right: 12, zIndex: 50,
         backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
         borderRadius: 6, padding: '4px 10px', cursor: 'pointer',
         fontSize: '0.6rem', fontWeight: 600, fontFamily: 'inherit', color: t.lbl,
