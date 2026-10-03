@@ -71,6 +71,33 @@ const CORRIDOR_LAYERS = {
   Candidate: ['region-corridors-candidate', 'region-corridors-dots'],
 };
 
+// What the page needs to know about its plant and line files without reading
+// them: written by tools/prepare_region_summary.py. With it the big files go to
+// MapLibre by URL and are parsed in its worker; Europe's lines are 21 MB, and
+// reading them here and copying them to the worker froze the page for about
+// a second on a desktop. Without one (a region not yet summarised) the page
+// reads the files itself, as before.
+const fetchSummary = regionId => fetchData(dataPath(`cache/region_summary_${regionId}.json`)).catch(() => null);
+const SOURCE_KEY = { '': 'osm', _gppd: 'gppd', _gem: 'gem' };
+const absUrl = path => new URL(path, window.location.href).href;
+
+// Download a file the map will fetch for itself, so the browser has it to
+// hand; the bytes are kept, never parsed.
+function warm(path) {
+  fetch(path).then(r => (r.ok ? r.arrayBuffer() : null)).catch(() => {});
+}
+
+/** Default min-MW, fuels present and plant count, from a summary or a parsed file. */
+function plantFacts(facts, fc) {
+  const mws = facts ? facts.top_mw : fc.features.map(f => f.properties.mw || 0);
+  return {
+    // Cap the map to the ~150 largest plants, 0 if fewer.
+    adaptMin: adaptiveMinMw(mws.map(mw => ({ properties: { mw } })), 150),
+    fuels: new Set((facts ? facts.fuels : fc.features.map(f => f.properties.fuel)).filter(f => FUEL_COLORS[f])),
+    count: facts ? facts.count : fc.features.length,
+  };
+}
+
 // The region's map data files, in the order the map handler reads them.
 function regionDataFiles(regionId) {
   return [
@@ -143,9 +170,15 @@ export default function RegionPage() {
 
   useEffect(() => {
     prefetchGeo('region', regionId);
-    // Start the map data now, alongside the basemap; the map picks the same
-    // downloads up from the data cache when it is ready for them.
-    for (const p of regionDataFiles(regionId)) fetchData(dataPath(p)).catch(() => {});
+    // Start the map data now, alongside the basemap. Plants and lines go to the
+    // map by URL when the region has a summary, so they are only warmed in the
+    // browser's cache; the small files go through the data cache.
+    const [plantsFile, linesFile, subsFile, lcFile] = regionDataFiles(regionId);
+    fetchSummary(regionId).then(summary => {
+      if (summary) { warm(dataPath(plantsFile)); warm(dataPath(linesFile)); }
+      else for (const p of [plantsFile, linesFile]) fetchData(dataPath(p)).catch(() => {});
+    });
+    for (const p of [subsFile, lcFile]) fetchData(dataPath(p)).catch(() => {});
   }, [regionId]);
 
   useEffect(() => {
@@ -239,7 +272,11 @@ export default function RegionPage() {
   // Plant count for overview stats
   useEffect(() => {
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
-    fetchData(dataPath(`cache/region_plants_${regionId}${suffix}.geojson`)).then(d => setPlantCount(d.features.length)).catch(() => {});
+    fetchSummary(regionId).then(async summary => {
+      const facts = summary?.plants?.[SOURCE_KEY[suffix]];
+      const fc = facts ? null : await fetchData(dataPath(`cache/region_plants_${regionId}${suffix}.geojson`));
+      setPlantCount(plantFacts(facts, fc).count);
+    }).catch(() => {});
   }, [regionId, plantSource]);
 
   // R1 — cross-border integration snapshot (built from per-country trade files)
@@ -651,14 +688,16 @@ export default function RegionPage() {
       // ── Data layers, each filled as its file arrives ─────────────────────
       const [plantsFile, linesFile, subsFile, lcFile] = regionDataFiles(regionId);
       const optional = p => fetchData(dataPath(p)).catch(() => empty());
-      const lines = fetchData(dataPath(linesFile)).then(linesGJ => {
+      const summary = await fetchSummary(regionId);
+      if (disposed) return;
+      const lines = (async () => {
+        const linesGJ = summary?.lines ? null : await fetchData(dataPath(linesFile));
         if (disposed) return;
+        const volts = summary?.lines ? summary.lines.voltages : linesGJ.features.map(f => f.properties.v || 0);
         // Slider floor comes from the data itself: regions.yaml sets a different
         // min_kv per region, and this way the UI never promises voltages the file
         // doesn't hold.
-        const taggedKv = linesGJ.features
-          .map(f => f.properties.v)
-          .filter(v => v > 0);
+        const taggedKv = volts.filter(v => v > 0);
         const floorKv = taggedKv.length ? Math.floor(Math.min(...taggedKv) / 1000) : 110;
         setKvFloor(floorKv);
         // A theme switch rebuilds the map from scratch; keep whatever the slider
@@ -667,25 +706,21 @@ export default function RegionPage() {
         setMinKv(kv => (kv >= floorKv && kv <= 500 ? kv : floorKv));
         // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
         // an empty legend row would just be a dead checkbox.
-        setPresentKvs(new Set(linesGJ.features.map(f => bracketFor(f.properties.v).key)));
-        map.getSource('lines')?.setData(linesGJ);
-      });
-      const plants = fetchData(dataPath(plantsFile)).then(plantsGJ => {
+        setPresentKvs(new Set(volts.map(v => bracketFor(v).key)));
+        map.getSource('lines')?.setData(linesGJ ?? absUrl(dataPath(linesFile)));
+      })();
+      const plants = (async () => {
+        const facts = summary?.plants?.osm;
+        const plantsGJ = facts ? null : await fetchData(dataPath(plantsFile));
         if (disposed) return;
-        // Adaptive default min-MW: cap to the ~150 largest plants, 0 if fewer.
-        const adaptMin = adaptiveMinMw(plantsGJ.features, 150);
+        const { adaptMin, fuels } = plantFacts(facts, plantsGJ);
         setMinMw(adaptMin);
-        const fuels = new Set();
-        for (const f of plantsGJ.features) {
-          const fuel = f.properties.fuel;
-          if (fuel && FUEL_COLORS[fuel]) fuels.add(fuel);
-        }
         setPresentFuels(fuels);
         for (const status of PLANT_STATUSES)
           if (map.getLayer(`plants-${status}`))
             map.setFilter(`plants-${status}`, makeLayerFilter(status, new Set(), adaptMin));
-        map.getSource('plants')?.setData(plantsGJ);
-      });
+        map.getSource('plants')?.setData(plantsGJ ?? absUrl(dataPath(plantsFile)));
+      })();
       const subs = optional(subsFile).then(gj => { if (!disposed) map.getSource('substations')?.setData(gj); });
       const lcs  = optional(lcFile).then(gj => { if (!disposed) map.getSource('load-centers')?.setData(gj); });
       const results = await Promise.allSettled([plants, lines, subs, lcs]);
@@ -927,11 +962,14 @@ export default function RegionPage() {
     const f    = `region_plants_${regionId}${suffix}.geojson`;
     const cf   = dataPath(`cache/region_capacity_${regionId}${suffix}.json`);
     const cfBase = dataPath(`cache/region_capacity_${regionId}.json`);
-    fetchData(dataPath(`cache/${f}`))
-      .then(data => {
-        map.getSource('plants').setData(data);
-        const fuels = new Set(data.features.map(f => f.properties.fuel).filter(f => FUEL_COLORS[f]));
-        setPresentFuels(fuels);
+    fetchSummary(regionId)
+      .then(async summary => {
+        const facts = summary?.plants?.[SOURCE_KEY[suffix]];
+        // A summary that lists no such source means the file is not there.
+        if (summary && !facts) throw new Error(`no ${f}`);
+        const data = facts ? null : await fetchData(dataPath(`cache/${f}`));
+        map.getSource('plants').setData(data ?? absUrl(dataPath(`cache/${f}`)));
+        setPresentFuels(plantFacts(facts, data).fuels);
         return Promise.all([
           suffix ? fetchData(cfBase).catch(() => null) : Promise.resolve(null),
           fetchData(cf).catch(() => null),
