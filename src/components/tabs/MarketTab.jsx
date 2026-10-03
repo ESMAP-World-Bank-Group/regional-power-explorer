@@ -1,4 +1,5 @@
 import { dataPath } from '../../utils/paths';
+import { fetchData } from '../../utils/dataCache';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { getT } from '../../constants';
 import ChartCaption from '../ChartCaption';
@@ -354,8 +355,7 @@ export default function MarketTab({ iso, theme }) {
     setLoading(true); setData(null);
     setSubTab('prices'); setSeries(SERIES_BY_TAB.prices[0]); setCurrency('try'); setGranularity('multiyear');
     setPeriodStart(null); setPeriodEnd(null); setExportScope('selected'); setTip(null);
-    fetch(dataPath(`market/${iso}.json`))
-      .then(r => { if (!r.ok) throw new Error('404'); return r.json(); })
+    fetchData(dataPath(`market/${iso}.json`))
       .then(d => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, [iso]);

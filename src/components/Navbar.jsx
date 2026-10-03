@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { isItalicName } from '../utils/basemap';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
@@ -16,8 +17,7 @@ function useEpmRegions() {
   const [epm, setEpm] = useState(null);
 
   useEffect(() => {
-    fetch(dataPath('regions.json'))
-      .then(r => r.json())
+    fetchData(dataPath('regions.json'))
       .then(d => {
         const all = (d.regions || []).filter(r => r.type !== 'meta');
         const withModel = all.filter(r => r.epm);
@@ -42,16 +42,14 @@ function useBreadcrumb() {
     const parts = location.pathname.split('/').filter(Boolean);
     if (parts.length === 0) { setCrumb(null); return; }
     if (parts[0] === 'region' && parts[1]) {
-      fetch(dataPath('regions.json'))
-        .then(r => r.json())
+      fetchData(dataPath('regions.json'))
         .then(d => {
           const r = (d.regions || []).find(r => r.id === parts[1]);
           setCrumb({ type: 'region', label: r ? r.name : parts[1] });
         })
         .catch(() => setCrumb({ type: 'region', label: parts[1] }));
     } else if (parts[0] === 'country' && parts[1]) {
-      fetch(dataPath('regions.json'))
-        .then(r => r.json())
+      fetchData(dataPath('regions.json'))
         .then(d => {
           for (const r of (d.regions || [])) {
             if (r.type === 'meta') continue;

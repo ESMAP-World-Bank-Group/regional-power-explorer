@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FUEL_COLORS, getT } from '../constants';
@@ -37,7 +38,7 @@ export default function StatsPanel({ region, theme, source = 'osm', tariffs, fle
     let cancelled = false;
     const isos = region.countries.map(c => c.iso);
     Promise.all(isos.map(iso =>
-      fetch(dataPath(`supply/${iso}.json`)).then(r => (r.ok ? r.json() : null)).catch(() => null),
+      fetchData(dataPath(`supply/${iso}.json`)).catch(() => null),
     )).then(results => {
       if (cancelled) return;
       const map = {};

@@ -1,4 +1,5 @@
 import { dataPath } from './paths';
+import { fetchData } from './dataCache';
 import { ndlsaNeutralFill } from '../constants';
 import { average } from './color';
 import { raiseWbReference, fillAnchor } from './wbStyle';
@@ -29,11 +30,6 @@ export const COUNTRY_ONLY = ['!=', ['get', 'STATUS'], 'non-determined'];
 /** The non-determined areas. */
 export const NON_DETERMINED_ONLY = ['==', ['get', 'STATUS'], 'non-determined'];
 
-async function fetchJson(path) {
-  const r = await fetch(path);
-  if (!r.ok) throw new Error(`${path}: HTTP ${r.status}`);
-  return r.json();
-}
 
 /**
  * The FeatureCollection in one of the extract's TopoJSON files. It reads only
@@ -66,20 +62,13 @@ function fromTopology(topo) {
  * @param {string} [id]  region id or ISO_A3; none for 'world'
  */
 export async function fetchGeo(kind, id) {
-  const file = geoFile(kind, id);
-  const pending = prefetched.get(file);
-  prefetched.delete(file);
-  return fromTopology(await (pending || fetchJson(dataPath(file))));
+  return fromTopology(await fetchData(dataPath(geoFile(kind, id))));
 }
 
 function geoFile(kind, id) {
   if (kind === 'world' || kind === 'world-lite') return `geo/${kind}.topo.json`;
   return `geo/${kind}/${id}.topo.json`;
 }
-
-// Downloads started ahead of the map, each handed to the first fetchGeo() for
-// its file and then forgotten, so nothing lingers in memory past its page.
-const prefetched = new Map();
 
 /**
  * Start downloading a page's geometry as the page opens, instead of after the
@@ -92,12 +81,8 @@ const prefetched = new Map();
  */
 export function prefetchGeo(kind, id) {
   const files = kind === 'world' ? [geoFile('world-lite'), geoFile('world')] : [geoFile(kind, id)];
-  const start = () => files.forEach(file => {
-    if (prefetched.has(file)) return;
-    const p = fetchJson(dataPath(file));
-    p.catch(() => prefetched.delete(file));
-    prefetched.set(file, p);
-  });
+  // fetchGeo() then picks the download up from the data cache.
+  const start = () => files.forEach(file => fetchData(dataPath(file)).catch(() => {}));
   if (kind === 'country') start();
   else resolveGeoMode().then(mode => { if (mode === 'static') start(); });
 }
@@ -106,7 +91,7 @@ let bboxesPromise = null;
 /** Extents of every country and region, keyed by ISO_A3 / region id. */
 export function fetchBboxes() {
   if (!bboxesPromise) {
-    bboxesPromise = fetchJson(dataPath('geo/bboxes.json'))
+    bboxesPromise = fetchData(dataPath('geo/bboxes.json'))
       .catch(err => { bboxesPromise = null; throw err; });
   }
   return bboxesPromise;
@@ -259,7 +244,7 @@ let ndlsaPromise = null;
  */
 export function fetchNdlsa() {
   if (!ndlsaPromise) {
-    ndlsaPromise = fetchJson(dataPath('ndlsa.json')).then(j => j.areas)
+    ndlsaPromise = fetchData(dataPath('ndlsa.json')).then(j => j.areas)
       .catch(err => { ndlsaPromise = null; throw err; });
   }
   return ndlsaPromise;
