@@ -80,7 +80,10 @@ function geoFile(kind, id) {
  * @param {string} [id]  region id or ISO_A3; none for 'world'
  */
 export function prefetchGeo(kind, id) {
-  const files = kind === 'world' ? [geoFile('world-lite'), geoFile('world')] : [geoFile(kind, id)];
+  // The world's full detail is not prefetched: it would share the connection
+  // with the first pass and hold the colours back. addWorldSource() asks for it
+  // once the first pass is on screen.
+  const files = kind === 'world' ? [geoFile('world-lite')] : [geoFile(kind, id)];
   // fetchGeo() then picks the download up from the data cache.
   const start = () => files.forEach(file => fetchData(dataPath(file)).catch(() => {}));
   if (kind === 'country') start();
@@ -160,22 +163,37 @@ export function geoDetail(map) {
  * line up, so hover state is reset at the swap.
  */
 async function addWorldSource(map, isDisposed) {
-  const full = fetchGeo('world');
   const lite = await fetchGeo('world-lite').catch(() => null);
   if (isDisposed()) return null;
   if (!lite) {
-    const fc = await full;
+    const fc = await fetchGeo('world');
     if (isDisposed()) return null;
     addCountriesSource(map, fc);
     return 'static';
   }
   addCountriesSource(map, lite);
-  detailReady.set(map, full.then(fc => {
+  // Full detail only once the first pass is drawn. Downloaded together, the
+  // two shared the connection: on a simulated slow phone the 111 KB first pass
+  // took about 5 s to arrive alongside the 1.1 MB full file.
+  detailReady.set(map, firstDraw(map, 'countries').then(() => fetchGeo('world')).then(fc => {
     if (isDisposed() || !map.getSource('countries')) return;
     map.removeFeatureState({ source: 'countries' });
     map.getSource('countries').setData(fc);
   }).catch(err => console.error('world geometry', err)));
   return 'static';
+}
+
+// Resolves on the first frame drawn after `sourceId` has loaded its data.
+function firstDraw(map, sourceId) {
+  return new Promise(resolve => {
+    const check = () => {
+      if (!map.getSource(sourceId) || !map.isSourceLoaded(sourceId)) return;
+      map.off('render', check);
+      resolve();
+    };
+    map.on('render', check);
+    map.triggerRepaint();
+  });
 }
 
 /** Source binding for a layer drawn from the countries. */
