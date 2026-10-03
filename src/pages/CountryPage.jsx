@@ -263,6 +263,16 @@ export default function CountryPage() {
     const tv = getT(theme);
 
     let disposed = false;
+    // Start the map data now, alongside the basemap, not once the map is up.
+    const empty = () => ({ type: 'FeatureCollection', features: [] });
+    const plantsP = fetchData(dataPath(`cache/region_plants_${region.id}.geojson`));
+    const linesP  = fetchData(dataPath(`cache/region_lines_${region.id}.geojson`));
+    const subsP   = fetchData(dataPath(`cache/region_substations_${region.id}.geojson`)).catch(empty);
+    const lcP     = fetchData(dataPath(`region_load_centers_${region.id}.geojson`)).catch(empty);
+    const admin1P = fetchData(dataPath(`cache/region_admin1_${region.id}.geojson`)).catch(empty);
+    // Awaited later; until then a failure must not surface as unhandled.
+    plantsP.catch(() => {}); linesP.catch(() => {});
+
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: buildWbStyle(wbBase, tv, wbViewRef.current),
@@ -288,83 +298,29 @@ export default function CountryPage() {
       className: `popup-${theme}`,
     });
 
-    map.on('load', async () => {
-      const [countries, ndlsa, plantsGJ, linesGJ, subsGJ, lcGJ, admin1GJ] = await Promise.all([
-        fetchGeo('country', iso),
-        fetchNdlsa(),
-        fetchData(dataPath(`cache/region_plants_${region.id}.geojson`)),
-        fetchData(dataPath(`cache/region_lines_${region.id}.geojson`)),
-        fetchData(dataPath(`cache/region_substations_${region.id}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
-        fetchData(dataPath(`region_load_centers_${region.id}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
-        fetchData(dataPath(`cache/region_admin1_${region.id}.geojson`)).catch(() => ({ type: 'FeatureCollection', features: [] })),
-      ]);
+    // On the style, not 'load': 'load' waits for every basemap tile and font to
+    // arrive and draw. The country's highlight goes on as soon as its geometry is
+    // in; plants, lines, substations, load centres and provinces start empty and
+    // fill in as each file arrives (see the end of this handler).
+    map.once('style.load', async () => {
+      const [countries, ndlsa] = await Promise.all([fetchGeo('country', iso), fetchNdlsa()]);
 
       if (disposed) return;
 
-      // Filter plants strictly inside the country polygon (point-in-polygon)
-      // Lines filtered by bbox (segments cross borders by nature)
+      // Plants, substations and load centres are kept strictly inside the country
+      // polygon (point-in-polygon); lines are kept if any vertex is inside, since
+      // segments cross borders by nature.
       const countryFeature = countries.features.find(f => f.properties.ISO_A3 === iso);
       countryFeatureRef.current = countryFeature || null;
-      setCountryReady(true);
-      let filteredPlants = plantsGJ;
-      let filteredLines  = linesGJ;
-      let filteredSubs   = subsGJ;
-      if (countryFeature) {
-        filteredPlants = {
-          ...plantsGJ,
-          features: plantsGJ.features.filter(f =>
-            pointInFeature(f.geometry.coordinates, countryFeature)
-          ),
-        };
-        filteredLines = {
-          ...linesGJ,
-          features: linesGJ.features.filter(f =>
-            f.geometry.coordinates.some(coord => pointInFeature(coord, countryFeature))
-          ),
-        };
-        filteredSubs = {
-          ...subsGJ,
-          features: subsGJ.features.filter(f =>
-            pointInFeature(f.geometry.coordinates, countryFeature)
-          ),
-        };
-      }
-
-      setFilteredPlantsData(filteredPlants);
-      setFilteredLinesData(filteredLines);
-      // Slider floor comes from the data itself: regions.yaml sets a different
-      // min_kv per region, and this way the UI never promises voltages the file
-      // doesn't hold.
-      const taggedKv = filteredLines.features
-        .map(f => f.properties.v)
-        .filter(v => v > 0);
-      const floorKv = taggedKv.length ? Math.floor(Math.min(...taggedKv) / 1000) : 110;
-      setKvFloor(floorKv);
-      // A theme switch rebuilds the map from scratch; keep whatever the slider
-      // was set to as long as the new data can honour it, and only fall back to
-      // the floor when it can't (first load, or a region with a higher floor).
-      setMinKv(kv => (kv >= floorKv && kv <= 500 ? kv : floorKv));
-      // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
-      // an empty legend row would just be a dead checkbox.
-      setPresentKvs(new Set(filteredLines.features.map(f => bracketFor(f.properties.v).key)));
-
-      // Adaptive default min-MW: show all of a small country (e.g. Madagascar),
-      // cap big ones to the ~150 largest. Replaces the flat 100 MW default.
-      const adaptMin = adaptiveMinMw(filteredPlants.features, 150);
-      adaptiveMinRef.current = adaptMin;
-      setMinMw(adaptMin);
-
-      const filteredLc = {
-        ...lcGJ,
-        features: lcGJ.features.filter(f => f.properties.iso === iso),
-      };
+      const inCountry = (fc, keep) => (countryFeature
+        ? { ...fc, features: fc.features.filter(keep) } : fc);
 
       addCountriesSource(map, countries);
-      map.addSource('plants',       { type: 'geojson', data: filteredPlants });
-      map.addSource('lines',        { type: 'geojson', data: filteredLines  });
-      map.addSource('substations',  { type: 'geojson', data: filteredSubs   });
-      map.addSource('load-centers', { type: 'geojson', data: filteredLc     });
-      map.addSource('admin1',       { type: 'geojson', data: admin1GJ       });
+      map.addSource('plants',       { type: 'geojson', data: empty() });
+      map.addSource('lines',        { type: 'geojson', data: empty() });
+      map.addSource('substations',  { type: 'geojson', data: empty() });
+      map.addSource('load-centers', { type: 'geojson', data: empty() });
+      map.addSource('admin1',       { type: 'geojson', data: empty() });
       const hlFilter = ['==', ['get', 'ISO_A3'], iso];
       map.addSource('zone-fills',        { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addSource('zone-lines',        { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
@@ -416,43 +372,7 @@ export default function CountryPage() {
         paint: { 'line-color': '#5577aa', 'line-width': 0.7, 'line-opacity': 0.35 },
       });
 
-      // Plants
-      const fuels = new Set();
-      for (const f of plantsGJ.features) {
-        const fuel = f.properties.fuel;
-        if (fuel && FUEL_COLORS[fuel]) fuels.add(fuel);
-      }
-      setPresentFuels(fuels);
-
-      for (const [fuel, color] of Object.entries(FUEL_COLORS)) {
-        if (!fuels.has(fuel)) continue;
-        map.addLayer({
-          id: `plants-${fuel}`,
-          type: 'circle',
-          source: 'plants',
-          filter: buildPlantFilter(fuel, adaptMin, new Set(['planned'])),
-          paint: {
-            'circle-radius':  plantRadiusExpr(),
-            'circle-color':   color,
-            'circle-opacity': 0.90,
-            'circle-stroke-width': 0.6,
-            'circle-stroke-color': 'rgba(0,0,0,0.3)',
-          },
-        });
-
-        map.on('mouseenter', `plants-${fuel}`, e => {
-          map.getCanvas().style.cursor = 'pointer';
-          const p = e.features[0].properties;
-          const name = p.name ? `<b>${p.name}</b><br>` : '';
-          popup
-            .setLngLat(e.features[0].geometry.coordinates)
-            .setHTML(`${name}<span style="opacity:.75">${fuel} · ${p.mw} MW</span>`)
-            .addTo(map);
-        });
-        map.on('mouseleave', `plants-${fuel}`, () => {
-          map.getCanvas().style.cursor = ''; popup.remove();
-        });
-      }
+      // Plant layers, one per fuel present, are added once the plant file is in.
 
       // ── Substations (tiny dimgrey squares via custom image) ──────────────────
       const sqSz = 5;
@@ -704,12 +624,99 @@ export default function CountryPage() {
       });
       map.on('mouseleave', 'load-centers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
+      raiseBoundaries(map);
+      // Anything toggled while the map was still loading. applyWbView() needs
+      // the basemap fully in, which 'style.load' does not wait for.
+      map.once('idle', () => { if (!disposed) applyWbView(map, wbViewRef.current); });
+
+      // ── Data layers, each filled as its file arrives ─────────────────────
+      const lines = linesP.then(linesGJ => {
+        if (disposed) return;
+        const filteredLines = inCountry(linesGJ, f =>
+          f.geometry.coordinates.some(coord => pointInFeature(coord, countryFeature)));
+        setFilteredLinesData(filteredLines);
+        // Slider floor comes from the data itself: regions.yaml sets a different
+        // min_kv per region, and this way the UI never promises voltages the file
+        // doesn't hold.
+        const taggedKv = filteredLines.features
+          .map(f => f.properties.v)
+          .filter(v => v > 0);
+        const floorKv = taggedKv.length ? Math.floor(Math.min(...taggedKv) / 1000) : 110;
+        setKvFloor(floorKv);
+        // A theme switch rebuilds the map from scratch; keep whatever the slider
+        // was set to as long as the new data can honour it, and only fall back to
+        // the floor when it can't (first load, or a region with a higher floor).
+        setMinKv(kv => (kv >= floorKv && kv <= 500 ? kv : floorKv));
+        // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
+        // an empty legend row would just be a dead checkbox.
+        setPresentKvs(new Set(filteredLines.features.map(f => bracketFor(f.properties.v).key)));
+        map.getSource('lines')?.setData(filteredLines);
+      });
+      const plants = plantsP.then(plantsGJ => {
+        if (disposed) return;
+        const filteredPlants = inCountry(plantsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature));
+        setFilteredPlantsData(filteredPlants);
+        // Adaptive default min-MW: show all of a small country (e.g. Madagascar),
+        // cap big ones to the ~150 largest. Replaces the flat 100 MW default.
+        const adaptMin = adaptiveMinMw(filteredPlants.features, 150);
+        adaptiveMinRef.current = adaptMin;
+        setMinMw(adaptMin);
+        map.getSource('plants')?.setData(filteredPlants);
+        const fuels = new Set();
+        for (const f of plantsGJ.features) {
+          const fuel = f.properties.fuel;
+          if (fuel && FUEL_COLORS[fuel]) fuels.add(fuel);
+        }
+        setPresentFuels(fuels);
+
+        // One layer per fuel present, slotted below the substations, where they
+        // stood when they were added up front.
+        for (const [fuel, color] of Object.entries(FUEL_COLORS)) {
+          if (!fuels.has(fuel)) continue;
+          map.addLayer({
+            id: `plants-${fuel}`,
+            type: 'circle',
+            source: 'plants',
+            filter: buildPlantFilter(fuel, adaptMin, new Set(['planned'])),
+            paint: {
+              'circle-radius':  plantRadiusExpr(),
+              'circle-color':   color,
+              'circle-opacity': 0.90,
+              'circle-stroke-width': 0.6,
+              'circle-stroke-color': 'rgba(0,0,0,0.3)',
+            },
+          }, 'substations');
+
+          map.on('mouseenter', `plants-${fuel}`, e => {
+            map.getCanvas().style.cursor = 'pointer';
+            const p = e.features[0].properties;
+            const name = p.name ? `<b>${p.name}</b><br>` : '';
+            popup
+              .setLngLat(e.features[0].geometry.coordinates)
+              .setHTML(`${name}<span style="opacity:.75">${fuel} · ${p.mw} MW</span>`)
+              .addTo(map);
+          });
+          map.on('mouseleave', `plants-${fuel}`, () => {
+            map.getCanvas().style.cursor = ''; popup.remove();
+          });
+        }
+        // The plant-source swap reads this: it may now replace these plants.
+        setCountryReady(true);
+      });
+      const subs = subsP.then(subsGJ => {
+        if (!disposed) map.getSource('substations')?.setData(
+          inCountry(subsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature)));
+      });
+      const lcs = lcP.then(lcGJ => {
+        if (!disposed) map.getSource('load-centers')?.setData(
+          { ...lcGJ, features: lcGJ.features.filter(f => f.properties.iso === iso) });
+      });
+      const provinces = admin1P.then(gj => { if (!disposed) map.getSource('admin1')?.setData(gj); });
+      const results = await Promise.allSettled([plants, lines, subs, lcs, provinces]);
+      for (const r of results) if (r.status === 'rejected') console.error('country map data', r.reason);
+      if (disposed) return;
       mapReadyRef.current = true;
       setMapReady(true);
-
-      raiseBoundaries(map);
-      // Anything toggled while the map was still loading.
-      applyWbView(map, wbViewRef.current);
     });
 
     return () => {
