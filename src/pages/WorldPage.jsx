@@ -8,6 +8,8 @@ import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/MapChat';
 import ExportControl from '../components/ExportControl';
+import WelcomePanel from '../components/WelcomePanel';
+import { welcomeSeen } from '../utils/welcome';
 import { fetchBboxes, fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
@@ -24,6 +26,7 @@ export default function WorldPage() {
   const [metaActive, setMetaActive] = useState(null); // region obj or null
   const [disambig, setDisambig] = useState(null);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700);
+  const [welcomeOpen, setWelcomeOpen] = useState(() => !welcomeSeen());
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 700);
@@ -425,6 +428,19 @@ export default function WorldPage() {
       }}>
         Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
       </div>
+
+      {/* ── About this map: reopens the welcome panel ── */}
+      <button onClick={() => setWelcomeOpen(true)} style={{
+        position: 'absolute', bottom: isMobile ? 30 : 8, right: 12, zIndex: 50,
+        backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
+        borderRadius: 6, padding: '4px 10px', cursor: 'pointer',
+        fontSize: '0.6rem', fontWeight: 600, fontFamily: 'inherit', color: t.lbl,
+        boxShadow: '0 1px 8px rgba(0,0,0,.18)',
+      }}>
+        About this map
+      </button>
+
+      {welcomeOpen && <WelcomePanel t={t} onClose={() => setWelcomeOpen(false)} />}
     </div>
   );
 }
