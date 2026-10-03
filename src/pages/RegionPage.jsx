@@ -11,7 +11,7 @@ import {
   PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX,
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
-import MapChat from '../chat/MapChat';
+import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
 import { powerLegend } from '../utils/exportLegend';
 import CapacityChart from '../components/CapacityChart';

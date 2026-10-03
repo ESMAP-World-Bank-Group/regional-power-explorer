@@ -6,10 +6,11 @@ import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
-import MapChat from '../chat/MapChat';
+import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
 import WelcomePanel from '../components/WelcomePanel';
 import { welcomeSeen } from '../utils/welcome';
+import { prefetchPages } from './lazyPages';
 import { fetchBboxes, fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function WorldPage() {
@@ -39,6 +40,9 @@ export default function WorldPage() {
     fetchBboxes().catch(() => {}); // so a click frames the region at once
     fetchData(dataPath('regions.json')).then(d => setRegions(d.regions));
   }, []);
+
+  // Once the world map has drawn, fetch the region and country page code.
+  useEffect(() => { if (mapReady) prefetchPages(); }, [mapReady]);
 
   // --- Cluster marker helpers ---
   function buildClusterEl(sub, meta) {
