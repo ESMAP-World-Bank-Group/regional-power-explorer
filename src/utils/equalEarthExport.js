@@ -22,7 +22,7 @@ import { featureFilter } from '@maplibre/maplibre-gl-style-spec';
 import { geoArea, geoEqualEarth, geoPath } from 'd3-geo';
 import { VectorTile } from '@mapbox/vector-tile';
 import Pbf from 'pbf';
-import { fetchWbStyle, buildWbStyle, DEFAULT_WB_VIEW, HIDDEN_ADM0_LABELS, ITALIC_ADM0_LABELS, adm0LabelSize, withExtraAdm0Labels, adm0LabelsOnly } from './wbStyle';
+import { fetchWbStyle, buildWbStyle, DEFAULT_WB_VIEW, HIDDEN_ADM0_LABELS, ITALIC_ADM0_LABELS, adm0LabelSize, adm0LabelColor, withExtraAdm0Labels, adm0LabelsOnly } from './wbStyle';
 import { fetchGeo } from './basemap';
 
 const BOUNDARY_LAYER = 'ADM0_Boundaries';
@@ -257,7 +257,7 @@ function drawLabels(ctx, labels, projection, k, t, [[x0, y0], [x1, y1]]) {
     const pt = projection(l.coordinates);
     if (!pt) continue;
     const size = l.size * k * 0.8;
-    ctx.font = `${l.italic ? 'italic ' : ''}700 ${size.toFixed(1)}px 'Open Sans', system-ui, sans-serif`;
+    ctx.font = `${l.italic ? 'italic ' : ''}400 ${size.toFixed(1)}px 'Open Sans', system-ui, sans-serif`;
     const w = ctx.measureText(l.text).width + size * 0.12 * l.text.length, h = size * 1.2;
     const box = [pt[0] - w / 2, pt[1] - h / 2, pt[0] + w / 2, pt[1] + h / 2];
     if (box[0] < x0 || box[2] > x1 || box[1] < y0 || box[3] > y1) continue;
@@ -266,7 +266,7 @@ function drawLabels(ctx, labels, projection, k, t, [[x0, y0], [x1, y1]]) {
     ctx.letterSpacing = `${(size * 0.1).toFixed(1)}px`;
     ctx.strokeStyle = t.land; ctx.lineWidth = Math.max(2, size * 0.22);
     ctx.strokeText(l.text, pt[0], pt[1]);
-    ctx.fillStyle = t.lblMuted;
+    ctx.fillStyle = adm0LabelColor(t);
     ctx.fillText(l.text, pt[0], pt[1]);
   }
   ctx.letterSpacing = '0px';
