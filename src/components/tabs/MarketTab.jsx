@@ -5,14 +5,17 @@ import { getT } from '../../constants';
 import ChartCaption from '../ChartCaption';
 import { downloadBlob } from './chartHelpers';
 
-// Which series show up as buttons, per sub-tab — Quantity reuses dam's and
-// idm's colors below since they're the same underlying markets, just a
-// different measure (matched MWh instead of price).
+// Which series show up as buttons, per sub-tab — Quantity reuses dam's,
+// idm's and bpm's colors below since they're the same underlying markets,
+// just a different measure (matched/net MWh instead of price).
 const SERIES_BY_TAB = {
   prices:   ['dam', 'idm', 'bpm'],
-  quantity: ['dam_qty', 'idm_qty'],
+  quantity: ['dam_qty', 'idm_qty', 'bpm_net'],
 };
-const SERIES_COLOR = { dam: '#2478B4', idm: '#0E8070', bpm: '#C09010', dam_qty: '#2478B4', idm_qty: '#0E8070' };
+const SERIES_COLOR = {
+  dam: '#2478B4', idm: '#0E8070', bpm: '#C09010',
+  dam_qty: '#2478B4', idm_qty: '#0E8070', bpm_net: '#C09010',
+};
 const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the series color — stays out of the way
 // Ids are load-bearing (used throughout getPeriods/getChartPoints/computeStats)
 // — only the display labels changed, to match what AXIS_TITLE already says
@@ -92,20 +95,29 @@ function hourTimestampLabel(iso, useLocalTime) {
 
 function fmtPrice(v) {
   if (v == null || Number.isNaN(v)) return '—';
-  return v.toLocaleString('en-US', { maximumFractionDigits: v >= 100 ? 0 : 1 });
+  // Magnitude, not raw value, decides decimal places — otherwise a negative
+  // number like -1500 (bpm_net) would keep a decimal place its positive
+  // counterpart wouldn't, since -1500 >= 100 is false.
+  return v.toLocaleString('en-US', { maximumFractionDigits: Math.abs(v) >= 100 ? 0 : 1 });
 }
 
-function niceTicks(maxVal) {
-  if (!maxVal || maxVal <= 0) return [0];
-  const raw = maxVal / 4;
+// minVal/maxVal bracket the data; the returned ticks always span at least
+// [0, maxVal] and, when minVal is negative (only bpm_net so far), extend
+// below zero too. For an all-positive series minVal is always passed as 0,
+// so this reduces to exactly the old 0-to-top behavior — no change there.
+function niceTicks(minVal, maxVal) {
+  const lo = Math.min(0, minVal || 0), hi = Math.max(0, maxVal || 0);
+  if (lo === 0 && hi === 0) return [0];
+  const raw = (hi - lo) / 4;
   const mag = Math.pow(10, Math.floor(Math.log10(raw)));
   const nice = [1, 2, 2.5, 5, 10].find(f => f * mag >= raw) * mag;
-  // Round the axis top UP to the next nice step — never one full step beyond it.
-  // Keeps niceTicks idempotent: niceTicks(niceTicks(x).pop()) === niceTicks(x),
-  // so a tick can never land above the plot area.
-  const top = Math.ceil(maxVal / nice - 1e-9) * nice;
+  // Round the axis top/bottom OUT to the next nice step — never one full
+  // step beyond. Keeps niceTicks idempotent on either end, so a tick can
+  // never land outside the plot area.
+  const top = Math.ceil(hi / nice - 1e-9) * nice;
+  const bottom = Math.floor(lo / nice + 1e-9) * nice;
   const ticks = [];
-  for (let v = 0; v <= top + nice * 1e-9; v += nice) ticks.push(Math.round(v));
+  for (let v = bottom; v <= top + nice * 1e-9; v += nice) ticks.push(Math.round(v));
   return ticks;
 }
 
@@ -262,9 +274,13 @@ function PriceChart({ mode, points, color, unit, t, hoveredI, onHover, xAxisLabe
     ? points.flatMap(p => [p.mean, p.min, p.max]).filter(v => v != null)
     : points.map(p => p.value).filter(v => v != null);
   const maxVal = Math.max(...vals, 1);
-  const ticks   = niceTicks(maxVal);
+  const minVal = Math.min(...vals, 0); // 0 for an all-positive series — bpm_net is the only one that can go lower
+  const ticks   = niceTicks(minVal, maxVal);
+  const axisMin = ticks[0];
   const axisMax = ticks[ticks.length - 1] || 1;
-  const toY = v => pT + iH - (v / axisMax) * iH;
+  const axisSpan = (axisMax - axisMin) || 1;
+  // Reduces to the old pT + iH - (v / axisMax) * iH when axisMin is 0.
+  const toY = v => pT + iH - ((v - axisMin) / axisSpan) * iH;
   const toX = i => n === 1 ? pL + iW / 2 : pL + (i / (n - 1)) * iW;
   const slotW = iW / n;
   // Bars sit centered in their own slot (matching the hover rects below);
@@ -288,19 +304,30 @@ function PriceChart({ mode, points, color, unit, t, hoveredI, onHover, xAxisLabe
       <text transform={`translate(9,${pT + iH / 2}) rotate(-90)`} textAnchor="middle" fill={t.lblMuted} fontSize={6}>{unit}</text>
       {ticks.map(tick => (
         <g key={tick}>
-          {tick > 0 && <line x1={pL} x2={pL + iW} y1={toY(tick)} y2={toY(tick)} stroke={t.panelBorder} strokeWidth={0.4} strokeDasharray="2,3" />}
+          {/* Zero gets its own more visible line below instead of a dashed gridline */}
+          {tick !== 0 && <line x1={pL} x2={pL + iW} y1={toY(tick)} y2={toY(tick)} stroke={t.panelBorder} strokeWidth={0.4} strokeDasharray="2,3" />}
           <text x={pL - 3} y={toY(tick) + 3} textAnchor="end" fill={t.lblMuted} fontSize={6.5}>{fmtPrice(tick)}</text>
         </g>
       ))}
       <line x1={pL} x2={pL} y1={pT} y2={pT + iH} stroke={t.lblMuted} strokeWidth={0.4} />
       <line x1={pL} x2={pL + iW} y1={pT + iH} y2={pT + iH} stroke={t.lblMuted} strokeWidth={0.4} />
+      {/* Explicit zero baseline — only meaningfully different from the bottom
+          border once the axis actually dips below zero (bpm_net). */}
+      {axisMin < 0 && <line x1={pL} x2={pL + iW} y1={toY(0)} y2={toY(0)} stroke={t.lblMuted} strokeWidth={0.6} />}
 
       {hoveredI != null && <rect x={pL + hoveredI * slotW} y={pT} width={slotW} height={iH} fill={hlFill} />}
 
-      {mode === 'band' && points.map((p, i) => p.mean == null ? null : (
-        <rect key={`bar${i}`} x={barX(i)} y={toY(p.mean)} width={barW}
-          height={Math.max(pT + iH - toY(p.mean), 0.5)} fill={color} opacity={hoveredI === i ? 1 : 0.85} />
-      ))}
+      {mode === 'band' && points.map((p, i) => {
+        if (p.mean == null) return null;
+        // Bars grow from the zero line, not always from the plot's bottom
+        // edge — for an all-positive series toY(0) IS the bottom edge, so
+        // this is the same bar as before; a negative mean grows downward.
+        const y0 = toY(0), y1 = toY(p.mean);
+        return (
+          <rect key={`bar${i}`} x={barX(i)} y={Math.min(y0, y1)} width={barW}
+            height={Math.max(Math.abs(y1 - y0), 0.5)} fill={color} opacity={hoveredI === i ? 1 : 0.85} />
+        );
+      })}
       {mode === 'band' && points.map((p, i) => {
         if (p.min == null || p.max == null) return null;
         const cx = slotMid(i);
@@ -616,6 +643,12 @@ export default function MarketTab({ iso, theme }) {
             </div>
           ) : (
             <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '12px 0' }}>No data for this period.</p>
+          )}
+
+          {series === 'bpm_net' && (
+            <p style={{ fontSize: '0.56rem', color: t.lblMuted, lineHeight: 1.5, margin: '8px 0 0' }}>
+              Net = Up regulation instructions minus Down regulation instructions. Positive: system short (net up-regulation). Negative: system surplus (net down-regulation).
+            </p>
           )}
 
           <ChartCaption source={data.source} t={t} />
