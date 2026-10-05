@@ -33,18 +33,18 @@ const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 // X-axis title — what each granularity's chart points actually represent.
-const AXIS_TITLE = { multiyear: 'Year', year: 'Month', month: 'Day', day: 'Hour' };
+// Hourly is the one level where raw timestamps get displayed (vs. the
+// pre-bucketed daily/monthly/yearly aggregates below), so it's the one
+// place the time zone needs spelling out — see toIstanbul below.
+const AXIS_TITLE = { multiyear: 'Year', year: 'Month', month: 'Day', day: 'Hour (Türkiye time)' };
 
 // All timestamps in the source JSON are UTC (fixed-width ISO strings with a
-// "+00:00" suffix), and the daily/monthly/yearly aggregates are bucketed by
-// Turkey local time (UTC+3) on the backend. The Hourly view's raw-timestamp
-// display, though, is a per-sub-tab choice: Prices keeps showing UTC via
-// plain string slicing (unchanged — the user handles that conversion
-// separately later), while Quantity converts to Istanbul local time via
-// Intl, so its hourly chart/labels/day-grouping agree with the pre-bucketed
-// daily/monthly/yearly aggregates instead of being offset from them. Every
-// function below that touches an hourly ISO string takes a `useLocalTime`
-// flag for this — true only when called from the Quantity sub-tab.
+// "+00:00" suffix). The daily/monthly/yearly aggregates are already bucketed
+// by Türkiye local time (UTC+3) on the backend, for both Prices and
+// Quantity — this only matters for the Hourly view, which displays raw
+// per-hour timestamps: those are converted to Türkiye local time here too,
+// for both sub-tabs, so "which hour" always means the same thing regardless
+// of which tab you're looking at.
 function toIstanbul(isoUtc) {
   const d = new Date(isoUtc);
   const fmt = new Intl.DateTimeFormat('en-CA', {
@@ -56,16 +56,16 @@ function toIstanbul(isoUtc) {
   return { date: `${p.year}-${p.month}-${p.day}`, hour: p.hour === '24' ? '00' : p.hour };
 }
 // The "YYYY-MM-DD" day / "HH" hour an hourly ISO timestamp belongs to, in
-// whichever of UTC (plain slicing) or Istanbul local time the caller needs.
-function dayOf(iso, useLocalTime)  { return useLocalTime ? toIstanbul(iso).date : iso.slice(0, 10); }
-function hourOf(iso, useLocalTime) { return useLocalTime ? toIstanbul(iso).hour : iso.slice(11, 13); }
+// Türkiye local time.
+function dayOf(iso)  { return toIstanbul(iso).date; }
+function hourOf(iso) { return toIstanbul(iso).hour; }
 
 function monthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_ABBR[+m - 1]} ${y}`; }
 function dayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_ABBR[+m - 1]} ${y}`; }
 // Full-word versions, used in the chart tooltip (e.g. "4 August 2026").
 function fullMonthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_FULL[+m - 1]} ${y}`; }
 function fullDayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_FULL[+m - 1]} ${y}`; }
-function hourOfDayLabel(iso, useLocalTime) { return `${+hourOf(iso, useLocalTime)}:00`; } // "04:00" -> "4:00"
+function hourOfDayLabel(iso) { return `${+hourOf(iso)}:00`; } // "04:00" -> "4:00"
 // Chart x-axis labels that disambiguate only when the selected range needs
 // it — e.g. a single month's days just say "5", but once a Daily range
 // crosses a month boundary that's ambiguous, so it becomes "5 Aug".
@@ -83,14 +83,13 @@ function dayPointLabel(ymd, rangeStart, rangeEnd) {
 // hundreds of points only ~10 ticks get labeled anyway and "20 Jul 0:00"
 // x10 overlaps into an unreadable mess; the tooltip still has the exact
 // hour via hourLabel regardless of what the axis shows.
-function shortDayLabel(iso, useLocalTime) {
-  const [, m, d] = dayOf(iso, useLocalTime).split('-');
+function shortDayLabel(iso) {
+  const [, m, d] = dayOf(iso).split('-');
   return `${+d} ${MONTH_ABBR[+m - 1]}`;
 }
-function hourTimestampLabel(iso, useLocalTime) {
-  const [y, m, d] = dayOf(iso, useLocalTime).split('-');
-  const suffix = useLocalTime ? '' : ' UTC'; // no longer accurate once converted to Istanbul time
-  return `${+d} ${MONTH_ABBR[+m - 1]} ${y}, ${hourOf(iso, useLocalTime)}:00${suffix}`;
+function hourTimestampLabel(iso) {
+  const [y, m, d] = dayOf(iso).split('-');
+  return `${+d} ${MONTH_ABBR[+m - 1]} ${y}, ${hourOf(iso)}:00 Türkiye time`;
 }
 
 function fmtPrice(v) {
@@ -127,7 +126,7 @@ function avg(arr) { return arr.length ? arr.reduce((s, v) => s + v, 0) / arr.len
 // level as what gets charted for Yearly/Monthly/Daily, but for Hourly it's
 // still whole days (picking two timestamps across a range of days via a
 // dropdown isn't practical), which then charts every hour within them.
-function getPeriods(block, granularity, useLocalTime) {
+function getPeriods(block, granularity) {
   if (!block) return [];
   if (granularity === 'multiyear') return Object.keys(block.yearly.mean).sort();
   if (granularity === 'year')      return Object.keys(block.monthly.mean).sort();
@@ -136,7 +135,7 @@ function getPeriods(block, granularity, useLocalTime) {
   // block.daily.mean — that's permanent full history back to 2017 and would
   // let you "select" days with no hourly detail behind them at all.
   if (granularity === 'day') {
-    const days = new Set(Object.keys(block.hourly || {}).map(h => dayOf(h, useLocalTime)));
+    const days = new Set(Object.keys(block.hourly || {}).map(h => dayOf(h)));
     return [...days].sort();
   }
   return [];
@@ -178,7 +177,7 @@ function statsFromKeys(meanMap, minMap, maxMap, keys) {
 // being filtered (years for yearly, 'YYYY-MM' for monthly, 'YYYY-MM-DD' for
 // daily) — plain string comparison sorts these the same as chronological
 // order, so a simple range filter works without parsing dates.
-function computeStats(block, granularity, periodStart, periodEnd, useLocalTime) {
+function computeStats(block, granularity, periodStart, periodEnd) {
   if (!block || !periodStart || !periodEnd) return null;
   if (granularity === 'multiyear') {
     const keys = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd);
@@ -194,7 +193,7 @@ function computeStats(block, granularity, periodStart, periodEnd, useLocalTime) 
   }
   if (granularity === 'day') {
     const keys = Object.keys(block.hourly).filter(k => {
-      const day = dayOf(k, useLocalTime);
+      const day = dayOf(k);
       return day >= periodStart && day <= periodEnd;
     });
     if (!keys.length) return null;
@@ -204,7 +203,7 @@ function computeStats(block, granularity, periodStart, periodEnd, useLocalTime) 
   return null;
 }
 
-function getChartPoints(block, granularity, periodStart, periodEnd, useLocalTime) {
+function getChartPoints(block, granularity, periodStart, periodEnd) {
   if (!block || !periodStart || !periodEnd) return { mode: 'band', points: [] };
   if (granularity === 'multiyear') {
     const years = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
@@ -234,13 +233,13 @@ function getChartPoints(block, granularity, periodStart, periodEnd, useLocalTime
   }
   if (granularity === 'day') {
     const hours = Object.keys(block.hourly).filter(k => {
-      const day = dayOf(k, useLocalTime);
+      const day = dayOf(k);
       return day >= periodStart && day <= periodEnd;
     }).sort();
     const multiDay = periodStart !== periodEnd;
     return { mode: 'line', points: hours.map(h => ({
-      label: multiDay ? shortDayLabel(h, useLocalTime) : hourOfDayLabel(h, useLocalTime),
-      fullLabel: fullDayLabel(dayOf(h, useLocalTime)), hourLabel: hourOfDayLabel(h, useLocalTime),
+      label: multiDay ? shortDayLabel(h) : hourOfDayLabel(h),
+      fullLabel: fullDayLabel(dayOf(h)), hourLabel: hourOfDayLabel(h),
       value: block.hourly[h],
     })) };
   }
@@ -388,10 +387,6 @@ export default function MarketTab({ iso, theme }) {
   }, [iso]);
 
   const activeSeries = SERIES_BY_TAB[subTab];
-  // Hourly raw-timestamp display/day-grouping: Prices stays UTC (unchanged —
-  // handled separately later); Quantity converts to Istanbul local time so
-  // its Hourly view agrees with the local-time daily/monthly/yearly buckets.
-  const useLocalTime = subTab === 'quantity';
 
   // dam_eur / dam_usd are separate top-level keys with the same shape as dam
   // (and their own unit) — idm/bpm and the Quantity series have no currency
@@ -399,7 +394,7 @@ export default function MarketTab({ iso, theme }) {
   const dataKey = series === 'dam' && currency !== 'try' ? `dam_${currency}` : series;
   const block = data?.[dataKey] ?? null;
 
-  const periods = useMemo(() => getPeriods(block, granularity, useLocalTime), [block, granularity, useLocalTime]);
+  const periods = useMemo(() => getPeriods(block, granularity), [block, granularity]);
 
   // Default range whenever granularity changes; on a series switch with the
   // same granularity a still-valid custom range stays put instead of
@@ -421,8 +416,8 @@ export default function MarketTab({ iso, theme }) {
     setPeriodEnd(prev => (prev && periods.includes(prev)) ? prev : defEnd);
   }, [periods, granularity]);
 
-  const stats       = useMemo(() => computeStats(block, granularity, periodStart, periodEnd, useLocalTime), [block, granularity, periodStart, periodEnd, useLocalTime]);
-  const chartPoints = useMemo(() => getChartPoints(block, granularity, periodStart, periodEnd, useLocalTime), [block, granularity, periodStart, periodEnd, useLocalTime]);
+  const stats       = useMemo(() => computeStats(block, granularity, periodStart, periodEnd), [block, granularity, periodStart, periodEnd]);
+  const chartPoints = useMemo(() => getChartPoints(block, granularity, periodStart, periodEnd), [block, granularity, periodStart, periodEnd]);
   const latestHourly = useMemo(() => {
     if (!block?.hourly) return null;
     const keys = Object.keys(block.hourly);
@@ -499,7 +494,7 @@ export default function MarketTab({ iso, theme }) {
       rows = keys.map(k => [k, block.daily.mean[k], block.daily.min[k], block.daily.max[k]].join(','));
     } else {
       keys = Object.keys(block.hourly).filter(k => {
-        const day = dayOf(k, useLocalTime);
+        const day = dayOf(k);
         return day >= fromKey && day <= toKey;
       }).sort();
       header = 'timestamp,price';
@@ -622,7 +617,7 @@ export default function MarketTab({ iso, theme }) {
             <KpiCard label={kpi1Label} value={fmtPrice(stats?.avg)} unit={unit}
               sub={stats ? `Min ${fmtPrice(stats.min)} · Max ${fmtPrice(stats.max)}` : 'No data'} t={t} />
             <KpiCard label="Latest Price" value={fmtPrice(latestHourly?.value)} unit={unit}
-              sub={latestHourly ? hourTimestampLabel(latestHourly.ts, useLocalTime) : 'No data'} t={t} />
+              sub={latestHourly ? hourTimestampLabel(latestHourly.ts) : 'No data'} t={t} />
           </div>
 
           {/* Currency toggle — DAM only, IDM/BPM have no EUR/USD in the data */}
