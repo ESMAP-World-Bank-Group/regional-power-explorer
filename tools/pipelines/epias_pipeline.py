@@ -2,7 +2,7 @@
 Turkiye electricity market prices — EPIAS Transparency Platform pipeline.
 https://seffaflik.epias.com.tr
 
-Generates public/data/market/TUR.json with eight hourly series:
+Generates public/data/market/TUR.json with nine hourly series:
   - dam:     Day-Ahead Market — Market Clearing Price (MCP), in TL/MWh
   - dam_eur: Day-Ahead Market — Market Clearing Price (MCP), in EUR/MWh
   - dam_usd: Day-Ahead Market — Market Clearing Price (MCP), in USD/MWh
@@ -11,6 +11,17 @@ Generates public/data/market/TUR.json with eight hourly series:
   - dam_qty: Day-Ahead Market — Matching Quantity, in MWh
   - idm_qty: Intraday Market — Matching Quantity, in MWh
   - bpm_net: Balancing Power Market — Net Instructed Quantity, in MWh
+  - rt_cons: Real-Time Consumption, in MWh
+
+rt_cons reads the "consumption" column off "rt-cons" — a plain single-endpoint
+series like dam_qty, needing no custom compute function. It is NOT the same
+figure as the settled/final consumption (the "uecm" endpoint, used nowhere in
+this pipeline): verified for 2025-10-03, rt_cons runs ~5-7% above uecm on
+every single hour that day (929,236 vs. 878,214 MWh daily total). rt_cons is
+EPIAS's real-time/preliminary system-level consumption figure, published
+about 2 hours behind, and may be revised in later runs. Its true data start
+is 2015-12-31 (earlier than every other series here), but it's backfilled
+from 2017-11-01 like the rest, for consistency.
 
 dam/dam_eur/dam_usd all come from the same "mcp" endpoint response — it
 returns price, priceEur and priceUsd columns per hour (confirmed against
@@ -136,6 +147,7 @@ SERIES = {
     'dam_qty': {'endpoint': 'dam-clearing', 'label': 'Day-Ahead Market — Matching Quantity',            'value_field': 'matchedBids',          'unit': 'MWh'},
     'idm_qty': {'endpoint': 'idm-qty',      'label': 'Intraday Market — Matching Quantity',             'value_field': 'clearingQuantityBid',  'unit': 'MWh'},
     'bpm_net': {'endpoint': ['bpm-up', 'bpm-down'], 'label': 'Balancing Power Market — Net Instructed Quantity', 'unit': 'MWh', 'compute': _bpm_net_series},
+    'rt_cons': {'endpoint': 'rt-cons',      'label': 'Real-Time Consumption',                            'value_field': 'consumption',          'unit': 'MWh'},
 }
 
 
