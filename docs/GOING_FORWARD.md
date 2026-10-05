@@ -146,6 +146,14 @@ In rough order of payoff:
    `docs/AI_CHAT_ARCHITECTURE.md`. Needed before the multi-sector work.
 5. **Housekeeping:** split the main JavaScript bundle (the build warns about its
    size), and fix the lint errors already present in `CountryPage.jsx`.
+6. **Load speed, still open** after PRs #12–#28 (2026-10-03):
+   - GEM lists coal and gas plants unit by unit, so the minimum-MW filter hides
+     most of them: India shows 1 coal plant instead of 117. Sum units per plant
+     before filtering.
+   - Ready-cut data files per country, so a country page stops downloading its
+     whole region's plants and lines.
+   - Load the larger (≥220 kV) lines first and the rest after.
+   - Vector tiles for plants and lines (see item 4).
 
 ### 5. Digital, transport and water (medium to long term)
 

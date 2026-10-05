@@ -1,11 +1,12 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
-import { addGeoSource, countryLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { prefetchGeo, addGeoSource, countryLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 export default function MetaRegionPage({ region }) {
   const { theme }  = useTheme();
@@ -17,7 +18,8 @@ export default function MetaRegionPage({ region }) {
   const [subregions, setSubregions] = useState([]);
 
   useEffect(() => {
-    fetch(dataPath('regions.json')).then(r => r.json()).then(d => {
+    prefetchGeo('world');
+    fetchData(dataPath('regions.json')).then(d => {
       setSubregions((d.regions || []).filter(r => r.parent === region.id));
     });
   }, [region.id]);
@@ -39,7 +41,8 @@ export default function MetaRegionPage({ region }) {
     });
     mapRef.current = map;
 
-    map.on('load', async () => {
+    // On the style, not 'load', which waits for every basemap tile to draw.
+    map.once('style.load', async () => {
       const mode = await addGeoSource(map, 'world', undefined, () => disposed);
       if (!mode) return;
       map.addLayer({ id: 'sids-fill', type: 'fill', ...countryLayer(mode),

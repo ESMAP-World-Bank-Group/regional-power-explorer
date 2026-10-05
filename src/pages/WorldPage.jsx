@@ -1,13 +1,21 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
 import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
-import MapChat from '../chat/MapChat';
+import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
-import { fetchNdlsa, addGeoSource, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+import { prefetchPages } from './lazyPages';
+import { fetchBboxes, fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
+
+// The world map's last view, kept for the visit: the page builds a new map each
+// time it opens and on every theme switch, and coming back from a region (or
+// clicking the title) should find the map where it was left, not at the start.
+// A reload starts from the default again.
+let lastView = { center: [20, 15], zoom: 2.2 };
 
 export default function WorldPage() {
   const { theme } = useTheme();
@@ -31,8 +39,13 @@ export default function WorldPage() {
   }, []);
 
   useEffect(() => {
-    fetch(dataPath('regions.json')).then(r => r.json()).then(d => setRegions(d.regions));
+    prefetchGeo('world');
+    fetchBboxes().catch(() => {}); // so a click frames the region at once
+    fetchData(dataPath('regions.json')).then(d => setRegions(d.regions));
   }, []);
+
+  // Once the world map has drawn, fetch the region and country page code.
+  useEffect(() => { if (mapReady) prefetchPages(); }, [mapReady]);
 
   // --- Cluster marker helpers ---
   function buildClusterEl(sub, meta) {
@@ -134,19 +147,27 @@ export default function WorldPage() {
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: buildWbStyle(wbBase, t),
-      center: [20, 15],
-      zoom: 2.2,
+      center: lastView.center,
+      zoom: lastView.zoom,
       minZoom: 1.5,
       maxZoom: 9,
       attributionControl: false,
     });
     mapRef.current = map;
+    map.on('moveend', () => {
+      const c = map.getCenter();
+      lastView = { center: [c.lng, c.lat], zoom: map.getZoom() };
+    });
 
     map.on('movestart', () => setDisambig(null));
 
-    map.on('load', async () => {
-      const ndlsa = await fetchNdlsa();
-      const mode = await addGeoSource(map, 'world', undefined, () => disposed);
+    // On the style, not 'load': 'load' waits for every basemap tile and font
+    // to arrive and draw, and the region colours have no reason to wait for them.
+    map.once('style.load', async () => {
+      const [ndlsa, mode] = await Promise.all([
+        fetchNdlsa(),
+        addGeoSource(map, 'world', undefined, () => disposed),
+      ]);
       if (!mode) return;
 
 
@@ -223,10 +244,14 @@ export default function WorldPage() {
       });
 
       raiseBoundaries(map);
-      setMapReady(true);
 
       // Restore meta markers after map rebuild (e.g., theme change)
       if (metaActiveRef.current) applyMetaMarkers(metaActiveRef.current, map);
+
+      // The export and the chat read the source's data, so they wait for the
+      // full geometry to replace the first pass.
+      await geoDetail(map);
+      if (!disposed) setMapReady(true);
     });
 
     return () => {
@@ -414,6 +439,7 @@ export default function WorldPage() {
       }}>
         Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
       </div>
+
     </div>
   );
 }

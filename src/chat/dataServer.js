@@ -4,17 +4,12 @@
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { appPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 
-const cache = new Map();
-const getJson = path => {
-  const url = appPath(path);
-  if (!cache.has(url)) {
-    cache.set(url, fetch(url)
-      .then(r => (r.ok ? r.json() : undefined))
-      .catch(() => undefined));
-  }
-  return cache.get(url);
-};
+// The app's shared data cache: a failed download is not kept, so a network blip
+// no longer reads as "no data" until reload, and the chat shares the files the
+// pages already loaded. undefined = not available, as the tools expect.
+const getJson = path => fetchData(appPath(path)).catch(() => undefined);
 const json = o => ({ content: [{ type: 'text', text: JSON.stringify(o) }] });
 const iso3 = z.string().length(3).transform(s => s.toUpperCase()).describe('ISO3 country code, e.g. KEN');
 const last = arr => arr?.at(-1);

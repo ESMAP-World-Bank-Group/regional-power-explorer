@@ -1,4 +1,5 @@
 import { dataPath } from './paths';
+import { fetchData } from './dataCache';
 import { ndlsaNeutralFill } from '../constants';
 import { average } from './color';
 import { raiseWbReference, fillAnchor } from './wbStyle';
@@ -29,32 +30,85 @@ export const COUNTRY_ONLY = ['!=', ['get', 'STATUS'], 'non-determined'];
 /** The non-determined areas. */
 export const NON_DETERMINED_ONLY = ['==', ['get', 'STATUS'], 'non-determined'];
 
-async function fetchJson(path) {
-  const r = await fetch(path);
-  if (!r.ok) throw new Error(`${path}: HTTP ${r.status}`);
-  return r.json();
+
+/**
+ * The FeatureCollection in one of the extract's TopoJSON files. It reads only
+ * what tools/prepare_gad.py topology() writes -- quantized, delta-encoded, one
+ * arc per ring, MultiPolygons -- not TopoJSON at large. Feature ids are
+ * assigned here because MapLibre needs them for setFeatureState and the
+ * source is loaded with generateId: false.
+ */
+function fromTopology(topo) {
+  const { scale: [sx, sy], translate: [tx, ty] } = topo.transform;
+  const rings = topo.arcs.map(arc => {
+    let x = 0, y = 0;
+    return arc.map(([dx, dy]) => [(x += dx) * sx + tx, (y += dy) * sy + ty]);
+  });
+  return {
+    type: 'FeatureCollection',
+    features: topo.objects.features.geometries.map((g, i) => ({
+      type: 'Feature',
+      id: i,
+      properties: g.properties,
+      geometry: { type: 'MultiPolygon', coordinates: polygons(g.arcs, rings) },
+    })),
+  };
+}
+
+// A ring needs four positions (three corners and the closing one). The source
+// carries a few that do not -- one of Ghana's is a single point, and Vatican
+// City, Monaco and Gibraltar are two-point slivers at world scale -- which
+// MapLibre skips but d3-geo, behind the Equal Earth export, fails on. A
+// polygon whose outline is unusable goes with its holes.
+function polygons(arcs, rings) {
+  const out = [];
+  for (const poly of arcs) {
+    const [outline, ...holes] = poly.map(([a]) => rings[a]).map(r => (r?.length >= 4 ? r : null));
+    if (outline) out.push([outline, ...holes.filter(Boolean)]);
+  }
+  return out;
 }
 
 /**
- * Load one of the extract's files. Feature ids are assigned here because
- * MapLibre needs them for setFeatureState and the source is loaded with
- * generateId: false.
+ * Load one of the extract's files as GeoJSON.
  *
  * @param {'world'|'region'|'country'} kind
  * @param {string} [id]  region id or ISO_A3; none for 'world'
  */
 export async function fetchGeo(kind, id) {
-  const file = kind === 'world' ? 'geo/world.geojson' : `geo/${kind}/${id}.geojson`;
-  const fc = await fetchJson(dataPath(file));
-  fc.features.forEach((f, i) => { f.id = i; });
-  return fc;
+  return fromTopology(await fetchData(dataPath(geoFile(kind, id))));
+}
+
+function geoFile(kind, id) {
+  if (kind === 'world' || kind === 'world-lite') return `geo/${kind}.topo.json`;
+  return `geo/${kind}/${id}.topo.json`;
+}
+
+/**
+ * Start downloading a page's geometry as the page opens, instead of after the
+ * map's 'load' -- which waits for the basemap style, tiles and fonts -- so the
+ * two load side by side. The pages that draw through addGeoSource() skip it
+ * when the GAD tiles are in use; country pages always read the file.
+ *
+ * @param {'world'|'region'|'country'} kind
+ * @param {string} [id]  region id or ISO_A3; none for 'world'
+ */
+export function prefetchGeo(kind, id) {
+  // The world's full detail is not prefetched: it would share the connection
+  // with the first pass and hold the colours back. addWorldSource() asks for it
+  // once the first pass is on screen.
+  const files = kind === 'world' ? [geoFile('world-lite')] : [geoFile(kind, id)];
+  // fetchGeo() then picks the download up from the data cache.
+  const start = () => files.forEach(file => fetchData(dataPath(file)).catch(() => {}));
+  if (kind === 'country') start();
+  else resolveGeoMode().then(mode => { if (mode === 'static') start(); });
 }
 
 let bboxesPromise = null;
 /** Extents of every country and region, keyed by ISO_A3 / region id. */
 export function fetchBboxes() {
   if (!bboxesPromise) {
-    bboxesPromise = fetchJson(dataPath('geo/bboxes.json'))
+    bboxesPromise = fetchData(dataPath('geo/bboxes.json'))
       .catch(err => { bboxesPromise = null; throw err; });
   }
   return bboxesPromise;
@@ -96,10 +150,64 @@ export async function addGeoSource(map, kind, id, isDisposed = () => false) {
     map.addSource('countries', geoTileSourceSpec());
     return mode;
   }
+  if (kind === 'world') return addWorldSource(map, isDisposed);
   const fc = await fetchGeo(kind, id);
   if (isDisposed()) return null;
   addCountriesSource(map, fc);
   return mode;
+}
+
+// Resolves once a map's countries source holds its full geometry.
+const detailReady = new WeakMap();
+
+/**
+ * When the map's countries source holds its full geometry -- for the world
+ * file, after the first pass has been replaced. Anything that reads the
+ * source's data, like the export, waits on this.
+ */
+export function geoDetail(map) {
+  return detailReady.get(map) || Promise.resolve();
+}
+
+/**
+ * The world geometry in two passes: world-lite first -- a tenth of the
+ * vertices, so the colours are up almost at once -- then world.topo.json in
+ * its place when it has loaded. The pages' layers key on properties, which
+ * the two files share, so filters and colours carry over; feature ids do not
+ * line up, so hover state is reset at the swap.
+ */
+async function addWorldSource(map, isDisposed) {
+  const lite = await fetchGeo('world-lite').catch(() => null);
+  if (isDisposed()) return null;
+  if (!lite) {
+    const fc = await fetchGeo('world');
+    if (isDisposed()) return null;
+    addCountriesSource(map, fc);
+    return 'static';
+  }
+  addCountriesSource(map, lite);
+  // Full detail only once the first pass is drawn. Downloaded together, the
+  // two shared the connection: on a simulated slow phone the 111 KB first pass
+  // took about 5 s to arrive alongside the 1.1 MB full file.
+  detailReady.set(map, firstDraw(map, 'countries').then(() => fetchGeo('world')).then(fc => {
+    if (isDisposed() || !map.getSource('countries')) return;
+    map.removeFeatureState({ source: 'countries' });
+    map.getSource('countries').setData(fc);
+  }).catch(err => console.error('world geometry', err)));
+  return 'static';
+}
+
+// Resolves on the first frame drawn after `sourceId` has loaded its data.
+function firstDraw(map, sourceId) {
+  return new Promise(resolve => {
+    const check = () => {
+      if (!map.getSource(sourceId) || !map.isSourceLoaded(sourceId)) return;
+      map.off('render', check);
+      resolve();
+    };
+    map.on('render', check);
+    map.triggerRepaint();
+  });
 }
 
 /** Source binding for a layer drawn from the countries. */
@@ -168,7 +276,7 @@ let ndlsaPromise = null;
  */
 export function fetchNdlsa() {
   if (!ndlsaPromise) {
-    ndlsaPromise = fetchJson(dataPath('ndlsa.json')).then(j => j.areas)
+    ndlsaPromise = fetchData(dataPath('ndlsa.json')).then(j => j.areas)
       .catch(err => { ndlsaPromise = null; throw err; });
   }
   return ndlsaPromise;

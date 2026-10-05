@@ -1,4 +1,5 @@
 import { dataPath } from '../utils/paths';
+import { fetchData } from '../utils/dataCache';
 import { useState, useEffect, useRef } from 'react';
 import { getT, FUEL_COLORS, COUNTRY_ZONE_COLORS } from '../constants';
 import ChartCaption from './ChartCaption';
@@ -382,8 +383,8 @@ export default function RegionSupplyTrade({ region, theme }) {
     const members = region.countries.map(c => ({ iso: c.iso, name: c.name }));
     Promise.all(members.map(({ iso }) =>
       Promise.all([
-        fetch(dataPath(`supply/${iso}.json`)).then(r => (r.ok ? r.json() : null)).catch(() => null),
-        fetch(dataPath(`trade/${iso}.json`)).then(r => (r.ok ? r.json() : null)).catch(() => null),
+        fetchData(dataPath(`supply/${iso}.json`)).catch(() => null),
+        fetchData(dataPath(`trade/${iso}.json`)).catch(() => null),
       ]),
     )).then(results => {
       if (cancelled) return;
