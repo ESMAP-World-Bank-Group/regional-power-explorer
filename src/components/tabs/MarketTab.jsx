@@ -3,7 +3,12 @@ import { fetchData } from '../../utils/dataCache';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { getT } from '../../constants';
 import ChartCaption from '../ChartCaption';
-import { downloadBlob } from './chartHelpers';
+import {
+  downloadBlob, GRANULARITIES, GRANULARITY_LABEL, AXIS_TITLE,
+  dayOf, hourTimestampLabel, fmtValue, getPeriods, periodOptionLabel,
+  defaultRange, rangeLabel, computeStats, getChartPoints,
+} from './chartHelpers';
+import { KpiCard, SeriesChart, ChartTooltip } from './MarketChartComponents';
 
 // Which series show up as buttons, per sub-tab — Quantity reuses dam's,
 // idm's and bpm's colors below since they're the same underlying markets,
@@ -16,350 +21,15 @@ const SERIES_COLOR = {
   dam: '#2478B4', idm: '#0E8070', bpm: '#C09010',
   dam_qty: '#2478B4', idm_qty: '#0E8070', bpm_net: '#C09010',
 };
-const WHISKER_COLOR = '#B8BEC6'; // light neutral gray, deliberately not the series color — stays out of the way
-// Ids are load-bearing (used throughout getPeriods/getChartPoints/computeStats)
-// — only the display labels changed, to match what AXIS_TITLE already says
-// each chart's points represent (one per year/month/day/hour respectively).
-const GRANULARITIES = [['multiyear', 'Yearly'], ['year', 'Monthly'], ['month', 'Daily'], ['day', 'Hourly']];
-const GRANULARITY_LABEL = Object.fromEntries(GRANULARITIES);
-// Above this many bars, the Daily (per-day) bar+whisker chart gets visually
-// cluttered — fall back to a plain mean line instead, same idea as Hourly.
-const DAILY_BAR_MAX_POINTS = 60;
 const SUB_TABS = [['prices', 'Prices'], ['quantity', 'Quantity']];
 // DAM-only — only that series has EUR/USD alternatives in the data (dam_eur, dam_usd).
 const CURRENCIES = [['try', 'TL'], ['eur', 'EUR'], ['usd', 'USD']];
 
-const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const MONTH_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-// X-axis title — what each granularity's chart points actually represent.
-// Hourly is the one level where raw timestamps get displayed (vs. the
-// pre-bucketed daily/monthly/yearly aggregates below), so it's the one
-// place the time zone needs spelling out — see toIstanbul below.
-const AXIS_TITLE = { multiyear: 'Year', year: 'Month', month: 'Day', day: 'Hour (Türkiye time)' };
-
-// All timestamps in the source JSON are UTC (fixed-width ISO strings with a
-// "+00:00" suffix). The daily/monthly/yearly aggregates are already bucketed
-// by Türkiye local time (UTC+3) on the backend, for both Prices and
-// Quantity — this only matters for the Hourly view, which displays raw
-// per-hour timestamps: those are converted to Türkiye local time here too,
-// for both sub-tabs, so "which hour" always means the same thing regardless
-// of which tab you're looking at.
-function toIstanbul(isoUtc) {
-  const d = new Date(isoUtc);
-  const fmt = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Istanbul',
-    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', hour12: false,
-  });
-  const p = Object.fromEntries(fmt.formatToParts(d).map(x => [x.type, x.value]));
-  // Intl can return hour "24" for local midnight instead of "00" — normalize.
-  return { date: `${p.year}-${p.month}-${p.day}`, hour: p.hour === '24' ? '00' : p.hour };
-}
-// The "YYYY-MM-DD" day / "HH" hour an hourly ISO timestamp belongs to, in
-// Türkiye local time.
-function dayOf(iso)  { return toIstanbul(iso).date; }
-function hourOf(iso) { return toIstanbul(iso).hour; }
-
-function monthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_ABBR[+m - 1]} ${y}`; }
-function dayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_ABBR[+m - 1]} ${y}`; }
-// Full-word versions, used in the chart tooltip (e.g. "4 August 2026").
-function fullMonthLabel(ym) { const [y, m] = ym.split('-'); return `${MONTH_FULL[+m - 1]} ${y}`; }
-function fullDayLabel(ymd) { const [y, m, d] = ymd.split('-'); return `${+d} ${MONTH_FULL[+m - 1]} ${y}`; }
-function hourOfDayLabel(iso) { return `${+hourOf(iso)}:00`; } // "04:00" -> "4:00"
-// Chart x-axis labels that disambiguate only when the selected range needs
-// it — e.g. a single month's days just say "5", but once a Daily range
-// crosses a month boundary that's ambiguous, so it becomes "5 Aug".
-function monthPointLabel(ym, rangeStart, rangeEnd) {
-  const [y, m] = ym.split('-');
-  const spansYears = rangeStart.slice(0, 4) !== rangeEnd.slice(0, 4);
-  return spansYears ? `${MONTH_ABBR[+m - 1]} '${y.slice(2)}` : MONTH_ABBR[+m - 1];
-}
-function dayPointLabel(ymd, rangeStart, rangeEnd) {
-  const [, m, d] = ymd.split('-');
-  const spansMonths = rangeStart.slice(0, 7) !== rangeEnd.slice(0, 7);
-  return spansMonths ? `${+d} ${MONTH_ABBR[+m - 1]}` : `${+d}`;
-}
-// Axis label for a multi-day Hourly range — day only, no hour, since with
-// hundreds of points only ~10 ticks get labeled anyway and "20 Jul 0:00"
-// x10 overlaps into an unreadable mess; the tooltip still has the exact
-// hour via hourLabel regardless of what the axis shows.
-function shortDayLabel(iso) {
-  const [, m, d] = dayOf(iso).split('-');
-  return `${+d} ${MONTH_ABBR[+m - 1]}`;
-}
-function hourTimestampLabel(iso) {
-  const [y, m, d] = dayOf(iso).split('-');
-  return `${+d} ${MONTH_ABBR[+m - 1]} ${y}, ${hourOf(iso)}:00 Türkiye time`;
-}
-
-function fmtPrice(v) {
-  if (v == null || Number.isNaN(v)) return '—';
-  // Magnitude, not raw value, decides decimal places — otherwise a negative
-  // number like -1500 (bpm_net) would keep a decimal place its positive
-  // counterpart wouldn't, since -1500 >= 100 is false.
-  return v.toLocaleString('en-US', { maximumFractionDigits: Math.abs(v) >= 100 ? 0 : 1 });
-}
-
-// minVal/maxVal bracket the data; the returned ticks always span at least
-// [0, maxVal] and, when minVal is negative (only bpm_net so far), extend
-// below zero too. For an all-positive series minVal is always passed as 0,
-// so this reduces to exactly the old 0-to-top behavior — no change there.
-function niceTicks(minVal, maxVal) {
-  const lo = Math.min(0, minVal || 0), hi = Math.max(0, maxVal || 0);
-  if (lo === 0 && hi === 0) return [0];
-  const raw = (hi - lo) / 4;
-  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
-  const nice = [1, 2, 2.5, 5, 10].find(f => f * mag >= raw) * mag;
-  // Round the axis top/bottom OUT to the next nice step — never one full
-  // step beyond. Keeps niceTicks idempotent on either end, so a tick can
-  // never land outside the plot area.
-  const top = Math.ceil(hi / nice - 1e-9) * nice;
-  const bottom = Math.floor(lo / nice + 1e-9) * nice;
-  const ticks = [];
-  for (let v = bottom; v <= top + nice * 1e-9; v += nice) ticks.push(Math.round(v));
-  return ticks;
-}
-
-function avg(arr) { return arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null; }
-
-// What the From/To range pickers choose from, per granularity — the same
-// level as what gets charted for Yearly/Monthly/Daily, but for Hourly it's
-// still whole days (picking two timestamps across a range of days via a
-// dropdown isn't practical), which then charts every hour within them.
-function getPeriods(block, granularity) {
-  if (!block) return [];
-  if (granularity === 'multiyear') return Object.keys(block.yearly.mean).sort();
-  if (granularity === 'year')      return Object.keys(block.monthly.mean).sort();
-  if (granularity === 'month')     return Object.keys(block.daily.mean).sort();
-  // Hourly picks from the rolling hourly window (block.hourly), NOT
-  // block.daily.mean — that's permanent full history back to 2017 and would
-  // let you "select" days with no hourly detail behind them at all.
-  if (granularity === 'day') {
-    const days = new Set(Object.keys(block.hourly || {}).map(h => dayOf(h)));
-    return [...days].sort();
-  }
-  return [];
-}
-
-function periodOptionLabel(granularity, p) {
-  if (granularity === 'multiyear') return p;
-  if (granularity === 'year')      return monthLabel(p);
-  return dayLabel(p); // Daily's days and Hourly's day-range both use day strings
-}
-
-// Default range shown the first time a granularity is selected (or when the
-// previous range doesn't carry over, e.g. after switching granularity).
-function defaultRange(periods, granularity) {
-  if (!periods.length) return [null, null];
-  const last = periods[periods.length - 1];
-  if (granularity === 'multiyear') return [periods[0], last];       // full history, as before
-  if (granularity === 'year')      return [periods[Math.max(0, periods.length - 12)], last]; // last 12 months
-  if (granularity === 'month')     return [periods[Math.max(0, periods.length - 30)], last]; // last 30 days
-  return [last, last]; // Hourly: most recent single day, as before
-}
-
-function rangeLabel(granularity, start, end) {
-  if (!start || !end) return '';
-  const fmt = granularity === 'multiyear' ? (x => x) : granularity === 'year' ? monthLabel : dayLabel;
-  return start === end ? fmt(start) : `${fmt(start)} – ${fmt(end)}`;
-}
-
-function statsFromKeys(meanMap, minMap, maxMap, keys) {
-  if (!keys.length) return null;
-  return {
-    avg: avg(keys.map(k => meanMap[k])),
-    min: Math.min(...keys.map(k => minMap[k])),
-    max: Math.max(...keys.map(k => maxMap[k])),
-  };
-}
-
-// periodStart/periodEnd are always the same "shape" of key as the aggregate
-// being filtered (years for yearly, 'YYYY-MM' for monthly, 'YYYY-MM-DD' for
-// daily) — plain string comparison sorts these the same as chronological
-// order, so a simple range filter works without parsing dates.
-function computeStats(block, granularity, periodStart, periodEnd) {
-  if (!block || !periodStart || !periodEnd) return null;
-  if (granularity === 'multiyear') {
-    const keys = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd);
-    return statsFromKeys(block.yearly.mean, block.yearly.min, block.yearly.max, keys);
-  }
-  if (granularity === 'year') {
-    const keys = Object.keys(block.monthly.mean).filter(k => k >= periodStart && k <= periodEnd);
-    return statsFromKeys(block.monthly.mean, block.monthly.min, block.monthly.max, keys);
-  }
-  if (granularity === 'month') {
-    const keys = Object.keys(block.daily.mean).filter(k => k >= periodStart && k <= periodEnd);
-    return statsFromKeys(block.daily.mean, block.daily.min, block.daily.max, keys);
-  }
-  if (granularity === 'day') {
-    const keys = Object.keys(block.hourly).filter(k => {
-      const day = dayOf(k);
-      return day >= periodStart && day <= periodEnd;
-    });
-    if (!keys.length) return null;
-    const vals = keys.map(k => block.hourly[k]);
-    return { avg: avg(vals), min: Math.min(...vals), max: Math.max(...vals) };
-  }
-  return null;
-}
-
-function getChartPoints(block, granularity, periodStart, periodEnd) {
-  if (!block || !periodStart || !periodEnd) return { mode: 'band', points: [] };
-  if (granularity === 'multiyear') {
-    const years = Object.keys(block.yearly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
-    return { mode: 'band', points: years.map(y => ({
-      label: y, fullLabel: y, mean: block.yearly.mean[y], min: block.yearly.min[y], max: block.yearly.max[y],
-    })) };
-  }
-  if (granularity === 'year') {
-    const months = Object.keys(block.monthly.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
-    return { mode: 'band', points: months.map(m => ({
-      label: monthPointLabel(m, periodStart, periodEnd), fullLabel: fullMonthLabel(m),
-      mean: block.monthly.mean[m], min: block.monthly.min[m], max: block.monthly.max[m],
-    })) };
-  }
-  if (granularity === 'month') {
-    const days = Object.keys(block.daily.mean).filter(k => k >= periodStart && k <= periodEnd).sort();
-    const points = days.map(d => ({
-      label: dayPointLabel(d, periodStart, periodEnd), fullLabel: fullDayLabel(d),
-      mean: block.daily.mean[d], min: block.daily.min[d], max: block.daily.max[d],
-    }));
-    // Too many bars to read cleanly — fall back to a plain mean line (still
-    // has min/max for the tooltip, just not drawn as bars+whiskers).
-    if (points.length > DAILY_BAR_MAX_POINTS) {
-      return { mode: 'line', points: points.map(p => ({ ...p, value: p.mean })) };
-    }
-    return { mode: 'band', points };
-  }
-  if (granularity === 'day') {
-    const hours = Object.keys(block.hourly).filter(k => {
-      const day = dayOf(k);
-      return day >= periodStart && day <= periodEnd;
-    }).sort();
-    const multiDay = periodStart !== periodEnd;
-    return { mode: 'line', points: hours.map(h => ({
-      label: multiDay ? shortDayLabel(h) : hourOfDayLabel(h),
-      fullLabel: fullDayLabel(dayOf(h)), hourLabel: hourOfDayLabel(h),
-      value: block.hourly[h],
-    })) };
-  }
-  return { mode: 'band', points: [] };
-}
-
-// ── KPI card ──────────────────────────────────────────────────────────────────
-function KpiCard({ label, value, unit, sub, t }) {
-  return (
-    <div style={{ padding: '8px 10px', borderRadius: 5, backgroundColor: t.cardBg, border: `1px solid ${t.cardBorder}` }}>
-      <div style={{ fontSize: '0.5rem', color: t.lblMuted, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 4 }}>
-        {label}
-      </div>
-      <div style={{ fontSize: '1.08rem', fontWeight: 700, color: t.lbl, lineHeight: 1 }}>
-        {value}
-        {unit && <span style={{ fontSize: '0.56rem', fontWeight: 400, color: t.lblMuted, marginLeft: 3 }}>{unit}</span>}
-      </div>
-      <div style={{ fontSize: '0.54rem', color: t.lblMuted, marginTop: 4 }}>{sub || ' '}</div>
-    </div>
-  );
-}
-
-// ── Chart: shaded min-max band + mean line (or a plain line for Day) ─────────
-function PriceChart({ mode, points, color, unit, t, hoveredI, onHover, xAxisLabel }) {
-  const W = 300, H = 168, pL = 42, pR = 8, pT = 10, pB = 30;
-  const iW = W - pL - pR, iH = H - pT - pB;
-  const n = points.length;
-  if (!n) return null;
-
-  const vals = mode === 'band'
-    ? points.flatMap(p => [p.mean, p.min, p.max]).filter(v => v != null)
-    : points.map(p => p.value).filter(v => v != null);
-  const maxVal = Math.max(...vals, 1);
-  const minVal = Math.min(...vals, 0); // 0 for an all-positive series — bpm_net is the only one that can go lower
-  const ticks   = niceTicks(minVal, maxVal);
-  const axisMin = ticks[0];
-  const axisMax = ticks[ticks.length - 1] || 1;
-  const axisSpan = (axisMax - axisMin) || 1;
-  // Reduces to the old pT + iH - (v / axisMax) * iH when axisMin is 0.
-  const toY = v => pT + iH - ((v - axisMin) / axisSpan) * iH;
-  const toX = i => n === 1 ? pL + iW / 2 : pL + (i / (n - 1)) * iW;
-  const slotW = iW / n;
-  // Bars sit centered in their own slot (matching the hover rects below);
-  // the Day line chart keeps the edge-to-edge toX spread instead.
-  const barW    = Math.max(slotW * 0.55, 1.5);
-  const barX    = i => pL + i * slotW + (slotW - barW) / 2;
-  const slotMid = i => pL + i * slotW + slotW / 2;
-  const xPos    = i => mode === 'band' ? slotMid(i) : toX(i);
-
-  let linePts = null;
-  if (mode !== 'band') {
-    linePts = points.map((p, i) => p.value != null ? `${toX(i).toFixed(1)},${toY(p.value).toFixed(1)}` : null).filter(Boolean).join(' ');
-  }
-
-  const labelStep = n > 20 ? Math.ceil(n / 10) : n > 10 ? 2 : 1;
-  const hlFill = t.isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const whiskerCapW = barW * 0.55;
-
-  return (
-    <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', overflow: 'visible' }}>
-      <text transform={`translate(9,${pT + iH / 2}) rotate(-90)`} textAnchor="middle" fill={t.lblMuted} fontSize={6}>{unit}</text>
-      {ticks.map(tick => (
-        <g key={tick}>
-          {/* Zero gets its own more visible line below instead of a dashed gridline */}
-          {tick !== 0 && <line x1={pL} x2={pL + iW} y1={toY(tick)} y2={toY(tick)} stroke={t.panelBorder} strokeWidth={0.4} strokeDasharray="2,3" />}
-          <text x={pL - 3} y={toY(tick) + 3} textAnchor="end" fill={t.lblMuted} fontSize={6.5}>{fmtPrice(tick)}</text>
-        </g>
-      ))}
-      <line x1={pL} x2={pL} y1={pT} y2={pT + iH} stroke={t.lblMuted} strokeWidth={0.4} />
-      <line x1={pL} x2={pL + iW} y1={pT + iH} y2={pT + iH} stroke={t.lblMuted} strokeWidth={0.4} />
-      {/* Explicit zero baseline — only meaningfully different from the bottom
-          border once the axis actually dips below zero (bpm_net). */}
-      {axisMin < 0 && <line x1={pL} x2={pL + iW} y1={toY(0)} y2={toY(0)} stroke={t.lblMuted} strokeWidth={0.6} />}
-
-      {hoveredI != null && <rect x={pL + hoveredI * slotW} y={pT} width={slotW} height={iH} fill={hlFill} />}
-
-      {mode === 'band' && points.map((p, i) => {
-        if (p.mean == null) return null;
-        // Bars grow from the zero line, not always from the plot's bottom
-        // edge — for an all-positive series toY(0) IS the bottom edge, so
-        // this is the same bar as before; a negative mean grows downward.
-        const y0 = toY(0), y1 = toY(p.mean);
-        return (
-          <rect key={`bar${i}`} x={barX(i)} y={Math.min(y0, y1)} width={barW}
-            height={Math.max(Math.abs(y1 - y0), 0.5)} fill={color} opacity={hoveredI === i ? 1 : 0.85} />
-        );
-      })}
-      {mode === 'band' && points.map((p, i) => {
-        if (p.min == null || p.max == null) return null;
-        const cx = slotMid(i);
-        const yMin = toY(p.min), yMax = toY(p.max);
-        return (
-          <g key={`wh${i}`}>
-            <line x1={cx} x2={cx} y1={yMax} y2={yMin} stroke={WHISKER_COLOR} strokeWidth={0.7} />
-            <line x1={cx - whiskerCapW / 2} x2={cx + whiskerCapW / 2} y1={yMax} y2={yMax} stroke={WHISKER_COLOR} strokeWidth={0.7} />
-            <line x1={cx - whiskerCapW / 2} x2={cx + whiskerCapW / 2} y1={yMin} y2={yMin} stroke={WHISKER_COLOR} strokeWidth={0.7} />
-          </g>
-        );
-      })}
-      {mode === 'line' && linePts && <polyline points={linePts} fill="none" stroke={color} strokeWidth={1.4} strokeLinejoin="round" strokeLinecap="round" />}
-
-      {points.map((p, i) => i % labelStep === 0 && (
-        <text key={i} x={xPos(i)} y={pT + iH + 9} textAnchor="middle" fill={hoveredI === i ? t.lbl : t.lblMuted} fontSize={5.8}>{p.label}</text>
-      ))}
-
-      {xAxisLabel && (
-        <text x={pL + iW / 2} y={pT + iH + 19} textAnchor="middle" fill={t.lblMuted} fontSize={6} fontStyle="italic">
-          {xAxisLabel}
-        </text>
-      )}
-
-      {points.map((p, i) => (
-        <rect key={`h${i}`} x={pL + i * slotW} y={pT} width={slotW} height={iH}
-          fill="transparent" style={{ cursor: 'default' }}
-          onMouseEnter={e => onHover(i, e)} onMouseLeave={() => onHover(null, null)} />
-      ))}
-    </svg>
-  );
-}
-
+// getPeriods/periodOptionLabel/defaultRange/rangeLabel/computeStats/
+// getChartPoints/AXIS_TITLE/dayOf/hourTimestampLabel/fmtValue now live in
+// chartHelpers.jsx, and KpiCard/SeriesChart/ChartTooltip in
+// MarketChartComponents.jsx — both imported above — so LoadTab's Real-time
+// consumption sub-tab can reuse them instead of duplicating ~250 lines.
 // ── Main component ───────────────────────────────────────────────────────────
 export default function MarketTab({ iso, theme }) {
   const t = getT(theme);
@@ -505,50 +175,6 @@ export default function MarketTab({ iso, theme }) {
 
   const kpi1Label = `Average · ${rangeLabel(granularity, periodStart, periodEnd)}`;
 
-  const tooltip = (() => {
-    if (!tip) return null;
-    const p = chartPoints.points[tip.i];
-    if (!p) return null;
-    const TW = 148;
-    const left = tip.x > 170 ? tip.x - TW - 6 : tip.x + 8;
-    const top  = Math.max(tip.y - 30, 0);
-    // Hourly points carry hourLabel; both the bar chart and the dense-Daily
-    // fallback line carry mean/min/max — check point shape, not chart mode,
-    // since 'line' rendering covers both an aggregate fallback and Hourly.
-    const isHourly = p.hourLabel != null;
-    const row = (label, value, muted) => (
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: muted ? '0.52rem' : '0.55rem', color: muted ? t.lblMuted : t.lbl }}>
-        <span style={{ color: t.lblMuted }}>{label}</span>
-        <span>{value} <span style={{ fontSize: '0.46rem', color: t.lblMuted }}>{unit}</span></span>
-      </div>
-    );
-    return (
-      <div style={{
-        position: 'absolute', left, top, width: TW, pointerEvents: 'none', zIndex: 10,
-        backgroundColor: t.panel, border: `1px solid ${t.panelBorder}`,
-        borderRadius: 4, padding: '6px 8px', boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-      }}>
-        <div style={{ fontWeight: 700, fontSize: '0.56rem', color: t.lbl, marginBottom: 3 }}>
-          <span style={{ fontWeight: 400, color: t.lblMuted }}>Date: </span>{p.fullLabel}
-        </div>
-        {isHourly ? (
-          <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.52rem', color: t.lblMuted, marginBottom: 2 }}>
-              <span>Hour</span><span>{p.hourLabel}</span>
-            </div>
-            {row('Price', fmtPrice(p.value))}
-          </>
-        ) : (
-          <>
-            {row('Mean', fmtPrice(p.mean))}
-            {row('Min', fmtPrice(p.min), true)}
-            {row('Max', fmtPrice(p.max), true)}
-          </>
-        )}
-      </div>
-    );
-  })();
-
   return (
     <div>
       {/* Sub-tabs */}
@@ -614,9 +240,9 @@ export default function MarketTab({ iso, theme }) {
 
           {/* KPI cards */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 14 }}>
-            <KpiCard label={kpi1Label} value={fmtPrice(stats?.avg)} unit={unit}
-              sub={stats ? `Min ${fmtPrice(stats.min)} · Max ${fmtPrice(stats.max)}` : 'No data'} t={t} />
-            <KpiCard label="Latest Price" value={fmtPrice(latestHourly?.value)} unit={unit}
+            <KpiCard label={kpi1Label} value={fmtValue(stats?.avg)} unit={unit}
+              sub={stats ? `Min ${fmtValue(stats.min)} · Max ${fmtValue(stats.max)}` : 'No data'} t={t} />
+            <KpiCard label="Latest Price" value={fmtValue(latestHourly?.value)} unit={unit}
               sub={latestHourly ? hourTimestampLabel(latestHourly.ts) : 'No data'} t={t} />
           </div>
 
@@ -632,9 +258,9 @@ export default function MarketTab({ iso, theme }) {
           {/* Chart */}
           {chartPoints.points.length ? (
             <div ref={chartRef} style={{ position: 'relative' }}>
-              <PriceChart mode={chartPoints.mode} points={chartPoints.points} color={SERIES_COLOR[series]}
+              <SeriesChart mode={chartPoints.mode} points={chartPoints.points} color={SERIES_COLOR[series]}
                 unit={unit} t={t} hoveredI={tip?.i ?? null} onHover={handleHover} xAxisLabel={AXIS_TITLE[granularity]} />
-              {tooltip}
+              <ChartTooltip tip={tip} points={chartPoints.points} unit={unit} t={t} valueLabel="Price" />
             </div>
           ) : (
             <p style={{ fontSize: '0.62rem', color: t.lblMuted, fontStyle: 'italic', padding: '12px 0' }}>No data for this period.</p>
