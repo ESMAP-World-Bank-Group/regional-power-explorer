@@ -41,7 +41,10 @@ CACHE = ROOT / "public" / "data" / "cache"
 TILES = ROOT / "public" / "data" / "tiles"
 DOCKER_IMAGE = "rpe-tippecanoe"
 ATTRS = ("nm", "op", "c", "f", "l", "st", "oid", "km", "x0", "y0", "x1", "y1")
-MAX_ZOOM = 8  # ~40 m steps; the lines are stored to ~100 m. The map overzooms
+# ~150 m steps, about the lines' own precision (stored to 3 decimals, ~110 m);
+# the map overzooms past it. Side by side with zoom 8 the map looks the same
+# (checked on Europe up to street level), at 38% less: 26.5 -> 16.4 MB.
+MAX_ZOOM = 6
 
 
 def km(coords):
