@@ -438,17 +438,20 @@ function paint(styleLayer, prop, feature) {
 
 /**
  * The layers a page added on top of the basemap, bottom to top, each with its
- * visible features: GeoJSON sources only (the basemap's are vector tiles).
+ * visible features: GeoJSON sources, and any other source the page gives a
+ * loader for in sourceData (a tiled source holds no whole features to read).
+ * The basemap's vector tiles are left out.
  */
-async function pageLayers(map) {
+async function pageLayers(map, sourceData = {}) {
   const zoom = map.getZoom();
   const data = new Map();
   const out = [];
   for (const spec of map.getStyle().layers) {
     if (!DRAWN.has(spec.type) || spec.layout?.visibility === 'none') continue;
     const src = map.getSource(spec.source);
-    if (src?.type !== 'geojson') continue;
-    if (!data.has(spec.source)) data.set(spec.source, src.getData().catch(() => null));
+    const load = src?.type === 'geojson' ? () => src.getData() : sourceData[spec.source];
+    if (!load) continue;
+    if (!data.has(spec.source)) data.set(spec.source, load().catch(() => null));
     const fc = await data.get(spec.source);
     const features = fc?.type === 'FeatureCollection' ? fc.features : fc?.type === 'Feature' ? [fc] : [];
     const filter = spec.filter ? featureFilter(spec.filter) : null;
@@ -519,7 +522,7 @@ function drawPageLayer(ctx, path, projection, layer, k, hatch) {
  *   swatches are blended over the land colour at `alpha`, as on the map
  * @returns {Promise<Blob>}
  */
-export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', labels = false, legend = [] }) {
+export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', labels = false, legend = [], sourceData }) {
   const bounds = map.getBounds(), zoom = map.getZoom();
   // The map area keeps the on-screen map's shape, so the export frames what
   // the user sees rather than padding it out with more of the world.
@@ -531,7 +534,7 @@ export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', la
   const W = Math.max(aw + 2 * PAD, 900), H = ah + TOP + BOTTOM;
   const area = [[(W - aw) / 2, TOP], [(W + aw) / 2, TOP + ah]];
   const [boundaries, layers, names, land, wbBase] = await Promise.all([
-    loadBoundaries(bounds, zoom), pageLayers(map),
+    loadBoundaries(bounds, zoom), pageLayers(map, sourceData),
     labels ? loadLabels(bounds, zoom) : [],
     basemap === 'clean' ? fetchGeo('world') : null,
     basemap === 'clean' ? null : fetchWbStyle(),

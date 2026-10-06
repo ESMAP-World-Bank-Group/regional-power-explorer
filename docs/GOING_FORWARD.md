@@ -193,7 +193,7 @@ Paused on 2026-09-23. What it will cover, and what has to be true first:
 | OWID, Ember, GEO, WB boundaries | Download their own inputs; never run unattended | Pinned requirements file, one test run |
 | ENTSO-E, Comtrade | Can be automated | API keys as repo secrets |
 | TUR, AZE, UZB, ARM | Read files a person supplies | A person adds the file and CI rebuilds from it |
-| Lines, plants, substations | Can't be automated yet | Where `worldwide.gpkg` comes from; a heavy-job runner |
+| Lines, plants, substations | Can't be automated yet. After the line files: `tools/prepare_line_tiles.py` (tippecanoe, from PATH or Docker), then `tools/prepare_region_summary.py` | Where `worldwide.gpkg` comes from; a heavy-job runner. Design Studio must answer range requests for `.pmtiles` (206); untested |
 | GPPD | No longer updated at the source | Nothing to schedule |
 
 Where it runs: GitHub Actions on the ESMAP repo is proven (EPİAŞ). Azure DevOps and

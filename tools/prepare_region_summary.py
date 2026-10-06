@@ -19,6 +19,9 @@ Outputs (public/data/cache/):
                          top_mw   the 151 largest capacities (MW), descending --
                                   enough for adaptiveMinMw() in src/constants.js,
                                   which caps the map at the ~150 largest plants
+        lines.tiles      true when public/data/tiles/region_lines_<id>.pmtiles
+                         exists (prepare_line_tiles.py); the page then draws
+                         the lines from it and needs no lines first pass
         lines.first / plants.<source>.first
                          true when a first-pass file was written (below)
 
@@ -39,6 +42,7 @@ import re
 from pathlib import Path
 
 CACHE = Path(__file__).resolve().parents[1] / "public" / "data" / "cache"
+TILES = CACHE.parent / "tiles"
 SOURCES = {"": "osm", "_gppd": "gppd", "_gem": "gem"}
 TOP = 151
 FIRST_PASS_BYTES = 5_000_000
@@ -80,7 +84,10 @@ def summarise(region):
         feats = features(lines)
         volts = {int((f.get("properties") or {}).get("v") or 0) for f in feats}
         out["lines"] = {"voltages": sorted(volts)}
-        if write_first_pass(lines, feats, lambda p: (p.get("v") or 0) >= FIRST_KV):
+        if (TILES / f"region_lines_{region}.pmtiles").exists():
+            out["lines"]["tiles"] = True
+            lines.with_name(lines.name.replace(".geojson", "_first.geojson")).unlink(missing_ok=True)
+        elif write_first_pass(lines, feats, lambda p: (p.get("v") or 0) >= FIRST_KV):
             out["lines"]["first"] = True
     floor = 0
     for suffix, name in SOURCES.items():
