@@ -209,15 +209,16 @@ export default function WorldPage() {
         const f = e.features[0];
         if (!isNamed(f)) { popup.remove(); return; }
         const rs = regionsFor(f);
+        if (rs.length === 0) { popup.remove(); return; }
         // The polygon's own Bank name, not regions.json's: the popup names what the map draws.
         const countryName = areaName(f) || rs[0]?.countryName || f.properties.ISO_A3;
+        // Each region with its map colour, as the click chooser draws it.
+        const swatch = r => `<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${r.color};margin-right:5px"></span>${r.name}`;
         const subtitle = rs.length > 1
-          ? rs.map(r => r.name).join(' · ') + ' · click to choose'
-          : rs.length === 1
-            ? rs[0].name + ' · click to explore'
-            : 'Non-determined legal status area';
+          ? rs.map(swatch).join('<br>') + '<br><span style="opacity:0.65">Click to choose</span>'
+          : swatch(rs[0]) + ' <span style="opacity:0.65">· click to explore</span>';
         popup.setLngLat(e.lngLat)
-          .setHTML(`<b>${nameHtml(countryName)}</b><br><span style="opacity:0.65">${subtitle}</span>`)
+          .setHTML(`<b>${nameHtml(countryName)}</b><br>${subtitle}`)
           .addTo(map);
       });
 
