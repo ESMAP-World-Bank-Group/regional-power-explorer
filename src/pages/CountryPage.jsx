@@ -288,7 +288,8 @@ export default function CountryPage() {
       if (disposed || !bounds) return;
       map.fitBounds(bounds, { padding: 60, duration: 0, maxZoom: 9 });
       setCountryCenter({
-        lon: (bounds[0][0] + bounds[1][0]) / 2,
+        // East is past 180 for a country across the antimeridian (Fiji).
+        lon: ((bounds[0][0] + bounds[1][0]) / 2 + 540) % 360 - 180,
         lat: (bounds[0][1] + bounds[1][1]) / 2,
       });
     }).catch(err => console.error('bboxes', err));

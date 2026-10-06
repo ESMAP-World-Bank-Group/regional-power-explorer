@@ -675,21 +675,32 @@ export default function RegionPage() {
           map.setFeatureState(hoveredId, { hover: false });
         hoveredId = null;
       });
+      const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
+      // A click on a line, plant or substation opens its card; only a click on
+      // bare country goes to the country page. Lines take the same 8px slack
+      // as the line click below; points are hit exactly, as their own clicks.
+      const onFeature = ({ point }) => {
+        const hits = (geometry, ids) => {
+          const layers = ids.filter(id => map.getLayer(id));
+          return layers.length > 0 && map.queryRenderedFeatures(geometry, { layers }).length > 0;
+        };
+        const { x, y } = point;
+        return hits([[x - 8, y - 8], [x + 8, y + 8]], LINE_LAYERS)
+          || hits(point, [...PLANT_STATUSES.map(s => `plants-${s}`), 'substations']);
+      };
       map.on('click', 'region-fill', e => {
         const iso = e.features[0].properties.ISO_A3;
-        if (isos.includes(iso)) navigate(`/country/${iso}`);
+        if (isos.includes(iso) && !onFeature(e)) navigate(`/country/${iso}`);
       });
       const onZoneClick = e => {
         const iso = e.features[0].properties.ISO_A3 || e.features[0].properties.country;
-        if (isos.includes(iso)) navigate(`/country/${iso}`);
+        if (isos.includes(iso) && !onFeature(e)) navigate(`/country/${iso}`);
       };
       map.on('click', 'region-zones-fill', onZoneClick);
       map.on('mouseenter', 'region-zones-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
       map.on('mouseleave', 'region-zones-fill', () => { map.getCanvas().style.cursor = ''; });
 
       // ── Feature click → detail panel ──────────────────────────────────────
-      const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
-
       // A line's properties for the popup and the card. Tiled lines hold only
       // v; the rest arrives with the attributes file, fetched once the map
       // is idle. Before then apply() gets v at once and is called again with
@@ -763,9 +774,23 @@ export default function RegionPage() {
 
         const token = ++clickToken;
         if (lineFeats.length > 0) {
-          const geom = lineFeats[0].geometry;
+          // The line nearest the click, as the hover popup describes the one
+          // under the pointer -- not whichever the box query lists first.
+          const pixelDist = f => {
+            const parts = f.geometry.type === 'LineString' ? [f.geometry.coordinates] : f.geometry.coordinates;
+            let best = Infinity;
+            for (const part of parts) for (let i = 1; i < part.length; i++) {
+              const a = map.project(part[i - 1]), b = map.project(part[i]);
+              const dx = b.x - a.x, dy = b.y - a.y, len2 = dx * dx + dy * dy;
+              const u = len2 ? Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / len2)) : 0;
+              best = Math.min(best, Math.hypot(a.x + u * dx - x, a.y + u * dy - y));
+            }
+            return best;
+          };
+          const feat = lineFeats.reduce((a, b) => (pixelDist(b) < pixelDist(a) ? b : a));
+          const geom = feat.geometry;
           const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
-          withLineProps(lineFeats[0], props => {
+          withLineProps(feat, props => {
             if (token !== clickToken) return;
             const v = props.v;
             setSelFeature({
