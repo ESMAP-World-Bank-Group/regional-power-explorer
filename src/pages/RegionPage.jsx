@@ -79,6 +79,7 @@ const CORRIDOR_LAYERS = {
 // reads the files itself, as before.
 const fetchSummary = regionId => fetchData(dataPath(`cache/region_summary_${regionId}.json`)).catch(() => null);
 const SOURCE_KEY = { '': 'osm', _gppd: 'gppd', _gem: 'gem' };
+const SOURCE_SUFFIX = { osm: '', gppd: '_gppd', gem: '_gem' };
 const absUrl = path => new URL(path, window.location.href).href;
 
 // Download a file the map will fetch for itself, so the browser has it to
@@ -96,6 +97,30 @@ function plantFacts(facts, fc) {
     fuels: new Set((facts ? facts.fuels : fc.features.map(f => f.properties.fuel)).filter(f => FUEL_COLORS[f])),
     count: facts ? facts.count : fc.features.length,
   };
+}
+
+// A big file's first pass: what the map shows at first, cut from it by
+// tools/prepare_region_summary.py. The summary flags the ones that exist.
+const firstPass = file => file.replace('.geojson', '_first.geojson');
+
+// Draw a source's first-pass file, then swap in the full one once that is on
+// screen. Sent together, the full file would hold up the worker drawing the
+// first. A first pass that fails to load still ends in the full file.
+// keep() is asked before the swap; false skips it.
+async function setDataInStages(map, id, first, full, keep) {
+  await map.getSource(id)?.setData(first, true);
+  await new Promise(resolve => {
+    const drawn = () => {
+      if (!map.getSource(id) || !map.isSourceLoaded(id)) return;
+      map.off('sourcedata', drawn);
+      map.off('idle', drawn);
+      resolve();
+    };
+    map.on('sourcedata', drawn);
+    map.on('idle', drawn);
+    drawn();
+  });
+  if (keep()) map.getSource(id)?.setData(full);
 }
 
 // The region's map data files, in the order the map handler reads them.
@@ -145,6 +170,9 @@ export default function RegionPage() {
   const [presentKvs,       setPresentKvs]       = useState(null);
   const [circleScale,     setCircleScale]     = useState(1.0);
   const [plantSource,     setPlantSource]     = useState('gem');
+  const plantSourceRef = useRef(plantSource); // what a rebuilt map starts on
+  plantSourceRef.current = plantSource;
+  const plantsShownRef = useRef(null);        // the source in the map's 'plants'
   const [mapReady,        setMapReady]        = useState(false);
   const [panelWidth,      setPanelWidth]      = useState(PANEL_WIDTH_DEFAULT);
   const [selFeature,      setSelFeature]      = useState(null);
@@ -172,11 +200,18 @@ export default function RegionPage() {
     prefetchGeo('region', regionId);
     // Start the map data now, alongside the basemap. Plants and lines go to the
     // map by URL when the region has a summary, so they are only warmed in the
-    // browser's cache; the small files go through the data cache.
+    // browser's cache -- the files drawn first, which for a big region is its
+    // first pass; the small files go through the data cache.
     const [plantsFile, linesFile, subsFile, lcFile] = regionDataFiles(regionId);
     fetchSummary(regionId).then(summary => {
-      if (summary) { warm(dataPath(plantsFile)); warm(dataPath(linesFile)); }
-      else for (const p of [plantsFile, linesFile]) fetchData(dataPath(p)).catch(() => {});
+      if (!summary) {
+        for (const p of [plantsFile, linesFile]) fetchData(dataPath(p)).catch(() => {});
+        return;
+      }
+      const source = summary.plants[plantSourceRef.current] ? plantSourceRef.current : 'osm';
+      const plants = `cache/region_plants_${regionId}${SOURCE_SUFFIX[source]}.geojson`;
+      warm(dataPath(summary.plants[source]?.first ? firstPass(plants) : plants));
+      warm(dataPath(summary.lines?.first ? firstPass(linesFile) : linesFile));
     });
     for (const p of [subsFile, lcFile]) fetchData(dataPath(p)).catch(() => {});
   }, [regionId]);
@@ -707,19 +742,37 @@ export default function RegionPage() {
         // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
         // an empty legend row would just be a dead checkbox.
         setPresentKvs(new Set(volts.map(v => bracketFor(v).key)));
-        map.getSource('lines')?.setData(linesGJ ?? absUrl(dataPath(linesFile)));
+        // A big region draws its 220 kV+ lines first; the rest follow.
+        if (summary?.lines?.first)
+          setDataInStages(map, 'lines', absUrl(dataPath(firstPass(linesFile))),
+            absUrl(dataPath(linesFile)), () => !disposed).catch(e => console.error('region lines', e));
+        else map.getSource('lines')?.setData(linesGJ ?? absUrl(dataPath(linesFile)));
       })();
       const plants = (async () => {
         const facts = summary?.plants?.osm;
         const plantsGJ = facts ? null : await fetchData(dataPath(plantsFile));
         if (disposed) return;
-        const { adaptMin, fuels } = plantFacts(facts, plantsGJ);
+        // The starting min-MW comes from OSM's capacities whatever the source.
+        const { adaptMin } = plantFacts(facts, plantsGJ);
         setMinMw(adaptMin);
-        setPresentFuels(fuels);
         for (const status of PLANT_STATUSES)
           if (map.getLayer(`plants-${status}`))
             map.setFilter(`plants-${status}`, makeLayerFilter(status, new Set(), adaptMin));
-        map.getSource('plants')?.setData(plantsGJ ?? absUrl(dataPath(plantsFile)));
+        // The selected source straight away (GEM by default), not OSM first and
+        // then a second big file; OSM when the summary lists no such source.
+        // Without a summary, OSM as read above, and the source swap below
+        // brings in any other.
+        const want = plantSourceRef.current;
+        const source = summary && summary.plants[want] ? want : 'osm';
+        if (source !== want) setPlantSource('osm');
+        plantsShownRef.current = source;
+        const srcFacts = summary?.plants?.[source];
+        setPresentFuels(plantFacts(srcFacts, plantsGJ).fuels);
+        const file = `cache/region_plants_${regionId}${SOURCE_SUFFIX[source]}.geojson`;
+        if (srcFacts?.first)
+          setDataInStages(map, 'plants', absUrl(dataPath(firstPass(file))), absUrl(dataPath(file)),
+            () => !disposed && plantsShownRef.current === source).catch(e => console.error('region plants', e));
+        else map.getSource('plants')?.setData(plantsGJ ?? absUrl(dataPath(file)));
       })();
       const subs = optional(subsFile).then(gj => { if (!disposed) map.getSource('substations')?.setData(gj); });
       const lcs  = optional(lcFile).then(gj => { if (!disposed) map.getSource('load-centers')?.setData(gj); });
@@ -958,7 +1011,7 @@ export default function RegionPage() {
   useEffect(() => {
     const map = mapRef.current;
     if (!map?.getSource('plants') || !mapReady) return;
-    const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
+    const suffix = SOURCE_SUFFIX[plantSource];
     const f    = `region_plants_${regionId}${suffix}.geojson`;
     const cf   = dataPath(`cache/region_capacity_${regionId}${suffix}.json`);
     const cfBase = dataPath(`cache/region_capacity_${regionId}.json`);
@@ -967,9 +1020,14 @@ export default function RegionPage() {
         const facts = summary?.plants?.[SOURCE_KEY[suffix]];
         // A summary that lists no such source means the file is not there.
         if (summary && !facts) throw new Error(`no ${f}`);
-        const data = facts ? null : await fetchData(dataPath(`cache/${f}`));
-        map.getSource('plants').setData(data ?? absUrl(dataPath(`cache/${f}`)));
-        setPresentFuels(plantFacts(facts, data).fuels);
+        // The map may have opened on this source already; the capacity below
+        // is still this effect's to set.
+        if (plantsShownRef.current !== plantSource) {
+          const data = facts ? null : await fetchData(dataPath(`cache/${f}`));
+          map.getSource('plants').setData(data ?? absUrl(dataPath(`cache/${f}`)));
+          plantsShownRef.current = plantSource;
+          setPresentFuels(plantFacts(facts, data).fuels);
+        }
         return Promise.all([
           suffix ? fetchData(cfBase).catch(() => null) : Promise.resolve(null),
           fetchData(cf).catch(() => null),
