@@ -48,7 +48,9 @@ export default function ExportControl({ mapRef, ready, t, title, fileName, legen
       setOpen(false);
     } catch (err) {
       console.error('Equal Earth export', err);
-      setError('Export failed. Please try again.');
+      // The cause too: the export depends on World Bank services a network
+      // may block or slow, and the message is what a user can report.
+      setError(`Export failed: ${err?.message || 'unknown error'}. Please try again.`);
     } finally {
       setBusy(false);
     }
