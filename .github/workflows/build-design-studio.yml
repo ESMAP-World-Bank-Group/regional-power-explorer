@@ -1,13 +1,19 @@
 name: Build for Design Studio
 
+# Every merge to main gets a Design Studio build to download from the run.
 on:
   workflow_dispatch:
   push:
     branches:
-      - ai-chat-production-integration
+      - main
 
 permissions:
   contents: read
+
+# A newer push makes a running build obsolete.
+concurrency:
+  group: design-studio-build
+  cancel-in-progress: true
 
 jobs:
   build:
