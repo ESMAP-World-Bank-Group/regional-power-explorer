@@ -33,7 +33,10 @@ Data licences include: OpenStreetMap (ODbL), WRI GPPD (CC BY 4.0), Global Energy
 - **React 19** + **Vite** (build/dev)
 - **MapLibre GL** for the interactive map
 - **React Router** for navigation
-- Deployed on **Vercel**
+- Deployed on **Vercel** (preview, from `main`) and **Design Studio**
+  (https://designstudio.worldbank.org/regional-power-explorer/). Design Studio packages
+  are built locally, never by GitHub: `python tools/build_design_studio.py` writes
+  `regional-power-explorer_design-studio_<date>_<commit>.zip` next to the repository.
 
 ## Getting started
 
