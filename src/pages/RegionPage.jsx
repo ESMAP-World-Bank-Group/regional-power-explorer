@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
+import { Protocol, PMTiles } from 'pmtiles';
 import { useTheme } from '../App';
 import {
   getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON,
@@ -45,6 +46,15 @@ function lineKm(coords) {
     km += R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
   return km;
+}
+
+/** A line's two ends. A tile holds only its piece of the line, so a tiled
+ *  line's true ends come from its attributes, x0 y0 x1 y1. */
+function lineEnds(p, feat) {
+  if (p.x0 != null) return [[p.x0, p.y0], [p.x1, p.y1]];
+  const g = feat.geometry;
+  const coords = g.type === 'LineString' ? g.coordinates : g.coordinates.flat();
+  return [coords[0], coords[coords.length - 1]];
 }
 
 function downloadBlob(content, filename, type = 'application/octet-stream') {
@@ -97,6 +107,34 @@ function plantFacts(facts, fc) {
     fuels: new Set((facts ? facts.fuels : fc.features.map(f => f.properties.fuel)).filter(f => FUEL_COLORS[f])),
     count: facts ? facts.count : fc.features.length,
   };
+}
+
+// Vector tiles of a region's lines (tools/prepare_line_tiles.py), one layer
+// "lines", read straight from a static .pmtiles file by range requests.
+const linesTiles = regionId => absUrl(dataPath(`tiles/region_lines_${regionId}.pmtiles`));
+// The rest of each tiled line, row n-1 for feature id n: name, operator,
+// length, ends... -- kept out of the tiles, which they made 4x larger.
+const linesAttrs = regionId => dataPath(`tiles/region_lines_${regionId}_attrs.json`);
+function attrsProps(attrs, feat) {
+  const row = attrs.rows[feat.id - 1] || [];
+  const p = { v: feat.properties.v };
+  attrs.keys.forEach((k, i) => { if (row[i] != null) p[k] = row[i]; });
+  return p;
+}
+let protocol = null;
+function pmtilesProtocol() {
+  if (!protocol) {
+    protocol = new Protocol();
+    maplibregl.addProtocol('pmtiles', protocol.tile);
+  }
+  return protocol;
+}
+// Read a tile file's header and directory now, so that once the map asks for
+// tiles it waits on the tiles alone and not on two round trips before them.
+function warmTiles(url) {
+  const p = pmtilesProtocol();
+  if (!p.get(url)) p.add(new PMTiles(url));
+  p.get(url).getHeader().catch(() => {});
 }
 
 // A big file's first pass: what the map shows at first, cut from it by
@@ -211,7 +249,9 @@ export default function RegionPage() {
       const source = summary.plants[plantSourceRef.current] ? plantSourceRef.current : 'osm';
       const plants = `cache/region_plants_${regionId}${SOURCE_SUFFIX[source]}.geojson`;
       warm(dataPath(summary.plants[source]?.first ? firstPass(plants) : plants));
-      warm(dataPath(summary.lines?.first ? firstPass(linesFile) : linesFile));
+      // Tiled lines fetch only the tiles in view; their header comes now.
+      if (summary.lines?.tiles) warmTiles(linesTiles(regionId));
+      else warm(dataPath(summary.lines?.first ? firstPass(linesFile) : linesFile));
     });
     for (const p of [subsFile, lcFile]) fetchData(dataPath(p)).catch(() => {});
   }, [regionId]);
@@ -397,9 +437,10 @@ export default function RegionPage() {
     // each file arrives (see the end of this handler), so the largest file --
     // Europe's lines, 21 MB -- holds up nothing but its own layer.
     map.once('style.load', async () => {
-      const [mode, ndlsa] = await Promise.all([
+      const [mode, ndlsa, summary] = await Promise.all([
         addGeoSource(map, 'region', regionId, () => disposed),
         fetchNdlsa(),
+        fetchSummary(regionId),
       ]);
 
       if (disposed || !mode) return;
@@ -407,7 +448,12 @@ export default function RegionPage() {
       const hl = tv.highlight;
       const empty = () => ({ type: 'FeatureCollection', features: [] });
       map.addSource('plants',       { type: 'geojson', data: empty() });
-      map.addSource('lines',        { type: 'geojson', data: empty() });
+      // Tiled lines load the tiles in view; the rest come as one file below.
+      const tiled = !!summary?.lines?.tiles;
+      if (tiled) {
+        pmtilesProtocol();
+        map.addSource('lines', { type: 'vector', url: `pmtiles://${linesTiles(regionId)}` });
+      } else map.addSource('lines', { type: 'geojson', data: empty() });
       map.addSource('substations',  { type: 'geojson', data: empty() });
       map.addSource('load-centers', { type: 'geojson', data: empty() });
 
@@ -416,6 +462,7 @@ export default function RegionPage() {
       for (const bracket of VOLTAGE_BRACKETS) {
         const { colors, width, key } = bracket;
         map.addLayer({ id: `lines-${key}`, type: 'line', source: 'lines',
+          ...(tiled && { 'source-layer': 'lines' }),
           filter: kvFilterWithFloor(bracket, minKv),
           paint: { 'line-color': colors[theme] ?? colors.fog, 'line-width': width,
             'line-opacity': tv.isDark ? 0.92 : 0.65 } });
@@ -643,6 +690,21 @@ export default function RegionPage() {
       // ── Feature click → detail panel ──────────────────────────────────────
       const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
 
+      // A line's properties for the popup and the card. Tiled lines hold only
+      // v; the rest arrives with the attributes file, fetched once the map
+      // is idle. Before then apply() gets v at once and is called again with
+      // the rest.
+      let lineAttrs = null, lineAttrsP = null;
+      const loadLineAttrs = () => (lineAttrsP ??= fetchData(linesAttrs(regionId))
+        .then(d => (lineAttrs = d)).catch(() => null));
+      const withLineProps = (feat, apply) => {
+        if (!tiled) return apply(feat.properties);
+        if (lineAttrs) return apply(attrsProps(lineAttrs, feat));
+        apply({ v: feat.properties.v });
+        loadLineAttrs().then(d => { if (d && !disposed) apply(attrsProps(d, feat)); });
+      };
+      let hoverToken = 0, clickToken = 0; // a late answer for a line since left is dropped
+
       // Line hover → popup with exact voltage + endpoint substation names
       const nearestSubName = (coord) => {
         try {
@@ -661,16 +723,16 @@ export default function RegionPage() {
         map.on('mouseenter', `lines-${key}`, e => {
           map.getCanvas().style.cursor = 'pointer';
           const feat = e.features[0];
-          const geom = feat.geometry;
-          const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
-          const fromName = nearestSubName(coords[0]);
-          const toName   = nearestSubName(coords[coords.length - 1]);
-          popup.setLngLat(e.lngLat)
-            .setHTML(linePopupHTML(feat.properties, [fromName, toName]))
-            .addTo(map);
+          const token = ++hoverToken;
+          popup.setLngLat(e.lngLat);
+          withLineProps(feat, props => {
+            if (token !== hoverToken) return;
+            const [start, end] = lineEnds(props, feat);
+            popup.setHTML(linePopupHTML(props, [nearestSubName(start), nearestSubName(end)])).addTo(map);
+          });
         });
         map.on('mousemove', `lines-${key}`, e => { popup.setLngLat(e.lngLat); });
-        map.on('mouseleave', `lines-${key}`, () => { map.getCanvas().style.cursor = ''; popup.remove(); });
+        map.on('mouseleave', `lines-${key}`, () => { hoverToken++; map.getCanvas().style.cursor = ''; popup.remove(); });
       }
 
       // Plants — keep hover popup, add click for detail panel
@@ -699,16 +761,19 @@ export default function RegionPage() {
         const activeLayers = LINE_LAYERS.filter(id => { try { return !!map.getLayer(id); } catch { return false; } });
         const lineFeats = activeLayers.length ? map.queryRenderedFeatures(bbox, { layers: activeLayers }) : [];
 
+        const token = ++clickToken;
         if (lineFeats.length > 0) {
-          const props   = lineFeats[0].properties;
-          const v       = props.v;
-          const bracket = bracketFor(v);
           const geom = lineFeats[0].geometry;
           const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
-          setSelFeature({
-            type:  'line',
-            props: { ...props, voltageLabel: v ? `${Math.round(v / 1000)} kV` : bracket.label },
-            km:    lineKm(coords),
+          withLineProps(lineFeats[0], props => {
+            if (token !== clickToken) return;
+            const v = props.v;
+            setSelFeature({
+              type:  'line',
+              props: { ...props, voltageLabel: v ? `${Math.round(v / 1000)} kV` : bracketFor(v).label },
+              // A tile holds only its piece of the line; km is the whole line's.
+              km:    props.km ?? lineKm(coords),
+            });
           });
         } else {
           setSelFeature(null);
@@ -723,8 +788,6 @@ export default function RegionPage() {
       // ── Data layers, each filled as its file arrives ─────────────────────
       const [plantsFile, linesFile, subsFile, lcFile] = regionDataFiles(regionId);
       const optional = p => fetchData(dataPath(p)).catch(() => empty());
-      const summary = await fetchSummary(regionId);
-      if (disposed) return;
       const lines = (async () => {
         const linesGJ = summary?.lines ? null : await fetchData(dataPath(linesFile));
         if (disposed) return;
@@ -742,7 +805,10 @@ export default function RegionPage() {
         // Regions with a 110 kV floor hold no 33-110 kV and no untagged lines;
         // an empty legend row would just be a dead checkbox.
         setPresentKvs(new Set(volts.map(v => bracketFor(v).key)));
-        // A big region draws its 220 kV+ lines first; the rest follow.
+        // Tiled lines are already on their way, and their attributes follow
+        // once the map is idle; a big untiled region draws its 220 kV+ lines
+        // first and the rest follow.
+        if (tiled) { map.once('idle', () => { if (!disposed) loadLineAttrs(); }); return; }
         if (summary?.lines?.first)
           setDataInStages(map, 'lines', absUrl(dataPath(firstPass(linesFile))),
             absUrl(dataPath(linesFile)), () => !disposed).catch(e => console.error('region lines', e));
@@ -1423,6 +1489,7 @@ export default function RegionPage() {
           title={`Regional Power Explorer — ${region.name}`}
           fileName={`regional-power-explorer-${regionId}`}
           defaultBasemap={wbView.canvas}
+          sourceData={{ lines: () => fetchData(dataPath(regionDataFiles(regionId)[1])) }}
           legend={() => powerLegend({ presentFuels, fuelsOff, presentKvs, theme })}
         />
 
