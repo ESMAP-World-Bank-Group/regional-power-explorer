@@ -14,6 +14,7 @@ import {
 import LayerPanel from '../components/LayerPanel';
 import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
+import WorldButton from '../components/WorldButton';
 import { powerLegend } from '../utils/exportLegend';
 import CapacityChart from '../components/CapacityChart';
 import StatsPanel from '../components/StatsPanel';
@@ -1507,16 +1508,23 @@ export default function RegionPage() {
           </div>
         )}
 
-        {/* Equal Earth export — top-left of the map (under Legend & Filter on phones) */}
-        <ExportControl
-          mapRef={mapRef} ready={mapReady} t={t} compact={isMobile}
-          style={isMobile ? { top: 56, left: 12 } : { top: 10, left: 12 }}
-          title={`Regional Power Explorer — ${region.name}`}
-          fileName={`regional-power-explorer-${regionId}`}
-          defaultBasemap={wbView.canvas}
-          sourceData={{ lines: () => fetchData(dataPath(regionDataFiles(regionId)[1])) }}
-          legend={() => powerLegend({ presentFuels, fuelsOff, presentKvs, theme })}
-        />
+        {/* Back to the world view, and the Equal Earth export — top-left of the
+            map (under Legend & Filter on phones) */}
+        <div style={{
+          position: 'absolute', zIndex: 60, display: 'flex', alignItems: 'flex-start', gap: 6,
+          ...(isMobile ? { top: 56, left: 12 } : { top: 10, left: 12 }),
+        }}>
+          <WorldButton t={t} compact={isMobile} />
+          <ExportControl
+            mapRef={mapRef} ready={mapReady} t={t} compact={isMobile}
+            style={{ position: 'relative', left: 0 }}
+            title={`Regional Power Explorer — ${region.name}`}
+            fileName={`regional-power-explorer-${regionId}`}
+            defaultBasemap={wbView.canvas}
+            sourceData={{ lines: () => fetchData(dataPath(regionDataFiles(regionId)[1])) }}
+            legend={() => powerLegend({ presentFuels, fuelsOff, presentKvs, theme })}
+          />
+        </div>
 
         {/* ── Map disclaimer ── */}
         <div style={{
