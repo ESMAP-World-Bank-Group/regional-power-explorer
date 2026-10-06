@@ -30,6 +30,20 @@ const BOUNDARY_LAYER = 'ADM0_Boundaries';
 // about twice the on-screen size), from z3 for a world view up to z7.
 const MIN_BOUNDARY_ZOOM = 3, MAX_BOUNDARY_ZOOM = 7;
 
+// A World Bank tile that has not arrived by then fails the export with a
+// message saying which service did not answer, rather than leaving it at
+// "Preparing PNG…" for good.
+const TILE_TIMEOUT_MS = 20000;
+
+/** fetch() for a WB tile service, bounded by TILE_TIMEOUT_MS. */
+async function fetchTile(url, service) {
+  try {
+    return await fetch(url, { signal: AbortSignal.timeout(TILE_TIMEOUT_MS) });
+  } catch (err) {
+    throw new Error(err.name === 'TimeoutError' ? `${service} did not respond` : `${service} could not be reached`, { cause: err });
+  }
+}
+
 // Dash rhythm per WB boundary type, in multiples of the line width. The
 // class numbers (`_symbol`) are read from the live style, never assumed.
 const DASHES = { dotted: [0.1, 3.5], dashed: [5, 7], solid: null };
@@ -107,9 +121,9 @@ function loadTile(service, z, x, y) {
   const key = `${z}/${y}/${x}`;
   if (!tileCache.has(key)) {
     tileCache.set(key, (async () => {
-      const r = await fetch(`${service.url}/tile/${key}.pbf`);
+      const r = await fetchTile(`${service.url}/tile/${key}.pbf`, 'World Bank boundary tiles');
       if (r.status === 404 || r.status === 204) return [];   // empty ocean tile
-      if (!r.ok) throw new Error(`WB boundary tiles: HTTP ${r.status}`);
+      if (!r.ok) throw new Error(`World Bank boundary tiles: HTTP ${r.status}`);
       const bytes = new Uint8Array(await r.arrayBuffer());
       return bytes.length ? decodeTile(bytes, x, y, z, service.kinds) : [];
     })().catch(err => { tileCache.delete(key); throw err; }));
@@ -156,12 +170,26 @@ function hatchPattern(ctx, t) {
   return ctx.createPattern(c, 'repeat');
 }
 
+/** A longitude in [-180, 180] moved by a turn, if need be, to within 180 degrees of `centre`. */
+const unwrap = (lng, centre) => (lng < centre - 180 ? lng + 360 : lng > centre + 180 ? lng - 360 : lng);
+
+/**
+ * The meridian the projection centres on: Greenwich, unless the view runs
+ * across the antimeridian (Pacific SIDS, Fiji), which would otherwise be cut
+ * at the frame's edge; then the view's own middle.
+ */
+function centralMeridian(bounds) {
+  const w = bounds.getWest(), e = bounds.getEast();
+  // Not brought back into [-180, 180]: frameFor() compares it with these bounds.
+  return (w < -180 || e > 180) && e - w < 300 ? (w + e) / 2 : 0;
+}
+
 /**
  * The part of the world to frame: the whole sphere for a world-wide view,
  * otherwise the visible bounds.
  */
-function frameFor(bounds) {
-  const w = Math.max(-180, bounds.getWest()), e = Math.min(180, bounds.getEast());
+function frameFor(bounds, lon0) {
+  const w = Math.max(lon0 - 180, bounds.getWest()), e = Math.min(lon0 + 180, bounds.getEast());
   const s = Math.max(-85, bounds.getSouth()), n = Math.min(85, bounds.getNorth());
   if (e - w >= 300) return { type: 'Sphere' };
   const pts = [];
@@ -208,10 +236,13 @@ async function loadLabels(bounds, zoom) {
   }));
   const z = Math.max(0, Math.min(9, Math.floor(zoom)));
   const out = [], seen = new Set();
-  for (const { x, y } of tilesOver(bounds, z)) {
-    const r = await fetch(`${url}/tile/${z}/${y}/${x}.pbf`);
-    if (!r.ok) continue;
-    const bytes = new Uint8Array(await r.arrayBuffer());
+  // All at once, then read in tile order, so the same name always wins.
+  const tiles = await Promise.all(tilesOver(bounds, z).map(async ({ x, y }) => {
+    const r = await fetchTile(`${url}/tile/${z}/${y}/${x}.pbf`, 'World Bank country-name tiles');
+    return { x, y, bytes: r.ok ? new Uint8Array(await r.arrayBuffer()) : null };
+  }));
+  for (const { x, y, bytes } of tiles) {
+    if (!bytes) continue;
     const layer = bytes.length && new VectorTile(new Pbf(bytes)).layers.ADM0;
     if (!layer) continue;
     const n = 2 ** z, extent = layer.extent;
@@ -235,16 +266,20 @@ async function loadLabels(bounds, zoom) {
   return out.sort((a, b) => b.size - a.size);   // big names claim space first
 }
 
+/** The z tiles over `bounds`; columns past 180 either way wrap round. */
 function tilesOver(bounds, z) {
   const n = 2 ** z;
-  const tx = lng => Math.min(n - 1, Math.max(0, Math.floor((lng + 180) / 360 * n)));
+  const w = bounds.getWest(), e = Math.min(bounds.getEast(), w + 360);
+  const tx = lng => Math.floor((lng + 180) / 360 * n);
   const ty = lat => {
     const r = Math.max(-85.05, Math.min(85.05, lat)) * Math.PI / 180;
     return Math.min(n - 1, Math.max(0, Math.floor((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n)));
   };
+  const xs = new Set();
+  for (let x = tx(w); x <= Math.min(tx(e), tx(w) + n - 1); x++) xs.add(((x % n) + n) % n);
   const out = [];
   for (let y = ty(bounds.getNorth()); y <= ty(bounds.getSouth()); y++)
-    for (let x = tx(Math.max(-180, bounds.getWest())); x <= tx(Math.min(180, bounds.getEast())); x++) out.push({ x, y });
+    for (const x of xs) out.push({ x, y });
   return out;
 }
 
@@ -295,7 +330,8 @@ async function renderBasemap(wbBase, t, canvasKind, bounds) {
   const m = new maplibregl.Map({
     container: div, style: buildWbStyle(wbBase, t, view), bounds, interactive: false,
     preserveDrawingBuffer: true, attributionControl: false, pixelRatio: 1, fadeDuration: 0,
-    renderWorldCopies: false,
+    // Copies only for bounds across the antimeridian, which need the next one.
+    renderWorldCopies: bounds.getWest() < -180 || bounds.getEast() > 180,
   });
   try {
     await new Promise((resolve, reject) => {
@@ -315,18 +351,22 @@ async function renderBasemap(wbBase, t, canvasKind, bounds) {
   }
 }
 
-/** The lng/lat box the export frame shows, from its inverse-projected edges. */
-function frameBounds(projection, [[x0, y0], [x1, y1]]) {
-  let w = 180, e = -180, s = 90, n = -90;
+/**
+ * The lng/lat box the export frame shows, from its inverse-projected edges;
+ * longitudes within 180 degrees of the central meridian `lon0`.
+ */
+function frameBounds(projection, [[x0, y0], [x1, y1]], lon0) {
+  let w = lon0 + 180, e = lon0 - 180, s = 90, n = -90;
   for (let i = 0; i <= 40; i++) {
     const fx = x0 + (x1 - x0) * i / 40, fy = y0 + (y1 - y0) * i / 40;
     for (const pt of [[fx, y0], [fx, y1], [x0, fy], [x1, fy]]) {
       const ll = projection.invert(pt);
       if (!ll || !Number.isFinite(ll[0]) || Math.abs(ll[0]) > 180 || Math.abs(ll[1]) > 90) continue;
-      w = Math.min(w, ll[0]); e = Math.max(e, ll[0]); s = Math.min(s, ll[1]); n = Math.max(n, ll[1]);
+      const lng = unwrap(ll[0], lon0);
+      w = Math.min(w, lng); e = Math.max(e, lng); s = Math.min(s, ll[1]); n = Math.max(n, ll[1]);
     }
   }
-  return new maplibregl.LngLatBounds([Math.max(-180, w), Math.max(-85, s)], [Math.min(180, e), Math.min(85, n)]);
+  return new maplibregl.LngLatBounds([Math.max(lon0 - 180, w), Math.max(-85, s)], [Math.min(lon0 + 180, e), Math.min(85, n)]);
 }
 
 const mercY = lat => Math.log(Math.tan(Math.PI / 4 + Math.max(-85.05, Math.min(85.05, lat)) * Math.PI / 360));
@@ -340,10 +380,13 @@ function warpBasemap(ctx, { pixels, bounds }, projection, W, H, SCALE) {
   const OW = W * SCALE, OH = H * SCALE, STEP = 4;
   const gw = Math.ceil(OW / STEP) + 1, gh = Math.ceil(OH / STEP) + 1;
   const grid = new Float64Array(gw * gh * 2).fill(NaN);
+  // Longitudes in the raster's own range: across the antimeridian invert()
+  // jumps from 180 to -180, and interpolating over that jump would smear.
+  const mid = (bounds.getWest() + bounds.getEast()) / 2;
   for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) {
     const ll = projection.invert([gx * STEP / SCALE, gy * STEP / SCALE]);
     if (ll && Number.isFinite(ll[0]) && Number.isFinite(ll[1])) {
-      grid[(gy * gw + gx) * 2] = ll[0]; grid[(gy * gw + gx) * 2 + 1] = ll[1];
+      grid[(gy * gw + gx) * 2] = unwrap(ll[0], mid); grid[(gy * gw + gx) * 2 + 1] = ll[1];
     }
   }
   const { width: sw, height: sh, data: sd } = pixels;
@@ -504,8 +547,9 @@ export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', la
   ctx.fillStyle = t.panel;
   ctx.fillRect(0, 0, W, H);
 
-  const frame = frameFor(bounds);
-  const projection = geoEqualEarth().fitExtent(area, frame).clipExtent(area);
+  const lon0 = centralMeridian(bounds);
+  const frame = frameFor(bounds, lon0);
+  const projection = geoEqualEarth().rotate([-lon0, 0]).fitExtent(area, frame).clipExtent(area);
   const path = geoPath(projection, ctx);
   // Symbol and line sizes follow the on-screen map, scaled to the export.
   const k = Math.max(0.8, Math.min(2.5, aw / cw));
@@ -516,7 +560,7 @@ export async function exportEqualEarthPng(map, { t, title, basemap = 'clean', la
     ctx.fillStyle = t.land;
     for (const f of land.features) { ctx.beginPath(); path(forD3(f)); ctx.fill(); }
   } else {
-    const raster = await renderBasemap(wbBase, t, basemap, frameBounds(projection, area));
+    const raster = await renderBasemap(wbBase, t, basemap, frameBounds(projection, area, lon0));
     const [[x0, y0], [x1, y1]] = area;
     ctx.save();
     ctx.beginPath(); ctx.rect(x0, y0, x1 - x0, y1 - y0); ctx.clip();
