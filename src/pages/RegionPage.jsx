@@ -1,5 +1,6 @@
 import { dataPath } from '../utils/paths';
 import { fetchData } from '../utils/dataCache';
+import { inBuild } from '../utils/dataGuard';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { track } from '../analytics';
@@ -329,13 +330,9 @@ export default function RegionPage() {
       })
       .catch(() => {});
 
-    setGppdAvailable(null);
-    fetch(dataPath(`cache/region_plants_${regionId}_gppd.geojson`), { method: 'HEAD' })
-      .then(r => setGppdAvailable(r.ok)).catch(() => setGppdAvailable(false));
-
-    setGemAvailable(null);
-    fetch(dataPath(`cache/region_plants_${regionId}_gem.geojson`), { method: 'HEAD' })
-      .then(r => setGemAvailable(r.ok)).catch(() => setGemAvailable(false));
+    // From the build's file list, not a HEAD request each.
+    setGppdAvailable(inBuild(`cache/region_plants_${regionId}_gppd.geojson`));
+    setGemAvailable(inBuild(`cache/region_plants_${regionId}_gem.geojson`));
   }, [regionId]);
 
   // Fleet age — GPPD only

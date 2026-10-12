@@ -1,6 +1,7 @@
 import { dataPath } from '../utils/paths';
 import { pointInFeature } from '../utils/pointInFeature';
 import { fetchData } from '../utils/dataCache';
+import { inBuild } from '../utils/dataGuard';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { track } from '../analytics';
@@ -95,6 +96,12 @@ export default function CountryPage() {
   const [minMw,        setMinMw]        = useState(100);
   const [circleScale,  setCircleScale]  = useState(1.0);
   const [plantSource,        setPlantSource]        = useState('gem');
+  // The map handler opens on the selected source; it reads it through a ref so
+  // a source change doesn't rebuild the map. plantsShownRef is what the map
+  // holds, so the source swap below skips a source already on screen.
+  const plantSourceRef = useRef(plantSource);
+  const plantsShownRef = useRef(null);
+  useEffect(() => { plantSourceRef.current = plantSource; }, [plantSource]);
   const [selFeature,         setSelFeature]         = useState(null);
   const [gppdAvailable,      setGppdAvailable]      = useState(null);
   const [gemAvailable,       setGemAvailable]       = useState(null);
@@ -220,27 +227,12 @@ export default function CountryPage() {
         const country = region.countries.find(c => c.iso === iso);
         if (country) {
           setInfo({ country, region });
-          // Check GPPD and GEM availability for this region
-          fetch(dataPath(`cache/region_plants_${region.id}_gppd.geojson`), { method: 'HEAD' })
-            .then(r => setGppdAvailable(r.ok))
-            .catch(() => setGppdAvailable(false));
-          fetch(dataPath(`cache/region_plants_${region.id}_gem.geojson`), { method: 'HEAD' })
-            .then(r => setGemAvailable(r.ok))
-            .catch(() => setGemAvailable(false));
-          if (BRIEFS_ENABLED) {
-            fetch(dataPath(`notes/${iso}.html`), { method: 'HEAD' })
-              .then(r => setHasNote(r.ok))
-              .catch(() => setHasNote(false));
-          } else {
-            setHasNote(false);
-          }
-          fetch(dataPath(`market/${iso}.json`), { method: 'HEAD' })
-            // Dev server (and some static hosts) return 200 + index.html for
-            // any unmatched path, so r.ok alone can't tell a real JSON file
-            // from the SPA fallback — only every country having a notes file
-            // kept that same flaw invisible in the hasNote check above.
-            .then(r => setMarketAvailable(r.ok && (r.headers.get('content-type') || '').includes('json')))
-            .catch(() => setMarketAvailable(false));
+          // Optional files, looked up in the build's file list: a HEAD request
+          // per file cost a round trip each before the panels could settle.
+          setGppdAvailable(inBuild(`cache/region_plants_${region.id}_gppd.geojson`));
+          setGemAvailable(inBuild(`cache/region_plants_${region.id}_gem.geojson`));
+          setHasNote(BRIEFS_ENABLED && inBuild(`notes/${iso}.html`));
+          setMarketAvailable(inBuild(`market/${iso}.json`));
           return;
         }
       }
@@ -266,7 +258,15 @@ export default function CountryPage() {
     let disposed = false;
     // Start the map data now, alongside the basemap, not once the map is up.
     const empty = () => ({ type: 'FeatureCollection', features: [] });
-    const plantsP = fetchData(dataPath(`cache/region_plants_${region.id}.geojson`));
+    // The selected source's plants straight away (GEM by default), not OSM
+    // first and then a second region-sized file from the source swap. OSM when
+    // the build has no file for that source.
+    const wantSource = plantSourceRef.current;
+    const plantSource0 = wantSource !== 'osm'
+      && inBuild(`cache/region_plants_${region.id}_${wantSource}.geojson`) ? wantSource : 'osm';
+    plantsShownRef.current = null;
+    const plantsP = fetchData(dataPath(
+      `cache/region_plants_${region.id}${plantSource0 === 'osm' ? '' : `_${plantSource0}`}.geojson`));
     const linesP  = fetchData(dataPath(`cache/region_lines_${region.id}.geojson`));
     const subsP   = fetchData(dataPath(`cache/region_substations_${region.id}.geojson`)).catch(empty);
     const lcP     = fetchData(dataPath(`region_load_centers_${region.id}.geojson`)).catch(empty);
@@ -661,6 +661,8 @@ export default function CountryPage() {
       const plants = plantsP.then(plantsGJ => {
         if (disposed) return;
         const filteredPlants = inCountry(plantsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature));
+        plantsShownRef.current = plantSource0;
+        if (plantSource0 !== wantSource) setPlantSource('osm');
         setFilteredPlantsData(filteredPlants);
         // Adaptive default min-MW: show all of a small country (e.g. Madagascar),
         // cap big ones to the ~150 largest. Replaces the flat 100 MW default.
@@ -669,16 +671,17 @@ export default function CountryPage() {
         setMinMw(adaptMin);
         map.getSource('plants')?.setData(filteredPlants);
         const fuels = new Set();
-        for (const f of plantsGJ.features) {
+        for (const f of filteredPlants.features) {
           const fuel = f.properties.fuel;
           if (fuel && FUEL_COLORS[fuel]) fuels.add(fuel);
         }
         setPresentFuels(fuels);
 
-        // One layer per fuel present, slotted below the substations, where they
-        // stood when they were added up front.
+        // One layer per fuel, slotted below the substations, where they stood
+        // when they were added up front. Every fuel, not only those in this
+        // file: a source switch can bring fuels this one lacks (GEM has nuclear
+        // in ASEAN where OSM has none), and without a layer they never drew.
         for (const [fuel, color] of Object.entries(FUEL_COLORS)) {
-          if (!fuels.has(fuel)) continue;
           map.addLayer({
             id: `plants-${fuel}`,
             type: 'circle',
@@ -996,12 +999,14 @@ export default function CountryPage() {
   useEffect(() => {
     const map = mapRef.current;
     if (!map?.getSource('plants') || !info || !countryReady) return;
+    if (plantsShownRef.current === plantSource) return;   // opened on it
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
     const filename = `region_plants_${info.region.id}${suffix}.geojson`;
     fetchData(dataPath(`cache/${filename}`))
       .then(data => {
+        plantsShownRef.current = plantSource;
         const cf = countryFeatureRef.current;
-        const filtered = {
+        const filtered = !cf ? data : {
           ...data,
           features: data.features.filter(f => pointInFeature(f.geometry.coordinates, cf)),
         };

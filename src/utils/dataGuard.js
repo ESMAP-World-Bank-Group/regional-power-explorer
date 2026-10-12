@@ -1,6 +1,16 @@
 import files from 'virtual:data-manifest';
 import { dataPath } from './paths';
 
+const known = new Set(files);
+
+/**
+ * Whether public/data/<path> is in this build, e.g. inBuild('market/TUR.json').
+ * Answers an optional file's "is it there?" without asking the server.
+ */
+export function inBuild(path) {
+  return known.has(path);
+}
+
 /**
  * Answer requests for data files the build doesn't contain with a local 404
  * instead of sending them to the server.
@@ -14,7 +24,6 @@ import { dataPath } from './paths';
  */
 export function installDataGuard() {
   const prefix = new URL(dataPath(''), window.location.origin).href;
-  const known = new Set(files);
   const realFetch = window.fetch.bind(window);
   window.fetch = (input, init) => {
     const url = new URL(typeof input === 'string' ? input : input.url, window.location.href).href;

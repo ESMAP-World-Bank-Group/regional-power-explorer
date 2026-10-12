@@ -14,6 +14,13 @@ const BASE = process.env.VERCEL ? '/' : '/regional-power-explorer/'
 //  - staticContent: IIS refuses to serve extensions it has no MIME type for,
 //    and .geojson isn't one of them. `remove` first so a server that already
 //    maps an extension doesn't fail on a duplicate.
+//  - .geojson goes out as application/json. Which types IIS compresses is set
+//    server-wide (httpCompression can't be set here), and application/json is
+//    the type a server compresses when it compresses data at all; the region
+//    files shrink about 11x gzipped. The app parses them as JSON either way.
+//  - assets/: a year's browser cache. Vite names every file there by its
+//    content hash, so a changed file is a new URL. vercel.json does the same
+//    on Vercel; without it each visit re-asks the server for every file.
 // Ignored by any non-IIS server.
 function iisConfig() {
   return {
@@ -27,7 +34,7 @@ function iisConfig() {
   <system.webServer>
     <staticContent>
       <remove fileExtension=".geojson" />
-      <mimeMap fileExtension=".geojson" mimeType="application/geo+json" />
+      <mimeMap fileExtension=".geojson" mimeType="application/json" />
       <remove fileExtension=".json" />
       <mimeMap fileExtension=".json" mimeType="application/json" />
       <remove fileExtension=".woff2" />
@@ -36,6 +43,13 @@ function iisConfig() {
       <mimeMap fileExtension=".pmtiles" mimeType="application/octet-stream" />
     </staticContent>
   </system.webServer>
+  <location path="assets">
+    <system.webServer>
+      <staticContent>
+        <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" cacheControlCustom="public, immutable" />
+      </staticContent>
+    </system.webServer>
+  </location>
 </configuration>
 `,
       })
