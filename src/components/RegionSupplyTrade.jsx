@@ -1,5 +1,4 @@
-import { dataPath } from '../utils/paths';
-import { fetchData } from '../utils/dataCache';
+import { fetchMemberFiles } from '../utils/derivedData';
 import { useState, useEffect, useRef } from 'react';
 import { getT, FUEL_COLORS, COUNTRY_ZONE_COLORS } from '../constants';
 import ChartCaption from './ChartCaption';
@@ -381,17 +380,15 @@ export default function RegionSupplyTrade({ region, theme }) {
     setSupplies(null); setTradeByIso(null);
     let cancelled = false;
     const members = region.countries.map(c => ({ iso: c.iso, name: c.name }));
-    Promise.all(members.map(({ iso }) =>
-      Promise.all([
-        fetchData(dataPath(`supply/${iso}.json`)).catch(() => null),
-        fetchData(dataPath(`trade/${iso}.json`)).catch(() => null),
-      ]),
-    )).then(results => {
-      if (cancelled) return;
-      const sup = [], trd = {};
-      results.forEach(([s, tr], i) => { if (s) sup.push(s); trd[members[i].iso] = tr; });
-      setSupplies(sup); setTradeByIso(trd);
-    });
+    // Each from the region's bundle: two requests, not two per member.
+    const isos = members.map(m => m.iso);
+    Promise.all([fetchMemberFiles('supply', region.id, isos), fetchMemberFiles('trade', region.id, isos)])
+      .then(([supplyFiles, tradeFiles]) => {
+        if (cancelled) return;
+        const sup = [], trd = {};
+        members.forEach(({ iso }, i) => { if (supplyFiles[i]) sup.push(supplyFiles[i]); trd[iso] = tradeFiles[i]; });
+        setSupplies(sup); setTradeByIso(trd);
+      });
     return () => { cancelled = true; };
   }, [region]);
 

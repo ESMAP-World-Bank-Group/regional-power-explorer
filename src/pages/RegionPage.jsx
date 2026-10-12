@@ -1,6 +1,7 @@
 import { dataPath } from '../utils/paths';
 import { fetchData } from '../utils/dataCache';
 import { inBuild } from '../utils/dataGuard';
+import { fetchMemberFiles } from '../utils/derivedData';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { track } from '../analytics';
@@ -352,15 +353,14 @@ export default function RegionPage() {
     }).catch(() => {});
   }, [regionId, plantSource]);
 
-  // R1 — cross-border integration snapshot (built from per-country trade files)
+  // R1 — cross-border integration snapshot (built from per-country trade files,
+  // read from the region's bundle in one request)
   useEffect(() => {
     if (!region) return;
     setTradeSnapshot(null);
     let cancelled = false;
     const isos = region.countries.map(c => c.iso);
-    Promise.all(isos.map(iso =>
-      fetchData(dataPath(`trade/${iso}.json`)).catch(() => null),
-    )).then(results => {
+    fetchMemberFiles('trade', region.id, isos).then(results => {
       if (cancelled) return;
       let withData = 0, isolated = 0, netExp = 0, netImp = 0, tradedGwh = 0, tradeYear = null;
       for (const d of results) {

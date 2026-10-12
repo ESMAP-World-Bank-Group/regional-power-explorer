@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node tools/build_derived_data.mjs",
     "dev": "vite",
+    "prebuild": "node tools/build_derived_data.mjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

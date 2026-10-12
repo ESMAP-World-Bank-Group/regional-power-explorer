@@ -1,5 +1,6 @@
 import { dataPath } from '../../utils/paths';
-import { pointInFeature } from '../../utils/pointInFeature';
+import { zoneStats as computeZoneStats } from '../../utils/zoneStats';
+import { inBuild } from '../../utils/dataGuard';
 import { fetchData } from '../../utils/dataCache';
 import { useState, useEffect, useMemo } from 'react';
 import { FUEL_COLORS, FUEL_LABELS, getT, defaultNZones } from '../../constants';
@@ -54,6 +55,10 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
   const [lines,    setLines]    = useState(null);
   const [loading,  setLoading]  = useState(false);
   const [sources,  setSources]  = useState(null);
+  const [builtStats, setBuiltStats] = useState(null);   // { label, stats }
+  const label = `${iso}_${nZones}z`;
+  const statsFile = `zones/stats/${regionId}/${label}.json`;
+  const prebuilt = !!(regionId && nZones && inBuild(statsFile));
 
   // Load zones index; default-select the first clustering so the map shows the
   // zone separation as soon as the tab is opened (controlled by the parent).
@@ -73,13 +78,22 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
       .then(setSources).catch(() => setSources(null));
   }, []);
 
-  // Load region plants + substations once
   useEffect(() => {
-    if (!regionId) return;
+    if (!prebuilt) return;
+    fetchData(dataPath(statsFile))
+      .then(stats => setBuiltStats({ label, stats }))
+      .catch(() => setBuiltStats(null));
+  }, [prebuilt, statsFile, label]);
+
+  // Region plants, substations and lines, only to compute stats the build
+  // didn't write. Not before a zoning is picked: until then prebuilt can't
+  // tell, and the download would start for nothing.
+  useEffect(() => {
+    if (!regionId || !nZones || prebuilt) return;
     fetchData(dataPath(`cache/region_plants_${regionId}.geojson`)).then(setPlants).catch(() => setPlants(null));
     fetchData(dataPath(`cache/region_substations_${regionId}.geojson`)).then(setSubs).catch(() => setSubs(null));
     fetchData(dataPath(`cache/region_lines_${regionId}.geojson`)).then(setLines).catch(() => setLines(null));
-  }, [regionId]);
+  }, [regionId, nZones, prebuilt]);
 
   // Load zone GeoJSON + topo when config changes
   useEffect(() => {
@@ -96,65 +110,16 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
     });
   }, [iso, nZones]);
 
-  // Compute per-zone stats (PIP)
-  const zoneStats = useMemo(() => {
-    if (!zonesGJ || !plants || !subs || !lines) return null;
-    const stats = {};
-    zonesGJ.features.forEach(zf => {
-      stats[zf.properties.zone_name] = { fuels: {}, totalMw: 0, plantCount: 0, subCount: 0, lineCount: 0 };
-    });
-
-    // Filter plants to current country
-    const countryPlants = plants.features.filter(f => {
-      const iso3 = f.properties.country || f.properties.ISO_A3 || '';
-      return !iso3 || iso3 === iso;
-    });
-
-    for (const pf of countryPlants) {
-      const coords = pf.geometry.coordinates;
-      for (const zf of zonesGJ.features) {
-        if (pointInFeature(coords, zf)) {
-          const name = zf.properties.zone_name;
-          const fuel = pf.properties.fuel;
-          const mw   = pf.properties.mw || 0;
-          if (fuel) stats[name].fuels[fuel] = (stats[name].fuels[fuel] || 0) + mw;
-          stats[name].totalMw  += mw;
-          stats[name].plantCount++;
-          break;
-        }
-      }
-    }
-
-    // Substations PIP. pointInFeature keeps each zone's bounding boxes itself, so
-    // a zone far from the point is turned away without a ray cast. (Boxes built
-    // from geometry.coordinates once crashed the tab on Sudan, whose zones
-    // include a GeometryCollection, which has none.)
-    for (const sf of subs.features) {
-      const [sx, sy] = sf.geometry.coordinates;
-      for (let i = 0; i < zonesGJ.features.length; i++) {
-        if (pointInFeature([sx, sy], zonesGJ.features[i])) {
-          stats[zonesGJ.features[i].properties.zone_name].subCount++;
-          break;
-        }
-      }
-    }
-
-    // Lines PIP — use midpoint of each line segment
-    for (const lf of lines.features) {
-      const coords = lf.geometry.coordinates;
-      if (!coords?.length) continue;
-      const mid = coords[Math.floor(coords.length / 2)];
-      const [lx, ly] = mid;
-      for (let i = 0; i < zonesGJ.features.length; i++) {
-        if (pointInFeature([lx, ly], zonesGJ.features[i])) {
-          stats[zonesGJ.features[i].properties.zone_name].lineCount++;
-          break;
-        }
-      }
-    }
-
-    return stats;
-  }, [zonesGJ, plants, subs, lines, iso]);
+  const computedStats = useMemo(
+    () => (zonesGJ && plants && subs && lines ? computeZoneStats(zonesGJ, plants, subs, lines, iso) : null),
+    [zonesGJ, plants, subs, lines, iso]);
+  // Per-zone stats: written at build time (tools/build_derived_data.mjs) from
+  // the region's plants, substations and lines, so the tab doesn't download
+  // them -- some 30 MB for Europe. Computed here, by the same function, only
+  // for a zoning the build has no stats for.
+  const zoneStats = prebuilt
+    ? (builtStats?.label === label ? builtStats.stats : null)
+    : computedStats;
 
   const available = index?.[iso] || [];
 

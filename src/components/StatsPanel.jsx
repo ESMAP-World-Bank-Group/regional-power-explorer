@@ -1,5 +1,4 @@
-import { dataPath } from '../utils/paths';
-import { fetchData } from '../utils/dataCache';
+import { fetchMemberFiles } from '../utils/derivedData';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FUEL_COLORS, getT } from '../constants';
@@ -37,9 +36,7 @@ export default function StatsPanel({ region, theme, source = 'osm', tariffs, fle
     setByCountry(null);
     let cancelled = false;
     const isos = region.countries.map(c => c.iso);
-    Promise.all(isos.map(iso =>
-      fetchData(dataPath(`supply/${iso}.json`)).catch(() => null),
-    )).then(results => {
+    fetchMemberFiles('supply', region.id, isos).then(results => {
       if (cancelled) return;
       const map = {};
       results.forEach((d, i) => {

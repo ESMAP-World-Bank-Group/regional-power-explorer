@@ -2,6 +2,7 @@ import { dataPath } from '../utils/paths';
 import { pointInFeature } from '../utils/pointInFeature';
 import { fetchData } from '../utils/dataCache';
 import { inBuild } from '../utils/dataGuard';
+import { countryFile } from '../utils/derivedData';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { track } from '../analytics';
@@ -265,10 +266,19 @@ export default function CountryPage() {
     const plantSource0 = wantSource !== 'osm'
       && inBuild(`cache/region_plants_${region.id}_${wantSource}.geojson`) ? wantSource : 'osm';
     plantsShownRef.current = null;
-    const plantsP = fetchData(dataPath(
+    // Plants, lines and substations from the country's own files, cut at build
+    // time (tools/build_derived_data.mjs); the region's, filtered once the
+    // country outline is in, only where the build has no cut.
+    const plantsLayer = plantSource0 === 'osm' ? 'plants' : `plants_${plantSource0}`;
+    const own = {
+      plants: countryFile(region.id, iso, plantsLayer),
+      lines:  countryFile(region.id, iso, 'lines'),
+      subs:   countryFile(region.id, iso, 'substations'),
+    };
+    const plantsP = fetchData(dataPath(own.plants ??
       `cache/region_plants_${region.id}${plantSource0 === 'osm' ? '' : `_${plantSource0}`}.geojson`));
-    const linesP  = fetchData(dataPath(`cache/region_lines_${region.id}.geojson`));
-    const subsP   = fetchData(dataPath(`cache/region_substations_${region.id}.geojson`)).catch(empty);
+    const linesP  = fetchData(dataPath(own.lines ?? `cache/region_lines_${region.id}.geojson`));
+    const subsP   = fetchData(dataPath(own.subs ?? `cache/region_substations_${region.id}.geojson`)).catch(empty);
     const lcP     = fetchData(dataPath(`region_load_centers_${region.id}.geojson`)).catch(empty);
     const admin1P = fetchData(dataPath(`cache/region_admin1_${region.id}.geojson`)).catch(empty);
     // Awaited later; until then a failure must not surface as unhandled.
@@ -314,7 +324,7 @@ export default function CountryPage() {
       // segments cross borders by nature.
       const countryFeature = countries.features.find(f => f.properties.ISO_A3 === iso);
       countryFeatureRef.current = countryFeature || null;
-      const inCountry = (fc, keep) => (countryFeature
+      const inCountry = (cut, fc, keep) => (countryFeature && !cut
         ? { ...fc, features: fc.features.filter(keep) } : fc);
 
       addCountriesSource(map, countries);
@@ -638,7 +648,7 @@ export default function CountryPage() {
       // ── Data layers, each filled as its file arrives ─────────────────────
       const lines = linesP.then(linesGJ => {
         if (disposed) return;
-        const filteredLines = inCountry(linesGJ, f =>
+        const filteredLines = inCountry(own.lines, linesGJ, f =>
           f.geometry.coordinates.some(coord => pointInFeature(coord, countryFeature)));
         setFilteredLinesData(filteredLines);
         // Slider floor comes from the data itself: regions.yaml sets a different
@@ -660,7 +670,7 @@ export default function CountryPage() {
       });
       const plants = plantsP.then(plantsGJ => {
         if (disposed) return;
-        const filteredPlants = inCountry(plantsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature));
+        const filteredPlants = inCountry(own.plants, plantsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature));
         plantsShownRef.current = plantSource0;
         if (plantSource0 !== wantSource) setPlantSource('osm');
         setFilteredPlantsData(filteredPlants);
@@ -714,7 +724,7 @@ export default function CountryPage() {
       });
       const subs = subsP.then(subsGJ => {
         if (!disposed) map.getSource('substations')?.setData(
-          inCountry(subsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature)));
+          inCountry(own.subs, subsGJ, f => pointInFeature(f.geometry.coordinates, countryFeature)));
       });
       const lcs = lcP.then(lcGJ => {
         if (!disposed) map.getSource('load-centers')?.setData(
@@ -1001,12 +1011,12 @@ export default function CountryPage() {
     if (!map?.getSource('plants') || !info || !countryReady) return;
     if (plantsShownRef.current === plantSource) return;   // opened on it
     const suffix = plantSource === 'gppd' ? '_gppd' : plantSource === 'gem' ? '_gem' : '';
-    const filename = `region_plants_${info.region.id}${suffix}.geojson`;
-    fetchData(dataPath(`cache/${filename}`))
+    const own = countryFile(info.region.id, info.country.iso, `plants${suffix}`);
+    fetchData(dataPath(own ?? `cache/region_plants_${info.region.id}${suffix}.geojson`))
       .then(data => {
         plantsShownRef.current = plantSource;
         const cf = countryFeatureRef.current;
-        const filtered = !cf ? data : {
+        const filtered = own || !cf ? data : {
           ...data,
           features: data.features.filter(f => pointInFeature(f.geometry.coordinates, cf)),
         };

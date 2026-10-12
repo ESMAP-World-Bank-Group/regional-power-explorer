@@ -13,6 +13,11 @@ dist-ssr
 *.local
 
 # Data pipeline intermediates (generated, not committed)
+# Cut from public/data at build time by tools/build_derived_data.mjs
+public/data/cache/country/
+public/data/trade/region/
+public/data/supply/region/
+public/data/zones/stats/
 data-source/cache/
 data-source/*.csv
 data-source/gem/
