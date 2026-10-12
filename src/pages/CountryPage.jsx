@@ -933,9 +933,12 @@ export default function CountryPage() {
       const centroids = {};
       for (const f of zonesGJ.features) {
         const name = f.properties.zone_name;
-        const coords = f.geometry.type === 'Polygon'
-          ? f.geometry.coordinates[0]
-          : f.geometry.coordinates[0][0];
+        // Outer ring of the first polygon; some zones (Sudan) are a GeometryCollection.
+        const g = f.geometry.type === 'GeometryCollection'
+          ? f.geometry.geometries.find(p => p.type === 'Polygon' || p.type === 'MultiPolygon')
+          : f.geometry;
+        if (!g) continue;
+        const coords = g.type === 'Polygon' ? g.coordinates[0] : g.coordinates[0][0];
         centroids[name] = [
           coords.reduce((s, p) => s + p[0], 0) / coords.length,
           coords.reduce((s, p) => s + p[1], 0) / coords.length,

@@ -125,20 +125,13 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
       }
     }
 
-    // Substations PIP (bbox pre-filter for speed)
-    const zoneBBoxes = zonesGJ.features.map(zf => {
-      const coords = zf.geometry.type === 'Polygon'
-        ? zf.geometry.coordinates.flat()
-        : zf.geometry.coordinates.flat(2);
-      const xs = coords.map(p => p[0]), ys = coords.map(p => p[1]);
-      return { minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) };
-    });
-
+    // Substations PIP. pointInFeature keeps each zone's bounding boxes itself, so
+    // a zone far from the point is turned away without a ray cast. (Boxes built
+    // from geometry.coordinates once crashed the tab on Sudan, whose zones
+    // include a GeometryCollection, which has none.)
     for (const sf of subs.features) {
       const [sx, sy] = sf.geometry.coordinates;
       for (let i = 0; i < zonesGJ.features.length; i++) {
-        const bb = zoneBBoxes[i];
-        if (sx < bb.minX || sx > bb.maxX || sy < bb.minY || sy > bb.maxY) continue;
         if (pointInFeature([sx, sy], zonesGJ.features[i])) {
           stats[zonesGJ.features[i].properties.zone_name].subCount++;
           break;
@@ -153,8 +146,6 @@ export default function ZoningTab({ iso, theme, regionId, nZones, onSelectZones 
       const mid = coords[Math.floor(coords.length / 2)];
       const [lx, ly] = mid;
       for (let i = 0; i < zonesGJ.features.length; i++) {
-        const bb = zoneBBoxes[i];
-        if (lx < bb.minX || lx > bb.maxX || ly < bb.minY || ly > bb.maxY) continue;
         if (pointInFeature([lx, ly], zonesGJ.features[i])) {
           stats[zonesGJ.features[i].properties.zone_name].lineCount++;
           break;
