@@ -1,0 +1,60 @@
+country: Digital infrastructure (UKR, GEO, ARM, AZE, MDA)
+iso3: [UKR, GEO, ARM, AZE, MDA]
+updated: 2026-10
+
+sources:
+
+  - id: itu_indicators
+    name: ITU Broadband Maps — country indicators
+    description: GCI 2024 tier, ICT Regulatory Tracker generation, G5 benchmark, population within 10 km of fibre, NMS/BP flags
+    provider: International Telecommunication Union (ITU-D, BDT)
+    url: https://bbmaps.itu.int
+    access: WFS GetFeature (ITU:gci2024, tracker_series_2007_2024, g5benchmark_2025, broadband_capacity, nms, bp), retrieved 2026-06-17
+    raw_file: null
+    coverage: global (204 countries)
+    licence: CC BY-NC-SA
+    used_by: public/data/digital/itu_indicators.json
+
+  - id: itu_transmission
+    name: ITU Interactive Transmission Map — terrestrial backbone and nodes
+    description: Fibre transmission links (status, operator, go-live) and nodes
+    provider: ITU-D (BDT), partly from operator/partner data
+    url: https://bbmaps.itu.int
+    access: WFS GetFeature ITU:trx_public_2 and ITU:itu_nodes_ties, retrieved 2026-06-17
+    raw_file: raw/rpe_digital_infra_2026-10-13.gpkg (itu_backbone, itu_nodes)
+    coverage: 5 countries; UA mostly 2019 data
+    licence: CC BY-NC-SA
+    used_by: public/data/digital/<ISO>_backbone_itu.geojson, <ISO>_nodes_itu.geojson
+
+  - id: itu_submarine
+    name: ITU — submarine cables and landing points 2024; satellite earth stations
+    description: Cables landing in the 5 countries (full geometry), landing points, ITU-notified earth stations
+    provider: ITU-D (submarine data TeleGeography-based); ITU-R space services
+    url: https://bbmaps.itu.int
+    access: WFS GetFeature ITU:submarinecables2024, subcables_landingpoint2024, sat_earth_station, retrieved 2026-06-17
+    raw_file: raw/rpe_digital_infra_2026-10-13.gpkg (submarine_cables, facilities_itu)
+    coverage: 5 countries; cables between Russia and occupied Crimea excluded (Kerch Strait Cable; Energy Bridge Cable)
+    licence: CC BY-NC-SA
+    used_by: public/data/digital/submarine_cables.geojson, <ISO>_facilities_itu.geojson
+
+  - id: opennet_georgia
+    name: Open Net (Georgia) — state broadband backbone and points of presence
+    description: Backbone routes and PoPs by status (in service / under construction / in design)
+    provider: JSC Open Net, Georgia
+    url: null
+    access: Received by the World Bank team; snapshot 2025-03-04; transfer permitted
+    raw_file: raw/rpe_digital_infra_2026-10-13.gpkg (opennet_backbone, opennet_pop)
+    coverage: Georgia
+    licence: CC BY-NC-SA
+    used_by: public/data/digital/GEO_backbone_opennet.geojson, GEO_pop_opennet.geojson
+
+  - id: orange_moldova
+    name: Orange Moldova — fibre cables (WaveFiber2) and outdoor mobile coverage 2G/3G/4G/5G
+    description: Operator fibre cable network and modelled outdoor coverage
+    provider: Orange Moldova
+    url: null
+    access: Received by the World Bank team (files dated 2025-07-01); transfer permitted
+    raw_file: raw/rpe_digital_infra_2026-10-13.gpkg (orange_fibre, orange_coverage)
+    coverage: Moldova
+    licence: CC BY-NC-SA
+    used_by: public/data/digital/MDA_fibre_orange.geojson, MDA_coverage_orange.geojson
