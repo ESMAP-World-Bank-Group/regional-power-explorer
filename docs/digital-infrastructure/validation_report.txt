@@ -1,0 +1,36 @@
+Validation report — 2026-10-13
+
+public_data/digital/ARM_backbone_itu.geojson	0.03 MB	73 features	OK
+public_data/digital/ARM_facilities_itu.geojson	0.00 MB	2 features	OK
+public_data/digital/ARM_nodes_itu.geojson	0.01 MB	55 features	OK
+public_data/digital/AZE_backbone_itu.geojson	0.02 MB	63 features	OK
+public_data/digital/AZE_facilities_itu.geojson	0.00 MB	1 features	CHECK: always-null props ['satellite']
+public_data/digital/AZE_nodes_itu.geojson	0.01 MB	54 features	OK
+public_data/digital/GEO_backbone_itu.geojson	0.04 MB	107 features	OK
+public_data/digital/GEO_backbone_opennet.geojson	0.18 MB	768 features	OK
+public_data/digital/GEO_facilities_itu.geojson	0.00 MB	1 features	CHECK: always-null props ['satellite']
+public_data/digital/GEO_nodes_itu.geojson	0.01 MB	59 features	OK
+public_data/digital/GEO_pop_opennet.geojson	0.20 MB	619 features	OK
+public_data/digital/MDA_backbone_itu.geojson	0.04 MB	112 features	OK
+public_data/digital/MDA_coverage_orange.geojson	5.21 MB	4 features	OK
+public_data/digital/MDA_facilities_itu.geojson	0.01 MB	35 features	OK
+public_data/digital/MDA_fibre_orange.geojson	2.20 MB	1 features	OK
+public_data/digital/MDA_nodes_itu.geojson	0.01 MB	45 features	OK
+public_data/digital/UKR_backbone_itu.geojson	0.24 MB	584 features	OK
+public_data/digital/UKR_facilities_itu.geojson	0.00 MB	7 features	OK
+public_data/digital/UKR_nodes_itu.geojson	0.07 MB	311 features	OK
+public_data/digital/itu_indicators.json	0.05 MB	204 countries	OK
+public_data/digital/submarine_cables.geojson	0.00 MB	3 features	OK
+sources/DIGITAL.yaml	parses as YAML	OK
+
+raw/rpe_digital_infra_2026-10-13.gpkg  51.5 MB
+  layer itu_backbone: MultiLineString, 939 features, EPSG:4326, encoding UTF-8
+  layer itu_nodes: Point, 524 features, EPSG:4326, encoding UTF-8
+  layer facilities_itu: Point, 46 features, EPSG:4326, encoding UTF-8
+  layer submarine_cables: MultiLineString, 3 features, EPSG:4326, encoding UTF-8
+  layer opennet_backbone: LineString, 768 features, EPSG:4326, encoding UTF-8
+  layer opennet_pop: Point, 619 features, EPSG:4326, encoding UTF-8
+  layer orange_fibre: LineString, 84790 features, EPSG:4326, encoding UTF-8
+  layer orange_coverage: MultiPolygon, 4 features, EPSG:4326, encoding UTF-8
+
+Overall: OK
