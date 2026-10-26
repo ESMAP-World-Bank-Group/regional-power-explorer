@@ -1,0 +1,2046 @@
+{
+ "source": "ITU Broadband Maps (bbmaps.itu.int, WFS layers ITU:gci2024, tracker_series_2007_2024, g5benchmark_2025, broadband_capacity, nms, bp), retrieved 2026-06-17",
+ "note": "Country-level ITU indicators; geometry dropped, join on ISO_A3. gci2024_tier: Global Cybersecurity Index 2024 tier (1 best); tracker2024_generation: ICT Regulatory Tracker generation (G1-G5); g5_*: G5 Benchmark stage; pop_within_10km_fibre_pct: ITU 'tenkmrange' (share of population within 10 km of the fibre network, %); nms_mapscore, bp_score: ITU broadband-mapping flags as published. Definitions to be confirmed with ITU.",
+ "countries": {
+  "AFG": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 27.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "AGO": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 12.8,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ALB": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 68.2,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "AND": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 84.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ARE": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 13.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "ARG": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 47.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ARM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 79.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ASM": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ATG": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 61.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "AUS": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 32.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "AUT": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 56.2,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "AZE": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 38.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BDI": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 37.8,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "BEL": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 91.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "BEN": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 47.7,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "BFA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 12.8,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "BGD": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 58.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BGR": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 66.4,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "BHR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 75.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "BHS": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 40.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BIH": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 18.9,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "BLR": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 45.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "BLZ": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 52.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BOL": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 40.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BRA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 36.1,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "BRB": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "BRN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 23.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BTN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 32.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "BWA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 40.1,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "CAF": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 0.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "CAN": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 50.2,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "CHE": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 92.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "CHL": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 28.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "CHN": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 5.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "CIV": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 21.3,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "CMR": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 39.0,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "COD": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 12.3,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "COG": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 50.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "COL": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 39.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "COM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 99.2,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "CPV": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 48.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "CRI": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 43.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "CUB": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 46.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "CUW": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "CYP": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 67.2,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "CZE": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 71.2,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "DEU": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Leading",
+   "pop_within_10km_fibre_pct": 61.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "DJI": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 75.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "DMA": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "DNK": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 80.6,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "DOM": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 37.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "DZA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 32.7,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ECU": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 66.9,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "EGY": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 26.2,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "ERI": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 0.0,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ESP": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 60.4,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "EST": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 86.8,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "ETH": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 14.8,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "FIN": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Leading",
+   "pop_within_10km_fibre_pct": 55.1,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "FJI": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 46.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "FRA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 56.3,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "FRO": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "FSM": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 46.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "GAB": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 42.5,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "GBR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 82.7,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "GEO": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 53.1,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "GHA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 31.2,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "GIB": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "GIN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 4.3,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "GMB": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 75.4,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "GNB": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 24.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "GNQ": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 42.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "GRC": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 44.2,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "GRD": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 98.6,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "GRL": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "GTM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 41.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "GUY": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 19.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "HKG": {
+   "gci2024_tier": null,
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "HND": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 47.9,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "HRV": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 46.5,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "HTI": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 35.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "HUN": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 62.9,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "IDN": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 35.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "IND": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 17.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "IRL": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 90.4,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "IRN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 24.7,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "IRQ": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 12.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ISL": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 92.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ISR": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 22.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "ITA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 71.2,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "JAM": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 70.9,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "JOR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 79.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "JPN": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 26.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "KAZ": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 31.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "KEN": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 31.9,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "KGZ": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 42.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "KHM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 54.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "KIR": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 0.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "KNA": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "KOR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 31.2,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "KWT": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 19.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "LAO": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 25.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "LBN": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 31.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "LBR": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 8.8,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "LBY": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 20.9,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "LCA": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "LIE": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "LKA": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 72.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "LSO": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 1.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "LTU": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 53.7,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "LUX": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 96.2,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "LVA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 85.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MAC": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "MAR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 20.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MCO": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MDA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 64.1,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "MDG": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 17.4,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "MDV": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 45.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MEX": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 42.8,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "MHL": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 24.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MKD": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 74.7,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "MLI": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 14.7,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "MLT": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 92.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MMR": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 30.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MNE": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 63.2,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "MNG": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 41.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MOZ": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 22.1,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "MRT": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 11.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MUS": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 97.1,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "MWI": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 18.7,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "MYS": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 41.9,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "NAM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 33.1,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "NER": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 15.4,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "NGA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 27.8,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "NIC": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 57.0,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "NLD": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 89.8,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "NOR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 58.5,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "NPL": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 47.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "NRU": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "NZL": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 59.6,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "OMN": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 53.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PAK": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 56.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PAN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 49.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PER": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 51.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PHL": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 54.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PLW": {
+   "gci2024_tier": null,
+   "tracker2024_generation": "G1",
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": 97.7,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "PNG": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 10.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "POL": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 63.3,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "PRI": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "PRK": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": 0.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PRT": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 71.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PRY": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 63.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "PSE": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "PYF": {
+   "gci2024_tier": null,
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": null,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "QAT": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 52.7,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ROU": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 61.5,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "RUS": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 30.8,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "RWA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Advanced",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 50.4,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "SAU": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Leading",
+   "g5_2025": "Leading",
+   "pop_within_10km_fibre_pct": 16.4,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "SDN": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 18.4,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "SEN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 36.1,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "SGP": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Leading",
+   "g5_2023": "Leading",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 80.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SLB": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 11.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SLE": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 30.1,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "SLV": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 56.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SMR": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "SOM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 2.6,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "SRB": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 48.3,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "SSD": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 0.0,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "STP": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 46.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SUR": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 88.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SVK": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 74.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SVN": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 68.7,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "SWE": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 47.0,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "SWZ": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 68.8,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SYC": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 57.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "SYR": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 8.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TCD": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 15.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TGO": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 39.9,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "THA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 19.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TJK": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 45.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TKM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 33.9,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TLS": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 46.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TON": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G2",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 49.7,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TTO": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 92.2,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "TUN": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 34.2,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "TUR": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 24.0,
+   "nms_mapscore": 1,
+   "bp_score": 1
+  },
+  "TUV": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 0.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "TZA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 14.4,
+   "nms_mapscore": 0,
+   "bp_score": 2
+  },
+  "UGA": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 32.9,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "UKR": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 40.5,
+   "nms_mapscore": 1,
+   "bp_score": 2
+  },
+  "URY": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 55.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "USA": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 44.7,
+   "nms_mapscore": 1,
+   "bp_score": null
+  },
+  "UZB": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 29.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "VAT": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": null,
+   "g5_2021": null,
+   "g5_2023": null,
+   "g5_2025": null,
+   "pop_within_10km_fibre_pct": 100.0,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "VCT": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 78.3,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "VEN": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 36.0,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "VNM": {
+   "gci2024_tier": "Tier 1",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 44.2,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "VUT": {
+   "gci2024_tier": "Tier 3",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Limited",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 19.4,
+   "nms_mapscore": 0,
+   "bp_score": null
+  },
+  "WSM": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 52.1,
+   "nms_mapscore": null,
+   "bp_score": null
+  },
+  "YEM": {
+   "gci2024_tier": "Tier 5",
+   "tracker2024_generation": "G1",
+   "g5_2021": "Limited",
+   "g5_2023": "Limited",
+   "g5_2025": "Limited",
+   "pop_within_10km_fibre_pct": 12.3,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ZAF": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G4",
+   "g5_2021": "Advanced",
+   "g5_2023": "Advanced",
+   "g5_2025": "Advanced",
+   "pop_within_10km_fibre_pct": 51.4,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ZMB": {
+   "gci2024_tier": "Tier 2",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 24.7,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  },
+  "ZWE": {
+   "gci2024_tier": "Tier 4",
+   "tracker2024_generation": "G3",
+   "g5_2021": "Transitioning",
+   "g5_2023": "Transitioning",
+   "g5_2025": "Transitioning",
+   "pop_within_10km_fibre_pct": 28.3,
+   "nms_mapscore": 0,
+   "bp_score": 1
+  }
+ }
+}
