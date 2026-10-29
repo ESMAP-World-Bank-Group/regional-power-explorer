@@ -47,8 +47,9 @@ The data tools (`src/chat/dataServer.js`, prefixed `data__` for the model):
 | `zones` | `ai/zones/<ISO3>.json` | planning-model zones: plants by fuel per zone, connected zones |
 | `load_centres` | `region_load_centers_<region>.geojson` | main cities by population (Black Sea) |
 | `country_note` | `notes/<ISO3>.html` | the AI-drafted briefing note: figures, outline, takeaways or one section |
+| `re_resources` | `re/<ISO3>.json` | country solar and wind resource: averages, best 10%, monthly profiles |
 
-Renewable-resource potential is left out on purpose: the RE tab calls Global Solar Atlas and Open-Meteo live, which is outside the Explorer's published data.
+`public/data/re/` is written by `tools/prepare_re.py` from Global Solar Atlas country statistics, Global Wind Atlas v4 and NASA POWER. The RE tab reads the same files, so neither the tab nor the assistant calls an outside service. The method is in `RE_RESOURCES_METHOD.md`.
 
 ## AI trust boundary
 

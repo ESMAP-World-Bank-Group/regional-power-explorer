@@ -35,6 +35,7 @@ For each case test:
 - A country-note answer says the note is AI-drafted and not fact-checked.
 - A grid question presents region totals, not one country's network.
 - A market question for a country other than Türkiye says market data is not published.
+- A solar or wind question gives country averages with their source, and says real wind fleets run below the modelled capacity factor.
 - Navigation tool can move World → Region → Country.
 - App-control tool can change tab, plant source, minimum MW and fuel visibility.
 - Map tools can describe viewport/layers and move the camera.

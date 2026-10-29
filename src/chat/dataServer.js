@@ -253,7 +253,19 @@ export function buildDataServer() {
     });
   });
 
-  server.tool('coverage', 'What the explorer publishes for a country (supply, trade, market, plant datasets, zoning, briefing note) and its regions, plus when the data was last updated. Use this before saying data is missing.', { iso: iso3 }, async ({ iso }) => {
+  server.tool('re_resources', 'Solar and wind resource for a country: averages over the whole country, median and best 10%, with monthly profiles. Solar GHI, DNI, PV output and PV capacity factor (Global Solar Atlas); wind speed, power density and capacity factor at 100 m (Global Wind Atlas v4).', {
+    isos: z.array(iso3).min(1).max(30),
+  }, async ({ isos }) => {
+    const countries = Object.fromEntries(await Promise.all(isos.map(async code => [code, (await getJson(`data/re/${code}.json`)) ?? null])));
+    if (!Object.values(countries).some(Boolean)) return json({ available: false, message: 'No resource figures for these countries.' });
+    return json({
+      available: true,
+      note: 'Whole-country averages weighted by area, not limited to buildable land. p90 = value the best tenth of the country reaches. Wind capacity factor is modelled for one IEC class 2 turbine everywhere; real fleets usually run lower. Monthly profiles: NASA POWER shape scaled to the annual averages.',
+      countries,
+    });
+  });
+
+  server.tool('coverage', 'What the explorer publishes for a country (supply, trade, market, plant datasets, zoning, renewable resources, briefing note) and its regions, plus when the data was last updated. Use this before saying data is missing.', { iso: iso3 }, async ({ iso }) => {
     const [{ regions = [] } = {}, meta, access, tariffs] = await Promise.all(
       ['regions', 'metadata', 'access', 'tariffs'].map(name => getJson(`data/${name}.json`)));
     const plants = (await getJson(`data/ai/plants/${iso}.json`)) ?? {};
@@ -265,6 +277,7 @@ export function buildDataServer() {
       market: has(`market/${iso}.json`),
       zoning: has(`ai/zones/${iso}.json`),
       briefingNote: has(`notes/${iso}.html`),
+      reResources: has(`re/${iso}.json`),
       plantDatasets: Object.keys(plants),
       access: Boolean(access?.countries?.[iso]),
       tariffs: Boolean(tariffs?.countries?.[iso]),
