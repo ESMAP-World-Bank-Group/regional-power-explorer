@@ -28,7 +28,7 @@ Keep current preprocessed static delivery for the first integrated release. Move
 
 Read compact static JSON summaries. Never send whole regional GeoJSON to the model. Use the package's live MapLibre tool server for viewport/layer questions and the Explorer's own static JSON for quantitative questions.
 
-The region plant and line files are too big to read per question, so `tools/prepare_ai.py` summarises them into `public/data/ai/` (about 2 MB in all). Run it after any pipeline step that rewrites the region plant, line or zone files.
+The region plant and line files are too big to read per question, so `tools/prepare_ai.py` summarises them into `public/data/ai/` (about 2 MB in all). Run it after any pipeline step that rewrites the region plant, line or zone files. CI fails a pull request whose summaries are out of date (see `DATA_LINEAGE.md`).
 
 The data tools (`src/chat/dataServer.js`, prefixed `data__` for the model):
 

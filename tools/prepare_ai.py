@@ -19,10 +19,13 @@ Outputs (public/data/ai/):
 
 Run after any pipeline step that rewrites the region plant, line or zone files:
     python tools/prepare_ai.py
+CI (.github/workflows/check-derived-data.yml) fails a pull request whose files
+here don't match what this script writes.
 """
 import json
 import math
 import re
+import shutil
 from collections import defaultdict
 from pathlib import Path
 
@@ -230,6 +233,9 @@ def main():
              if (m := re.match(r"region_(?:lines|plants|substations)_(.+?)(?:_gppd|_gem)?\.geojson$", p.name))}
     regions = [r for r in listed if r in found] + sorted(found - set(listed))
 
+    # Start empty, so a country or region that is gone leaves no stale file.
+    for sub in ("plants", "grid", "zones"):
+        shutil.rmtree(OUT / sub, ignore_errors=True)
     print(f"plants: {prepare_plants(regions)} countries")
     for region in regions:
         prepare_grid(region)
