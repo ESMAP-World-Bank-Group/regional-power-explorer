@@ -224,10 +224,10 @@ export default function REResourcesTab({ iso, theme }) {
             {wind ? (
               <>
                 <Cards t={t} items={[
-                  { label: 'Mean wind',     value: wind.speed.mean,             unit: 'm/s @ 100m' },
+                  { label: 'Mean wind',     value: wind.speed.mean.toFixed(1),  unit: 'm/s @ 100m' },
                   { label: 'Wind CF',       value: `${wind.capacityFactorPct.mean}%`, unit: 'IEC class 2 turbine' },
                   { label: 'Power density', value: wind.powerDensity.mean,      unit: 'W/m² @ 100m' },
-                  { label: 'Best 10%',      value: wind.speed.p90,              unit: 'm/s @ 100m or more' },
+                  { label: 'Best 10%',      value: wind.speed.p90.toFixed(1),   unit: 'm/s @ 100m or more' },
                 ]} />
               </>
             ) : (
