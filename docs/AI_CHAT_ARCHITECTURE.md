@@ -28,6 +28,28 @@ Keep current preprocessed static delivery for the first integrated release. Move
 
 Read compact static JSON summaries. Never send whole regional GeoJSON to the model. Use the package's live MapLibre tool server for viewport/layer questions and the Explorer's own static JSON for quantitative questions.
 
+The region plant and line files are too big to read per question, so `tools/prepare_ai.py` summarises them into `public/data/ai/` (about 2 MB in all). Run it after any pipeline step that rewrites the region plant, line or zone files.
+
+The data tools (`src/chat/dataServer.js`, prefixed `data__` for the model):
+
+| Tool | Reads | Answers |
+|---|---|---|
+| `regions` | `regions.json` | regions and their member countries |
+| `coverage` | build file list, `metadata.json` | what is published for a country, and when data was last updated |
+| `capacity` | `cache/region_capacity_*.json`, `cache/region_age_*_gppd.json` | operating MW by fuel and country for a region; GPPD fleet age |
+| `pipeline` | `ai/plants/<ISO3>.json` | GEM planned and under-construction MW by fuel, for a country or region |
+| `plants` | `ai/plants/<ISO3>.json` | largest plants by dataset, fuel and status |
+| `supply` | `supply/<ISO3>.json` | generation and capacity by fuel and year, demand, peak demand |
+| `trade` | `trade/<ISO3>.json` | net imports and flows by partner and year |
+| `indicators` | `access.json`, `tariffs.json` | access (total, urban, rural) and residential/industrial tariffs |
+| `grid` | `ai/grid/<region>.json` | region line km by voltage class, top operators, substations |
+| `market` | `market/<ISO3>.json` | wholesale prices and volumes, yearly and monthly (Türkiye) |
+| `zones` | `ai/zones/<ISO3>.json` | planning-model zones: plants by fuel per zone, connected zones |
+| `load_centres` | `region_load_centers_<region>.geojson` | main cities by population (Black Sea) |
+| `country_note` | `notes/<ISO3>.html` | the AI-drafted briefing note: figures, outline, takeaways or one section |
+
+Renewable-resource potential is left out on purpose: the RE tab calls Global Solar Atlas and Open-Meteo live, which is outside the Explorer's published data.
+
 ## AI trust boundary
 
 Browser:
