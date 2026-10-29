@@ -56,6 +56,10 @@ export default function MapChat({ mapRef, ready, controller, theme }) {
   const dataServers = useLocalServer(buildDataServer, 'data');
   const appServers = useLocalServer(buildAppControlServer, 'app');
   const controlRef = useRef(null);
+  // The latest tool servers, for the control created below. They connect while
+  // the chat bundle downloads, so the servers seen when that effect started are
+  // usually still empty, and the update effect has no control to give them to.
+  const serversRef = useRef([]);
 
   useEffect(() => {
     if (!ready) return undefined;
@@ -91,7 +95,7 @@ export default function MapChat({ mapRef, ready, controller, theme }) {
           deployment: chatDeployment(),
         },
       });
-      ctrl.localServers = [...dataServers, ...appServers];
+      ctrl.localServers = serversRef.current;
       map.addControl(ctrl, 'bottom-right');
       controlRef.current = ctrl;
       applyTheme(ctrl.element, theme);
@@ -108,8 +112,9 @@ export default function MapChat({ mapRef, ready, controller, theme }) {
   }, [mapRef, ready]);
 
   useEffect(() => {
+    serversRef.current = [...dataServers, ...appServers];
     const ctrl = controlRef.current;
-    if (ctrl) ctrl.localServers = [...dataServers, ...appServers];
+    if (ctrl) ctrl.localServers = serversRef.current;
   }, [dataServers, appServers]);
 
   useEffect(() => {
