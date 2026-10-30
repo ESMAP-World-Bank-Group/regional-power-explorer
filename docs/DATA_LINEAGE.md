@@ -25,7 +25,7 @@ next deployment.
 
 | Data | Source → pipeline → file | Read by | Source updates | Explorer file refreshed |
 |---|---|---|---|---|
-| Supply (generation, capacity, demand) | National statistics, Ember/OWID, ENTSO-E → `tools/build_all.py` → `supply/<ISO3>.json` | Supply and Load tabs; `data__supply` | Mostly yearly | By hand (`metadata.json` records the last update) |
+| Supply (generation, capacity, demand) | National statistics, Ember/OWID, ENTSO-E → `tools/build_all.py` → **`reconcile_supply.py`** (Ember check, see below) → `supply/<ISO3>.json` | Supply and Load tabs; region page; `data__supply` | Ember yearly; others mostly yearly | By hand (`metadata.json` records the last update) |
 | Trade | National statistics, power-pool secretariats, ENTSO-E, UN Comtrade → `tools/build_all.py` → `trade/<ISO3>.json` | Supply tab; `data__trade` | Yearly | By hand |
 | Market prices (Türkiye) | EPİAŞ → `tools/pipelines/epias_pipeline.py` → `market/TUR.json` | Market tab; `data__market` | Daily | **Daily, automatic** (`epias-daily-update.yml`, 03:00 UTC) |
 | Access, tariffs | World Bank WDI / SE4All; IRENA, utilities → `access.json`, `tariffs.json` | Country pages; `data__indicators` | Yearly / irregular | By hand |
@@ -42,6 +42,27 @@ next deployment.
 | Solar resource | Global Solar Atlas country statistics → `prepare_re.py` → `re/<ISO3>.json` | RE tab; `data__re_resources` | About yearly (new atlas versions) | By hand, about once a year |
 | Wind resource | Global Wind Atlas v4 → `prepare_re.py` → `re/<ISO3>.json` | RE tab; `data__re_resources` | Every few years | By hand, about once a year |
 | Monthly solar and wind profiles | NASA POWER climatology → `prepare_re.py` → `re/<ISO3>.json` | RE tab; `data__re_resources` | Rarely | With the resource figures |
+
+## Supply reconciliation and QA reports
+
+An audit in October 2026 found the supply series often disagreed with each other and with the
+briefing notes. The causes, and what now handles each:
+
+| Problem found | Example | Handled by |
+|---|---|---|
+| ENTSO-E annual totals miss whole fuels | Norway's capacity 11% of Ember's; Switzerland without solar | `reconcile_supply.py`: ENTSO-E kept only if every year is within 10% of Ember, else Ember |
+| A fuel not reported was written as 0 | Ukraine's 2023 solar, wind and coal | Ember series write an empty value, not 0 |
+| OWID pipeline counted bioenergy twice | Uruguay's generation 24% above Ember | `owid_pipeline.py` fixed; `reconcile_supply.py` cleans published files |
+| Countries without capacity | United States, Brazil, Mexico and 12 more | Filled from Ember |
+| Series stopping in 2023 | Most countries | Refreshed to Ember's latest year (2024 or 2025) |
+| A newer Ember release dropping a fuel | Geothermal capacity 0 for Kenya, Indonesia, the Philippines | The current series is kept and the gap reported |
+| Briefing-note figures that differ from the data | Lithuania "~4 GW" against 7.8 GW | Listed by `tools/check_notes.py` for maintainers |
+
+National sources (TEİAŞ, SSC Azerbaijan, GSE Georgia, SIAT) are left as they are and only
+compared. `build_all.py` runs `reconcile_supply.py` and `check_notes.py` last, and they write:
+
+- `docs/SUPPLY_QA.md`: every country's series against Ember, and what was done;
+- `docs/NOTES_QA.md`: note figures that differ from the data by more than 15%.
 
 ## Keeping derived summaries in step
 

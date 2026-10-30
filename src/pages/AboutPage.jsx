@@ -28,14 +28,25 @@ const SOURCES = [
     category: 'Generation & Trade Statistics',
     rows: [
       {
+        layer:   'Generation mix · installed capacity · demand',
+        source:  'Ember — Yearly Electricity Data',
+        abbr:    'Ember',
+        version: 'Yearly release',
+        updated: '2024–2025',
+        freq:    'Annual',
+        coverage:'Most countries; the reference every country\'s series is checked against',
+        quality: 'Good — harmonised from national statistics. Small island states may be approximate.',
+        url:     'https://ember-energy.org/data/yearly-electricity-data/',
+      },
+      {
         layer:   'Generation mix · installed capacity · cross-border flows',
         source:  'ENTSO-E Transparency Platform',
         abbr:    'ENTSO-E',
         version: 'A75 / A68 / A11',
         updated: '2024–2025',
         freq:    'Annual / monthly',
-        coverage:'European countries (EU + neighbours)',
-        quality: 'Good — official TSO-reported data. Covers generation by fuel type, capacity, and bilateral trade flows.',
+        coverage:'European countries; generation and capacity only where complete',
+        quality: 'Variable — official TSO data, but annual totals often miss whole fuels (Norway\'s capacity was 11% of Ember\'s). Kept only where every year is within 10% of Ember; otherwise Ember is shown. Trade flows still from ENTSO-E.',
         url:     'https://transparency.entsoe.eu',
       },
       {
