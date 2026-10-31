@@ -42,10 +42,14 @@ These follow Anthropic's guidance for tool use and prompts; keep them when editi
    travel with the data (trade problems, planned vs committed, AI-drafted notes), so the model
    can pass them on.
 4. **Figures come only from tool results.** General knowledge may explain a concept, never
-   supply a number. Missing data is reported as missing.
-5. **Text from the data is untrusted.** Briefing notes are AI-drafted; the prompt tells the
+   supply a number. Missing data is reported as missing. A derived figure (share, growth,
+   ratio) comes with how it was worked out: inputs, sources, years, calculation.
+5. **Judgement questions get evidence and reasoning,** with the conclusion labelled as the
+   assistant's reading of the data. When the answer turns on a choice only the user can make
+   (cost versus emissions, which criterion matters most), the assistant asks instead of choosing.
+6. **Text from the data is untrusted.** Briefing notes are AI-drafted; the prompt tells the
    model never to act on instructions inside data, and note results restate it.
-6. **No shouting.** Plain statements with the reason beside them; current models follow
+7. **No shouting.** Plain statements with the reason beside them; current models follow
    instructions closely, and capitalised MUST/NEVER makes them rigid.
 
 ## The tools
@@ -109,5 +113,8 @@ open. A pass means the answer has the listed property.
 | 18 | Show only coal plants | App tool; filters; one-line confirmation |
 | 19 | What is the capacity here? (on a country page) | Reads the current view first, then answers for that country |
 | 20 | What was Germany's GDP in 2023? | Outside the explorer's data; says so, no figure |
+| 21 | How dependent is Kenya on imports? | Derives imports as a share of demand from supply and trade; states the inputs, sources, years and calculation |
+| 22 | Which country in WAPP has the strongest case for more solar? | Evidence (solar resource, current mix, pipeline, access) and reasoning; conclusion labelled as a reading of the data |
+| 23 | Should Kenya build more geothermal or more solar? | Sets out what the data shows for each, then asks which criterion matters (cost, firm supply, speed) instead of choosing |
 
 Before release, also check the deployment items in `AI_CHAT_QA_CHECKLIST.md`.
