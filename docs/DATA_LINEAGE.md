@@ -26,7 +26,7 @@ next deployment.
 | Data | Source → pipeline → file | Read by | Source updates | Explorer file refreshed |
 |---|---|---|---|---|
 | Supply (generation, capacity, demand) | National statistics, Ember/OWID, ENTSO-E → `tools/build_all.py` → **`reconcile_supply.py`** (Ember check, see below) → `supply/<ISO3>.json` | Supply and Load tabs; region page; `data__supply` | Ember yearly; others mostly yearly | By hand (`metadata.json` records the last update) |
-| Trade | National statistics, power-pool secretariats, ENTSO-E, UN Comtrade → `tools/build_all.py` → `trade/<ISO3>.json` | Supply tab; `data__trade` | Yearly | By hand |
+| Trade | National statistics, power-pool secretariats, ENTSO-E, UN Comtrade → `tools/build_all.py` → `trade/<ISO3>.json` (known problems: `TRADE_AUDIT.md`) | Supply tab; `data__trade` | Yearly | By hand |
 | ENTSO-E fuel detail | ENTSO-E A75 / A68 → `entsoe_supply_pipeline.py` → `entsoe/<ISO3>.json` (hydro run-of-river / reservoir / pumped storage, lignite / hard coal, onshore / offshore wind) | `data__fuel_detail` only; totals not used | Hourly at source | By hand, with the trade run |
 | Market prices (Türkiye) | EPİAŞ → `tools/pipelines/epias_pipeline.py` → `market/TUR.json` | Market tab; `data__market` | Daily | **Daily, automatic** (`epias-daily-update.yml`, 03:00 UTC) |
 | Access, tariffs | World Bank WDI / SE4All; IRENA, utilities → `access.json`, `tariffs.json` | Country pages; `data__indicators` | Yearly / irregular | By hand |
