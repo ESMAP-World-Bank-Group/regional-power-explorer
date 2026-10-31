@@ -1,98 +1,73 @@
 {
   "country": "North Macedonia",
   "generation": {
-    "source": "ENTSO-E Transparency Platform — Actual Generation per Production Type (A75)",
+    "source": "ENTSO-E harmonised statistics — monthly domestic values (net generation), summed by year",
     "unit": "GWh",
     "years": [
-      2016,
-      2017,
-      2018,
       2019,
       2020,
       2021,
       2022,
       2023,
-      2024
+      2024,
+      2025
     ],
     "fuels": {
       "Lignite": [
-        1564.5,
-        3278.0,
-        2734.5,
-        3295.1,
+        3294.9,
         2541.7,
-        2070.2,
-        2661.3,
-        2630.8,
-        2346.0
+        3437.9,
+        3871.6,
+        2612.5,
+        2196.4,
+        2098.3
       ],
       "Hydro Reservoir": [
-        1029.2,
-        798.3,
-        1374.2,
-        857.7,
-        928.3,
-        1051.6,
-        898.0,
-        1156.8,
-        991.9
+        857.9,
+        928.1,
+        1324.5,
+        282.6,
+        1138.3,
+        921.1,
+        824.2
       ],
       "Gas": [
-        461.0,
-        791.1,
-        713.4,
         915.3,
-        1032.0,
-        1487.4,
-        835.5,
-        1309.3,
-        1195.1
-      ],
-      "Wind": [
-        62.8,
-        89.2,
-        88.7,
-        88.3,
-        113.3,
-        100.9,
-        107.6,
-        103.2,
-        107.3
-      ],
-      "Oil": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        27.1,
-        374.8,
-        346.2,
-        0
+        1032.2,
+        null,
+        null,
+        1294.7,
+        1098.4,
+        1043.3
       ],
       "Hydro RoR": [
-        8.6,
-        7.0,
-        3.6,
         3.1,
         8.6,
-        0.6,
-        59.4,
-        0,
-        0
+        1802.2,
+        676.6,
+        null,
+        null,
+        null
+      ],
+      "Wind": [
+        88.3,
+        113.2,
+        100.9,
+        107.6,
+        101.5,
+        98.9,
+        96.2
+      ],
+      "Oil": [
+        null,
+        null,
+        null,
+        null,
+        346.1,
+        null,
+        null
       ]
-    },
-    "demand": [
-      7052.0,
-      6997.7,
-      6816.6,
-      6944.9,
-      6925.9,
-      7314.8,
-      6347.3,
-      5656.1,
-      5275.2
-    ]
+    }
   },
   "capacity": {
     "source": "ENTSO-E Transparency Platform — Installed Generation Capacity Aggregated (A68)",
