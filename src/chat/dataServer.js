@@ -74,7 +74,8 @@ function summariseSupply(block, fromYear) {
     source: s,
     sourceType: s.startsWith('Ember') ? 'national statistics compiled by Ember'
       : s.startsWith('ENTSO-E') ? 'ENTSO-E grid operators (may be incomplete)'
-        : s.startsWith('Our World in Data') ? 'OWID/Ember' : 'national source',
+        // Not a prefix test: Uzbekistan's OWID base has its solar and wind replaced by SIAT.
+        : s.startsWith('Our World in Data / Ember — Yearly') ? 'OWID/Ember' : 'national source',
     unit: block.unit, note: block.note, latestYear: last(years),
     latestByFuel: Object.fromEntries(Object.entries(fuels).map(([f, v]) => [f, last(v)])),
     byFuelByYear: seriesByYear(years, fuels),
