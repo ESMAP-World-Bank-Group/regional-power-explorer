@@ -23,22 +23,13 @@ For each case test:
 
 ## AI assistant review
 
+Answer quality: run the test questions in `AI_ASSISTANT.md`. Deployment:
+
 - Assistant opens on World, Region and Country maps.
 - No API key configured: UI gives a usable setup path rather than a blank failure.
 - BYO key mode stores the key in memory only.
 - Gateway mode works without a provider secret in the browser configuration.
-- A capacity question reports plant dataset, unit and available publication context.
-- A supply/trade question reports source/year/unit returned by the Explorer files.
-- Missing data produces an explicit unavailable answer rather than a fabricated fallback.
-- A pipeline question ("what is planned in Kenya?") uses GEM planned/construction MW, not operating capacity.
-- A largest-plants question names plants with dataset, fuel, MW and status.
-- A country-note answer says the note is AI-drafted and not fact-checked.
-- A grid question presents region totals, not one country's network.
-- A market question for a country other than Türkiye says market data is not published.
-- A solar or wind question gives country averages with their source, and says real wind fleets run below the modelled capacity factor.
-- Navigation tool can move World → Region → Country.
-- App-control tool can change tab, plant source, minimum MW and fuel visibility.
-- Map tools can describe viewport/layers and move the camera.
+- The default model is the first allowed one (Claude Opus 5 unless `VITE_AI_ALLOWED_MODELS` is set).
 - Provider web search, arbitrary attachments and provider-side file generation remain disabled by deployment policy.
 
 ## Performance / hosting review

@@ -2,7 +2,8 @@
 
 Where the data the explorer and its AI assistant use comes from, how it reaches
 `public/data/`, and how often it is refreshed. Sources, versions and licences
-for each layer are on the in-app Data Sources page (`src/pages/AboutPage.jsx`).
+for each layer are on the in-app Data Sources page (`src/pages/AboutPage.jsx`); what each
+figure means is in `public/data/methodology.md`, which the AI assistant also reads.
 
 Nothing is fetched from an outside service while a visitor uses the app. Every
 file is built ahead of time, committed, and served with the app. The deployed
@@ -27,7 +28,7 @@ next deployment.
 |---|---|---|---|---|
 | Supply (generation, capacity, demand) | National statistics, Ember/OWID, ENTSO-E → `tools/build_all.py` → **`reconcile_supply.py`** (Ember check, see below) → `supply/<ISO3>.json` | Supply and Load tabs; region page; `data__supply` | Ember yearly; others mostly yearly | By hand (`metadata.json` records the last update) |
 | Trade | National statistics, power-pool secretariats, ENTSO-E, UN Comtrade → `tools/build_all.py` → `trade/<ISO3>.json` (known problems: `TRADE_AUDIT.md`) | Supply tab; `data__trade` | Yearly | By hand |
-| ENTSO-E fuel detail | ENTSO-E A75 / A68 → `entsoe_supply_pipeline.py` → `entsoe/<ISO3>.json` (hydro run-of-river / reservoir / pumped storage, lignite / hard coal, onshore / offshore wind) | `data__fuel_detail` only; totals not used | Hourly at source | By hand, with the trade run |
+| ENTSO-E fuel detail | Generation: ENTSO-E harmonised monthly statistics → `entsoe_stats_pipeline.py`; capacity: ENTSO-E A68 → `entsoe_supply_pipeline.py` (not for Norway, Sweden, Denmark, Italy) → `entsoe/<ISO3>.json` (hydro run-of-river / reservoir / pumped storage, lignite / hard coal, onshore / offshore wind) | `fuel_detail` assistant tool only; totals not used | Monthly statistics, published yearly | By hand, about once a year |
 | Market prices (Türkiye) | EPİAŞ → `tools/pipelines/epias_pipeline.py` → `market/TUR.json` | Market tab; `data__market` | Daily | **Daily, automatic** (`epias-daily-update.yml`, 03:00 UTC) |
 | Access, tariffs | World Bank WDI / SE4All; IRENA, utilities → `access.json`, `tariffs.json` | Country pages; `data__indicators` | Yearly / irregular | By hand |
 | Plants | GEM, WRI GPPD, OpenStreetMap → `prepare_gem.py`, `prepare_gppd.py`, OSM extract → `cache/region_plants_<region>[_gem\|_gppd].geojson` | Maps; Zoning tab | GEM about twice a year; GPPD frozen since 2021; OSM continuous | By hand |
@@ -60,28 +61,36 @@ briefing notes. The causes, and what now handles each:
 | Briefing-note figures that differ from the data | Lithuania "~4 GW" against 7.8 GW | Listed by `tools/check_notes.py` for maintainers |
 
 National sources (TEİAŞ, SSC Azerbaijan, GSE Georgia, SIAT) are left as they are and only
-compared. ENTSO-E is not used for supply at all: even its most complete series ran 3–9% below
-Ember, and two checks that don't depend on Ember found it incomplete (see "Why Ember over
-ENTSO-E" below). `build_all.py` runs `reconcile_supply.py` and `check_notes.py` last, and they write:
+compared. ENTSO-E is not used for supply: it measures a narrower thing (see "Why national
+statistics" below). `build_all.py` runs `reconcile_supply.py` and `check_notes.py` last, and they write:
 
 - `docs/SUPPLY_QA.md`: every country's series against Ember, and what was done;
 - `docs/NOTES_QA.md`: note figures that differ from the data by more than 15%.
 
-### Why Ember over ENTSO-E
+### Why national statistics (via Ember) rather than ENTSO-E for annual figures
 
-Neither is ground truth, so the choice rests on checks that don't assume Ember is right
-(October 2026, 2023 data):
+Both are official, but they measure different things (full reasoning in
+`public/data/methodology.md`, section "Source principles"):
 
-1. **ENTSO-E against itself.** Generation plus net imports should roughly equal demand. Using
-   ENTSO-E's own generation, trade and measured load, that held within 5% for 12 of 30
-   countries and was more than 15% short for 8 (Norway 66%, Switzerland 69%). Ember passes
-   this by construction (its demand is generation plus net imports), so the test shows
-   ENTSO-E's gaps, not Ember's accuracy.
-2. **A third source as a floor.** GEM lists operating plants above a size threshold, so a
-   country's real capacity should be at least GEM's total. ENTSO-E was more than 5% below it in
-   12 of 33 countries (Norway 4.4 GW against GEM's 35 GW); Ember in 1 (Luxembourg).
+- **ENTSO-E** reports generation metered by the grid operators, mostly net of the plants'
+  own use and without some small and embedded generators. ENTSO-E's own harmonised
+  statistics put most European countries 4–15% below national statistics (2023–24), and
+  Switzerland, Ireland and Austria 20–45% below.
+- **National statistics** (statistics offices, energy ministries, Eurostat) cover the whole
+  power system. Ember compiles them, and matches them within 1% where checked: net imports
+  for Norway, Spain, Kenya and Switzerland, and Norway's generation.
+- **Comparability:** every non-European country uses national statistics, so using them for
+  Europe too keeps all countries on one definition.
 
-Ember is a compilation and can have gaps too: its 2026 release gives geothermal capacity as 0
+**Correction (October 2026).** An earlier version of this section blamed ENTSO-E for gaps
+that were partly the explorer's own: the ENTSO-E pipeline queried one price zone for Norway,
+Sweden, Denmark and Italy, and under-counted some hourly series 4x (`docs/TRADE_AUDIT.md`).
+It also cited a balance test built on the explorer's ENTSO-E trade files, which turned out
+to be wrong; that test is withdrawn. The capacity check against GEM's operating plants
+still stands: ENTSO-E capacity was more than 5% below GEM's in 10 countries outside the
+one-zone bug, Ember's in 1 (Luxembourg).
+
+Ember is a compilation and has gaps too: its 2026 release gives geothermal capacity as 0
 for several countries. `reconcile_supply.py` guards against that (above).
 
 ## Keeping derived summaries in step
