@@ -229,8 +229,10 @@ def main():
     # Region order from regions.json, so a country in several regions is read
     # from its main one; then any region file regions.json doesn't name.
     listed = [r["id"] for r in load(DATA / "regions.json")["regions"]]
+    # Skip the *_first.geojson first-pass layers prepare_region_summary.py writes.
     found = {m.group(1) for p in CACHE.glob("region_*.geojson")
-             if (m := re.match(r"region_(?:lines|plants|substations)_(.+?)(?:_gppd|_gem)?\.geojson$", p.name))}
+             if not p.stem.endswith("_first")
+             and (m := re.match(r"region_(?:lines|plants|substations)_(.+?)(?:_gppd|_gem)?\.geojson$", p.name))}
     regions = [r for r in listed if r in found] + sorted(found - set(listed))
 
     # Start empty, so a country or region that is gone leaves no stale file.

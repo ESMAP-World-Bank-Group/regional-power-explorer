@@ -8,7 +8,7 @@ figure means is in `public/data/methodology.md`, which the AI assistant also rea
 Nothing is fetched from an outside service while a visitor uses the app. Every
 file is built ahead of time, committed, and served with the app. The deployed
 site changes only when it is rebuilt and uploaded to Design Studio (by hand
-today; see `GOING_FORWARD.md`), so even daily data reaches users only on the
+today), so even daily data reaches users only on the
 next deployment.
 
 ## Three kinds of file

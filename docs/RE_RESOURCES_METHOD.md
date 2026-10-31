@@ -20,8 +20,7 @@ The RE tab used to ask two outside services, from each visitor's browser, about
 - The wind query asked Open-Meteo for a `monthly` series it does not offer. It
   failed every time, so the wind section never showed.
 - Every page view sent the visitor's browser to Solargis and Open-Meteo,
-  against the Design Studio rule that no visitor data goes to a third party
-  (see `GOING_FORWARD.md`).
+  against the Design Studio rule that no visitor data goes to a third party.
 
 The figures are now computed once, over the whole country, and published with
 the app.
