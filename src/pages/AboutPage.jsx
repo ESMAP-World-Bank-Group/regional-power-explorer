@@ -39,14 +39,14 @@ const SOURCES = [
         url:     'https://ember-energy.org/data/yearly-electricity-data/',
       },
       {
-        layer:   'Generation mix · installed capacity · cross-border flows',
+        layer:   'Cross-border flows · fuel detail for the AI assistant',
         source:  'ENTSO-E Transparency Platform',
         abbr:    'ENTSO-E',
-        version: 'A75 / A68 / A11',
+        version: 'A11 / A75 / A68',
         updated: '2024–2025',
         freq:    'Annual / monthly',
-        coverage:'European countries; generation and capacity only where complete',
-        quality: 'Variable — official TSO data, but annual totals often miss whole fuels (Norway\'s capacity was 11% of Ember\'s). Kept only where every year is within 10% of Ember; otherwise Ember is shown. Trade flows still from ENTSO-E.',
+        coverage:'European countries',
+        quality: 'Variable — metered TSO data. Trade flows are shown as reported. Annual generation and capacity totals often miss whole fuels (Norway\'s capacity was 11% of Ember\'s), so charts use Ember; ENTSO-E\'s finer split (reservoir vs run-of-river hydro, lignite vs hard coal, offshore wind) is kept for the AI assistant.',
         url:     'https://transparency.entsoe.eu',
       },
       {
@@ -500,8 +500,8 @@ export default function AboutPage() {
             </p>
             <ol style={{ paddingLeft: 18, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 6 }}>
               <li style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>
-                <strong style={{ color: t.lbl }}>National supply data file</strong> — per-country JSON with official figures
-                from ENTSO-E, national TSOs, Ember, or OWID. Each file indicates its source; the Load tab displays
+                <strong style={{ color: t.lbl }}>National supply data file</strong> — per-country JSON with figures
+                from Ember or, for a few countries, national statistics (TEİAŞ, SSC Azerbaijan, GSE Georgia, SIAT). Each file indicates its source; the Load tab displays
                 an <em>Official</em> or <em>Estimated</em> badge accordingly.
               </li>
               <li style={{ fontSize: '0.72rem', color: t.muted, lineHeight: 1.65 }}>

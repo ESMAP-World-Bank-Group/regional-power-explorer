@@ -11,7 +11,6 @@ have, and the year furthest from 100%.
 | Block | Action | Countries |
 |---|---|---|
 | capacity | filled from Ember | 15 |
-| capacity | kept (ENTSO-E within 10% of Ember every year) | 5 |
 | capacity | kept (Ember lacks Coal) | 1 |
 | capacity | kept (Ember lacks Oil & Other Fossil) | 1 |
 | capacity | kept (Ember lacks Other Renewables) | 7 |
@@ -20,14 +19,13 @@ have, and the year furthest from 100%.
 | capacity | kept (no Ember data) | 1 |
 | capacity | missing (no Ember data) | 2 |
 | capacity | refreshed from current Ember release | 109 |
-| capacity | replaced by Ember (ENTSO-E incomplete) | 27 |
+| capacity | replaced by Ember (ENTSO-E incomplete) | 32 |
 | generation | filled from Ember | 1 |
-| generation | kept (ENTSO-E within 10% of Ember every year) | 6 |
 | generation | kept (national source) | 4 |
 | generation | kept (no Ember data) | 2 |
 | generation | missing (no Ember data) | 1 |
 | generation | refreshed from current Ember release | 134 |
-| generation | replaced by Ember (ENTSO-E incomplete) | 27 |
+| generation | replaced by Ember (ENTSO-E incomplete) | 33 |
 
 ## Generation
 
@@ -43,11 +41,11 @@ have, and the year furthest from 100%.
 | AUT | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 78% | 76% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | AZE | SSC Azerbaijan · Table 5.4 — State Stati | 2015–2024 | 102% | 102% | kept (national source) | 2015–2024 |
 | BDI | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
-| BEL | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 94% | 93% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| BEL | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 94% | 93% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | BEN | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | BFA | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | BGD | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2025 |
-| BGR | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 96% | 96% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| BGR | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 96% | 96% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | BHR | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | BHS | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | BIH | ENTSO-E Transparency Platform — Actual G | 2017–2024 | 79% | 59% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
@@ -72,7 +70,7 @@ have, and the year furthest from 100%.
 | CRI | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2025 |
 | CUB | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | CYP | ENTSO-E Transparency Platform — Actual G | 2015–2022 | 37% | 37% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
-| CZE | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 93% | 93% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| CZE | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 93% | 93% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | DEU | ENTSO-E Transparency Platform — Actual G | 2015–2023 | 88% | 0% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | DJI | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | DMA | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2023 |
@@ -86,7 +84,7 @@ have, and the year furthest from 100%.
 | ETH | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2025 |
 | FIN | ENTSO-E Transparency Platform — Actual G | 2016–2024 | 94% | 88% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | FJI | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
-| FRA | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 92% | 91% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| FRA | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 92% | 91% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | FSM | Our World in Data / Ember — Yearly Elect | 2015–2023 | — | — | kept (no Ember data) | 2015–2023 |
 | GAB | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | GBR | ENTSO-E Transparency Platform — Actual G | 2016–2021 | 37% | 37% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
@@ -162,7 +160,7 @@ have, and the year furthest from 100%.
 | PRY | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2025 |
 | PSE | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | QAT | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2025 |
-| ROU | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 97% | 97% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| ROU | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 97% | 97% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | RWA | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | SAU | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | SDN | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
@@ -176,7 +174,7 @@ have, and the year furthest from 100%.
 | SSD | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | STP | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2023 |
 | SUR | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
-| SVK | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 98% | 97% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| SVK | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 98% | 97% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | SVN | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 90% | 90% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | SWE | ENTSO-E Transparency Platform — Actual G | 2015–2024 | 44% | 3% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | SWZ | Our World in Data / Ember — Yearly Elect | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
@@ -223,7 +221,7 @@ have, and the year furthest from 100%.
 | AUT | ENTSO-E Transparency Platform — Installe | 2015–2024 | 73% | 66% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | AZE | SSC Azerbaijan · Table 5.3 — State Stati | 2015–2024 | 79% | 79% | kept (national source) | 2015–2024 |
 | BDI | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
-| BEL | ENTSO-E Transparency Platform — Installe | 2015–2024 | 98% | 91% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| BEL | ENTSO-E Transparency Platform — Installe | 2015–2024 | 98% | 91% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | BEN | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | BFA | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | BGD | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 101% | refreshed from current Ember release | 2015–2025 |
@@ -252,8 +250,8 @@ have, and the year furthest from 100%.
 | CRI | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 108% | 108% | kept (Ember lacks Other Renewables) | 2015–2023 |
 | CUB | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | CYP | ENTSO-E Transparency Platform — Installe | 2015–2021 | 82% | 82% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
-| CZE | ENTSO-E Transparency Platform — Installe | 2015–2024 | 101% | 105% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
-| DEU | ENTSO-E Transparency Platform — Installe | 2018–2024 | 97% | 95% | kept (ENTSO-E within 10% of Ember every year) | 2018–2024 |
+| CZE | ENTSO-E Transparency Platform — Installe | 2015–2024 | 101% | 105% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
+| DEU | ENTSO-E Transparency Platform — Installe | 2018–2024 | 97% | 95% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | DJI | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | DMA | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2023 |
 | DNK | ENTSO-E Transparency Platform — Installe | 2015–2024 | 54% | 54% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
@@ -308,7 +306,7 @@ have, and the year furthest from 100%.
 | LSO | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | LTU | ENTSO-E Transparency Platform — Installe | 2015–2024 | 68% | 68% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | LUX | ENTSO-E Transparency Platform — Installe | 2015–2024 | 94% | 80% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
-| LVA | ENTSO-E Transparency Platform — Installe | 2015–2024 | 93% | 93% | kept (ENTSO-E within 10% of Ember every year) | 2015–2024 |
+| LVA | ENTSO-E Transparency Platform — Installe | 2015–2024 | 93% | 93% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | MAR | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 99% | 99% | refreshed from current Ember release | 2015–2025 |
 | MDA | — | — | — | — | filled from Ember | 2015–2025 |
 | MDG | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
@@ -356,7 +354,7 @@ have, and the year furthest from 100%.
 | SSD | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | STP | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2023 |
 | SUR | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
-| SVK | ENTSO-E Transparency Platform — Installe | 2015–2021 | 94% | 90% | kept (ENTSO-E within 10% of Ember every year) | 2015–2021 |
+| SVK | ENTSO-E Transparency Platform — Installe | 2015–2021 | 94% | 90% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | SVN | ENTSO-E Transparency Platform — Installe | 2015–2024 | 100% | 88% | replaced by Ember (ENTSO-E incomplete) | 2015–2025 |
 | SWE | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 102% | refreshed from current Ember release | 2015–2025 |
 | SWZ | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 90% | 90% | refreshed from current Ember release | 2015–2024 |
@@ -388,3 +386,77 @@ have, and the year furthest from 100%.
 | ZAF | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 97% | 104% | refreshed from current Ember release | 2015–2025 |
 | ZMB | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 100% | refreshed from current Ember release | 2015–2024 |
 | ZWE | Ember — Yearly Electricity Data (ember-e | 2015–2023 | 100% | 101% | refreshed from current Ember release | 2015–2024 |
+
+## ENTSO-E detail files
+
+`public/data/entsoe/<ISO3>.json` keeps ENTSO-E's finer fuel split for the AI assistant
+(`data__fuel_detail`). Its totals are not used: this is how much of Ember's total they cover.
+
+| Country | Block | Years | ENTSO-E / Ember, latest | Furthest from Ember |
+|---|---|---|---|---|
+| ALB | capacity | 2018–2024 | — | — |
+| AUT | generation | 2015–2024 | 78% | 76% |
+| AUT | capacity | 2015–2024 | 73% | 66% |
+| BEL | generation | 2015–2024 | 94% | 93% |
+| BEL | capacity | 2015–2024 | 98% | 91% |
+| BGR | generation | 2015–2024 | 96% | 96% |
+| BGR | capacity | 2015–2024 | 95% | 84% |
+| BIH | generation | 2017–2024 | 79% | 59% |
+| BIH | capacity | 2017–2024 | 78% | 78% |
+| CHE | generation | 2015–2024 | 56% | 20% |
+| CHE | capacity | 2015–2024 | 34% | 34% |
+| CYP | generation | 2015–2022 | 37% | 37% |
+| CYP | capacity | 2015–2021 | 82% | 82% |
+| CZE | generation | 2015–2024 | 93% | 93% |
+| CZE | capacity | 2015–2024 | 101% | 105% |
+| DEU | generation | 2015–2023 | 88% | 0% |
+| DEU | capacity | 2018–2024 | 97% | 95% |
+| DNK | generation | 2015–2024 | 68% | 65% |
+| DNK | capacity | 2015–2024 | 54% | 54% |
+| ESP | generation | 2015–2024 | 86% | 86% |
+| ESP | capacity | 2015–2024 | 88% | 88% |
+| EST | generation | 2015–2024 | 79% | 74% |
+| EST | capacity | 2015–2024 | 79% | 77% |
+| FIN | generation | 2016–2024 | 94% | 88% |
+| FIN | capacity | 2015–2024 | 88% | 82% |
+| FRA | generation | 2015–2024 | 92% | 91% |
+| FRA | capacity | 2015–2024 | 89% | 85% |
+| GBR | generation | 2016–2021 | 37% | 37% |
+| GBR | capacity | 2015–2021 | 101% | 79% |
+| GRC | generation | 2015–2024 | 86% | 75% |
+| GRC | capacity | 2015–2024 | 86% | 80% |
+| HRV | generation | 2019–2024 | 85% | 85% |
+| HRV | capacity | 2015–2024 | 75% | 72% |
+| HUN | generation | 2015–2024 | 85% | 85% |
+| HUN | capacity | 2015–2024 | 70% | 69% |
+| IRL | generation | 2015–2024 | 75% | 74% |
+| IRL | capacity | 2015–2024 | 72% | 72% |
+| ITA | generation | 2015–2024 | 44% | 40% |
+| LTU | generation | 2015–2024 | 96% | 77% |
+| LTU | capacity | 2015–2024 | 68% | 68% |
+| LUX | generation | 2015–2024 | 85% | 50% |
+| LUX | capacity | 2015–2024 | 94% | 80% |
+| LVA | generation | 2015–2024 | 93% | 89% |
+| LVA | capacity | 2015–2024 | 93% | 93% |
+| MKD | generation | 2016–2024 | 74% | 56% |
+| MKD | capacity | 2016–2024 | 66% | 66% |
+| MNE | generation | 2015–2024 | 91% | 64% |
+| MNE | capacity | 2015–2024 | 89% | 119% |
+| NLD | generation | 2015–2024 | 87% | 87% |
+| NLD | capacity | 2015–2024 | 111% | 126% |
+| NOR | generation | 2015–2024 | 13% | 11% |
+| NOR | capacity | 2015–2024 | 11% | 10% |
+| POL | generation | 2015–2024 | 91% | 89% |
+| POL | capacity | 2015–2024 | 89% | 89% |
+| PRT | generation | 2015–2024 | 83% | 83% |
+| PRT | capacity | 2015–2024 | 67% | 67% |
+| ROU | generation | 2015–2024 | 97% | 97% |
+| ROU | capacity | 2015–2024 | 70% | 70% |
+| SRB | generation | 2016–2024 | 93% | 2% |
+| SRB | capacity | 2015–2024 | 111% | 117% |
+| SVK | generation | 2015–2024 | 98% | 97% |
+| SVK | capacity | 2015–2021 | 94% | 90% |
+| SVN | generation | 2015–2024 | 90% | 90% |
+| SVN | capacity | 2015–2024 | 100% | 88% |
+| SWE | generation | 2015–2024 | 44% | 3% |
+| UKR | capacity | 2020–2023 | 90% | 90% |

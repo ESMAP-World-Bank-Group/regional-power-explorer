@@ -31,7 +31,7 @@ Pipelines:
              Requires [api_tokens] comtrade key in config/api_tokens.ini
   Reconcile — runs last: checks every supply/{ISO3}.json against Ember, replaces
              incomplete ENTSO-E series, refreshes Ember ones, writes docs/SUPPLY_QA.md
-  ENTSO-E — ENTSO-E API -> supply/{ISO3}.json for 36 countries
+  ENTSO-E — ENTSO-E API -> entsoe/{ISO3}.json (fuel detail) + trade/{ISO3}.json for 36 countries
              First run ~30-60 min; subsequent runs use cached CSVs (instant).
              Cache: data-source/raw/ENTSOE/  (gitignored)
 """

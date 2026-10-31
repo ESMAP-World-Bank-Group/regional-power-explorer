@@ -1,8 +1,14 @@
 """
 ENTSO-E supply + trade pipeline.
 
-Generates public/data/supply/{ISO3}.json and public/data/trade/{ISO3}.json
+Generates public/data/entsoe/{ISO3}.json and public/data/trade/{ISO3}.json
 for all ENTSO-E member countries.
+
+The generation and capacity go to entsoe/, not supply/: ENTSO-E's annual totals
+often miss whole fuels (see docs/SUPPLY_QA.md), so the explorer's supply series
+come from Ember. These files keep ENTSO-E's finer split (hydro run-of-river,
+reservoir and pumped storage; lignite and hard coal; onshore and offshore
+wind) for the AI assistant's data__fuel_detail tool. Trade stays ENTSO-E's.
 
 Data sources:
   Generation (GWh): A75 — Actual Generation per Production Type
@@ -41,7 +47,7 @@ from entsoe import EntsoePandasClient
 
 ROOT      = Path(__file__).resolve().parents[2]
 RAW       = ROOT / 'data-source' / 'raw' / 'ENTSOE'
-OUT       = ROOT / 'public' / 'data' / 'supply'
+OUT       = ROOT / 'public' / 'data' / 'entsoe'
 OUT_TRADE = ROOT / 'public' / 'data' / 'trade'
 
 YEARS = list(range(2015, 2025))
@@ -548,7 +554,7 @@ def _build_country(client, iso2, iso3, name, refresh, with_trade=True):
     out_path = OUT / f'{iso3}.json'
     with open(out_path, 'w', encoding='utf-8') as fh:
         json.dump(supply, fh, indent=2, ensure_ascii=False)
-    print(f'  supply -> {out_path}')
+    print(f'  entsoe -> {out_path}')
 
     if with_trade:
         _build_trade(client, iso2, iso3, name, refresh)

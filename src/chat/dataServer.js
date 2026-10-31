@@ -253,6 +253,39 @@ export function buildDataServer() {
     });
   });
 
+  server.tool('fuel_detail', 'ENTSO-E\'s finer fuel split for a European country: hydro run-of-river vs reservoir vs pumped storage, lignite vs hard coal, onshore vs offshore wind, for generation and capacity. ENTSO-E totals are often incomplete: use this for the split within a fuel, and take totals from data__supply.', { iso: iso3 }, async ({ iso }) => {
+    const [d, supply] = await Promise.all([getJson(`data/entsoe/${iso}.json`), getJson(`data/supply/${iso}.json`)]);
+    if (!d) return json({ available: false, message: `No ENTSO-E detail for ${iso}. It exists for European ENTSO-E members only.` });
+    const GROUPS = {
+      hydro: ['Hydro RoR', 'Hydro Reservoir', 'Hydro Pumped Storage'],
+      coal: ['Lignite', 'Coal'],
+      wind: ['Wind', 'Wind Offshore'],
+    };
+    const total = (b, i) => Object.entries(b.fuels).reduce((a, [f, s]) => a + (f === 'Hydro Pumped Storage' ? 0 : Number(s[i]) || 0), 0);
+    const detail = (b, ref) => {
+      if (!b) return undefined;
+      const i = b.years.length - 1, year = b.years[i];
+      const value = f => b.fuels[f]?.[i] ?? null;
+      const j = ref?.years.indexOf(year) ?? -1;
+      return {
+        source: b.source, unit: b.unit, latestYear: year,
+        coverageOfEmberTotal: j >= 0 && total(ref, j) ? +(total(b, i) / total(ref, j)).toFixed(2) : null,
+        byFuel: Object.fromEntries(Object.keys(b.fuels).map(f => [f, value(f)])),
+        splits: Object.fromEntries(Object.entries(GROUPS).map(([g, fuels]) => {
+          const vals = fuels.filter(f => value(f) > 0).map(f => [f, value(f)]);
+          const sum = vals.reduce((a, [, v]) => a + v, 0);
+          return [g, sum ? Object.fromEntries(vals.map(([f, v]) => [f, { value: v, share: +(v / sum).toFixed(2) }])) : null];
+        })),
+      };
+    };
+    return json({
+      available: true, iso, country: d.country,
+      note: '"Coal" is hard coal. Pumped storage stores power rather than generating it. coverageOfEmberTotal is ENTSO-E\'s total as a share of the explorer\'s supply total for that year; below about 0.9 the split may miss plants.',
+      generation: detail(d.generation, supply?.generation),
+      capacity: detail(d.capacity, supply?.capacity),
+    });
+  });
+
   server.tool('re_resources', 'Solar and wind resource for a country: averages over the whole country, median and best 10%, with monthly profiles. Solar GHI, DNI, PV output and PV capacity factor (Global Solar Atlas); wind speed, power density and capacity factor at 100 m (Global Wind Atlas v4).', {
     isos: z.array(iso3).min(1).max(30),
   }, async ({ isos }) => {
@@ -278,6 +311,7 @@ export function buildDataServer() {
       zoning: has(`ai/zones/${iso}.json`),
       briefingNote: has(`notes/${iso}.html`),
       reResources: has(`re/${iso}.json`),
+      entsoeFuelDetail: has(`entsoe/${iso}.json`),
       plantDatasets: Object.keys(plants),
       access: Boolean(access?.countries?.[iso]),
       tariffs: Boolean(tariffs?.countries?.[iso]),

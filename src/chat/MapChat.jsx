@@ -15,6 +15,7 @@ Rules:
 - data__capacity is operating plants only; use data__pipeline for planned and under-construction plants, and call planned projects announcements, not commitments.
 - data__country_note is an AI-drafted briefing note that is not fact-checked: use it for context (actors, history, issues), take figures from the other data tools, and say so when they differ.
 - data__grid totals are for a whole region from OpenStreetMap; do not present them as one country's network.
+- data__fuel_detail (European countries) splits hydro, coal and wind more finely; its totals are incomplete, so take totals from data__supply and use the detail only for the split.
 - Use app__update_state to navigate/filter the dashboard when the user asks you to change the view.
 - Use map__* tools for camera, layer visibility, map inspection and viewport questions.
 - Distinguish installed capacity (MW), generation/trade (usually GWh), access (%), and tariffs (USD/kWh).

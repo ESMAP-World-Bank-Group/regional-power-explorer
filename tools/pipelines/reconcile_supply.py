@@ -14,9 +14,13 @@ data and found:
   - Most series stopped in 2023; Ember now runs to 2024 or 2025.
 
 What this step does, per country and per block (generation, capacity):
-  ENTSO-E    kept only if every year's total is within TOLERANCE of Ember's
-             (it carries more detail, e.g. hydro run-of-river vs reservoir);
-             otherwise replaced by Ember.
+  ENTSO-E    replaced by Ember. Even its most complete series ran 3-9% below
+             Ember, and generation plus net imports covered under 85% of its
+             own measured demand in 8 of 30 countries. Its finer split (hydro
+             reservoir, run-of-river and pumped storage; lignite and hard coal;
+             offshore and onshore wind) lives in public/data/entsoe/, written
+             by entsoe_supply_pipeline.py; the report lists how complete each
+             of those files is.
   OWID/Ember and older Ember releases
              refreshed from the current Ember release.
   an Ember-family series is kept instead if the current Ember release
@@ -52,9 +56,9 @@ from ember_capacity_pipeline import EMBER_FUEL_MAP, load_ember_csv  # noqa: E402
 ROOT = Path(__file__).resolve().parents[2]
 SUPPLY = ROOT / 'public' / 'data' / 'supply'
 REPORT = ROOT / 'docs' / 'SUPPLY_QA.md'
+ENTSOE = ROOT / 'public' / 'data' / 'entsoe'
 
 FIRST_YEAR = 2015
-TOLERANCE = 0.10          # an ENTSO-E year may differ from Ember's total by this much
 EMBER_CODES = {'KOS': 'XKX'}
 EMBER_SOURCE = 'Ember — Yearly Electricity Data (ember-energy.org, CC BY 4.0)'
 UNITS = {'generation': ('Electricity generation', 'TWh', 'GWh'), 'capacity': ('Capacity', 'GW', 'MW')}
@@ -190,8 +194,6 @@ def reconcile(iso: str, supply: dict, tables: dict) -> list[dict]:
             action = 'kept (no Ember data)' if current else 'missing (no Ember data)'
         elif kind == 'missing':
             action, supply[block] = 'filled from Ember', ember
-        elif kind == 'entsoe' and all(abs(c - 1) <= TOLERANCE for c in cov.values()):
-            action = 'kept (ENTSO-E within 10% of Ember every year)'
         elif kind == 'entsoe':
             action, supply[block] = 'replaced by Ember (ENTSO-E incomplete)', ember
         elif lost := lost_fuels(current, ember):
@@ -212,7 +214,22 @@ def reconcile(iso: str, supply: dict, tables: dict) -> list[dict]:
     return rows
 
 
-def write_report(rows: list[dict], ember_release: str) -> None:
+def entsoe_rows(tables: dict) -> list[dict]:
+    """How complete each ENTSO-E detail file is against Ember."""
+    rows = []
+    for path in sorted(ENTSOE.glob('*.json')):
+        d = json.loads(path.read_text(encoding='utf-8'))
+        code = EMBER_CODES.get(path.stem, path.stem)
+        for block in ('generation', 'capacity'):
+            if d.get(block):
+                cov = coverage(d[block], ember_block(tables, block, code))
+                rows.append({'iso': path.stem, 'block': block, 'latest': cov[max(cov)] if cov else None,
+                             'worst': max(cov.values(), key=lambda c: abs(c - 1)) if cov else None,
+                             'years': f"{min(d[block]['years'])}–{max(d[block]['years'])}"})
+    return rows
+
+
+def write_report(rows: list[dict], ember_release: str, entsoe: list[dict]) -> None:
     pct = lambda c: '—' if c is None or pd.isna(c) else f'{c * 100:.0f}%'
     df = pd.DataFrame(rows)
     lines = [
@@ -237,6 +254,12 @@ def write_report(rows: list[dict], ember_release: str) -> None:
                   '|---|---|---|---|---|---|---|']
         for r in df[df.block == block].sort_values('iso').to_dict('records'):
             lines.append(f"| {r['iso']} | {r['was']} | {r['years']} | {pct(r['latest'])} | {pct(r['worst'])} | {r['action']} | {r['now']} |")
+    lines += ['', '## ENTSO-E detail files', '',
+              '`public/data/entsoe/<ISO3>.json` keeps ENTSO-E\'s finer fuel split for the AI assistant',
+              '(`data__fuel_detail`). Its totals are not used: this is how much of Ember\'s total they cover.',
+              '', '| Country | Block | Years | ENTSO-E / Ember, latest | Furthest from Ember |', '|---|---|---|---|---|']
+    for r in entsoe:
+        lines.append(f"| {r['iso']} | {r['block']} | {r['years']} | {pct(r['latest'])} | {pct(r['worst'])} |")
     REPORT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
 
@@ -251,7 +274,7 @@ def run(refresh: bool = False, dry_run: bool = False) -> None:
         rows += reconcile(path.stem, supply, tables)
         if not dry_run and json.dumps(supply, sort_keys=True) != before:
             path.write_text(json.dumps(supply, indent=2, ensure_ascii=False, allow_nan=False), encoding='utf-8')
-    write_report(rows, release)
+    write_report(rows, release, entsoe_rows(tables))
     df = pd.DataFrame(rows)
     print(df.groupby(['block', 'action']).size().to_string())
     print(f'Report -> {REPORT.relative_to(ROOT)}')
