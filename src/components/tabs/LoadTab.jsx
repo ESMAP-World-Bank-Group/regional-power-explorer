@@ -2,7 +2,7 @@ import { dataPath } from '../../utils/paths';
 import { fetchData } from '../../utils/dataCache';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { getT } from '../../constants';
-import ChartCaption from '../ChartCaption';
+import ChartCaption, { getSourceMeta } from '../ChartCaption';
 import {
   downloadBlob, GRANULARITIES, GRANULARITY_LABEL, AXIS_TITLE,
   dayOf, hourTimestampLabel, fmtValue, getPeriods, periodOptionLabel,
@@ -49,18 +49,6 @@ const ENTSOE_ISO3 = new Set(['ROU','BGR','TUR','ALB','BIH','MKD','MNE','SRB','KO
 
 const PROFILE_EUROPEAN = [42,38,35,33,32,33,38,56,75,82,85,86,87,87,85,83,84,88,93,96,91,78,65,52];
 
-function getSourceMeta(src) {
-  if (!src) return { short: '—', rel: null, note: '' };
-  const s = src.toLowerCase();
-  if (s.includes('entso-e'))                      return { short: 'ENTSO-E',          rel: 'high',   note: 'Official hourly metered data' };
-  if (s.includes('eapp'))                         return { short: 'EAPP Secretariat', rel: 'high',   note: 'Official annual interconnection statistics' };
-  if (s.includes('teias') || s.includes('epias')) return { short: 'TEIAS/EPIAS',      rel: 'high',   note: 'Official Turkish TSO data' };
-  if (s.includes('owid') || s.includes('ember'))  return { short: 'OWID/Ember',       rel: 'medium', note: 'Cross-validated estimates; small countries may be approximate' };
-  if (s.includes('comtrade'))                     return { short: 'Comtrade HS 2716', rel: 'medium', note: 'Customs declarations; coverage varies by country' };
-  if (s.includes('wdi') || s.includes('world bank')) return { short: 'WB WDI',        rel: 'medium', note: 'Derived from per-capita electricity use × population' };
-  const short = src.split('—')[0].split('(')[0].trim();
-  return { short: short.length > 28 ? short.slice(0, 25) + '…' : short, rel: 'medium', note: '' };
-}
 
 const _REL_STYLE = {
   high:   { color: '#1A9060', label: 'Official'  },
