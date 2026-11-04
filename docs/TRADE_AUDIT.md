@@ -1,6 +1,7 @@
 # Trade data audit (in progress)
 
-Status, October 2026: **investigation only, no data changed.** Findings so far, the
+Status, October 2026: **investigation only, no data changed.** Since November 2026,
+finding 2 is fixed and the ENTSO-E trade files rebuilt (below). Findings so far, the
 experiments behind them, and what is still open. Rerun the experiments with
 `python tools/audit/trade_audit.py`. The one test that needs an ENTSO-E API token is
 `python tools/audit/entsoe_resolution_check.py`.
@@ -38,7 +39,17 @@ cables to Germany, the Netherlands, the UK and Denmark.
   Denmark, and Italy (IT_NORD). Supply now comes from Ember, so the charts are unaffected,
   but `public/data/entsoe/` (`data__fuel_detail`) still describes one zone for these four.
 
-### 2. Hourly borders counted 4× too low (very likely a pipeline bug; test pending)
+### 2. Hourly borders counted 4× too low (pipeline bug, fixed November 2026)
+
+**Fix.** Confirmed on the cached API responses: the all-borders frames hold 15-minute and
+hourly borders on one timeline, with NaN between the hourly values. Trade GWh now come from
+the hourly mean of each border (`_annual_xborder_gwh`), and the 26 ENTSO-E trade files that
+moved were rebuilt from the cache (`entsoe_supply_pipeline.py --trade-only`). Mean absolute
+error of net imports against Ember, per year: Germany 16.6 to 7.4 TWh, France 11.2 to 3.2,
+the UK 6.9 to 0.8, Hungary 4.8 to 1.4, Romania 0.8 to 0.3; 16 of 26 files closer, Ireland and
+Norway under 0.3 TWh further. Generation and load keep `_to_gwh`. The same commit adds the
+Romania–Moldova border, which entsoe-py does not list (2.0 to 2.4 TWh of Romanian exports a
+year since 2022).
 
 - **Scale.** 135 of 228 disagreeing border-years (excluding the three countries above) are
   exactly 4× apart. Against the ENTSO-E statistics, about 50 flows on each side are exactly
@@ -60,7 +71,9 @@ cables to Germany, the Netherlands, the UK and Denmark.
 ### 3. Names and zone codes
 
 - Zone codes left as partners: `DE_AT_LU` (Germany's zone before October 2018, kept apart from
-  "Germany"), `IT_GR`, `IT_BRNN`, `IT_NORD_CH`, `IT_NORD_FR`, `IE_SEM`.
+  "Germany"), `IT_GR`, `IT_BRNN`, `IT_NORD_CH`, `IT_NORD_FR`, `IE_SEM`. Since the November 2026
+  rebuild, the pipeline's own name mapping folds all of them into their country except
+  `IE_SEM` (the UK file).
 - Russia appears as Russia, Russian Federation, Russia/USSR and "Russia (via Georgia)".
 - Comtrade files store an ISO code in `country` where the others store a name. Their partner
   names (`Côte d'Ivoire`, `Viet Nam`, `Lao People's Dem. Rep.`) don't match the app's.
