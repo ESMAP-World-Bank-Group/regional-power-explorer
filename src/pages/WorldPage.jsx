@@ -438,7 +438,7 @@ export default function WorldPage() {
         fontSize: '0.47rem', color: t.lblMuted, textAlign: 'center',
         whiteSpace: 'nowrap', letterSpacing: '0.3px',
       }}>
-        Pilot · Indicative data · Partly AI-generated, not fact-checked · Boundaries for reference only · Unofficial
+        Pilot
       </div>
 
     </div>
