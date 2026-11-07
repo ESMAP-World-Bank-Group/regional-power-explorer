@@ -5,7 +5,10 @@
 // file exports no components: source attribution lives in ../ChartCaption,
 // which the region pages use too, and tabs import it from there directly.
 
+import { track } from '../../analytics';
+
 export function downloadBlob(content, filename, type = 'application/octet-stream') {
+  track('data_download', { type: 'chart', file: filename });
   const blob = new Blob([content], { type });
   const url  = URL.createObjectURL(blob);
   const a    = Object.assign(document.createElement('a'), { href: url, download: filename });

@@ -673,13 +673,17 @@ export default function RegionPage() {
         const layers = POINT_LAYERS.filter(id => map.getLayer(id));
         return layers.length > 0 && map.queryRenderedFeatures(point, { layers }).length > 0;
       };
+      const openCountry = iso => {
+        track('map_feature_click', { kind: 'country', iso, region: regionId });
+        navigate(`/country/${iso}`);
+      };
       map.on('click', 'region-fill', e => {
         const iso = e.features[0].properties.ISO_A3;
-        if (isos.includes(iso) && !onPoint(e)) navigate(`/country/${iso}`);
+        if (isos.includes(iso) && !onPoint(e)) openCountry(iso);
       });
       const onZoneClick = e => {
         const iso = e.features[0].properties.ISO_A3 || e.features[0].properties.country;
-        if (isos.includes(iso) && !onPoint(e)) navigate(`/country/${iso}`);
+        if (isos.includes(iso) && !onPoint(e)) openCountry(iso);
       };
       map.on('click', 'region-zones-fill', onZoneClick);
       map.on('mouseenter', 'region-zones-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
@@ -736,14 +740,18 @@ export default function RegionPage() {
       for (const status of PLANT_STATUSES) {
         map.on('click', `plants-${status}`, e => {
           clickedPoint = true;
-          setSelFeature({ type: 'plant', props: e.features[0].properties });
+          const p = e.features[0].properties;
+          setSelFeature({ type: 'plant', props: p });
+          track('map_feature_click', { kind: 'plant', name: p.name, fuel: p.fuel, status: p.status, mw: p.mw, region: regionId });
         });
       }
 
       // Substations — keep hover popup, add click for detail panel
       map.on('click', 'substations', e => {
         clickedPoint = true;
-        setSelFeature({ type: 'substation', props: e.features[0].properties });
+        const p = e.features[0].properties;
+        setSelFeature({ type: 'substation', props: p });
+        track('map_feature_click', { kind: 'substation', name: p.name, region: regionId });
       });
 
       // Any other click closes the card.
@@ -922,13 +930,14 @@ export default function RegionPage() {
     setFuelsOff(prev => {
       const next = new Set(prev);
       if (next.has(fuel)) next.delete(fuel); else next.add(fuel);
+      track('filter_change', { filter: 'fuel', value: fuel, on: !next.has(fuel), region: regionId });
       for (const s of PLANT_STATUSES) {
         if (map.getLayer(`plants-${s}`))
           map.setFilter(`plants-${s}`, makeLayerFilter(s, next, minMw));
       }
       return next;
     });
-  }, [minMw]);
+  }, [minMw, regionId]);
 
   const toggleStatus = useCallback(status => {
     const map = mapRef.current;
@@ -937,11 +946,12 @@ export default function RegionPage() {
       const next    = new Set(prev);
       const hiding  = !prev.has(status);
       if (hiding) next.add(status); else next.delete(status);
+      track('filter_change', { filter: 'status', value: status, on: !hiding, region: regionId });
       if (plantsOn)
         map.setLayoutProperty(`plants-${status}`, 'visibility', hiding ? 'none' : 'visible');
       return next;
     });
-  }, [plantsOn]);
+  }, [plantsOn, regionId]);
 
   const toggleKv = useCallback(key => {
     const map = mapRef.current;
@@ -950,9 +960,10 @@ export default function RegionPage() {
       const next = new Set(prev);
       if (next.has(key)) { next.delete(key); map.setLayoutProperty(`lines-${key}`, 'visibility', 'visible'); }
       else               { next.add(key);    map.setLayoutProperty(`lines-${key}`, 'visibility', 'none');    }
+      track('filter_change', { filter: 'voltage', value: key, on: !next.has(key), region: regionId });
       return next;
     });
-  }, []);
+  }, [regionId]);
 
   const toggleLines = useCallback(() => {
     const map = mapRef.current;
@@ -962,9 +973,10 @@ export default function RegionPage() {
       for (const { key } of VOLTAGE_BRACKETS)
         if (!kvsOff.has(key) && map.getLayer(`lines-${key}`))
           map.setLayoutProperty(`lines-${key}`, 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'lines', value: next, region: regionId });
       return next;
     });
-  }, [kvsOff]);
+  }, [kvsOff, regionId]);
 
   const togglePlants = useCallback(() => {
     const map = mapRef.current;
@@ -976,9 +988,10 @@ export default function RegionPage() {
         if (!statusOff.has(s))
           map.setLayoutProperty(`plants-${s}`, 'visibility', next ? 'visible' : 'none');
       }
+      track('map_option_change', { option: 'plants', value: next, region: regionId });
       return next;
     });
-  }, [statusOff]);
+  }, [statusOff, regionId]);
 
   const toggleSubs = useCallback(() => {
     const map = mapRef.current;
@@ -986,9 +999,10 @@ export default function RegionPage() {
     setSubsOn(prev => {
       const next = !prev;
       map.setLayoutProperty('substations', 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'substations', value: next, region: regionId });
       return next;
     });
-  }, []);
+  }, [regionId]);
 
   const handleMinMw = useCallback(mw => {
     const map = mapRef.current;
@@ -1000,8 +1014,13 @@ export default function RegionPage() {
   }, [fuelsOff]);
 
   const toggleCountry = useCallback(iso => {
-    setCountriesOff(prev => { const n = new Set(prev); n.has(iso) ? n.delete(iso) : n.add(iso); return n; });
-  }, []);
+    setCountriesOff(prev => {
+      const n = new Set(prev);
+      n.has(iso) ? n.delete(iso) : n.add(iso);
+      track('filter_change', { filter: 'country', value: iso, on: !n.has(iso), region: regionId });
+      return n;
+    });
+  }, [regionId]);
   const selectAllCountries = useCallback(() => setCountriesOff(new Set()), []);
   const deselectAllCountries = useCallback(() => {
     if (!region) return;
@@ -1025,9 +1044,10 @@ export default function RegionPage() {
       const next = !prev;
       for (const id of ['load-centers', 'load-centers-labels'])
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'load_centers', value: next, region: regionId });
       return next;
     });
-  }, []);
+  }, [regionId]);
 
   const handleLcMinPop = useCallback(pop => {
     const map = mapRef.current;
@@ -1138,10 +1158,20 @@ export default function RegionPage() {
     setMinKv(kv);
     applyMinKv(kv, false);
     clearTimeout(minKvCommitRef.current);
-    minKvCommitRef.current = setTimeout(() => applyMinKv(kv, true), 250);
-  }, [applyMinKv]);
+    minKvCommitRef.current = setTimeout(() => {
+      applyMinKv(kv, true);
+      track('filter_change', { filter: 'min_kv', value: kv, region: regionId });
+    }, 250);
+  }, [applyMinKv, regionId]);
 
   useEffect(() => () => clearTimeout(minKvCommitRef.current), []);
+
+  // The basemap panel hands back the whole view; report the one field that changed.
+  const changeWbView = useCallback(next => {
+    setWbView(next);
+    const option = Object.keys(next).find(k => next[k] !== wbView[k]);
+    if (option) track('map_option_change', { option, value: next[option], region: regionId });
+  }, [wbView, regionId]);
 
   const handleDownloadLines = useCallback(async (format = 'geojson') => {
     track('data_download', { type: 'lines', format, region: regionId });
@@ -1169,6 +1199,7 @@ export default function RegionPage() {
     });
     downloadBlob([header, ...rows].map(r => r.join(',')).join('\n'),
       `capacity_${regionId}.csv`, 'text/csv');
+    track('data_download', { type: 'capacity', format: 'csv', region: regionId });
   }, [capacity, region, regionId]);
 
   const handleDownloadTariffs = useCallback(() => {
@@ -1181,6 +1212,7 @@ export default function RegionPage() {
     });
     downloadBlob(['country,iso,residential_usd_mwh,industrial_usd_mwh', ...rows.map(r => r.join(','))].join('\n'),
       `tariffs_${regionId}.csv`, 'text/csv');
+    track('data_download', { type: 'tariffs', format: 'csv', region: regionId });
   }, [tariffs, region, regionId]);
 
   const handleDownloadAccess = useCallback(() => {
@@ -1191,6 +1223,7 @@ export default function RegionPage() {
     });
     downloadBlob(['country,iso,total_pct,urban_pct,rural_pct', ...rows.map(r => r.join(','))].join('\n'),
       `access_${regionId}.csv`, 'text/csv');
+    track('data_download', { type: 'access', format: 'csv', region: regionId });
   }, [access, region, regionId]);
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -1237,7 +1270,7 @@ export default function RegionPage() {
         gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={regionId}
         gridNote={region?.grid_note}
         presentFuels={presentFuels}
-        wbView={wbView} onWbView={setWbView}
+        wbView={wbView} onWbView={changeWbView}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus}
         onToggleKv={toggleKv}
         onToggleLines={toggleLines} onTogglePlants={togglePlants}
@@ -1287,7 +1320,11 @@ export default function RegionPage() {
             <>
               {/* Potential Zonings toggle */}
               <button
-                onClick={() => setMapMode(m => m === 'zones' ? 'countries' : 'zones')}
+                onClick={() => {
+                  const next = mapMode === 'zones' ? 'countries' : 'zones';
+                  setMapMode(next);
+                  track('map_option_change', { option: 'map_mode', value: next, region: regionId });
+                }}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   fontSize: '0.58rem', letterSpacing: '0.5px', fontFamily: 'inherit',

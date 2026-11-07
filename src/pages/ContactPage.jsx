@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { track } from '../analytics';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../App';
 import { getT } from '../constants';
@@ -21,6 +22,7 @@ export default function ContactPage() {
     if (!req.trim()) return;
     openMail('Regional Power Explorer: request', req);
     setReqStatus('sent');
+    track('form_submit', { form: 'request' });
   }
 
   function handleSubmit(e) {
@@ -28,6 +30,7 @@ export default function ContactPage() {
     if (!msg.trim()) return;
     openMail('Regional Power Explorer: feedback', msg);
     setStatus('sent');
+    track('form_submit', { form: 'feedback' });
   }
 
   return (

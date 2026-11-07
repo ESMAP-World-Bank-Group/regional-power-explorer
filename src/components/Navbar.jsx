@@ -219,7 +219,7 @@ export default function Navbar() {
             const th = THEMES[id];
             const active = theme === id;
             return (
-              <button key={id} title={th.label} onClick={() => setTheme(id)} style={{
+              <button key={id} title={th.label} onClick={() => { setTheme(id); track('theme_change', { theme: id }); }} style={{
                 width: 15, height: 15, borderRadius: '50%', padding: 0, cursor: 'pointer',
                 backgroundColor: th.swatch,
                 border: active ? `2px solid ${t.lbl}` : `1px solid ${t.panelBorder}`,

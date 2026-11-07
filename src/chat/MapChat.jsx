@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { getT } from '../constants';
+import { track } from '../analytics';
 import { useLocalServer } from './useLocalServer';
 import { buildDataServer } from './dataServer';
 import { buildAppControlServer, useAppController } from './appControl';
@@ -98,6 +99,7 @@ export default function MapChat({ mapRef, ready, controller, theme }) {
         width: 'min(430px, calc(100vw - 2rem))',
         height: 'min(640px, calc(100vh - var(--rpe-chat-offset, 7.5rem)))',
         screenshot: true,
+        onExpandChange: open => { if (open) track('chat_open'); },
         chat: {
           title: 'Power Explorer Assistant',
           greeting: 'Ask about capacity, generation, trade, access, tariffs, or tell me how to change the map.',
@@ -112,6 +114,14 @@ export default function MapChat({ mapRef, ready, controller, theme }) {
       map.addControl(ctrl, 'bottom-right');
       controlRef.current = ctrl;
       applyTheme(ctrl.element, theme);
+      // One chat_message per question: the status leaves idle as a turn starts.
+      // The question itself is not sent; the panel shows in session replays.
+      let busy = false;
+      ctrl.element?.addEventListener('statuschange', e => {
+        const next = e.detail?.status === 'connecting' || e.detail?.status === 'streaming';
+        if (next && !busy) track('chat_message');
+        busy = next;
+      });
     })().catch(error => {
       if (!disposed) console.error('Failed to load Power Explorer Assistant', error);
     });

@@ -140,6 +140,7 @@ export default function CountryPage() {
     setEditForm({ passage, suggestion: '' });
     setEditStatus('idle');
     setEditOpen(true);
+    track('form_open', { form: 'edit_suggestion', iso });
   };
 
   function submitEditSuggestion(e) {
@@ -155,6 +156,7 @@ export default function CountryPage() {
     ].join('\n');
     openMail(`Briefing note edit: ${country?.name || iso}`, body);
     setEditStatus('sent');
+    track('form_submit', { form: 'edit_suggestion', iso });
   }
   const mapReadyRef        = useRef(false);
   const [mapReady,        setMapReady]        = useState(false);
@@ -400,11 +402,14 @@ export default function CountryPage() {
           clickedPoint = true;
           const p = e.features[0].properties;
           setSelFeature({ type: 'plant', props: { ...p, fuel } });
+          track('map_feature_click', { kind: 'plant', name: p.name, fuel, status: p.status, mw: p.mw, iso });
         });
       }
       map.on('click', 'substations', e => {
         clickedPoint = true;
-        setSelFeature({ type: 'substation', props: e.features[0].properties });
+        const p = e.features[0].properties;
+        setSelFeature({ type: 'substation', props: p });
+        track('map_feature_click', { kind: 'substation', name: p.name, iso });
       });
       const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
 
@@ -456,9 +461,11 @@ export default function CountryPage() {
             props: { ...props, voltageLabel: v ? `${Math.round(v / 1000)} kV` : bracket.label },
             km:    lineKm(coords),
           });
+          track('map_feature_click', { kind: 'line', name: props.nm, kv: v ? Math.round(v / 1000) : undefined, iso });
         } else if (countryFeatureRef.current
             && !pointInFeature([e.lngLat.lng, e.lngLat.lat], countryFeatureRef.current)) {
           // A click outside the country goes back out to its region.
+          track('map_feature_click', { kind: 'region', region: region.id, iso });
           navigate(`/region/${region.id}`);
         } else {
           setSelFeature(null);
@@ -747,9 +754,10 @@ export default function CountryPage() {
       const next = new Set(prev);
       if (next.has(fuel)) { next.delete(fuel); map.setLayoutProperty(`plants-${fuel}`, 'visibility', 'visible'); }
       else                { next.add(fuel);    map.setLayoutProperty(`plants-${fuel}`, 'visibility', 'none');    }
+      track('filter_change', { filter: 'fuel', value: fuel, on: !next.has(fuel), iso });
       return next;
     });
-  }, []);
+  }, [iso]);
 
   const toggleKv = useCallback(key => {
     const map = mapRef.current;
@@ -758,9 +766,10 @@ export default function CountryPage() {
       const next = new Set(prev);
       if (next.has(key)) { next.delete(key); map.setLayoutProperty(`lines-${key}`, 'visibility', 'visible'); }
       else               { next.add(key);    map.setLayoutProperty(`lines-${key}`, 'visibility', 'none');    }
+      track('filter_change', { filter: 'voltage', value: key, on: !next.has(key), iso });
       return next;
     });
-  }, []);
+  }, [iso]);
 
   const toggleLines = useCallback(() => {
     const map = mapRef.current;
@@ -770,9 +779,10 @@ export default function CountryPage() {
       for (const { key } of VOLTAGE_BRACKETS)
         if (!kvsOff.has(key) && map.getLayer(`lines-${key}`))
           map.setLayoutProperty(`lines-${key}`, 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'lines', value: next, iso });
       return next;
     });
-  }, [kvsOff]);
+  }, [kvsOff, iso]);
 
   const togglePlants = useCallback(() => {
     const map = mapRef.current;
@@ -782,9 +792,10 @@ export default function CountryPage() {
       for (const fuel of presentFuels)
         if (!fuelsOff.has(fuel) && map.getLayer(`plants-${fuel}`))
           map.setLayoutProperty(`plants-${fuel}`, 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'plants', value: next, iso });
       return next;
     });
-  }, [presentFuels, fuelsOff]);
+  }, [presentFuels, fuelsOff, iso]);
 
   const toggleSubs = useCallback(() => {
     const map = mapRef.current;
@@ -792,9 +803,10 @@ export default function CountryPage() {
     setSubsOn(prev => {
       const next = !prev;
       map.setLayoutProperty('substations', 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'substations', value: next, iso });
       return next;
     });
-  }, []);
+  }, [iso]);
 
   const toggleStatus = useCallback(status => {
     const map = mapRef.current;
@@ -802,13 +814,14 @@ export default function CountryPage() {
     setStatusOff(prev => {
       const next = new Set(prev);
       next.has(status) ? next.delete(status) : next.add(status);
+      track('filter_change', { filter: 'status', value: status, on: !next.has(status), iso });
       for (const fuel of Object.keys(FUEL_COLORS)) {
         if (!map.getLayer(`plants-${fuel}`)) continue;
         map.setFilter(`plants-${fuel}`, buildPlantFilter(fuel, minMw, next));
       }
       return next;
     });
-  }, [minMw]);
+  }, [minMw, iso]);
 
   const toggleLoadCenters = useCallback(() => {
     const map = mapRef.current;
@@ -818,9 +831,10 @@ export default function CountryPage() {
       for (const id of ['load-centers', 'load-centers-labels']) {
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', next ? 'visible' : 'none');
       }
+      track('map_option_change', { option: 'load_centers', value: next, iso });
       return next;
     });
-  }, []);
+  }, [iso]);
 
   const toggleZoneLabels = useCallback(() => {
     const map = mapRef.current;
@@ -828,9 +842,10 @@ export default function CountryPage() {
     setZoneLabelsOn(prev => {
       const next = !prev;
       map.setLayoutProperty('zone-labels', 'visibility', next ? 'visible' : 'none');
+      track('map_option_change', { option: 'zone_labels', value: next, iso });
       return next;
     });
-  }, []);
+  }, [iso]);
 
   const toggleZoneCorridors = useCallback(() => {
     const map = mapRef.current;
@@ -840,9 +855,10 @@ export default function CountryPage() {
       for (const id of ['zone-corridors-ex', 'zone-corridors-labels', 'zone-corridors-dots']) {
         if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', next ? 'visible' : 'none');
       }
+      track('map_option_change', { option: 'zone_corridors', value: next, iso });
       return next;
     });
-  }, []);
+  }, [iso]);
 
   const handleLcMinPop = useCallback(pop => {
     const map = mapRef.current;
@@ -1099,10 +1115,20 @@ export default function CountryPage() {
     setMinKv(kv);
     applyMinKv(kv, false);
     clearTimeout(minKvCommitRef.current);
-    minKvCommitRef.current = setTimeout(() => applyMinKv(kv, true), 250);
-  }, [applyMinKv]);
+    minKvCommitRef.current = setTimeout(() => {
+      applyMinKv(kv, true);
+      track('filter_change', { filter: 'min_kv', value: kv, iso });
+    }, 250);
+  }, [applyMinKv, iso]);
 
   useEffect(() => () => clearTimeout(minKvCommitRef.current), []);
+
+  // The basemap panel hands back the whole view; report the one field that changed.
+  const changeWbView = useCallback(next => {
+    setWbView(next);
+    const option = Object.keys(next).find(k => next[k] !== wbView[k]);
+    if (option) track('map_option_change', { option, value: next[option], iso });
+  }, [wbView, iso]);
 
   const handleDownloadLines = useCallback((format = 'geojson') => {
     if (!filteredLinesData) return;
@@ -1151,7 +1177,7 @@ export default function CountryPage() {
         plantSource={plantSource} gppdAvailable={gppdAvailable} gemAvailable={gemAvailable} regionId={region.id} iso={iso}
         gridNote={region.grid_note}
         presentFuels={presentFuels}
-        wbView={wbView} onWbView={setWbView}
+        wbView={wbView} onWbView={changeWbView}
         onToggleFuel={toggleFuel} onToggleStatus={toggleStatus} onToggleKv={toggleKv}
         onToggleLines={toggleLines} onTogglePlants={togglePlants}
         onToggleSubs={toggleSubs}
@@ -1225,6 +1251,7 @@ export default function CountryPage() {
                   <button key={mode} disabled={disabled}
                     onClick={() => {
                       setZoneMode(mode);
+                      track('map_option_change', { option: 'zones', value: mode, iso });
                       if (mode === 'modeling' && !nZones && zonesIndex[iso]?.length) {
                         setNZones(defaultNZones(zonesIndex[iso]));
                       }
@@ -1617,7 +1644,7 @@ export default function CountryPage() {
             })}
             {hasNote && (
               <button
-                onClick={() => setNoteOpen(o => !o)}
+                onClick={() => { if (!noteOpen) track('note_open', { iso }); setNoteOpen(o => !o); }}
                 title="Open sector briefing note"
                 style={{
                   flex: 1, fontSize: TAB_FONT_SIZE, letterSpacing: TAB_LETTER_SPACING,
@@ -1716,7 +1743,10 @@ export default function CountryPage() {
             <ZoningTab
               iso={iso} theme={theme} regionId={region.id}
               nZones={nZones}
-              onSelectZones={(n) => { setZoneMode('modeling'); setNZones(n); }}
+              onSelectZones={(n) => {
+                setZoneMode('modeling'); setNZones(n);
+                track('map_option_change', { option: 'zones', value: 'modeling', zones: n, iso });
+              }}
             />
           )}
 

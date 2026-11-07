@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { track } from '../analytics';
 
 const BASEMAPS = [['clean', 'Clean'], ['detailed', 'Detailed'], ['satellite', 'Satellite']];
 
@@ -47,6 +48,7 @@ export default function ExportControl({ mapRef, ready, t, title, fileName, legen
       const { exportEqualEarthPng, downloadBlob } = await import('../utils/equalEarthExport');
       const blob = await exportEqualEarthPng(map, { t, title, basemap, labels, legend: legend?.() || [], sourceData });
       downloadBlob(blob, `${fileName}-equal-earth.png`);
+      track('map_export', { basemap, labels, file: fileName });
       setOpen(false);
     } catch (err) {
       console.error('Equal Earth export', err);

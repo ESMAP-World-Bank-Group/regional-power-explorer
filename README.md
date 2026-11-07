@@ -36,6 +36,10 @@ Data licences include: OpenStreetMap (ODbL), WRI GPPD (CC BY 4.0), Global Energy
 - **MapLibre GL** for the interactive map
 - **React Router** for navigation
 - Deployed on **Vercel**
+- **Vercel Analytics** and **PostHog** (src/posthog.js) run on the Vercel build only. The Design
+  Studio build sends no visitor data to third parties. Besides pageviews and autocapture, the
+  `track()` calls in src/analytics.js report what the DOM cannot show: map feature clicks,
+  filters and map options, downloads and exports, the chat, the forms and the theme.
 
 ## Getting started
 

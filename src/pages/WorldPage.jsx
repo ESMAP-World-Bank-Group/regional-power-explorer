@@ -2,6 +2,7 @@ import { dataPath } from '../utils/paths';
 import { fetchData } from '../utils/dataCache';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
 import { getT } from '../constants';
@@ -236,6 +237,7 @@ export default function WorldPage() {
         const rs = regionsFor(f);
         const name = isNamed(f) ? areaName(f) || rs[0]?.countryName : null;
         if (rs.length === 0) return;
+        track('map_feature_click', { kind: 'country', iso, region: rs.length === 1 ? rs[0].id : undefined });
         if (rs.length === 1) {
           navigate(`/region/${rs[0].id}`);
         } else {
@@ -312,7 +314,11 @@ export default function WorldPage() {
               {disambig.regions.map(r => (
                 <button
                   key={r.id}
-                  onClick={e => { e.stopPropagation(); setDisambig(null); navigate(`/region/${r.id}`); }}
+                  onClick={e => {
+                    e.stopPropagation(); setDisambig(null);
+                    track('map_feature_click', { kind: 'region', region: r.id, iso: disambig.iso });
+                    navigate(`/region/${r.id}`);
+                  }}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 8,
                     background: 'none', border: `1px solid ${r.color}44`,
