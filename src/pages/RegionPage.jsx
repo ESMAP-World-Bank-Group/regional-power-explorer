@@ -7,7 +7,7 @@ import maplibregl from 'maplibre-gl';
 import { Protocol, PMTiles } from 'pmtiles';
 import { useTheme } from '../App';
 import {
-  getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON,
+  getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON,
   plantRadiusExpr, lcRadiusExpr, fuelColorExpr, PLANT_STATUSES, zoneColorExpr, adaptiveMinMw,
   PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX,
 } from '../constants';
@@ -36,17 +36,6 @@ function makeLayerFilter(status, fuelsOff, minMw, visibleIsos = null) {
   if (visibleIsos !== null)
     clauses.push(['in', ['get', 'country'], ['literal', visibleIsos]]);
   return ['all', ...clauses];
-}
-
-function lineKm(coords) {
-  let km = 0;
-  for (let i = 1; i < coords.length; i++) {
-    const [lon1, lat1] = coords[i - 1], [lon2, lat2] = coords[i];
-    const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
-    km += R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
-  return km;
 }
 
 /** A line's two ends. A tile holds only its piece of the line, so a tiled
@@ -676,33 +665,28 @@ export default function RegionPage() {
           map.setFeatureState(hoveredId, { hover: false });
         hoveredId = null;
       });
-      const LINE_LAYERS = VOLTAGE_BRACKETS.map(b => `lines-${b.key}`);
-      // A click on a line, plant or substation opens its card; only a click on
-      // bare country goes to the country page. Lines take the same 8px slack
-      // as the line click below; points are hit exactly, as their own clicks.
-      const onFeature = ({ point }) => {
-        const hits = (geometry, ids) => {
-          const layers = ids.filter(id => map.getLayer(id));
-          return layers.length > 0 && map.queryRenderedFeatures(geometry, { layers }).length > 0;
-        };
-        const { x, y } = point;
-        return hits([[x - 8, y - 8], [x + 8, y + 8]], LINE_LAYERS)
-          || hits(point, [...PLANT_STATUSES.map(s => `plants-${s}`), 'substations']);
+      // A click on a plant or substation opens its card; any other click in a
+      // member country, lines included, goes to the country page. Lines are
+      // too thin and dense here to share the click, so they only hover.
+      const POINT_LAYERS = [...PLANT_STATUSES.map(s => `plants-${s}`), 'substations'];
+      const onPoint = ({ point }) => {
+        const layers = POINT_LAYERS.filter(id => map.getLayer(id));
+        return layers.length > 0 && map.queryRenderedFeatures(point, { layers }).length > 0;
       };
       map.on('click', 'region-fill', e => {
         const iso = e.features[0].properties.ISO_A3;
-        if (isos.includes(iso) && !onFeature(e)) navigate(`/country/${iso}`);
+        if (isos.includes(iso) && !onPoint(e)) navigate(`/country/${iso}`);
       });
       const onZoneClick = e => {
         const iso = e.features[0].properties.ISO_A3 || e.features[0].properties.country;
-        if (isos.includes(iso) && !onFeature(e)) navigate(`/country/${iso}`);
+        if (isos.includes(iso) && !onPoint(e)) navigate(`/country/${iso}`);
       };
       map.on('click', 'region-zones-fill', onZoneClick);
       map.on('mouseenter', 'region-zones-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
       map.on('mouseleave', 'region-zones-fill', () => { map.getCanvas().style.cursor = ''; });
 
-      // ── Feature click → detail panel ──────────────────────────────────────
-      // A line's properties for the popup and the card. Tiled lines hold only
+      // ── Line hover, plant and substation click ────────────────────────────
+      // A line's properties for the popup. Tiled lines hold only
       // v; the rest arrives with the attributes file, fetched once the map
       // is idle. Before then apply() gets v at once and is called again with
       // the rest.
@@ -715,7 +699,7 @@ export default function RegionPage() {
         apply({ v: feat.properties.v });
         loadLineAttrs().then(d => { if (d && !disposed) apply(attrsProps(d, feat)); });
       };
-      let hoverToken = 0, clickToken = 0; // a late answer for a line since left is dropped
+      let hoverToken = 0; // a late answer for a line since left is dropped
 
       // Line hover → popup with exact voltage + endpoint substation names
       const nearestSubName = (coord) => {
@@ -762,48 +746,10 @@ export default function RegionPage() {
         setSelFeature({ type: 'substation', props: e.features[0].properties });
       });
 
-      // General map click: handle lines (queryRenderedFeatures with bbox) + background clear
-      map.on('click', e => {
-        if (clickedPoint) { clickedPoint = false; return; }
-        clickedPoint = false;
-
-        // Query line features within 8px radius of click
-        const { x, y } = e.point;
-        const bbox = [[x - 8, y - 8], [x + 8, y + 8]];
-        const activeLayers = LINE_LAYERS.filter(id => { try { return !!map.getLayer(id); } catch { return false; } });
-        const lineFeats = activeLayers.length ? map.queryRenderedFeatures(bbox, { layers: activeLayers }) : [];
-
-        const token = ++clickToken;
-        if (lineFeats.length > 0) {
-          // The line nearest the click, as the hover popup describes the one
-          // under the pointer -- not whichever the box query lists first.
-          const pixelDist = f => {
-            const parts = f.geometry.type === 'LineString' ? [f.geometry.coordinates] : f.geometry.coordinates;
-            let best = Infinity;
-            for (const part of parts) for (let i = 1; i < part.length; i++) {
-              const a = map.project(part[i - 1]), b = map.project(part[i]);
-              const dx = b.x - a.x, dy = b.y - a.y, len2 = dx * dx + dy * dy;
-              const u = len2 ? Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / len2)) : 0;
-              best = Math.min(best, Math.hypot(a.x + u * dx - x, a.y + u * dy - y));
-            }
-            return best;
-          };
-          const feat = lineFeats.reduce((a, b) => (pixelDist(b) < pixelDist(a) ? b : a));
-          const geom = feat.geometry;
-          const coords = geom.type === 'LineString' ? geom.coordinates : geom.coordinates.flat();
-          withLineProps(feat, props => {
-            if (token !== clickToken) return;
-            const v = props.v;
-            setSelFeature({
-              type:  'line',
-              props: { ...props, voltageLabel: v ? `${Math.round(v / 1000)} kV` : bracketFor(v).label },
-              // A tile holds only its piece of the line; km is the whole line's.
-              km:    props.km ?? lineKm(coords),
-            });
-          });
-        } else {
-          setSelFeature(null);
-        }
+      // Any other click closes the card.
+      map.on('click', () => {
+        if (clickedPoint) clickedPoint = false;
+        else setSelFeature(null);
       });
 
       raiseBoundaries(map);
@@ -1444,31 +1390,6 @@ export default function RegionPage() {
               background: 'none', border: 'none', cursor: 'pointer',
               color: t.lblMuted, fontSize: '0.9rem', lineHeight: 1, padding: 0,
             }}>✕</button>
-
-            {selFeature.type === 'line' && (
-              <>
-                <div style={{ fontWeight: 700, marginBottom: 6, color: t.lbl }}>
-                  {selFeature.props.nm || 'Transmission line'}
-                </div>
-                <Row label="Voltage" value={selFeature.props.voltageLabel} t={t} />
-                {selFeature.km > 0 && (
-                  <Row label="Length" value={`~${Math.round(selFeature.km)} km`} t={t} />
-                )}
-                {['op', 'c', 'f', 'l', 'st'].map(k => (
-                  selFeature.props[k] ? (
-                    <Row key={k} label={LINE_ATTR_LABELS[k]}
-                      value={lineAttrText(k, selFeature.props[k])} t={t} />
-                  ) : null
-                ))}
-                {selFeature.props.oid && (
-                  <Row label="Source" t={t} value={
-                    <a href={`https://www.openstreetmap.org/way/${selFeature.props.oid}`}
-                      target="_blank" rel="noreferrer"
-                      style={{ color: t.lblRow }}>OpenStreetMap ↗</a>
-                  } />
-                )}
-              </>
-            )}
 
             {selFeature.type === 'plant' && (() => {
               const p = selFeature.props;
