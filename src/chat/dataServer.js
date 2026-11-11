@@ -12,6 +12,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import files from 'virtual:data-manifest';
 import { appPath } from '../utils/paths';
 import { fetchData } from '../utils/dataCache';
+import { evaluate } from './calc';
 
 // The app's shared data cache: a failed download is not kept, so a network blip
 // doesn't read as "no data" until reload. undefined = not available.
@@ -62,7 +63,16 @@ function tradeCaveats(iso, source) {
   return out;
 }
 
-// One block of a supply file, summarised for the model.
+// Fuel names counted as renewable, across Ember's and the national sources'
+// categories. Pumped storage is neither: it stores power. "Other" and
+// "Waste/Other" are counted as non-renewable (the results say so).
+const RENEWABLE = new Set(['Hydro', 'Hydro RoR', 'Hydro Reservoir', 'Solar', 'Wind', 'Solar+Wind', 'Wind+Geothermal',
+  'Geothermal', 'Bioenergy', 'Other Renewables']);
+const pct = (part, whole) => (whole ? +(part / whole * 100).toFixed(1) : null);
+
+// One block of a supply file, summarised for the model. Shares, renewable share
+// and the demand balance are computed here, exactly, so the model doesn't do
+// that arithmetic itself.
 function summariseSupply(block, fromYear) {
   if (!block) return undefined;
   const keep = (block.years ?? []).map((y, i) => [y, i]).filter(([y]) => !fromYear || y >= fromYear);
@@ -70,6 +80,9 @@ function summariseSupply(block, fromYear) {
   const years = keep.map(([y]) => y);
   const fuels = Object.fromEntries(Object.entries(block.fuels ?? {}).map(([f, s]) => [f, pick(s)]));
   const s = block.source ?? '';
+  const generating = Object.entries(fuels).filter(([f]) => f !== 'Hydro Pumped Storage');
+  const totals = years.map((_, i) => generating.reduce((a, [, v]) => a + (Number(v[i]) || 0), 0));
+  const demand = block.demand ? pick(block.demand) : null;
   return {
     source: s,
     sourceType: s.startsWith('Ember') ? 'national statistics compiled by Ember'
@@ -79,9 +92,20 @@ function summariseSupply(block, fromYear) {
     unit: block.unit, note: block.note, latestYear: last(years),
     latestByFuel: Object.fromEntries(Object.entries(fuels).map(([f, v]) => [f, last(v)])),
     byFuelByYear: seriesByYear(years, fuels),
-    totalByYear: Object.fromEntries(years.map((y, i) => [y,
-      Object.entries(fuels).reduce((a, [f, v]) => a + (f === 'Hydro Pumped Storage' ? 0 : Number(v[i]) || 0), 0)])),
-    demandByYear: block.demand ? byYear(years, pick(block.demand)) : undefined,
+    totalByYear: byYear(years, totals),
+    sharePctByFuelByYear: Object.fromEntries(years.map((y, i) => [y,
+      Object.fromEntries(generating.map(([f, v]) => [f, pct(Number(v[i]) || 0, totals[i])]))])),
+    renewableSharePctByYear: byYear(years, totals.map((t, i) =>
+      pct(generating.reduce((a, [f, v]) => a + (RENEWABLE.has(f) ? Number(v[i]) || 0 : 0), 0), t))),
+    renewableDefinition: 'hydro (not pumped storage), solar, wind, bioenergy, geothermal and other renewables; "Other" and "Waste/Other" count as non-renewable',
+    demandByYear: demand ? byYear(years, demand) : undefined,
+    // Demand is generation plus net imports, so net imports = demand - generation.
+    balanceByYear: demand ? Object.fromEntries(years.map((y, i) => {
+      if (demand[i] == null) return [y, null];
+      const net = +(demand[i] - totals[i]).toFixed(1);
+      return [y, { netImports: net, netImportsPctOfDemand: pct(net, demand[i]), netImportsPctOfGeneration: pct(net, totals[i]) }];
+    })) : undefined,
+    balanceNote: demand ? 'netImports = demand - generation; negative means a net exporter.' : undefined,
     peakDemandByYear: block.peak_demand ? byYear(years, pick(block.peak_demand)) : undefined,
   };
 }
@@ -132,26 +156,56 @@ export function buildDataServer() {
     });
 
   server.tool('coverage',
-    'What the explorer publishes for one country: which of supply, trade, market prices, plant databases, zoning, ' +
-    'renewable resources, ENTSO-E fuel detail, access, tariffs and a briefing note exist, the regions it belongs to, and when the data was last updated. ' +
-    'Use it when unsure whether a figure exists, before telling a user it is not published, and to suggest what is available instead. Returns no figures.',
+    'What the explorer publishes for one country, with each dataset\'s own source and how recent it is: supply (latest year), trade (latest year, or a status note), ' +
+    'wholesale market prices (the date the series was last updated), plant databases, renewable resources (atlas releases), ENTSO-E fuel detail, zoning, access, tariffs and the briefing note (its date). ' +
+    'Use it when unsure whether a figure exists, before telling a user it is not published, to suggest what is available instead, and for how up to date a dataset is. Returns no figures.',
     { iso: iso3 }, async ({ iso }) => {
-      const [{ regions = [] } = {}, meta, access, tariffs, plants] = await Promise.all([
-        getJson('data/regions.json'), getJson('data/metadata.json'), getJson('data/access.json'),
-        getJson('data/tariffs.json'), getJson(`data/ai/plants/${iso}.json`)]);
+      const [{ regions = [] } = {}, access, tariffs, plants, supply, trade, market, re, entsoe, note] = await Promise.all([
+        getJson('data/regions.json'), getJson('data/access.json'), getJson('data/tariffs.json'),
+        getJson(`data/ai/plants/${iso}.json`), getJson(`data/supply/${iso}.json`), getJson(`data/trade/${iso}.json`),
+        getJson(`data/market/${iso}.json`), getJson(`data/re/${iso}.json`), getJson(`data/entsoe/${iso}.json`),
+        getText(`data/notes/${iso}.html`)]);
+      const block = b => b && { source: b.source, latestYear: last(b.years) };
       return ok({
         iso,
         regions: regions.filter(r => r.countries?.some(c => c.iso === iso)).map(r => r.id),
-        published: {
-          supply: has(`supply/${iso}.json`), trade: has(`trade/${iso}.json`), market: has(`market/${iso}.json`),
-          zoning: has(`ai/zones/${iso}.json`), reResources: has(`re/${iso}.json`), fuelDetail: has(`entsoe/${iso}.json`),
-          briefingNote: has(`notes/${iso}.html`), access: Boolean(access?.countries?.[iso]),
-          tariffs: Boolean(tariffs?.countries?.[iso]), plantDatasets: Object.keys(plants ?? {}),
+        datasets: {
+          supply: supply ? { generation: block(supply.generation), capacity: block(supply.capacity) } : null,
+          trade: trade ? (trade.years ? block(trade) : { source: trade.source, status: trade.status }) : null,
+          market: market ? { source: market.source, updated: market.updated } : null,
+          plants: plants ? { databases: Object.keys(plants), gem: PLANT_SOURCES.gem } : null,
+          reResources: re ? { solar: re.solar ? `${re.solar.source}, statistics published ${re.solar.updated}` : 'not available', wind: re.wind?.source ?? 'not available' } : null,
+          fuelDetail: entsoe?.generation ? { source: entsoe.generation.source, latestYear: last(entsoe.generation.years) } : null,
+          zoning: has(`ai/zones/${iso}.json`),
+          access: access?.countries?.[iso] ? { source: access.source, year: access.countries[iso].year } : null,
+          tariffs: tariffs?.countries?.[iso] ? { source: tariffs.source, year: tariffs.year } : null,
+          briefingNote: note ? { date: note.match(/class="doc-sub">[^<]*·(?:\s|&nbsp;)*([A-Za-z]+ \d{4})/)?.[1] ?? 'not stated (most notes were drafted around June 2026)', fact_checked: false } : null,
         },
         subnational: false,
-        lastUpdated: meta?.lastUpdated,
       });
     });
+
+  server.tool('calculate',
+    'Exact arithmetic for any figure you report that is not already in a tool result: shares, growth rates, ratios, differences, sums. ' +
+    'Use it instead of calculating in your head, which is error-prone. Takes several labelled expressions at once, so a comparison needs one call. ' +
+    'Expressions use numbers, + - * / and brackets only; write numbers without thousands separators (160840, not 160,840). ' +
+    'Percentages: (part / whole * 100). Growth: ((new - old) / old * 100). Returns each result unrounded and rounded to 2 decimals.',
+    {
+      expressions: z.array(z.object({
+        label: z.string().describe('What the result is, e.g. "Norway net exports as % of generation, 2025".'),
+        expression: z.string().describe('Arithmetic expression, e.g. "(160840 - 137760) / 160840 * 100".'),
+      })).min(1).max(30).describe('The calculations to run.'),
+    },
+    async ({ expressions }) => ok({
+      results: expressions.map(({ label, expression }) => {
+        try {
+          const value = evaluate(expression);
+          return { label, expression, value, rounded: +value.toFixed(2) };
+        } catch (e) {
+          return { label, expression, error: e.message };
+        }
+      }),
+    }));
 
   server.tool('methodology',
     'The explorer\'s documented methodology: where each dataset comes from, what it measures, its coverage and its known limits, ' +
@@ -176,7 +230,9 @@ export function buildDataServer() {
     'Annual generation (GWh) and installed capacity (MW) by fuel, with electricity demand, for up to 10 countries. ' +
     'Use it for generation mix, capacity mix, demand, growth over time, renewable shares and comparisons between countries. ' +
     'Figures are national statistics compiled by Ember for most countries, or a named national source (Türkiye, Azerbaijan, Georgia, Uzbekistan); each block says which. ' +
-    'Returns every published year by fuel, latest values, yearly totals, demand and, where published, peak demand. ' +
+    'Returns every published year by fuel, latest values, yearly totals, demand and, where published, peak demand, plus exact derived figures: ' +
+    'each fuel\'s share of the total, the renewable share, and the demand balance (net imports = demand - generation, and as % of demand and of generation). ' +
+    'Quote those rather than recomputing them. ' +
     'Capacity here is national statistics and differs from the plant databases (capacity, pipeline and plants tools); do not mix the two.',
     {
       isos: z.array(iso3).min(1).max(10).describe('Countries to return, as ISO3 codes.'),
@@ -403,7 +459,8 @@ export function buildDataServer() {
   server.tool('market',
     'Wholesale electricity market prices and volumes for Türkiye (the only market published): day-ahead price (TL/MWh, plus USD and EUR series), ' +
     'intraday and balancing market prices, and matched volumes; yearly mean, min and max, and monthly means. ' +
-    'Use it for Turkish power prices and their trends. For any other country, prices are not published (the indicators tool has retail tariffs).',
+    'Returns the date the series was last updated (it is refreshed daily). ' +
+    'Use it for Turkish power prices, their trends, and how recent the market data is. For any other country, prices are not published (the indicators tool has retail tariffs).',
     {
       iso: iso3,
       fromYear: z.number().int().optional().describe('First year of monthly means (default: the last 24 months).'),
