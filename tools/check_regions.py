@@ -39,7 +39,8 @@ def main():
     with open(YAML_PATH, encoding="utf-8") as f:
         y_regions = yaml.safe_load(f)["regions"]
     with open(JSON_PATH, encoding="utf-8") as f:
-        j_regions = json.load(f)["regions"]
+        j_doc = json.load(f)
+    j_regions = j_doc["regions"]
 
     y_by_id = {r["id"]: r for r in y_regions}
     j_by_id = {r["id"]: r for r in j_regions}
@@ -97,6 +98,21 @@ def main():
         if own != union:
             fail(f"{r['id']}: countries do not match its subregions "
                  f"(extra={sorted(own - union)} missing={sorted(union - own)})")
+
+    # The world legend lists regions by geography from the `legend` key, which must
+    # name every region shown there exactly once. A region it misses still shows,
+    # ungrouped at the end, so this catches the omission before a user does.
+    named = [rid for g in j_doc.get("legend", []) for rid in g.get("regions", [])]
+    for rid in sorted(set(named) - set(j_by_id)):
+        fail(f"legend: unknown region id {rid!r}")
+    for rid in sorted({rid for rid in named if named.count(rid) > 1}):
+        fail(f"legend: {rid} listed more than once")
+    for rid in named:
+        if j_by_id.get(rid, {}).get("type") == "sub":
+            fail(f"legend: {rid} is a sub-region; it unfolds under its parent and is not listed")
+    for r in j_regions:
+        if r.get("type") != "sub" and r["id"] not in named:
+            fail(f"legend: {r['id']} is missing, so the world legend lists it ungrouped at the end")
 
     # CountryPage resolves a country by scanning regions.json in order and taking the
     # first non-meta match. Overlaps are intended (a country can sit in several pools),

@@ -60,30 +60,6 @@ export default function ContactPage() {
           Developed with support from ESMAP and the World Bank.
         </p>
 
-        {/* GitHub repository — prominent */}
-        <a
-          href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24,
-            padding: '14px 16px', borderRadius: 8, textDecoration: 'none',
-            border: '1px solid rgba(74,143,204,0.35)',
-            borderLeft: '3px solid rgba(74,143,204,0.85)',
-            background: t.isDark ? 'rgba(74,143,204,0.07)' : 'rgba(74,143,204,0.06)',
-          }}
-        >
-          <span style={{ flex: 1 }}>
-            <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: t.text }}>
-              Source code on GitHub
-            </span>
-            <span style={{ display: 'block', fontSize: '0.65rem', color: t.muted, marginTop: 3, lineHeight: 1.5 }}>
-              regional-power-explorer
-            </span>
-          </span>
-          <span aria-hidden="true" style={{ fontSize: '0.85rem', color: 'rgba(74,143,204,0.9)', fontWeight: 700 }}>↗</span>
-        </a>
-
         {/* Data note → Limitations */}
         <div style={{
           marginBottom: 24, padding: '12px 14px', borderRadius: 8,
@@ -152,17 +128,6 @@ export default function ContactPage() {
               </div>
             </form>
           )}
-        </div>
-
-        <div style={{ marginBottom: 32 }}>
-          <a href="https://github.com/ESMAP-World-Bank-Group/regional-power-explorer/issues"
-            target="_blank" rel="noopener noreferrer"
-            style={{ fontSize: '0.65rem', color: 'rgba(74,143,204,0.7)', textDecoration: 'none' }}
-            onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'}
-            onMouseOut={e => e.currentTarget.style.textDecoration = 'none'}
-          >
-            Report an issue or suggest a feature ↗
-          </a>
         </div>
 
         <hr style={divider} />

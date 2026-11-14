@@ -1,4 +1,26 @@
 {
+ "legend": [
+  {
+   "group": "Americas",
+   "regions": ["northamerica", "siepac", "andean", "mercosur"]
+  },
+  {
+   "group": "Africa and Middle East",
+   "regions": ["wapp", "capp", "eapp", "sapp", "easa", "panarab"]
+  },
+  {
+   "group": "Europe",
+   "regions": ["eu", "entsoe", "balkans", "blacksea"]
+  },
+  {
+   "group": "Asia",
+   "regions": ["centralasia", "casa", "southasia", "gms", "asean"]
+  },
+  {
+   "group": "Small island states",
+   "regions": ["sids"]
+  }
+ ],
  "regions": [
   {
    "id": "blacksea",

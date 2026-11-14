@@ -10,6 +10,7 @@ import { buildWbStyle, useWbStyleBase } from '../utils/wbStyle';
 import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
 import { prefetchPages } from './lazyPages';
+import { regionGroups } from '../utils/regionOrder';
 import { fetchBboxes, fetchNdlsa, prefetchGeo, addGeoSource, geoDetail, countryLayer, featureTarget, isArea, areaName, isNamed, nameHtml, isItalicName, regionFilter, addNdlsaLayer, raiseBoundaries, fillAnchor } from '../utils/basemap';
 
 // The world map's last view, kept for the visit: the page builds a new map each
@@ -27,6 +28,7 @@ export default function WorldPage() {
   const metaMarkersRef = useRef([]);
   const metaActiveRef = useRef(null);
   const [regions, setRegions] = useState(null);
+  const [legend, setLegend] = useState(null);
   const [mapReady, setMapReady] = useState(false);
   const wbBase = useWbStyleBase();
   const [metaActive, setMetaActive] = useState(null); // region obj or null
@@ -42,7 +44,7 @@ export default function WorldPage() {
   useEffect(() => {
     prefetchGeo('world');
     fetchBboxes().catch(() => {}); // so a click frames the region at once
-    fetchData(dataPath('regions.json')).then(d => setRegions(d.regions));
+    fetchData(dataPath('regions.json')).then(d => { setRegions(d.regions); setLegend(d.legend); });
   }, []);
 
   // Once the world map has drawn, fetch the region and country page code.
@@ -267,17 +269,15 @@ export default function WorldPage() {
     };
   }, [regions, theme, wbBase]);
 
-  // Build flattened legend items (main regions + sub-regions when meta is active)
-  const legendItems = regions
-    ? regions.flatMap(r => {
-        if (r.type === 'sub') return [];
-        const items = [r];
-        if (r.type === 'meta' && metaActive?.id === r.id) {
-          items.push(...regions.filter(s => s.parent === r.id));
-        }
-        return items;
-      })
-    : [];
+  // The legend lists regions by geography, as regions.json `legend` lays them
+  // out; a meta-region unfolds its sub-regions under it while active.
+  const legendGroups = regionGroups(regions, legend).map(g => ({
+    ...g,
+    items: g.regions.flatMap(r =>
+      r.type === 'meta' && metaActive?.id === r.id
+        ? [r, ...regions.filter(s => s.parent === r.id)]
+        : [r]),
+  }));
 
   return (
     <div style={{ height: 'calc(100vh - 46px)', position: 'relative', backgroundColor: t.bg }}>
@@ -355,48 +355,58 @@ export default function WorldPage() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7,
             overflowY: 'auto', minHeight: 0, marginRight: -6, paddingRight: 6 }}>
-          {legendItems.map(r => {
-            const isSub = r.type === 'sub';
-            const isMeta = r.type === 'meta';
-            const isActive = isMeta && metaActive?.id === r.id;
-            return (
-              <div
-                key={r.id}
-                onClick={() => {
-                  if (isMeta) { handleMetaToggle(r); return; }
-                  if (r.status === 'available') navigate(`/region/${r.id}`);
-                }}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
-                  paddingLeft: isSub ? 14 : 0,
-                  cursor: r.status === 'available' ? 'pointer' : 'default',
-                  opacity: r.status === 'available' ? 1 : 0.38,
-                }}
-              >
-                <span style={{
-                  width: isSub ? 6 : 9,
-                  height: isSub ? 6 : 9,
-                  borderRadius: (isMeta || isSub) ? '50%' : 2,
-                  backgroundColor: r.color,
-                  flexShrink: 0,
-                }} />
-                <span style={{ fontSize: isSub ? '0.68rem' : '0.75rem', color: isSub ? t.muted : t.text }}>
-                  {r.name}
-                </span>
-                {isMeta && (
-                  <span style={{ marginLeft: 'auto', fontSize: '0.58rem', color: t.muted, paddingLeft: 4 }}>
-                    {isActive ? '▲' : '▼'}
-                  </span>
-                )}
-                {!isMeta && !isSub && r.status !== 'available' && (
-                  <span style={{ fontSize: '0.58rem', color: t.lblMuted }}>soon</span>
-                )}
-                {isSub && (
-                  <span style={{ marginLeft: 'auto', fontSize: '0.55rem', color: t.muted }}>→</span>
-                )}
-              </div>
-            );
-          })}
+          {legendGroups.map((g, gi) => (
+            <div key={g.label || 'other'} style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              {g.label && (
+                <div style={{ fontSize: '0.46rem', letterSpacing: '1.5px', fontWeight: 700,
+                  color: t.lblMuted, textTransform: 'uppercase', marginTop: gi ? 5 : 0 }}>
+                  {g.label}
+                </div>
+              )}
+              {g.items.map(r => {
+                const isSub = r.type === 'sub';
+                const isMeta = r.type === 'meta';
+                const isActive = isMeta && metaActive?.id === r.id;
+                return (
+                  <div
+                    key={r.id}
+                    onClick={() => {
+                      if (isMeta) { handleMetaToggle(r); return; }
+                      if (r.status === 'available') navigate(`/region/${r.id}`);
+                    }}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 8,
+                      paddingLeft: isSub ? 14 : 0,
+                      cursor: r.status === 'available' ? 'pointer' : 'default',
+                      opacity: r.status === 'available' ? 1 : 0.38,
+                    }}
+                  >
+                    <span style={{
+                      width: isSub ? 6 : 9,
+                      height: isSub ? 6 : 9,
+                      borderRadius: (isMeta || isSub) ? '50%' : 2,
+                      backgroundColor: r.color,
+                      flexShrink: 0,
+                    }} />
+                    <span style={{ fontSize: isSub ? '0.68rem' : '0.75rem', color: isSub ? t.muted : t.text }}>
+                      {r.name}
+                    </span>
+                    {isMeta && (
+                      <span style={{ marginLeft: 'auto', fontSize: '0.58rem', color: t.muted, paddingLeft: 4 }}>
+                        {isActive ? '▲' : '▼'}
+                      </span>
+                    )}
+                    {!isMeta && !isSub && r.status !== 'available' && (
+                      <span style={{ fontSize: '0.58rem', color: t.lblMuted }}>soon</span>
+                    )}
+                    {isSub && (
+                      <span style={{ marginLeft: 'auto', fontSize: '0.55rem', color: t.muted }}>→</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
           </div>
         </div>
       )}
@@ -431,7 +441,8 @@ export default function WorldPage() {
         style={{ top: isMobile ? 62 : 52, right: 12 }}
         title="Regional Power Explorer — power pools and regions"
         fileName="regional-power-explorer-world"
-        legend={() => (regions || []).filter(r => r.status === 'available' && r.type !== 'meta' && r.type !== 'sub')
+        legend={() => regionGroups(regions, legend).flatMap(g => g.regions)
+          .filter(r => r.status === 'available' && r.type !== 'meta')
           .map(r => ({ color: r.color, alpha: 0.28, label: r.name }))}
       />
 

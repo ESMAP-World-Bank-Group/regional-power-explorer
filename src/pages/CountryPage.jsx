@@ -6,7 +6,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { track } from '../analytics';
 import maplibregl from 'maplibre-gl';
 import { useTheme } from '../App';
-import { getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
+import { getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, LINE_ATTR_LABELS, lineAttrText, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON, plantRadiusExpr, lcRadiusExpr, COUNTRY_CIRCLE_SCALE, adaptiveMinMw, defaultNZones, PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX, BRIEFS_ENABLED } from '../constants';
 import LayerPanel from '../components/LayerPanel';
 import MapChat from '../chat/LazyMapChat';
 import ExportControl from '../components/ExportControl';
@@ -93,7 +93,7 @@ export default function CountryPage() {
   const [plantsOn,     setPlantsOn]     = useState(true);
   const [subsOn,       setSubsOn]       = useState(false);
   const [minMw,        setMinMw]        = useState(100);
-  const [circleScale,  setCircleScale]  = useState(1.0);
+  const [circleScale,  setCircleScale]  = useState(COUNTRY_CIRCLE_SCALE);
   const [plantSource,        setPlantSource]        = useState('gem');
   const [selFeature,         setSelFeature]         = useState(null);
   const [gppdAvailable,      setGppdAvailable]      = useState(null);
@@ -247,7 +247,7 @@ export default function CountryPage() {
       }
     });
     setFuelsOff(new Set()); setStatusOff(new Set()); setKvsOff(new Set());
-    setLinesOn(true); setPlantsOn(true); setSubsOn(false); setMinMw(100); setCircleScale(1.0);
+    setLinesOn(true); setPlantsOn(true); setSubsOn(false); setMinMw(100); setCircleScale(COUNTRY_CIRCLE_SCALE);
     setLcCircleScale(1.0);
     setPlantSource('gem'); setGppdAvailable(null); setGemAvailable(null);
     setZoneMode('plain'); setNZones(null); setZoneLabelsOn(false);
@@ -686,7 +686,7 @@ export default function CountryPage() {
             source: 'plants',
             filter: buildPlantFilter(fuel, adaptMin, new Set(['planned'])),
             paint: {
-              'circle-radius':  plantRadiusExpr(),
+              'circle-radius':  plantRadiusExpr(COUNTRY_CIRCLE_SCALE),
               'circle-color':   color,
               'circle-opacity': 0.90,
               'circle-stroke-width': 0.6,
