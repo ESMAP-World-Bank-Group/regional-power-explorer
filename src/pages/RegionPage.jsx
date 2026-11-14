@@ -8,7 +8,7 @@ import { Protocol, PMTiles } from 'pmtiles';
 import { useTheme } from '../App';
 import {
   getT, FUEL_COLORS, VOLTAGE_BRACKETS, kvFilterWithFloor, bracketFor, linePopupHTML, visibleLineFeatures, linesToCSV, linesToDownloadGeoJSON,
-  plantRadiusExpr, lcRadiusExpr, fuelColorExpr, PLANT_STATUSES, zoneColorExpr, adaptiveMinMw,
+  plantRadiusExpr, lcRadiusExpr, PLANT_CIRCLE_SCALE, fuelColorExpr, PLANT_STATUSES, zoneColorExpr, adaptiveMinMw,
   PANEL_WIDTH_MIN, PANEL_WIDTH_DEFAULT, PANEL_WIDTH_MAX,
 } from '../constants';
 import LayerPanel from '../components/LayerPanel';
@@ -196,7 +196,7 @@ export default function RegionPage() {
   const [minKv,            setMinKv]            = useState(0);
   const [kvFloor,          setKvFloor]          = useState(110);
   const [presentKvs,       setPresentKvs]       = useState(null);
-  const [circleScale,     setCircleScale]     = useState(1.0);
+  const [circleScale,     setCircleScale]     = useState(PLANT_CIRCLE_SCALE);
   const [plantSource,     setPlantSource]     = useState('gem');
   const plantSourceRef = useRef(plantSource); // what a rebuilt map starts on
   plantSourceRef.current = plantSource;
@@ -300,7 +300,7 @@ export default function RegionPage() {
     setFuelsOff(new Set()); setStatusOff(new Set()); setKvsOff(new Set());
     setLinesOn(true); setPlantsOn(true); setSubsOn(false);
     setLoadCentersOn(false); setLcMinPop(300_000); setLcCircleScale(1.0);
-    setMinMw(100); setCircleScale(1.0);
+    setMinMw(100); setCircleScale(PLANT_CIRCLE_SCALE);
     setPlantSource('gem'); setActiveTab('overview');
     track('region_view', { region: regionId });
 
@@ -543,7 +543,7 @@ export default function RegionPage() {
       map.addLayer({ id: 'plants-operating', type: 'circle', source: 'plants',
         filter: makeLayerFilter('operating', new Set(), 0),
         paint: {
-          'circle-radius':       plantRadiusExpr(),
+          'circle-radius':       plantRadiusExpr(PLANT_CIRCLE_SCALE),
           'circle-color':        colorExpr,
           'circle-opacity':      0.88,
           'circle-stroke-width': 0.6,
@@ -555,7 +555,7 @@ export default function RegionPage() {
       map.addLayer({ id: 'plants-construction', type: 'circle', source: 'plants',
         filter: makeLayerFilter('construction', new Set(), 0),
         paint: {
-          'circle-radius':         plantRadiusExpr(),
+          'circle-radius':         plantRadiusExpr(PLANT_CIRCLE_SCALE),
           'circle-color':          'rgba(0,0,0,0)',
           'circle-opacity':        1,
           'circle-stroke-width':   2,
@@ -569,7 +569,7 @@ export default function RegionPage() {
         filter: makeLayerFilter('planned', new Set(), 0),
         layout: { visibility: 'none' },
         paint: {
-          'circle-radius':         plantRadiusExpr(),
+          'circle-radius':         plantRadiusExpr(PLANT_CIRCLE_SCALE),
           'circle-color':          colorExpr,
           'circle-opacity':        0.22,
           'circle-stroke-width':   1,

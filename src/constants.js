@@ -310,10 +310,10 @@ export function fuelColorExpr() {
   ];
 }
 
-// A country page opens zoomed on one country, where circles drawn at the
-// region scale crowd the map; its plants start at this size and the layer
-// panel slider takes it from there.
-export const COUNTRY_CIRCLE_SCALE = 0.6;
+// Region and country pages open with plant circles at this scale, where 1
+// is the size plantRadiusExpr draws on its own; the layer panel slider
+// takes it from there.
+export const PLANT_CIRCLE_SCALE = 0.6;
 
 export function plantRadiusExpr(scale = 1) {
   return [
