@@ -17,7 +17,7 @@ thing it has.
 | Part | File | Role |
 |---|---|---|
 | System prompt | `src/chat/MapChat.jsx` (`SYSTEM_PROMPT`) | Audience, what the data covers, how to answer (grounding, sources, missing data, comparing like with like, caveats, untrusted text), style |
-| Data tools | `src/chat/dataServer.js` | 16 read-only tools over `public/data/`; the model sees them as `data__<name>` |
+| Data tools | `src/chat/dataServer.js` (+ `calc.js`) | 17 read-only tools over `public/data/`; the model sees them as `data__<name>` |
 | App tool | `src/chat/appControl.js` | `app__update_state`: navigate, open tabs, filter plants, read the current view |
 | Map tools | `@imaps/ai-chat` | `map__*`: camera, layers, legend, what is on screen, screenshot |
 | Methodology | `public/data/methodology.md` | One file for people and the model: sources, definitions, limits |
@@ -44,6 +44,14 @@ These follow Anthropic's guidance for tool use and prompts; keep them when editi
 4. **Figures come only from tool results.** General knowledge may explain a concept, never
    supply a number. Missing data is reported as missing. A derived figure (share, growth,
    ratio) comes with how it was worked out: inputs, sources, years, calculation.
+8. **Arithmetic is done in code, not by the model.** Models slip on mental arithmetic (a share
+   taken against the wrong total). The supply tool returns totals, fuel and renewable shares,
+   and net imports as a share of demand and of generation; anything else goes through the
+   `calculate` tool, a small parser (`src/chat/calc.js`, tested by
+   `node --test src/chat/calc.test.mjs`) that never runs input as code.
+9. **Dates are per dataset.** Sources update on different schedules (prices daily, plant
+   databases twice a year, resource atlases rarely), so `coverage` gives each dataset's own
+   latest year or update date, never one date for everything.
 5. **Judgement questions get evidence and reasoning,** with the conclusion labelled as the
    assistant's reading of the data. When the answer turns on a choice only the user can make
    (cost versus emissions, which criterion matters most), the assistant asks instead of choosing.
@@ -57,7 +65,7 @@ These follow Anthropic's guidance for tool use and prompts; keep them when editi
 | Tool | Use for | Source |
 |---|---|---|
 | `regions` | Region and country ids, power-pool membership | `regions.json` |
-| `coverage` | What is published for a country | build file list |
+| `coverage` | What is published for a country, with each dataset's source and latest year or update date | build file list, file headers |
 | `methodology` | Where a figure comes from, definitions, limits | `methodology.md` |
 | `supply` | Generation, capacity and demand by fuel and year (up to 10 countries) | Ember (national statistics); national sources for 4 countries |
 | `capacity` | Operating plant capacity by fuel for a region, fleet age | GEM, GPPD or OSM |
@@ -72,6 +80,7 @@ These follow Anthropic's guidance for tool use and prompts; keep them when editi
 | `zones` | Planning-model zones and their plants | EPM zones, OSM plants |
 | `load_centres` | Main cities by population (Black Sea) | not recorded |
 | `country_note` | Qualitative context: actors, issues, takeaways | AI-drafted briefing notes |
+| `calculate` | Exact results for up to 30 expressions (+ − × ÷, brackets) | — |
 
 Derived files behind some tools are rebuilt by `tools/prepare_ai.py` (checked in CI), and
 `tools/prepare_re.py`; see `DATA_LINEAGE.md`.
@@ -150,5 +159,14 @@ country.
 | 30 | Show only coal plants | a region page (e.g. South Asia) | Filters; one-line confirmation |
 | 31 | What is the installed capacity here? | any country page | Reads the current view first, then answers for that country |
 | 32 | Go to Kenya | world map | Opens the country page (Kenya is the planned sub-national pilot) |
+
+**Arithmetic and dates** (exact answers; a pass means the figure matches)
+
+| # | Question | Region | Expected |
+|---|---|---|---|
+| 33 | What share of its generation did Norway export in 2025? | Europe | 14.3% (160,840 GWh generated, 137,760 GWh demand, Ember); 11.7% in 2024 |
+| 34 | What was Norway's renewable share of generation in 2025? | Europe | 99.0%, with the definition of renewable |
+| 35 | How recent is the Türkiye data? | Black Sea | Per dataset: supply and trade 2024 (TEİAŞ), prices updated 2026-11-01, tariffs 2023; no single "last updated" date |
+| 36 | By what percentage did Kenya's solar generation grow between 2020 and 2024? | EAPP | 633.3% (90 → 660 GWh, Ember); inputs and years stated |
 
 Before release, also check the deployment items in `AI_CHAT_QA_CHECKLIST.md`.

@@ -35,7 +35,7 @@ The files each data tool reads (`src/chat/dataServer.js`, prefixed `data__` for 
 | Tool | Reads | Answers |
 |---|---|---|
 | `regions` | `regions.json` | regions and their member countries |
-| `coverage` | build file list, `metadata.json` | what is published for a country, and when data was last updated |
+| `coverage` | build file list, file headers | what is published for a country, with each dataset's source and latest year or update date |
 | `methodology` | `methodology.md` | sources, definitions and limits of each dataset |
 | `capacity` | `cache/region_capacity_*.json`, `cache/region_age_*_gppd.json` | operating MW by fuel and country for a region; GPPD fleet age |
 | `pipeline` | `ai/plants/<ISO3>.json` | GEM planned and under-construction MW by fuel, for a country or region |
@@ -48,6 +48,7 @@ The files each data tool reads (`src/chat/dataServer.js`, prefixed `data__` for 
 | `zones` | `ai/zones/<ISO3>.json` | planning-model zones: plants by fuel per zone, connected zones |
 | `load_centres` | `region_load_centers_<region>.geojson` | main cities by population (Black Sea) |
 | `country_note` | `notes/<ISO3>.html` | the AI-drafted briefing note: figures, outline, takeaways or one section |
+| `calculate` | `src/chat/calc.js` | exact arithmetic for derived figures (the model never computes in its head) |
 | `re_resources` | `re/<ISO3>.json` | country solar and wind resource: averages, best 10%, monthly profiles |
 | `fuel_detail` | `entsoe/<ISO3>.json` + `supply/<ISO3>.json` | ENTSO-E's finer hydro, coal and wind split (harmonised statistics) for European countries, with how complete it is |
 
